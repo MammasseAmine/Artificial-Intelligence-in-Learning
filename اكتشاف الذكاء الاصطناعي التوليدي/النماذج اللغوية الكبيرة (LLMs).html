@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النماذج اللغوية الكبيرة (LLMs)</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --success: #38a169;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 30px 15px;
+  }
+  
+  .container {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Content Block */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  /* Section Title inside Document */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  /* Callout Boxes */
+  .callout {
+    background: var(--bg);
+    border-right: 4px solid var(--secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+  }
+
+  .callout.accent {
+    border-right-color: var(--accent);
+    background: #fffaf0;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Formula Block */
+  .math-box {
+    background: #edf2f7;
+    font-family: 'Courier New', Courier, monospace;
+    direction: ltr;
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin: 18px 0;
+    border: 1px dashed #cbd5e1;
+  }
+
+  /* Tables */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+  }
+
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: var(--bg);
+  }
+
+  /* Lists */
+  .styled-list {
+    list-style: none;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  .styled-list li {
+    position: relative;
+    padding-right: 28px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+
+  .styled-list li i {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    color: var(--secondary);
+  }
+
+  .negative-list li i {
+    color: var(--danger);
+  }
+
+  /* Token Split Visualizer */
+  .token-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    direction: rtl;
+    background: #edf2f7;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 15px 0;
+  }
+
+  .token-chip {
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+
+  .token-chip span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.72rem;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 4px;
+    padding-top: 2px;
+    font-family: monospace;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.8rem; }
+    .content-card { padding: 20px; }
+    .back-link {
+      position: static;
+      display: inline-flex;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • الدرس الثاني</span>
+    <h1>النماذج اللغوية الكبيرة (LLMs)</h1>
+  </div>
+
+  <!-- 1. مقدمة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-book-open"></i></div>
+      1. مقدمة
+    </div>
+    <p>
+      شهد مجال معالجة اللغة الطبيعية ثورة كبيرة مع ظهور <strong>النماذج اللغوية الكبيرة (Large Language Models - LLMs)</strong>. أصبحت هذه النماذج قادرة على فهم اللغة البشرية وإنتاج نصوص عالية الجودة تشبه بدقة النصوص المكتوبة بواسطة الإنسان.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-robot"></i> تبسيط المفهوم:</div>
+      كلمة <strong>LLM</strong> هي اختصار لـ <em>Large Language Model</em>. ببساطة، تخيّل أنك أحضرت روبوتاً وجعلته يقرأ كل الكتب والمقالات والمواقع المتاحة؛ فأصبح لديه حصيلة لغوية ومعرفية ضخمة جداً تمكنه من فهم أسئلتك والرد عليك كأنه إنسان.
+    </div>
+
+    <p>
+      <strong>التعريف التقني:</strong> نموذج ذكاء اصطناعي ضخم يتم تدريبه على كميات هائلة من النصوص بهدف تعلم أنماط وقواعد وتراكيب اللغة. وتعتمد معظم النماذج الحديثة على معمارية <strong>Transformer</strong> التي قُدمت لأول مرة عام 2017.
+    </p>
+  </div>
+
+  <!-- 2. ما هو النموذج اللغوي؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-brain"></i></div>
+      2. ما هو النموذج اللغوي؟ وكيف يعمل؟
+    </div>
+    <p>
+      النموذج اللغوي هو نظام يعتمد على مبدأ التنبؤ بالكلمة التالية بناءً على سياق الكلمات السابقة.
+    </p>
+
+    <div class="callout">
+      <strong>مثال توضيحي:</strong> عند إعطاء النموذج الجملة: <em>«أنا أحب شرب...»</em>، يبدأ بحساب الاحتمالات للكلمة التالية؛ فيتوقع كلمات مثل: (القهوة، الشاي، العصير).
+    </div>
+
+    <p><strong>الهدف الرياضي (تعلم الاحتمال):</strong></p>
+    <div class="math-box">
+      P(word<sub>t</sub> | word<sub>1</sub> ... word<sub>t-1</sub>)
+    </div>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-lightbulb"></i> المدهش في طريقة التعلم:</div>
+      لم يكتب أحد للنموذج قواعد النحو يدوياً! لكي يتوقع الكلمة التالية جيداً، اضطر النموذج لاستنتاج النحو والحقائق وأنماط الكتابة من الأمثلة نفسها أثناء التدريب؛ <strong>كطفل يقرأ آلاف القصص فيتعلم تلقائياً كيف تُبنى الجمل</strong>.
+    </div>
+  </div>
+
+  <!-- 3. لماذا سميت كبيرة؟ وما ليس هو النموذج -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-server"></i></div>
+      3. لماذا سميت "كبيرة"؟ وما ليس هو النموذج اللغوي؟
+    </div>
+    
+    <p>تستحق هذه النماذج وصف "كبيرة" نظراً للمقاييس الضخمة التي تبنى عليها:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>العامل</th>
+            <th>الوصف والمقياس</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>عدد المعاملات (Parameters)</strong></td>
+            <td>قد يصل إلى مئات المليارات</td>
+          </tr>
+          <tr>
+            <td><strong>حجم البيانات</strong></td>
+            <td>تريليونات الكلمات والمحارف</td>
+          </tr>
+          <tr>
+            <td><strong>قدرات الحوسبة</strong></td>
+            <td>آلاف من معالجات الرسوميات المتقدمة (GPUs)</td>
+          </tr>
+          <tr>
+            <td><strong>حجم النموذج</strong></td>
+            <td>عشرات أو مئات الجيجابايت</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color: var(--primary); margin: 24px 0 12px 0; font-size: 1.15rem;">ما ليس هو النموذج اللغوي؟ (تصحيح المفاهيم)</h3>
+    <ul class="styled-list negative-list">
+      <li>
+        <i class="fa-solid fa-circle-xmark"></i>
+        <strong>ليس محرك بحث:</strong> لا يبحث في الإنترنت تلقائياً (إلا إذا تم ربطه بأداة تصفح خارجية).
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-xmark"></i>
+        <strong>ليس قاعدة بيانات:</strong> لا يسترجع جملاً مخزنة ومحفوظة حرفياً، بل يولد النص من جديد احتمالياً.
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-xmark"></i>
+        <strong>ليس عقلاً بشرياً:</strong> يبدو بارعاً جداً في اللغة، لكن طريقة عمله تختلف كلياً عن الإنسان ولا يملك وعياً أو تجربة حياة.
+      </li>
+    </ul>
+
+    <h3 style="color: var(--primary); margin: 24px 0 12px 0; font-size: 1.15rem;">أشهر النماذج اللغوية الكبيرة في العالم</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>النموذج</th>
+            <th>الشركة المطورة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>GPT</strong></td>
+            <td>OpenAI</td>
+          </tr>
+          <tr>
+            <td><strong>Claude</strong></td>
+            <td>Anthropic</td>
+          </tr>
+          <tr>
+            <td><strong>Gemini</strong></td>
+            <td>Google</td>
+          </tr>
+          <tr>
+            <td><strong>Llama</strong></td>
+            <td>Meta</td>
+          </tr>
+          <tr>
+            <td><strong>Mistral</strong></td>
+            <td>Mistral AI</td>
+          </tr>
+          <tr>
+            <td><strong>Aya</strong></td>
+            <td>Cohere</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. الرموز (Tokens) -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-cubes"></i></div>
+      4. الرموز (Tokens)
+    </div>
+    <p>
+      الحاسوب لا يقرأ الحروف الأبجدية، بل يتعامل مع الأرقام حصراً. لذلك يُقطّع النص إلى أجزاء أصغر تُسمى <strong>رموزاً (Tokens)</strong>، ويُمنح كل رمز معرّفاً رقمياً خاصاً به. قد يكون الرمز كلمة كاملة، أو جزءاً من كلمة، أو علامة ترقيم.
+    </p>
+
+    <div class="callout-title" style="margin-top: 15px;"><i class="fa-solid fa-scissors"></i> مثال تقريبي لتقطيع جملة: "النماذج اللغوية الكبيرة تتعلم من النصوص."</div>
+    <div class="token-container">
+      <div class="token-chip">الـ <span>629</span></div>
+      <div class="token-chip">نما <span>47896</span></div>
+      <div class="token-chip">ذج <span>884</span></div>
+      <div class="token-chip">الـ <span>629</span></div>
+      <div class="token-chip">لغو <span>45666</span></div>
+      <div class="token-chip">ية <span>1687</span></div>
+      <div class="token-chip">الـ <span>629</span></div>
+      <div class="token-chip">كبي <span>44149</span></div>
+      <div class="token-chip">رة <span>912</span></div>
+      <div class="token-chip">تتعـ <span>20169</span></div>
+      <div class="token-chip">ـلم <span>1529</span></div>
+      <div class="token-chip">من <span>1561</span></div>
+      <div class="token-chip">الـ <span>629</span></div>
+      <div class="token-chip">نصوص <span>21912</span></div>
+      <div class="token-chip">. <span>146</span></div>
+    </div>
+    <small style="color: var(--muted); display: block; margin-top: -5px; margin-bottom: 15px;">* الأرقام الموضحة أمثلة تقريبية لشرح الفكرة.</small>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-circle-question"></i> لماذا يهمك فهم التوكنز؟</div>
+      <ul class="styled-list" style="margin-bottom: 0;">
+        <li><i class="fa-solid fa-check"></i> <strong>حدود الطول والتكلفة:</strong> الاستهلاك والتسعير في واجهات النماذج يُحسب بعدد الرموز لا بالكلمات.</li>
+        <li><i class="fa-solid fa-check"></i> <strong>اللغة العربية:</strong> تستهلك في كثير من النماذج رموزاً أكثر من الإنجليزية لنفس عدد الكلمات؛ لذلك فإن كتابة المطالبات (Prompts) بإيجاز واختصار يوفر مساحة وتكلفة.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. نافذة السياق (Context Window) -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-window-maximize"></i></div>
+      5. نافذة السياق (Context Window)
+    </div>
+    <p>
+      هي أقصى كمية نص يستطيع النموذج "رؤيتها ومعالجتها" دفعة واحدة في اللحظة الواحدة — وتتضمن: <strong>سؤالك + المحادثة السابقة + أي مستندات مرفقة + الإجابة التي يولدها</strong>.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-chalkboard"></i> تشبيه السبورة:</div>
+      تخيل نافذة السياق كأنها <strong>سبورة محدودة المساحة</strong>؛ إذا امتلأت بالكامل يُحذف أو يُلخص الكلام القديم لإفساح المجال للجديد، مما قد يجعل النموذج ينسى ما ذُكر في بداية المحادثة الطويلة.
+    </div>
+
+    <div class="callout accent">
+      <strong>قاعدة تقريبية:</strong> كل <strong>1000 توكن</strong> تعادل تقريباً:
+      <ul style="margin-right: 25px; margin-top: 8px;">
+        <li>~ 750 كلمة باللغة الإنجليزية.</li>
+        <li>~ 400 إلى 500 كلمة باللغة العربية.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. إعدادات التوليد -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-sliders"></i></div>
+      6. إعدادات التوليد: كيف تتحكم في «مزاج» النموذج؟
+    </div>
+    <p>
+      تتحكم هذه الإعدادات في طريقة اختيار الكلمة التالية، وفهمها يمنحك سيطرة كاملة على جودة ونوعية المخرجات:
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الإعداد</th>
+            <th>ماذا يفعل؟</th>
+            <th>قيمة منخفضة</th>
+            <th>قيمة مرتفعة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Temperature</strong></td>
+            <td>مقدار العشوائية والإبداع</td>
+            <td>دقيق ومتوقع (0.0)</td>
+            <td>إبداعي ومتنوع (1.0)</td>
+          </tr>
+          <tr>
+            <td><strong>Top-p</strong></td>
+            <td>يختار من أكثر الكلمات احتمالاً فقط</td>
+            <td>محافظ جداً (0.1)</td>
+            <td>منفتح على بدائل (0.95)</td>
+          </tr>
+          <tr>
+            <td><strong>Max Tokens</strong></td>
+            <td>أقصى طول مسموح به للجواب</td>
+            <td>ردود قصيرة وموجزة</td>
+            <td>ردود طويلة ومفصلة</td>
+          </tr>
+          <tr>
+            <td><strong>Frequency Penalty</strong></td>
+            <td>يعاقب تكرار الكلمات نفسها</td>
+            <td>قد يكرر نفسه أحياناً</td>
+            <td>لغة أكثر تنوعاً ومفردات أغنى</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-compass"></i> متى أستخدم ماذا؟ (درجة الحرارة Temperature)</div>
+      <ul class="styled-list">
+        <li><i class="fa-solid fa-terminal"></i> <strong>Temperature = 0:</strong> للمهام المنطقية والدقيقة (تحليل بيانات / كتابة كود / حل مسائل رياضيات).</li>
+        <li><i class="fa-solid fa-comments"></i> <strong>Temperature = 0.7:</strong> للمهام المتوازنة (المحادثات العامة والإجابات الحوارية).</li>
+        <li><i class="fa-solid fa-pen-nib"></i> <strong>Temperature = 0.8 – 1.0:</strong> للمهام الابتكارية (كتابة إعلانية / تأليف قصص / العصف الذهني).</li>
+      </ul>
+      <div style="font-weight: 700; margin-top: 10px; color: var(--primary);">
+        💡 القاعدة الذهبية: «للدقة اخفض الحرارة، وللإبداع ارفعها».
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي التوليدي 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>

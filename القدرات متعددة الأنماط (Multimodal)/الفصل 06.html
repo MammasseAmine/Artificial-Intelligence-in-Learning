@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الفصل 06: الذكاء الاصطناعي متعدد الوسائط</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 400;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Grid & Cards */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .lesson-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 320px;
+  }
+
+  .lesson-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(26, 54, 93, 0.1);
+    border-color: #cbd5e1;
+  }
+
+  .lesson-icon {
+    width: 45px;
+    height: 45px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .lesson-badge {
+    background-color: var(--bg);
+    color: var(--secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 50px;
+    align-self: flex-start;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .lesson-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+
+  .lesson-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+
+  .btn-open {
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.3s;
+    width: 100%;
+  }
+
+  .btn-open:hover {
+    background: var(--secondary);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.8rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="../outline.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <span class="header-badge">الفصل 06</span>
+    <h1>القدرات متعددة الأنماط (Multimodal)</h1>
+    <div class="subtitle">تجاوز حدود النصوص واستكشف كيف يدمج الذكاء الاصطناعي بين الصور، الصوت، والفيديو لفهم وتوليد وتحليل المعلومات بطرق مبتكرة.</div>
+  </div>
+
+  <!-- عنوان القسم الأول (الدروس) -->
+  <div class="section-title">
+    <span class="icon">📖</span>
+    مواضيع ودروس الفصل
+  </div>
+
+  <!-- شبكة الدروس (Grid) -->
+  <div class="lessons-grid">
+
+    <!-- الدرس 01 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-cubes"></i></div>
+      <div class="lesson-badge">الدرس 01</div>
+      <h3 class="lesson-title">مفهوم الذكاء متعدد الوسائط</h3>
+      <p class="lesson-desc">التعرف على طبيعة النماذج القادرة على معالجة وفهم أكثر من نوع واحد من البيانات (نص، صورة، صوت) في نفس الوقت.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 02 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-photo-film"></i></div>
+      <div class="lesson-badge">الدرس 02</div>
+      <h3 class="lesson-title">التعامل مع مختلف الوسائط</h3>
+      <p class="lesson-desc">كيفية إدخال ومعالجة أنماط متعددة من البيانات، وكيف يربط الذكاء الاصطناعي بينها لفهم السياق الشامل بدقة.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 03 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-shuffle"></i></div>
+      <div class="lesson-badge">الدرس 03</div>
+      <h3 class="lesson-title">التحويل بين الوسائط المختلفة</h3>
+      <p class="lesson-desc">تقنيات تحويل النص إلى صورة، والصوت إلى نص، والعكس، لاستغلالها في تبسيط وعرض المعلومات المعقدة.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 04 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-palette"></i></div>
+      <div class="lesson-badge">الدرس 04</div>
+      <h3 class="lesson-title">إنشاء الصور بالذكاء الاصطناعي</h3>
+      <p class="lesson-desc">استخدام أدوات التوليد البصري لإنشاء رسومات، تصاميم، ومخططات تعليمية معبرة انطلاقاً من نصوص وصفية (Prompts).</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 05 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-file-image"></i></div>
+      <div class="lesson-badge">الدرس 05</div>
+      <h3 class="lesson-title">فهم وتحليل الصور والمستندات</h3>
+      <p class="lesson-desc">استنطاق الرسوم البيانية والجداول، واستخراج النصوص والمعلومات المعقدة من المستندات المصورة للتحليل الأكاديمي.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 06 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+      <div class="lesson-badge">الدرس 06</div>
+      <h3 class="lesson-title">التفاعل الصوتي والتعرف على الكلام</h3>
+      <p class="lesson-desc">التحدث المباشر مع النماذج الذكية، وتوليد تعليقات صوتية طبيعية، وتوظيف تفريغ الصوتيات في المهام الدراسية.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 07 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="lesson-badge">الدرس 07</div>
+      <h3 class="lesson-title">تطبيقات الوسائط في التعليم</h3>
+      <p class="lesson-desc">تصميم مواد تعليمية تفاعلية تدمج النص، الصورة، والصوت لتناسب مختلف أنماط التعلم وتزيد من تفاعل الطلاب.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 08 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-list-check"></i></div>
+      <div class="lesson-badge">الدرس 08</div>
+      <h3 class="lesson-title">تقييم جودة المخرجات</h3>
+      <p class="lesson-desc">وضع معايير نقدية لفحص دقة الرسوم البيانية المولدة، ومطابقة النصوص للصور، والتأكد من صحة التفاصيل البصرية.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- الدرس 09 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div class="lesson-badge">الدرس 09</div>
+      <h3 class="lesson-title">التحديات والأبعاد الأخلاقية</h3>
+      <p class="lesson-desc">مناقشة قضايا التزييف العميق (Deepfakes)، حقوق الطبع والنشر للصور، والانحياز في تمثيل الثقافات بصرياً.</p>
+      <a href="#" class="btn-open">
+        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- عنوان القسم الثاني (الأعمال التطبيقية) -->
+  <div class="section-title">
+    <span class="icon">💻</span>
+    الأعمال التطبيقية
+  </div>
+
+  <!-- شبكة الأعمال التطبيقية -->
+  <div class="lessons-grid">
+    
+    <!-- النشاط 01 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-file-invoice"></i></div>
+      <div class="lesson-badge">النشاط 01</div>
+      <h3 class="lesson-title">النشاط الأول: استخلاص البيانات المرئية (Image-to-Text)</h3>
+      <p class="lesson-desc">تطبيق عملي لرفع صور لمخططات ورسوم بيانية معقدة واستنطاقها بالذكاء الاصطناعي لتحويلها إلى جداول وبيانات مهيكلة ومفسرة.</p>
+      <a href="#" class="btn-open">
+        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+    <!-- النشاط 02 -->
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-paintbrush"></i></div>
+      <div class="lesson-badge">النشاط 02</div>
+      <h3 class="lesson-title">النشاط الثاني: التجسيد البصري للمفاهيم المجردة (Text-to-Image/Format)</h3>
+      <p class="lesson-desc">تمرين تطبيقي لصياغة أوامر توليد بصرية دقيقة لتحويل المفاهيم والنظريات المعقدة إلى رسوم توضيحية ومخططات بصرية شارحة.</p>
+      <a href="#" class="btn-open">
+        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>

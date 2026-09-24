@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --success: #38a169;
+    --warning: #dd6b20;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 30px 15px;
+  }
+  
+  .container {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Content Card */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  /* Callout Boxes */
+  .callout {
+    background: var(--bg);
+    border-right: 4px solid var(--secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+  }
+
+  .callout.accent {
+    border-right-color: var(--accent);
+    background: #fffaf0;
+  }
+
+  .callout.danger {
+    border-right-color: var(--danger);
+    background: #fff5f5;
+  }
+
+  .callout.success {
+    border-right-color: var(--success);
+    background: #f0fff4;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Highlight Banner */
+  .highlight-quote {
+    background: linear-gradient(135deg, #1a365d, #2b6cb0);
+    color: #ffffff;
+    padding: 22px 26px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.9;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(26, 54, 93, 0.15);
+  }
+
+  /* Tables */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+  }
+
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: var(--bg);
+  }
+
+  /* Lists */
+  .styled-list {
+    list-style: none;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  .styled-list li {
+    position: relative;
+    padding-right: 28px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+
+  .styled-list li i {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    color: var(--secondary);
+  }
+
+  .styled-list.danger li i {
+    color: var(--danger);
+  }
+
+  /* Workflow Steps */
+  .workflow-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--bg);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .workflow-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+
+  .workflow-arrow {
+    color: var(--accent);
+    font-size: 1.2rem;
+  }
+
+  /* Prompt Cards Grid */
+  .practice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .practice-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .practice-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .practice-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--secondary);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 8px;
+  }
+
+  .practice-title {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .prompt-example {
+    background: #fff;
+    border-right: 3px solid var(--accent);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-top: 8px;
+  }
+
+  /* Comparison Cards */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 15px 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.7rem; }
+    .content-card { padding: 20px; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .workflow-container { flex-direction: column; align-items: stretch; text-align: center; }
+    .workflow-arrow { transform: rotate(90deg); margin: 4px auto; }
+    .back-link {
+      position: static;
+      display: inline-flex;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • الدرس الخامس</span>
+    <h1>الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)</h1>
+  </div>
+
+  <!-- 1. ما هي الهلوسة؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-ghost"></i></div>
+      1. ما هي الهلوسة؟
+    </div>
+    <p>
+      <strong>الهلوسة (Hallucination)</strong> هي قيام نموذج الذكاء الاصطناعي بإنتاج وتوليد معلومات غير صحيحة، مغلوطة، أو مختلقة كلياً، مع <strong>تقديمها بثقة عالية ونبرة حاسمة وكأنها حقيقة مؤكدة</strong>.
+    </p>
+
+    <div class="callout danger">
+      <div class="callout-title"><i class="fa-solid fa-circle-exclamation"></i> مثال توضيحي واقعي:</div>
+      إذا سألت النموذج: <em>"من هو مخترع الإنترنت؟"</em> فقد يجيب بذكر اسم شخص غير صحيح إطلاقاً مع سرد شرح مفصل ومقنع ظاهرياً يدعم هذه المعلومة الزائفة.
+    </div>
+  </div>
+
+  <!-- 2. لماذا تحدث الهلوسة؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-circle-question"></i></div>
+      2. لماذا تحدث الهلوسة؟
+    </div>
+    <p>
+      لا يتعمّد النموذج الكذب، بل تحدث الهلوسة نتيجة طبيعة عمله التقنية وقيود عملية التدريب:
+    </p>
+
+    <ul class="styled-list danger">
+      <li><i class="fa-solid fa-xmark"></i> <strong>التنبؤ بالكلمات دون التحقق من الحقائق:</strong> النموذج يتنبأ إحصائياً بالكلمة التالية الأكثر احتمالاً ولا يتحقق من صحة ومطابقة الحقيقة.</li>
+      <li><i class="fa-solid fa-database"></i> <strong>نقص المعلومات في بيانات التدريب:</strong> فجوات المعرفة تؤدي بالنموذج إلى محاولة ملء الفراغات بنفسه.</li>
+      <li><i class="fa-solid fa-arrows-split-up-and-left"></i> <strong>وجود معلومات متناقضة:</strong> تعرض النموذج لمصادر متضاربة ومتعارضة أثناء عملية التدريب.</li>
+      <li><i class="fa-solid fa-comment-slash"></i> <strong>غموض السؤال أو نقص السياق:</strong> عدم وضوح المدخلات يدفع النموذج للتخمين والاستنتاج الحر.</li>
+      <li><i class="fa-solid fa-hourglass-end"></i> <strong>طلب معلومات نادرة أو حديثة جداً:</strong> الاستفسار عن تفاصيل خارج نطاق معرفته أو وقعت بعد تاريخ التدريب.</li>
+    </ul>
+  </div>
+
+  <!-- 3. أنواع الهلوسة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
+      3. أنواع الهلوسة
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">نوع الهلوسة</th>
+            <th style="width: 45%;">الوصف والتعريف</th>
+            <th>مثال توضيحي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>هلوسة واقعية<br><small style="color: var(--muted);">(Factual Hallucination)</small></strong></td>
+            <td>إعطاء وتوليد حقائق أو أرقام أو تواريخ أو أسماء أشخاص غير صحيحة.</td>
+            <td>اختراع مرجع علمي أو اسم مؤلف غير موجود على أرض الواقع.</td>
+          </tr>
+          <tr>
+            <td><strong>هلوسة مرجعية<br><small style="color: var(--muted);">(Reference Hallucination)</small></strong></td>
+            <td>إنشاء ونسب مقالات أو أوراق بحثية أو كتب أو مراجع أكاديمية وهمية تماماً.</td>
+            <td>ذكر معرف كائن رقمي (DOI) وهمي أو ورقة علمية لم يتم نشرها أبداً.</td>
+          </tr>
+          <tr>
+            <td><strong>هلوسة منطقية<br><small style="color: var(--muted);">(Logical Hallucination)</small></strong></td>
+            <td>الاستنتاج وحل المسائل بطريقة تسلسلية تبدو منطقية شكلياً لكنها خاطئة مضموناً.</td>
+            <td>بناء نتائج وتحليلات رياضية أو سببية غير متطابقة مع المعطيات السابقة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- مقارنة عملية -->
+    <div style="margin-top: 25px;">
+      <h4 style="color: var(--primary); margin-bottom: 12px; font-weight: 700;">أمثلة عملية مقارنة:</h4>
+      
+      <div style="background: var(--bg); padding: 12px 18px; border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border);">
+        <strong>السؤال الأول:</strong> ما عدد سكان كوكب المريخ؟
+      </div>
+
+      <div class="comparison-grid">
+        <div class="callout success" style="margin: 0;">
+          <div class="callout-title"><i class="fa-solid fa-check"></i> إجابة صحيحة:</div>
+          لا يوجد سكان دائمون على كوكب المريخ.
+        </div>
+        <div class="callout danger" style="margin: 0;">
+          <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> إجابة هلوسية:</div>
+          يبلغ عدد سكان المريخ 25000 نسمة.
+        </div>
+      </div>
+
+      <div style="background: var(--bg); padding: 12px 18px; border-radius: 8px; margin-top: 15px; margin-bottom: 12px; border: 1px solid var(--border);">
+        <strong>السؤال الثاني:</strong> أعطني مرجعاً علمياً حول موضوع تخصصي معين.
+      </div>
+
+      <div class="callout danger" style="margin: 0;">
+        <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> سلوك الهلوسة المحتمل:</div>
+        قد ينشئ النموذج عنواناً رناناً ومؤلفين بارزين ومجلة علمية محكمة غير موجودين على الإطلاق في الواقع الأكاديمي.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. كيف نكتشف الهلوسة؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+      4. كيف نكتشف الهلوسة؟
+    </div>
+    <p>يتطلب كشف التضليل فحصاً نقدياً مستمراً للمخرجات باتباع خطوات التدقيق الآتية:</p>
+
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-check-double"></i> <strong>التحقق من المصادر:</strong> مراجعة الاقتباسات والمصادر المذكورة والتأكد من أصلها.</li>
+      <li><i class="fa-solid fa-book-open"></i> <strong>مقارنة الإجابة بمراجع موثوقة:</strong> مقاطعة النص بالكتب والوثائق المعتمدة.</li>
+      <li><i class="fa-solid fa-globe"></i> <strong>البحث عن المعلومة في الإنترنت:</strong> البحث المباشر للتحقق من وجود الحدث أو الدراسة.</li>
+      <li><i class="fa-solid fa-file-circle-check"></i> <strong>التأكد من وجود المرجع العلمي فعلاً:</strong> البحث عن أسماء المؤلفين والمجلات وأرقام DOI.</li>
+      <li><i class="fa-solid fa-calendar-days"></i> <strong>مراجعة الأرقام والتواريخ والأسماء:</strong> فحص أدق التفاصيل الحسابية والتاريخية.</li>
+    </ul>
+
+    <div class="callout danger">
+      <div class="callout-title"><i class="fa-solid fa-shield-halved"></i> قاعدة ذهبية:</div>
+      <strong>لا يجب اعتبار أي مخرجات من الذكاء الاصطناعي حقيقة مطلقة دون التحقق منها بدقة متناهية.</strong>
+    </div>
+  </div>
+
+  <!-- 5. كيف نقلل من الهلوسة وعلاقتها بـ RAG؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-sliders"></i></div>
+      5. كيف نقلل من الهلوسة؟
+    </div>
+    <p>يمكن خفض معدلات الهلوسة بصورة ملحوظة عبر اتباع التدابير التالية:</p>
+
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-bullseye"></i> صياغة أسئلة واضحة ومحددة ودقيقة للغاية.</li>
+      <li><i class="fa-solid fa-circle-info"></i> تزويد النموذج بسياق إضافي وشامل يوجه مسار الإجابة.</li>
+      <li><i class="fa-solid fa-link"></i> الاعتماد على مصادر خارجية موثوقة ومثبتة.</li>
+      <li><i class="fa-solid fa-diagram-project"></i> استخدام تقنية توليد الاسترجاع المعزز <strong>(RAG - Retrieval-Augmented Generation)</strong>.</li>
+      <li><i class="fa-solid fa-quote-right"></i> إلزام النموذج بإظهار وتوثيق المصادر والمراجع المستخدمة.</li>
+      <li><i class="fa-solid fa-user-check"></i> المراجعة البشرية المستمرة للمخرجات (Human-in-the-loop).</li>
+    </ul>
+
+    <!-- RAG Section -->
+    <div class="callout" style="border-right-color: var(--secondary); margin-top: 25px;">
+      <div class="callout-title"><i class="fa-solid fa-network-wired"></i> علاقة الهلوسة بتقنية RAG:</div>
+      <p style="margin-bottom: 10px;">
+        تعتمد تقنية <strong>RAG</strong> على جلب معلومات وبيانات موثوقة من مصادر وقواعد بيانات خارجية <em>قبل</em> قيام النموذج بتوليد الإجابة. لذلك تساعد تقنية RAG في تقليل الهلوسة بشكل هائل؛ لأن النموذج يستند إلى <strong>معلومات حقيقية حاضرة أمامه</strong> بدلاً من الاعتماد الحصري على ما حفظه أثناء التدريب الاحتمالي الأولي.
+      </p>
+
+      <div class="workflow-container">
+        <div class="workflow-step"><i class="fa-solid fa-database"></i> قاعدة بيانات</div>
+        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        <div class="workflow-step"><i class="fa-solid fa-file-import"></i> استرجاع الوثائق</div>
+        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        <div class="workflow-step"><i class="fa-solid fa-microchip"></i> النموذج (LLM)</div>
+        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
+        <div class="workflow-step"><i class="fa-solid fa-circle-check"></i> الإجابة النهائية الموثقة</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. تقليل الهلوسة عبر كتابة الطلب (Prompting) -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      6. تقليل الهلوسة عبر كتابة الطلب (الموجّه)
+    </div>
+    <p>
+      <strong>لا يمكن إلغاء الهلوسة تماماً</strong>، لكن طريقة هندسة وكتابة الطلب (Prompt Engineering) تقللها بنسبة كبيرة جداً باتباع هذه الاستراتيجيات الخمس:
+    </p>
+
+    <div class="practice-grid">
+      <!-- 1 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">1</span> أعطه النص المصدر
+        </div>
+        <p style="font-size: 0.92rem; margin-bottom: 6px;">حصر نطاق المعالجة في محتوى مرفق محدد ومنعه من جلب أي شيء خارجه.</p>
+        <div class="prompt-example">
+          «اعتمد فقط على النص التالي للإجابة، إذا لم تجد المعلومة فيه، قل غير موجود في النص.»
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">2</span> اسمح له بقول «لا أعرف»
+        </div>
+        <p style="font-size: 0.92rem; margin-bottom: 6px;">منح النموذج رخصة صريحة للاعتراف بنقص المعلومة وتجنب التخمين الإجباري.</p>
+        <div class="prompt-example">
+          «إذا لم تكن متأكداً من معلومة، صرّح بذلك بدل التخمين.»
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">3</span> اطلب الدليل
+        </div>
+        <p style="font-size: 0.92rem; margin-bottom: 6px;">إلزام النموذج بالاستشهاد بالنصوص الحرفية لمنع اختلاق استنتاجات واهية.</p>
+        <div class="prompt-example">
+          «لكل فكرة، اذكر الجملة من النص التي تدعمها.»
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">4</span> كن دقيقاً وح ّدد السياق
+        </div>
+        <p style="font-size: 0.92rem; margin-bottom: 6px;">تحديد الدور والمجال والجمهور بدقة لتقليص مساحة الاحتمالات العشوائية.</p>
+        <div class="prompt-example">
+          «أنا أستاذ رياضيات في السنة الرابعة متوسط، حسب المنهاج الجزائري، اقترح...»
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">5</span> ق ّسم المهمة الكبيرة
+        </div>
+        <p style="font-size: 0.92rem; margin-bottom: 6px;">تجزئة التوليد لخطوات متتابعة بدلاً من طلب كمية معلومات ضخمة في مطالبة واحدة.</p>
+        <div class="prompt-example">
+          «بدل طلب درس كامل دفعة واحدة، اطلب الخطة أولاً، ثم كل جزء على حدة، وراجع كل جزء.»
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. عوامل وأنماط متقدمة للهلوسة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-gears"></i></div>
+      7. عوامل وأنماط متقدمة للهلوسة
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%;">العامل / النمط</th>
+            <th>كيف يسبب الهلوسة والخطأ؟</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>هلوسة الالتزام بالتعليمات</strong></td>
+            <td>قد يدّعي النموذج أنه نفّذ أمراً لم يفعله برمجياً، مثل قوله: <em>"لقد بحثت في الإنترنت ووجدت التالي..."</em> في حين أنه لم يتصل بالشبكة أساساً.</td>
+          </tr>
+          <tr>
+            <td><strong>الإلحاح والضغط النفسي</strong></td>
+            <td>إذا ضغطت عليه بسؤال مثل: <em>"أنت متأكد؟ أعطني المصدر فوراً"</em>، قد يختلق مصدراً خيالياً لإرضائك كاستجابة فورية بدلاً من الاعتراف بعدم معرفته.</td>
+          </tr>
+          <tr>
+            <td><strong>حدود نافذة السياق</strong></td>
+            <td>تجاوز طول النص المسموح &lArr; فقدان تدريجي للمعلومات السابقة &lArr; الوقوع في تناقضات مباشرة وهلوسة واضحة في الردود اللاحقة.</td>
+          </tr>
+          <tr>
+            <td><strong>درجة الحرارة (Temperature)</strong></td>
+            <td>إعداد يتحكم في العشوائية والإبداع؛ <strong>كلما زادت قيمة درجة الحرارة، زادت نسبة الاختلاق وتوليد معلومات وهمية</strong>، بينما تقليلها يجعل النموذج أكثر التزاماً بالحقائق.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8. هل ستختفي الهلوسة؟ ولماذا سميت بهذا الاسم؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-crystal-ball"></i></div>
+      8. هل ستختفي الهلوسة مستقبلاً؟
+    </div>
+    <p>
+      <strong>الرأي السائد بين خبراء الذكاء الاصطناعي أنها لن تختفي تماماً؛</strong> لأنها ناتجة عن الطبيعة الجوهرية للأنظمة اللغوية القائمة على الاحتمالات الإحصائية والتنبؤ وليس الفهم الفعلي. ولكن يمكن <strong>تقليلها بنسب هائلة جداً</strong> من خلال:
+    </p>
+
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-chart-line"></i> <strong>تحسين نماذج التقييم (Benchmarks):</strong> لتطوير مقاييس دقيقة تفحص وتقيس الاختلاق الآلي.</li>
+      <li><i class="fa-solid fa-shield-virus"></i> <strong>دمج الاسترجاع والتحقق في صميم النموذج:</strong> ربط النموذج آلياً بمحركات فحص وتدقيق للحقائق أثناء التوليد.</li>
+      <li><i class="fa-solid fa-gauge-high"></i> <strong>تطوير "معايرة الثقة" (Confidence Calibration):</strong> تدريب النموذج ليعرف حدوده المعرفية بدقة فيمتنع عن الإجابة إذا كانت درجة ثقته منخفضة.</li>
+      <li><i class="fa-solid fa-users-gear"></i> <strong>أنظمة متعددة الوكلاء (Multi-Agent Systems):</strong> استخدام وكلاء ذكاء اصطناعي متعددين يتحقق ويراجع بعضهم مخرجات بعض قبل إظهار الرد للمستخدم.</li>
+    </ul>
+
+    <!-- Why called hallucination -->
+    <div class="highlight-quote">
+      <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 8px;">
+        <i class="fa-solid fa-question-circle" style="margin-left: 6px;"></i> لماذا سُمّيت "هلوسة"؟
+      </div>
+      سُميت بهذا الاسم تشبيهاً بظاهرة <strong>الهلوسة عند البشر</strong>، حيث يرى الشخص أشياء لا وجود لها ويكون مقتنعاً بها تماماً؛ فالنموذج "يتخيل" معلومات غير حقيقية ويصدقها هو نفسه ويطرحها بثقة مطلقة!
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --success: #38a169;
+    --warning: #dd6b20;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 30px 15px;
+  }
+  
+  .container {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Content Card */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  /* Callout Boxes */
+  .callout {
+    background: var(--bg);
+    border-right: 4px solid var(--secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+  }
+
+  .callout.accent {
+    border-right-color: var(--accent);
+    background: #fffaf0;
+  }
+
+  .callout.danger {
+    border-right-color: var(--danger);
+    background: #fff5f5;
+  }
+
+  .callout.success {
+    border-right-color: var(--success);
+    background: #f0fff4;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Highlight Banner */
+  .highlight-quote {
+    background: linear-gradient(135deg, #1a365d, #2b6cb0);
+    color: #ffffff;
+    padding: 22px 26px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.9;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(26, 54, 93, 0.15);
+  }
+
+  /* Lists */
+  .styled-list {
+    list-style: none;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  .styled-list li {
+    position: relative;
+    padding-right: 28px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+
+  .styled-list li i {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    color: var(--secondary);
+  }
+
+  .styled-list.danger li i {
+    color: var(--danger);
+  }
+
+  .styled-list.success li i {
+    color: var(--success);
+  }
+
+  /* Comparison Cards */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  .comparison-card {
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .comparison-card.allowed {
+    background: #f0fff4;
+    border-color: #c6f6d5;
+  }
+
+  .comparison-card.forbidden {
+    background: #fff5f5;
+    border-color: #fed7d7;
+  }
+
+  .comparison-header {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .comparison-card.allowed .comparison-header {
+    color: var(--success);
+  }
+
+  .comparison-card.forbidden .comparison-header {
+    color: var(--danger);
+  }
+
+  /* Practice Grid */
+  .practice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .practice-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .practice-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .practice-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--secondary);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 8px;
+  }
+
+  .practice-title {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .prompt-example {
+    background: #fff;
+    border-right: 3px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    color: #4a5568;
+    margin-top: 10px;
+    line-height: 1.7;
+    border: 1px solid var(--border);
+    border-right: 3px solid var(--accent);
+  }
+
+  /* Statement Block */
+  .statement-box {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 22px;
+    margin: 20px 0;
+    position: relative;
+    font-style: normal;
+  }
+
+  .statement-box i.quote-icon {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    opacity: 0.3;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 650px) {
+    .header h1 { font-size: 1.6rem; }
+    .content-card { padding: 20px; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .back-link {
+      position: static;
+      display: inline-flex;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • الدرس السادس</span>
+    <h1>النزاهة الأكاديمية واستخدام الذكاء الاصطناعي</h1>
+  </div>
+
+  <!-- 1. مفهوم النزاهة الأكاديمية -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
+      1. مفهوم النزاهة الأكاديمية ومبادئها
+    </div>
+    <p>
+      <strong>النزاهة الأكاديمية</strong> تعني الالتزام التام بقيم الصدق والأمانة في مجالات التعلم، التدريس، وإجراء الأبحاث العلمية، بما يضمن مصداقية الإنتاج الفكري والمعرفي.
+    </p>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-star"></i> المبادئ الأساسية:</div>
+      <ul class="styled-list" style="margin: 8px 0 0 0;">
+        <li><i class="fa-solid fa-check"></i> <strong>الصدق:</strong> نقل الحقائق والنتائج بدقة دون تزييف أو تحريف.</li>
+        <li><i class="fa-solid fa-check"></i> <strong>المسؤولية:</strong> تحمّل التبعات العلمية والأخلاقية لكل ما يقدّمه الباحث.</li>
+        <li><i class="fa-solid fa-check"></i> <strong>الشفافية:</strong> الوضوح الكامل في توضيح الأدوات والمصادر المعتمدة.</li>
+        <li><i class="fa-solid fa-check"></i> <strong>احترام حقوق الآخرين:</strong> حفظ الملكية الفكرية وتوثيق جهود الآخرين بنزاهة.</li>
+        <li><i class="fa-solid fa-check"></i> <strong>الالتزام بقوانين المؤسسة التعليمية:</strong> تطبيق المعايير واللوائح النافذة.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. قواعد الاستخدام المسؤول -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+      2. قواعد الاستخدام المسؤول للذكاء الاصطناعي
+    </div>
+    <p>
+      يعد الذكاء الاصطناعي شريكاً مساعداً في العملية البحثية وليس بديلاً عن الجهد البشري والفكري المستقل؛ وفيما يلي ضوابط الممارسة:
+    </p>
+
+    <div class="comparison-grid">
+      <!-- مسموح -->
+      <div class="comparison-card allowed">
+        <div class="comparison-header">
+          <i class="fa-solid fa-circle-check"></i> مسموح ومقبول (✓)
+        </div>
+        <ul class="styled-list success">
+          <li><i class="fa-solid fa-check"></i> طلب شرح وتبسيط المفاهيم العلمية المعقدة.</li>
+          <li><i class="fa-solid fa-check"></i> تصحيح الأخطاء اللغوية وتحسين الأسلوب.</li>
+          <li><i class="fa-solid fa-check"></i> اقتراح أفكار أولية وتوليد فرضيات للعصف الذهني.</li>
+          <li><i class="fa-solid fa-check"></i> تلخيص النصوص العلمية للأغراض الاستيعابية والمراجعة.</li>
+          <li><i class="fa-solid fa-check"></i> المساعدة في البرمجة والتعلم وتصحيح الأكواد.</li>
+        </ul>
+      </div>
+
+      <!-- غير مسموح -->
+      <div class="comparison-card forbidden">
+        <div class="comparison-header">
+          <i class="fa-solid fa-circle-xmark"></i> غير مسموح ومرفوض (✗)
+        </div>
+        <ul class="styled-list danger">
+          <li><i class="fa-solid fa-xmark"></i> تسليم واجب كامل أو أطروحة من إنتاج الذكاء الاصطناعي دون تصريح.</li>
+          <li><i class="fa-solid fa-xmark"></i> نسخ ولصق المحتوى مباشرة دون تدقيق ومراجعة نقدية.</li>
+          <li><i class="fa-solid fa-xmark"></i> اختلاق بيانات ميدانية أو نتائج تجارب وهمية.</li>
+          <li><i class="fa-solid fa-xmark"></i> الاستشهاد بمراجع غير حقيقية أو مفبركة.</li>
+          <li><i class="fa-solid fa-xmark"></i> إخفاء دور الأداة عند إقرار المؤسسة بوجوب الإفصاح.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. استخدام الذكاء الاصطناعي في البحث العلمي -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-flask-vial"></i></div>
+      3. استخدام الذكاء الاصطناعي في البحث العلمي
+    </div>
+    
+    <div class="practice-grid">
+      <!-- الاستخدامات المقبولة -->
+      <div class="practice-card">
+        <div class="practice-title" style="color: var(--success);">
+          <i class="fa-solid fa-thumbs-up" style="margin-left: 8px;"></i> استخدامات مقبولة
+        </div>
+        <ul class="styled-list success" style="margin: 0;">
+          <li><i class="fa-solid fa-check"></i> <strong>تحسين الصياغة اللغوية:</strong> ضبط الركاكة وتدقيق القواعد.</li>
+          <li><i class="fa-solid fa-check"></i> <strong>تلخيص الأدبيات:</strong> قراءة موجزة للدراسات السابقة.</li>
+          <li><i class="fa-solid fa-check"></i> <strong>اقتراح كلمات مفتاحية:</strong> توسيع نطاق استرجاع المصادر.</li>
+          <li><i class="fa-solid fa-check"></i> <strong>تنظيم وهيكلة الأفكار:</strong> ترتيب العناوين والمحاور.</li>
+        </ul>
+      </div>
+
+      <!-- الاستخدامات غير المقبولة -->
+      <div class="practice-card">
+        <div class="practice-title" style="color: var(--danger);">
+          <i class="fa-solid fa-triangle-exclamation" style="margin-left: 8px;"></i> استخدامات غير مقبولة
+        </div>
+        <ul class="styled-list danger" style="margin: 0;">
+          <li><i class="fa-solid fa-xmark"></i> اختلاق نتائج التجارب والفحوصات العلمية.</li>
+          <li><i class="fa-solid fa-xmark"></i> إنشاء بيانات واستبيانات إحصائية مزيفة.</li>
+          <li><i class="fa-solid fa-xmark"></i> إنشاء وتضمين مراجع ودراسات وهمية.</li>
+          <li><i class="fa-solid fa-xmark"></i> إخفاء الاعتماد على الذكاء الاصطناعي وادعاء الملكية الفردية.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. الإفصاح عن استخدام الذكاء الاصطناعي -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-bullhorn"></i></div>
+      4. الإفصاح عن استخدام الذكاء الاصطناعي
+    </div>
+    <p>
+      إذا سمحت المؤسسة التعليمية أو البحثية باستخدام أدوات الذكاء الاصطناعي، فيجب توضيح ذلك بكل شفافية ومصداقية.
+    </p>
+
+    <div class="highlight-quote">
+      «الإفصاح ليس عقوبة ولا اعترافاً بضعف، بل هو ممارسة أكاديمية رفيعة وأخلاقية تُبيّن حدود مساهمتك بوضوح.»
+    </div>
+
+    <h4 style="color: var(--primary); margin: 20px 0 10px 0; font-weight: 700;">ماذا يجب أن تفصح عنه بالتحديد؟</h4>
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-cube"></i> <strong>اسم الأداة وإصدارها:</strong> (مثل ChatGPT-4o أو Claude 3.5 Sonnet).</li>
+      <li><i class="fa-solid fa-calendar-day"></i> <strong>تاريخ الاستخدام:</strong> لتحديد النسخة البرمجية ونطاق معلوماتها.</li>
+      <li><i class="fa-solid fa-bullseye"></i> <strong>الغرض من الاستخدام:</strong> (توليد أفكار أولية، تلخيص نصوص، تحرير لغوي، برمجة...).</li>
+      <li><i class="fa-solid fa-terminal"></i> <strong>الطلب المستخدم (Prompt):</strong> إدراج نص الأمر الأساسي كلما كان ذلك متاحاً ومطلوباً.</li>
+    </ul>
+
+    <!-- سياقات عملية للإفصاح -->
+    <h4 style="color: var(--primary); margin: 25px 0 10px 0; font-weight: 700;">سياقات وتطبيقات شائعة للإفصاح:</h4>
+    <div class="practice-grid">
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">1</span> بناء المخطط الأولي (Outlining)
+        </div>
+        <p style="font-size: 0.92rem;">المساعدة في اقتراح عناصر خطة البحث أو تنظيم فصول الرسالة العلمية.</p>
+      </div>
+
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">2</span> التدقيق اللغوي والتحرير
+        </div>
+        <p style="font-size: 0.92rem;">تحسين سلامة القواعد والأسلوب (خاصة للناطقين بغير الإنجليزية في الأبحاث المنشورة دولياً).</p>
+      </div>
+
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">3</span> شرح المفاهيم الصعبة
+        </div>
+        <p style="font-size: 0.92rem;">تبسيط النظريات بدقة، مثل: <em>"اشرح لي خوارزمية X كأنني طالب في السنة الأولى"</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. صياغة فقرة الإفصاح الأكاديمي -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-file-signature"></i></div>
+      5. صيغ ونماذج فقرة الإفصاح (Disclosure Statement)
+    </div>
+    <p>
+      يتم إدراج فقرة الإفصاح عادة داخل قسم <strong>"المنهجية" (Methodology)</strong> أو في قسم مخصص يُوضع <strong>مباشرة قبل قائمة المراجع</strong> لتحديد نطاق استخدام الأداة بدقة.
+    </p>
+
+    <!-- نموذج 1 -->
+    <div class="statement-box">
+      <i class="fa-solid fa-quote-left quote-icon"></i>
+      <strong style="color: var(--primary); display: block; margin-bottom: 8px;">
+        <i class="fa-solid fa-pen-fancy"></i> نموذج عام لصيغة الإفصاح:
+      </strong>
+      <p style="margin: 0; color: #334155;">
+        «استُخدمت أداة <strong>[اسم الأداة]</strong> بتاريخ <strong>[التاريخ]</strong> لـ <strong>[تحديد الغرض: مثل توليد أفكار أولية حول المحور الثاني]</strong>. وقد راجعتُ جميع المخرجات وتحقّقتُ من صحة المعلومات بالرجوع إلى مصادر مستقلة وموثوقة.»
+      </p>
+    </div>
+
+    <!-- نموذج 2 -->
+    <div class="statement-box" style="background: #f0fff4; border-color: #9ae6b4;">
+      <i class="fa-solid fa-quote-left quote-icon" style="color: var(--success);"></i>
+      <strong style="color: var(--success); display: block; margin-bottom: 8px;">
+        <i class="fa-solid fa-check-circle"></i> نموذج إفصاح تطبيقي ومكتمل:
+      </strong>
+      <p style="margin: 0; color: #22543d; font-weight: 500;">
+        "بتاريخ <strong>20-09-2026</strong>، استخدمتُ في إعداد هذا البحث أداة <strong>Claude (نموذج Claude Sonnet)</strong> للمساعدة في العصف الذهني لعناوين الفصول وتنقيح الصياغة اللغوية، وأتحمّل المسؤولية الكاملة عن المحتوى النهائي وتحقّقتُ من جميع الحقائق والمراجع بنفسي."
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>

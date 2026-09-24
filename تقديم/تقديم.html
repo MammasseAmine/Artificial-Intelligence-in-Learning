@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الذكاء الاصطناعي في التعلم</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+  
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1050px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 35px 25px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 26px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Logo Placeholder */
+  .logo-placeholder {
+    width: 95px;
+    height: 95px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px dashed rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .logo-placeholder:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: white;
+    transform: scale(1.05);
+  }
+
+  .logo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .logo-placeholder .logo-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .logo-placeholder .logo-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: white;
+    margin-top: 4px;
+    opacity: 0.9;
+  }
+  
+  .header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    font-weight: 500;
+    margin-bottom: 14px;
+    max-width: 750px;
+  }
+
+  .header .badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Profile Grid */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .profile-item {
+    background: var(--bg);
+    padding: 16px;
+    border-radius: 12px;
+    border-right: 4px solid var(--secondary);
+  }
+
+  .profile-item .label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .profile-item .val {
+    font-size: 1.05rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Table */
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .module-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  .module-table th, .module-table td {
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+
+  .module-table th {
+    background: var(--light);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .module-table td {
+    background: white;
+    font-weight: 500;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .info-box {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .info-box h4 {
+    color: var(--secondary);
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .info-box ul {
+    list-style: none;
+  }
+
+  .info-box ul li {
+    position: relative;
+    padding-right: 18px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  .info-box ul li::before {
+    content: "•";
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.3rem;
+    position: absolute;
+    right: 0;
+    top: -2px;
+  }
+
+  /* See Programs Button */
+  .see-programs-container {
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .see-programs-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 16px 42px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 8px 22px rgba(43, 108, 176, 0.3);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .see-programs-btn:hover {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(26, 54, 93, 0.35);
+    border-color: var(--accent);
+  }
+
+  .see-programs-btn .btn-icon {
+    font-size: 1.3rem;
+  }
+
+  .see-programs-btn .arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .see-programs-btn:hover .arrow {
+    transform: translateX(-5px);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 650px) {
+    .header h1 { font-size: 1.6rem; }
+    .see-programs-btn { width: 100%; padding: 14px 20px; font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- الرأس -->
+  <div class="header">
+    
+    <div class="logo-placeholder" title="شعار المدرسة">
+      <img src="logo.jpg" alt="شعار المدرسة">
+    </div>
+
+    <h1>الذكاء الاصطناعي في التعلم</h1>
+    <div class="subtitle">استكشاف وتوظيف تقنيات الذكاء الاصطناعي التوليدي في السياق الأكاديمي والتربوي</div>
+    <span class="badge">المدرسة العليا للأساتذة ملحقة بجاية</span>
+  </div>
+
+  <!-- معلومات الأستاذ -->
+  <div class="section">
+    <div class="section-title">
+      <span class="icon">👨‍🏫</span>
+      معلومات الأستاذ والاتصال
+    </div>
+    <div class="profile-grid">
+      <div class="profile-item">
+        <span class="label">الأستاذ المؤطر</span>
+        <span class="val">أمين مماص</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">الرتبة الأكاديمية</span>
+        <span class="val">دكتور في علم البيانات</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">المكتب والموقع</span>
+        <span class="val">بجانب المدرج</span>
+      </div>
+      <div class="profile-item">
+        <span class="label">البريد الإلكتروني</span>
+        <span class="val">mammasse@estin.dz</span>
+      </div>
+      <div class="profile-item" style="grid-column: 1 / -1;">
+        <span class="label">المؤسسة الجامعية</span>
+        <span class="val">المدرسة العليا لعلوم و تكنولوجيات الإعلام الآلي و الرقمنة - ESTIN</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- بطاقة التعريف بالمقياس -->
+  <div class="section">
+    <div class="section-title">
+      <span class="icon">📋</span>
+      عن المقياس
+    </div>
+    <div class="table-responsive">
+      <table class="module-table">
+        <thead>
+          <tr>
+            <th>عنوان المقياس</th>
+            <th>السداسي</th>
+            <th>أعمال تطبيقية أسبوعية</th>
+            <th>الحجم الساعي الفصلي</th>
+            <th>المعامل</th>
+            <th>الرصيد</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الذكاء الاصطناعي في التعلم</strong></td>
+            <td>السداسي الأول</td>
+            <td>1 سا 30 د</td>
+            <td>22.5 ساعة</td>
+            <td><strong>1</strong></td>
+            <td><strong>2</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ما نحتاجه -->
+  <div class="section">
+    <div class="section-title">
+      <span class="icon">💻</span>
+      ما نحتاجه
+    </div>
+    <div class="cards-grid">
+      <div class="info-box">
+        <h4><span>📢</span> جوجل كلاس روم</h4>
+        <ul>
+          <li>التواصل والإعلانات البيداغوجية المستمرة</li>
+          <li>التنظيم والتسيير الإداري للمقياس</li>
+          <li>إدارة الواجبات والمهام المطلوبة</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <h4><span>🎓</span> منصة التعليم الإلكتروني</h4>
+        <ul>
+          <li>تحميل الدروس والمحاضرات المقررة</li>
+          <li>كراسات الأعمال التطبيقية والمشاريع</li>
+          <li>الفيديوهات والمصادر التعليمية المساندة</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- زر الاطلاع على البرنامج -->
+  <div class="see-programs-container">
+    <a href="../outline.html" class="see-programs-btn">
+      <span class="btn-icon">📑</span>
+      <span>اطّلع على البرنامج</span>
+      <span class="arrow">←</span>
+    </a>
+  </div>
+
+  <!-- التذييل -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>

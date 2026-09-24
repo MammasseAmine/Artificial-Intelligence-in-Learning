@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدرس 01: مفهوم الذكاء الاصطناعي التوليدي</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --accent-light: #feebc8;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 8px 18px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 40px 0 24px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 40px;
+    height: 40px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Concept Box */
+  .concept-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+  }
+
+  .concept-text {
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .concept-text strong {
+    color: var(--primary);
+  }
+
+  /* Comparison Highlight (Classic AI vs GenAI) */
+  .contrast-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .contrast-card {
+    padding: 20px;
+    border-radius: 12px;
+    border-right: 4px solid;
+    background: var(--bg);
+  }
+
+  .contrast-card.traditional {
+    border-color: var(--secondary);
+  }
+
+  .contrast-card.generative {
+    border-color: var(--accent);
+  }
+
+  .contrast-card h4 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .contrast-card.traditional h4 { color: var(--secondary); }
+  .contrast-card.generative h4 { color: #dd6b20; }
+
+  /* Steps Flow (How it works) */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+
+  .flow-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 20px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: transform 0.3s;
+  }
+
+  .flow-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .flow-number {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .flow-card h4 {
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+    margin-top: 6px;
+  }
+
+  .flow-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  /* Table Style */
+  .table-wrapper {
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+  }
+
+  th {
+    background: #edf2f7;
+    color: var(--primary);
+    font-weight: 700;
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Tools Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 35px;
+  }
+
+  .tool-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+
+  .tool-item i {
+    font-size: 2rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+  }
+
+  .tool-item h4 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+
+  .tool-item span {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* Capabilities Grid (Teaching focus) */
+  .capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+
+  .cap-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cap-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .cap-icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .cap-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .cap-desc {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+    flex-grow: 1;
+  }
+
+  .cap-edu {
+    background: #f0fdf4;
+    border-right: 3px solid var(--success);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: #22543d;
+  }
+
+  .cap-edu strong {
+    color: #1e4620;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* Warning / Takeaway Box */
+  .takeaway-box {
+    background: #fffaf0;
+    border: 1px solid #feebc8;
+    border-right: 6px solid var(--accent);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 30px 0;
+  }
+
+  .takeaway-box h3 {
+    color: #c05621;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .takeaway-box ul {
+    list-style-type: none;
+    margin-top: 12px;
+  }
+
+  .takeaway-box ul li {
+    position: relative;
+    padding-right: 25px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: #7b341e;
+  }
+
+  .takeaway-box ul li::before {
+    content: "◀";
+    position: absolute;
+    right: 0;
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 50px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.7rem; }
+    .contrast-cards { grid-template-columns: 1fr; }
+    .back-link { position: static; display: inline-flex; margin-bottom: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • الدرس الأول</span>
+    <h1>مفهوم الذكاء الاصطناعي التوليدي</h1>
+  </div>
+
+  <!-- 1. المدخل والمفهوم الأساسي -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-lightbulb"></i></span>
+    1. ما هو الذكاء الاصطناعي التوليدي؟ (Generative AI)
+  </div>
+
+  <div class="concept-box">
+    <p class="concept-text">
+      <strong>الذكاء الاصطناعي (AI):</strong> هو علم بناء أنظمة وخوارزميات حاسوبية قادرة على أداء مهام تحاكي الذكاء البشري؛ مثل الفهم اللغوي، التعرف على الأنماط، اتخاذ القرارات وحل المشكلات المعقدة.
+    </p>
+    <p class="concept-text">
+      <strong>الذكاء الاصطناعي التوليدي (GenAI):</strong> هو فئة متقدمة من هذه الأنظمة لا تكتفي بتحليل البيانات المصنفة أو استرجاعها فقط، بل <strong>تُنتج محتوى جديداً ومبتكراً</strong> (نصوص، صور، أكواد، أصوات) يشبه ما تعلمته خلال تدريبها على مليارات النماذج والأمثلة.
+    </p>
+
+    <!-- Contrast Mini Cards -->
+    <div class="contrast-cards">
+      <div class="contrast-card traditional">
+        <h4><i class="fa-solid fa-shield-halved"></i> ذكاء اصطناعي تمييزي (تقليدي)</h4>
+        <p>عندما يتعرف هاتفك الذكي على ملامح وجهك لفتح القفل؛ هو هنا يقوم بـ <em>التعرف والتصنيف</em> فقط (هل هذا الوجه يطابق صاحب الهاتف أم لا؟).</p>
+      </div>
+
+      <div class="contrast-card generative">
+        <h4><i class="fa-solid fa-wand-magic-sparkles"></i> ذكاء اصطناعي توليدي</h4>
+        <p>عندما تطلب من النظام كتابة قصة قصيرة، أو رسم صورة مبتكرة لقط يرتدي زياً رسمياً؛ يقوم النظام بـ <em>إنشاء محتوى أصيل تماماً</em> اعتماداً على ما تعلمه سابقاً.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. كيف يعمل؟ -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-gears"></i></span>
+    2. كيف تعمل نماذج الذكاء الاصطناعي التوليدي؟
+  </div>
+
+  <div class="flow-grid">
+    <div class="flow-card">
+      <div class="flow-number">1</div>
+      <h4>جمع البيانات الضخمة</h4>
+      <p>يتم تدريب النموذج وتغذيته بمليارات النصوص، المقالات، الكتب، الأكواد البرمجية والصور المتاحة.</p>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-number">2</div>
+      <h4>التدريب وبناء العلاقات</h4>
+      <p>يتعلم النموذج الشبكي العلاقات العميقة والأنماط اللغوية والدلالية والرياضية الكامنة داخل البيانات.</p>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-number">3</div>
+      <h4>التنبؤ الإحصائي المستمر</h4>
+      <p>يتنبأ النموذج بالكلمة (أو العنصر) الأكثر احتمالاً ومنطقية للمجيء تالياً بناءً على سياق المحفز (Prompt).</p>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-number">4</div>
+      <h4>التوليد النهائي</h4>
+      <p>إنتاج نص مكتمل، صورة جديدة، أو ملف صوتي متماسك كإجابة متناسقة تُحاكي الإبداع البشري.</p>
+    </div>
+  </div>
+
+  <!-- 3. المقارنة بين التقليدي والتوليدي -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-table-columns"></i></span>
+    3. الفرق الجوهري: الذكاء التقليدي vs الذكاء التوليدي
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>وجه المقارنة</th>
+          <th>الذكاء التمييزي (التقليدي)</th>
+          <th>الذكاء الاصطناعي التوليدي</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>الهدف الأساسي</strong></td>
+          <td>التعرف، التصنيف، والتنبؤ بقيم محددة.</td>
+          <td>إنشاء وابتكار وتوليد محتوى جديد كلياً.</td>
+        </tr>
+        <tr>
+          <td><strong>مثال تطبيقي</strong></td>
+          <td>تحديد ما إذا كانت الصورة المرفقة لكلب أم لقطة.</td>
+          <td>رسم صورة إبداعية جديدة لم تُوجد من قبل لكلب يطير في الفضاء.</td>
+        </tr>
+        <tr>
+          <td><strong>نوع المخرجات</strong></td>
+          <td>أرقام، تصنيفات، احتمالات أو قرارات (نعم / لا).</td>
+          <td>نصوص كاملة، صور فنية، وسائط صوتية، وفيديو.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 4. أشهر الأدوات العالمية -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-toolbox"></i></span>
+    4. أشهر نماذج وأدوات الذكاء التوليدي الحالية
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-item">
+      <i class="fa-solid fa-comments"></i>
+      <h4>ChatGPT</h4>
+      <span>توليد النصوص والمحادثة الذكية</span>
+    </div>
+    <div class="tool-item">
+      <i class="fa-solid fa-brain"></i>
+      <h4>Claude</h4>
+      <span>التحليل العميق والكتابة الأكاديمية</span>
+    </div>
+    <div class="tool-item">
+      <i class="fa-solid fa-layer-group"></i>
+      <h4>Google Gemini</h4>
+      <span>نموذج متعدد الوسائط الفائقة</span>
+    </div>
+    <div class="tool-item">
+      <i class="fa-solid fa-palette"></i>
+      <h4>Midjourney</h4>
+      <span>إنشاء الصور الفنية والواقعية</span>
+    </div>
+    <div class="tool-item">
+      <i class="fa-solid fa-image"></i>
+      <h4>DALL-E</h4>
+      <span>تحويل الأوامر النصية إلى صور</span>
+    </div>
+  </div>
+
+  <!-- 5. القدرات وإسقاطاتها في مهنة التدريس -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-chalkboard-user"></i></span>
+    5. ماذا يستطيع أن يفعل؟ (إسقاطات تطبيقية على مهنة التدريس)
+  </div>
+
+  <div class="capabilities-grid">
+    <!-- Card 1 -->
+    <div class="cap-card">
+      <div class="cap-head">
+        <div class="cap-icon"><i class="fa-solid fa-pen-nib"></i></div>
+        <div class="cap-title">إعادة الصياغة والتبسيط اللغوي</div>
+      </div>
+      <p class="cap-desc">تحويل الفقرات العلمية الصعبة إلى لغة سهلة ومباشرة، أو العكس بما يناسب الفئة المستهدفة.</p>
+      <div class="cap-edu">
+        <strong>في مهنة التدريس:</strong>
+        تكييف النص الواحد ليتلاءم مع مستويات استيعاب مختلفة للتلاميذ ذوي الفروق الفردية.
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="cap-card">
+      <div class="cap-head">
+        <div class="cap-icon"><i class="fa-solid fa-spell-check"></i></div>
+        <div class="cap-title">التدقيق والترجمة المتخصصة</div>
+      </div>
+      <p class="cap-desc">تصحيح الأخطاء اللغوية والنحوية واقتراح تعبيرات بديلة أكثر دقة وتماسكاً.</p>
+      <div class="cap-edu">
+        <strong>في مهنة التدريس:</strong>
+        مراجعة مذكرات الدروس اليومية، تقارير التربص الميداني، والبحوث الصفية.
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="cap-card">
+      <div class="cap-head">
+        <div class="cap-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+        <div class="cap-title">الفهم وتلخيص الوثائق الطويلة</div>
+      </div>
+      <p class="cap-desc">استخراج الأفكار الرئيسة والمفاهيم المحورية من المقالات والمراجع المعقدة في ثوانٍ.</p>
+      <div class="cap-edu">
+        <strong>في مهنة التدريس:</strong>
+        الاطلاع السريع والمكثف على المراجع والمقالات العلمية قبل إعداد الدرس.
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="cap-card">
+      <div class="cap-head">
+        <div class="cap-icon"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="cap-title">تحليل الجداول والرسومات البيانية</div>
+      </div>
+      <p class="cap-desc">قراءة الجداول الإحصائية والمخططات ووصف دلالاتها واستخراج مؤشراتها النصية.</p>
+      <div class="cap-edu">
+        <strong>في مهنة التدريس:</strong>
+        تفسير نسب النجاح ونتائج التقويمات الفصلية وتحديد مواطن التعثر الصفي.
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="cap-card">
+      <div class="cap-head">
+        <div class="cap-icon"><i class="fa-solid fa-list-check"></i></div>
+        <div class="cap-title">بناء الأسئلة وسلالم التقويم</div>
+      </div>
+      <p class="cap-desc">اقتراح بنوك أسئلة متدرجة الصعوبة (تذكر، فهم، تطبيق) وشبكات تصحيح معيارية.</p>
+      <div class="cap-edu">
+        <strong>في مهنة التدريس:</strong>
+        إنشاء التمارين والواجبات الصفية وتجهيز معايير تصحيح منصفة وسريعة.
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="cap-card">
+      <div class="cap-head">
+        <div class="cap-icon"><i class="fa-solid fa-sitemap"></i></div>
+        <div class="cap-title">الخرائط المفاهيمية والأتمتة</div>
+      </div>
+      <p class="cap-desc">تنظيم الأفكار في لوائح وخرائط ذهنية، وكتابة صيغ ودوال برمجية مثل دوال Excel.</p>
+      <div class="cap-edu">
+        <strong>في مهنة التدريس:</strong>
+        أتمتة حساب معدلات الأقسام وتلخيص محاور الوحدات التعليمية بصرياً للطلبة.
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. قواعد ذهبية وتنبيهات حاسمة -->
+  <div class="takeaway-box">
+    <h3><i class="fa-solid fa-triangle-exclamation"></i> قاعدة نقدية هامة للأستاذ الباحث:</h3>
+    <p>
+      النماذج التوليدية <strong>لا "تفهم"</strong> بالمعنى الإنساني الحقيقي، ولا تملك وعياً بالمفاهيم؛ بل هي خوارزميات تتنبأ بالأنماط الإحصائية بدقة بالغة تبدو معها وكأنها تفهم وتبدع.
+    </p>
+    <ul>
+      <li><strong>المسؤولية الأكاديمية:</strong> هذه الأدوات تسرع تحضير دروسك وتمارينك، لكن التحقق العلمي والتدقيق الدائم يظل مسؤوليتك المطلقة.</li>
+      <li><strong>التوجيه الصفي:</strong> تلامذتك وطلبتك يستخدمون هذه الأدوات بالفعل؛ دورك هو إرشادهم نحو الاستعمال الناقد والأخلاقي.</li>
+      <li><strong>حماية المعطيات:</strong> بيانات التلاميذ وأسرارهم لها حماية قانونية وأخلاقية كاملة، ولا يجوز إدخال البيانات الشخصية الحساسة في النماذج العامة.</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية • مساق الذكاء الاصطناعي في التعليم • 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>

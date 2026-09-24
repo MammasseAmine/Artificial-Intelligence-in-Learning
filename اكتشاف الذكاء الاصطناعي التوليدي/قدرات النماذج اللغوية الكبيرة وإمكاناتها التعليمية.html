@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قدرات النماذج اللغوية الكبيرة وإمكاناتها التعليمية</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --success: #38a169;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 30px 15px;
+  }
+  
+  .container {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Content Block */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  /* Section Title inside Document */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  /* Callout Boxes */
+  .callout {
+    background: var(--bg);
+    border-right: 4px solid var(--secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+  }
+
+  .callout.accent {
+    border-right-color: var(--accent);
+    background: #fffaf0;
+  }
+
+  .callout.success {
+    border-right-color: var(--success);
+    background: #f0fff4;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Code / Prompt Box */
+  .code-box {
+    background: #2d3748;
+    color: #edf2f7;
+    font-family: 'Courier New', Courier, monospace;
+    direction: ltr;
+    text-align: left;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    font-size: 0.95rem;
+    overflow-x: auto;
+  }
+
+  .math-box {
+    background: #edf2f7;
+    font-family: 'Tajawal', sans-serif;
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 18px 0;
+    border: 1px dashed #cbd5e1;
+  }
+
+  /* Tables */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+  }
+
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: var(--bg);
+  }
+
+  /* Lists */
+  .styled-list {
+    list-style: none;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  .styled-list li {
+    position: relative;
+    padding-right: 28px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+
+  .styled-list li i {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    color: var(--secondary);
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    background: var(--light);
+    color: var(--primary);
+    border: 1px solid #bee3f8;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.8rem; }
+    .content-card { padding: 20px; }
+    .back-link {
+      position: static;
+      display: inline-flex;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • الدرس الثالث</span>
+    <h1>قدرات النماذج اللغوية الكبيرة (LLMs)</h1>
+  </div>
+
+  <!-- 2. فهم اللغة الطبيعية -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-comments"></i></div>
+      2. فهم اللغة الطبيعية
+    </div>
+    <p>
+      تستطيع النماذج اللغوية الكبيرة (LLMs) فهم النصوص البشرية وتحليل معناها العام، واستيعاب السياق والمقصد الكامن وراء العبارات.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-quote-right"></i> مثال تطبيقي:</div>
+      <strong>النص:</strong> "الطقس جميل اليوم لذلك سأذهب إلى الحديقة."<br>
+      <span style="color: var(--secondary); font-weight: 600;">التحليل:</span> يستطيع النموذج استنتاج وفهم أن المتحدث يرغب بالخروج والتنزه بسبب اعتدال الطقس وجودته.
+    </div>
+  </div>
+
+  <!-- 3. توليد النصوص -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-pen-nib"></i></div>
+      3. توليد النصوص
+    </div>
+    <p>
+      يُعد إنشاء نصوص جديدة تشبه النصوص البشرية بدقة عالية من أهم قدرات النماذج اللغوية الكبيرة على الإطلاق.
+    </p>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-terminal"></i> مدخلات ومخرجات النموذج:</div>
+      <strong>Prompt:</strong> اكتب فقرة عن الذكاء الاصطناعي.<br>
+      <strong>Output:</strong> الذكاء الاصطناعي هو فرع من علوم الحاسوب يهدف إلى تطوير أنظمة قادرة على محاكاة الذكاء البشري...
+    </div>
+  </div>
+
+  <!-- 4. التلخيص -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-compress"></i></div>
+      4. التلخيص (Summarization)
+    </div>
+    <p>
+      يمكن للنموذج استخلاص أهم الأفكار وتلخيص المقالات الطويلة والمستندات والكتب في نقاط موجزة ومفيدة دون الإخلال بالمضمون.
+    </p>
+
+    <div class="math-box">
+      <i class="fa-regular fa-file-lines"></i> مقال من 5 صفحات &nbsp; ⟵ &nbsp; <i class="fa-solid fa-list-check"></i> ملخص مركز من 5 أسطر
+    </div>
+  </div>
+
+  <!-- 5. الترجمة الآلية -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-language"></i></div>
+      5. الترجمة الآلية
+    </div>
+    <p>
+      تمتلك النماذج كفاءة عالية في الترجمة السياقية الدقيقة بين عدد ضخم من اللغات الحية دون الاعتماد على الترجمة الحرفية.
+    </p>
+
+    <div class="callout">
+      <p style="margin-bottom: 6px; direction: ltr; text-align: left; font-family: monospace;">
+        <strong>English:</strong> Artificial Intelligence is transforming the world.
+      </p>
+      <p style="margin-bottom: 0;">
+        <strong>العربية:</strong> الذكاء الاصطناعي يغير العالم.
+      </p>
+    </div>
+  </div>
+
+  <!-- 6. الإجابة عن الأسئلة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-circle-question"></i></div>
+      6. الإجابة عن الأسئلة
+    </div>
+    <p>
+      تستطيع النماذج تقديم إجابات فورية وشاملة عن الأسئلة المعرفية، العلمية، والتثقيفية بالاعتماد على مخزونها المعرفي الهائل.
+    </p>
+
+    <div class="callout accent">
+      <strong>السؤال:</strong> ما هي عاصمة الجزائر؟<br>
+      <strong>الإجابة:</strong> الجزائر العاصمة.
+    </div>
+  </div>
+
+  <!-- 7. التصنيف -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-tags"></i></div>
+      7. التصنيف (Classification)
+    </div>
+    <p>
+      يمكن للنموذج تصنيف النصوص إلى فئات مختلفة (مثل تصنيف المشاعر، تصنيف الأخبار، وفرز الرسائل):
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>النص</th>
+            <th>الفئة (Classification)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>أحب هذا المنتج</td>
+            <td><span class="tag" style="background: #e6fffa; color: #234e52; border-color: #b2f5ea;"><i class="fa-solid fa-smile"></i> إيجابي</span></td>
+          </tr>
+          <tr>
+            <td>الخدمة سيئة جداً</td>
+            <td><span class="tag" style="background: #fff5f5; color: #742a2a; border-color: #feb2b2;"><i class="fa-solid fa-frown"></i> سلبي</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8. استخراج المعلومات -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+      8. استخراج المعلومات
+    </div>
+    <p>
+      يمتلك النموذج القدرة على استخراج الكيانات المسماة (Named Entities) والبيانات الأساسية بدقة من داخل النصوص غير المنظمة.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-book"></i> النص المدخل:</div>
+      <em>"ولد ابن سينا في بخارى"</em>
+    </div>
+
+    <p><strong>الكيانات المستخرجة:</strong></p>
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-user-check"></i> <strong>ابن سينا:</strong> شخص</li>
+      <li><i class="fa-solid fa-location-dot"></i> <strong>بخارى:</strong> مكان</li>
+    </ul>
+  </div>
+
+  <!-- 9. البرمجة وتوليد الأكواد -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-code"></i></div>
+      9. البرمجة وتوليد الأكواد
+    </div>
+    <p>
+      تستطيع النماذج اللغوية كتابة الأكواد بمختلف اللغات البرمجية، وتصحيح الأخطاء (Debugging)، وشرح التعليمات البرمجية.
+    </p>
+
+    <div class="callout accent">
+      <strong>Prompt:</strong> اكتب دالة Python لحساب المتوسط.
+    </div>
+
+    <div class="code-box">
+def average(numbers):
+    return sum(numbers) / len(numbers)
+    </div>
+  </div>
+
+  <!-- 10. الاستدلال وحل المشكلات -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
+      10. الاستدلال وحل المشكلات
+    </div>
+    <p>
+      يمكن للنموذج إجراء أنواع معينة من التفكير والاستدلال المنطقي متعدد الخطوات للوصول إلى استنتاجات صحيحة.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-diagram-project"></i> مثال الاستدلال:</div>
+      <strong>المعطيات:</strong>
+      <ul class="styled-list" style="margin: 8px 0;">
+        <li><i class="fa-solid fa-check"></i> كل الطيور لها أجنحة.</li>
+        <li><i class="fa-solid fa-check"></i> العصفور طائر.</li>
+      </ul>
+      <strong style="color: var(--secondary);">النتيجة المنطقية:</strong> العصفور له أجنحة.
+    </div>
+  </div>
+
+  <!-- 11. التعلم متعدد المهام -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
+      11. التعلم متعدد المهام
+    </div>
+    <p>
+      بدلاً من تدريب نموذج منفصل ومخصص لكل مهمة فردية، أصبح نموذج لغوي واحد قادراً على تنفيذ العديد من المهام المتنوعة بمجرد تغيير الطلب:
+    </p>
+
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-check-double"></i> الترجمة الفورية بين اللغات.</li>
+      <li><i class="fa-solid fa-check-double"></i> تلخيص المقالات والكتب.</li>
+      <li><i class="fa-solid fa-check-double"></i> الإجابة على الأسئلة التخصصية.</li>
+      <li><i class="fa-solid fa-check-double"></i> التصنيف والفرز الآلي.</li>
+      <li><i class="fa-solid fa-check-double"></i> توليد وصياغة النصوص.</li>
+    </ul>
+  </div>
+
+  <!-- 12. التعلم في السياق -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+      12. التعلم في السياق (In-Context Learning)
+    </div>
+    <p>
+      يستطيع النموذج فهم المطلوب منه وتنفيذ المهام الجديدة بمجرد إعطائه أمثلة توضيحية داخل المطالبة (Prompt) دون الحاجة لإعادة تدريبه مسبقاً.
+    </p>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-list-ol"></i> الأمثلة داخل الـ Prompt:</div>
+      قط ⟵ حيوان<br>
+      حصان ⟵ حيوان<br>
+      تفاحة ⟵ ؟<br><br>
+      <strong style="color: var(--success);"><i class="fa-solid fa-circle-check"></i> الإجابة المتوقعة:</strong> فاكهة
+    </div>
+  </div>
+
+  <!-- 13. دعم اللغات المتعددة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-globe"></i></div>
+      13. دعم اللغات المتعددة
+    </div>
+    <p>
+      تم تدريب العديد من النماذج الحديثة على بيانات غنية بعشرات اللغات العالمية، مما يمنحها مرونة فائقة في التواصل المتعدد، ومن أبرزها:
+    </p>
+
+    <div class="tags-container">
+      <span class="tag"><i class="fa-solid fa-check"></i> العربية</span>
+      <span class="tag"><i class="fa-solid fa-check"></i> الإنجليزية</span>
+      <span class="tag"><i class="fa-solid fa-check"></i> الفرنسية</span>
+      <span class="tag"><i class="fa-solid fa-check"></i> الإسبانية</span>
+      <span class="tag"><i class="fa-solid fa-check"></i> الصينية</span>
+    </div>
+  </div>
+
+  <!-- الإمكانات في مجال التعليم -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      الإمكانات في مجال التعليم
+    </div>
+    <p>
+      بما أن هذه الدورة جزء من وحدة <strong>"الذكاء الاصطناعي في التعلّم"</strong>، فمن الأهمية بمكان ربط هذه القدرات التقنية بسياق الممارسة التعليمية وتطبيقاتها المباشرة:
+    </p>
+
+    <div class="callout success">
+      <div class="callout-title"><i class="fa-solid fa-user-graduate"></i> 1. مساعد تعلّم شخصي:</div>
+      يمكن للمتعلّم طرح أسئلته في أي وقت، والحصول على شرح فوري للمفهوم بعدة طرق مختلفة (أمثلة واقعية، تشبيهات مبسطة، رسوم توضيحية) حتى يجد الطريقة التي تناسبه. كما يمكن تكييف مستوى الشرح حسب مستوى كل متعلم؛ مما يفتح المجال واسعاً أمام <strong>تعلّم أكثر تمايزاً</strong> يلبي الفروق الفردية.
+    </div>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-chalkboard-teacher"></i> 2. مساعدة الأستاذ:</div>
+      تسريع المهام الروتينية والتحضيرية مثل إعداد الدروس، وصياغة نماذج الاختبارات والأنشطة، وتلخيص المراجع الأكاديمية بسرعة وكفاءة.
+    </div>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-language"></i> 3. كسر حاجز اللغة:</div>
+      ترجمة المحتوى التعليمي العالمي وتبسيطه وتقديمه بلغة المتعلّم الأم لتسهيل استيعاب المعارف الحديثة.
+    </div>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-universal-access"></i> 4. إتاحة التعلّم:</div>
+      دعم ذوي الاحتياجات الخاصة عبر إتاحة أشكال وشروحات متعددة تتناسب مع احتياجات كل فئة بدقة.
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي التوليدي 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>

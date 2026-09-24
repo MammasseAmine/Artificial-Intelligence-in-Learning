@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاستكشاف والمقارنة (Prompt)</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --success: #38a169;
+    --warning: #dd6b20;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 30px 15px;
+  }
+  
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Content Card */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  /* Steps Timeline */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 15px;
+  }
+
+  .step-box {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--secondary);
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+  }
+
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--secondary);
+    color: white;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .step-title {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+  }
+
+  /* AI Tools Links Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .tool-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--secondary);
+    background: var(--light);
+    box-shadow: 0 4px 12px rgba(43, 108, 176, 0.1);
+    color: var(--secondary);
+  }
+
+  .tool-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 0.98rem;
+  }
+
+  .tool-info i {
+    color: var(--secondary);
+    font-size: 1.1rem;
+  }
+
+  .tool-card .arrow-icon {
+    font-size: 0.85rem;
+    color: var(--muted);
+    transition: transform 0.2s ease;
+  }
+
+  .tool-card:hover .arrow-icon {
+    transform: translateX(-4px);
+    color: var(--secondary);
+  }
+
+  /* Criteria Grid */
+  .criteria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .criteria-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: all 0.25s ease;
+    border-right: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .criteria-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+    border-right-color: var(--accent);
+  }
+
+  .criteria-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .criteria-icon {
+    width: 34px;
+    height: 34px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .criteria-title {
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 1.05rem;
+  }
+
+  .criteria-desc {
+    color: var(--text);
+    font-size: 0.93rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  /* Conclusion Section */
+  .conclusion-box {
+    background: linear-gradient(135deg, #f0fff4 0%, #ebf8ff 100%);
+    border: 2px dashed #68d391;
+    border-radius: 14px;
+    padding: 24px;
+    margin-top: 25px;
+  }
+
+  .conclusion-header {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .prompt-badge {
+    background: #edf2f7;
+    border: 1px solid #cbd5e0;
+    color: #2b6cb0;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 10px;
+    direction: ltr;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 650px) {
+    .header h1 { font-size: 1.55rem; }
+    .content-card { padding: 20px; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .back-link {
+      position: static;
+      display: inline-flex;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للمقرر
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • النشاط 01</span>
+    <h1>الاستكشاف والمقارنة (Prompt)</h1>
+  </div>
+
+  <!-- خطوات إعداد النشاط -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+      خطوات إعداد وتنفيذ النشاط
+    </div>
+    <p>
+      اتّبع الخطوات المنهجية التالية لاختبار وتقييم مخرجات نماذج الذكاء الاصطناعي التوليدي عبر صياغة أمر قياسي موحّد ومقارنة الإجابات:
+    </p>
+
+    <div class="steps-grid">
+      <!-- الخطوة 1 -->
+      <div class="step-box">
+        <span class="step-num">01</span>
+        <div class="step-title">اختر موضوعاً أكاديمياً عاماً</div>
+        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;">
+          (مثل: الذكاء الاصطناعي، الأمن السيبراني، معالجة اللغة الطبيعية، البيانات الضخمة، الحوسبة السحابية...).
+        </p>
+      </div>
+
+      <!-- الخطوة 2 -->
+      <div class="step-box">
+        <span class="step-num">02</span>
+        <div class="step-title">صياغة Prompt موحد</div>
+        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;">
+          قم بصياغة أمر قياسي موحد لتجريبه واختباره عبر منصات ونماذج الذكاء الاصطناعي المختلفة.
+        </p>
+      </div>
+
+      <!-- الخطوة 3 -->
+      <div class="step-box">
+        <span class="step-num">03</span>
+        <div class="step-title">طلب خلاصة معرفية</div>
+        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;">
+          اطلب من الأدوات إنشاء خلاصة معرفية شاملة ومركّزة حول الموضوع المختار لمقارنة المخرجات.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- منصات وأدوات الذكاء الاصطناعي المقترحة للتجربة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-robot"></i></div>
+      المنصات والأدوات المقترحة للتجربة (Try These AI Tools)
+    </div>
+    <p>
+      يمكنك استخدام نفس الـ Prompt القياسي واختباره على أي من أدوات ونماذج الذكاء الاصطناعي التوليدي التالية للمقارنة بينها:
+    </p>
+
+    <div class="tools-grid">
+      <!-- ChatGPT -->
+      <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-brain"></i>
+          <span>ChatGPT</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Claude -->
+      <a href="https://claude.ai/chats" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-sparkles"></i>
+          <span>Claude</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Gemini -->
+      <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-brands fa-google"></i>
+          <span>Gemini</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- DeepSeek -->
+      <a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-magnifying-glass-chart"></i>
+          <span>DeepSeek</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Meta AI -->
+      <a href="https://www.meta.ai/?utm_source=ai_meta_site&utm_medium=web&utm_content=AI_nav&utm_campaign=April_moment" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-brands fa-meta"></i>
+          <span>Meta AI</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Z.AI / GLM -->
+      <a href="https://chat.z.ai/" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-microchip"></i>
+          <span>Z.AI (GLM)</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Kimi AI -->
+      <a href="https://www.kimi.ai/" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-compass"></i>
+          <span>Kimi AI</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Qwen -->
+      <a href="https://chat.qwen.ai/" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-cloud-bolt"></i>
+          <span>Qwen AI</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Mistral AI -->
+      <a href="https://chat.mistral.ai/chat?q=" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-wind"></i>
+          <span>Mistral Le Chat</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- Grok -->
+      <a href="https://grok.com/" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-brands fa-x-twitter"></i>
+          <span>Grok (xAI)</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+
+      <!-- DuckDuckGo AI -->
+      <a href="https://duck.ai/chat?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1" target="_blank" rel="noopener noreferrer" class="tool-card">
+        <div class="tool-info">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Duck.ai</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square arrow-icon"></i>
+      </a>
+    </div>
+
+    <!-- الاستنتاج النهائي والمقارنة -->
+    <div class="conclusion-box">
+      <div class="conclusion-header">
+        <i class="fa-solid fa-award" style="color: var(--accent);"></i>
+        الاستنتاج النهائي والمفاضلة
+      </div>
+      <p style="margin-bottom: 6px;">
+        قارن بين الأدوات التي قمت بتجربتها، وحدد نقطة تميز كل أداة والمجال الذي تفوقت فيه:
+      </p>
+      <div class="prompt-badge">
+        <i class="fa-solid fa-code-compare"></i> Give each one is better in what
+      </div>
+    </div>
+  </div>
+
+  <!-- تفصيل معايير التقييم والمقارنة المعتمدة -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-sliders"></i></div>
+      معايير التقييم والمقارنة
+    </div>
+    <p>
+      اعتمد هذه المعايير الدقيقة لفحص وتقييم الفروقات بين مخرجات كل أداة قمت باختبارها:
+    </p>
+
+    <div class="criteria-grid">
+      <!-- 1. الهيكلة -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-sitemap"></i></div>
+          <div class="criteria-title">الهيكلة</div>
+        </div>
+        <p class="criteria-desc">طريقة تنظيم المعلومات، وتقسيم الفقرات والعناوين، ووجود مقدمة وخاتمة متناسقة.</p>
+      </div>
+
+      <!-- 2. الأسلوب -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-pen-nib"></i></div>
+          <div class="criteria-title">الأسلوب</div>
+        </div>
+        <p class="criteria-desc">اللغة المستخدمة: أكاديمية، مبسطة، مباشرة، أو سردية، ومدى ملاءمتها للجمهور المستهدف.</p>
+      </div>
+
+      <!-- 3. العمق -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <div class="criteria-title">العمق</div>
+        </div>
+        <p class="criteria-desc">مدى دقة المعلومات وتفصيلها الشامل للموضوع، وتقديم أمثلة وشواهد دالة على الاستيعاب العميق.</p>
+      </div>
+
+      <!-- 4. الدقة والموثوقية -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-square-check"></i></div>
+          <div class="criteria-title">الدقة والموثوقية</div>
+        </div>
+        <p class="criteria-desc">صحة المعلومات، وغياب الأخطاء أو المعلومات المضللة، ومدى إمكانية التحقق منها علمياً.</p>
+      </div>
+
+      <!-- 5. الحياد والتوازن -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+          <div class="criteria-title">الحياد والتوازن</div>
+        </div>
+        <p class="criteria-desc">عرض وجهات النظر المختلفة دون تحيّز، وتجنّب الأحكام المطلقة والقطعية غير المبررة.</p>
+      </div>
+
+      <!-- 6. المصادر والإحالات -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-link"></i></div>
+          <div class="criteria-title">المصادر والإحالات</div>
+        </div>
+        <p class="criteria-desc">هل أشارت الأداة إلى مصادر؟ وهل المعلومات قابلة للتحقق والرجوع إلى مراجع موثوقة؟</p>
+      </div>
+
+      <!-- 7. الطول والإيجاز -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-ruler-combined"></i></div>
+          <div class="criteria-title">الطول والإيجاز</div>
+        </div>
+        <p class="criteria-desc">حجم المخرجات مقارنة بالمطلوب، ومدى الالتزام بحدود الأمر (عدد الكلمات والفقرات المحددة).</p>
+      </div>
+
+      <!-- 8. الالتزام بالأمر -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <div class="criteria-title">الالتزام بالأمر</div>
+        </div>
+        <p class="criteria-desc">مدى استجابة الأداة لجميع التعليمات والشروط الواردة في الأمر دون زيادة مشتتة أو نقصان.</p>
+      </div>
+
+      <!-- 9. الإبداع والإضافة -->
+      <div class="criteria-card">
+        <div class="criteria-header">
+          <div class="criteria-icon"><i class="fa-solid fa-lightbulb"></i></div>
+          <div class="criteria-title">الإبداع والإضافة</div>
+        </div>
+        <p class="criteria-desc">تقديم لمسات ذكية، اقتراح أفكار وزوايا غير تقليدية، أو تقديم إضافات معرفية قيّمة تثري النتيجة.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>

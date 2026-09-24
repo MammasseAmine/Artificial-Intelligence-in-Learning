@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النشاط التطبيقي: محركات بحث الذكاء الاصطناعي والبحث المعمق</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --accent-light: #feebc8;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.05rem;
+    opacity: 0.92;
+    font-weight: 400;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 35px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Grid Layouts */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  /* Cards General */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(26, 54, 93, 0.08);
+    border-color: #cbd5e1;
+  }
+
+  /* Workflow Steps */
+  .step-card {
+    position: relative;
+    border-right: 4px solid var(--secondary);
+  }
+
+  .step-number {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #e2e8f0;
+  }
+
+  .step-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step-desc {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .prompt-box {
+    background: #edf2f7;
+    border-right: 3px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #2d3748;
+  }
+
+  .checklist {
+    list-style: none;
+    margin-top: 10px;
+  }
+
+  .checklist li {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .checklist li i {
+    color: var(--secondary);
+    font-size: 0.8rem;
+  }
+
+  /* Engine Cards */
+  .engine-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .engine-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .engine-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .engine-desc {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+    flex-grow: 1;
+  }
+
+  .engine-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 50px;
+    background: var(--light);
+    color: var(--secondary);
+    border: 1px solid rgba(43, 108, 176, 0.2);
+  }
+
+  .tag.deep {
+    background: #fefcbf;
+    color: #b7791f;
+    border-color: rgba(183, 121, 31, 0.3);
+  }
+
+  /* Discussion Callout Box */
+  .callout-box {
+    background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
+    border: 1px solid #bee3f8;
+    border-right: 5px solid var(--secondary);
+    border-radius: 16px;
+    padding: 25px 30px;
+    margin: 30px 0;
+  }
+
+  .callout-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .discussion-question {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .discussion-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 10px;
+  }
+
+  .discussion-items li {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .discussion-items li i {
+    color: var(--secondary);
+    font-size: 0.9rem;
+  }
+
+  /* Benchmark Highlights */
+  .benchmark-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .benchmark-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .benchmark-item i {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.7rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <span class="header-badge">النشاط التطبيقي 02</span>
+    <h1>محركات بحث الذكاء الاصطناعي والبحث المعمق</h1>
+    <div class="subtitle">تجربة مقارنة عملية بين أدوات البحث المباشر عبر الويب (Web Search) وتقنيات البحث المعمق والاستقصائي (Deep Search / Deep Research) في أنظمة الذكاء الاصطناعي.</div>
+  </div>
+
+  <!-- القسم 1: خطوات تنفيذ النشاط -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-list-check"></i></span>
+    مراحل وخطوات تنفيذ النشاط
+  </div>
+
+  <div class="grid-2">
+    <!-- الخطوة 1 -->
+    <div class="card step-card">
+      <div class="step-number">01</div>
+      <h3 class="step-title"><i class="fa-solid fa-bullseye text-primary"></i> اختيار الموضوع وصياغة السؤال</h3>
+      <p class="step-desc">
+        اختر موضوعاً بحثياً محدداً وقم بإعداد <strong>سؤال موحد</strong> يتم طرحه على جميع المنصات لضمان معيارية المقارنة ودقة تقييم النتائج.
+      </p>
+    </div>
+
+    <!-- الخطوة 2 -->
+    <div class="card step-card">
+      <div class="step-number">02</div>
+      <h3 class="step-title"><i class="fa-solid fa-globe text-primary"></i> تنفيذ البحث عبر الويب (Web Search)</h3>
+      <p class="step-desc">
+        استخدم خاصية البحث المباشر في المنصات التي توفرها، مع التركيز على الملاحظات التالية:
+      </p>
+      <ul class="checklist">
+        <li><i class="fa-solid fa-check"></i> سرعة ظهور النتائج واستجابة النموذج.</li>
+        <li><i class="fa-solid fa-check"></i> عدد وتنوع المصادر المفهرسة.</li>
+        <li><i class="fa-solid fa-check"></i> حداثة المعلومات ومدى مواكبتها.</li>
+      </ul>
+    </div>
+
+    <!-- الخطوة 3 -->
+    <div class="card step-card">
+      <div class="step-number">03</div>
+      <h3 class="step-title"><i class="fa-solid fa-brain text-primary"></i> تنفيذ البحث المعمق (Deep Search)</h3>
+      <p class="step-desc">
+        إذا كانت المنصة تدعم ميزة البحث المتعمق، اطلب منها صياغة تقرير عبر الأمر (Prompt) التالي:
+      </p>
+      <div class="prompt-box">
+        "أعد تقريراً تحليلياً شاملاً حول الموضوع مع الاستشهاد بالمصادر والمراجع الحديثة."
+      </div>
+    </div>
+
+    <!-- الخطوة 4 -->
+    <div class="card step-card">
+      <div class="step-number">04</div>
+      <h3 class="step-title"><i class="fa-solid fa-chart-pie text-primary"></i> تحليل النتائج والمفاضلة</h3>
+      <p class="step-desc">
+        قارن بين المخرجات بناءً على الجوانب النوعية والتحليلية:
+      </p>
+      <ul class="checklist">
+        <li><i class="fa-solid fa-check"></i> جودة ودقة الإجابات ومستوى العمق التحليلي.</li>
+        <li><i class="fa-solid fa-check"></i> وفرة المصادر الأكاديمية وسهولة التحقق منها.</li>
+        <li><i class="fa-solid fa-check"></i> كفاءة التلخيص وسلامة الاستنتاجات.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- القسم 2: المنصات والأدوات المقترحة للتجربة -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-microchip"></i></span>
+    المنصات والأدوات المقترحة للتجربة (AI Search Engines)
+  </div>
+
+  <div class="grid-3">
+    <!-- ChatGPT -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">ChatGPT</h3>
+          <i class="fa-solid fa-bolt" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">البحث الفوري والبحث الأكاديمي الموسع، مع قدرة قوية على توليد تقارير مركّزة.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">Web Search</span>
+        <span class="tag deep">Deep Research</span>
+      </div>
+    </div>
+
+    <!-- Claude AI -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">Claude AI</h3>
+          <i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">البحث المباشر والتحليل المنطقي للمصادر، مع أسلوب كتابة أكاديمي وصياغة رصينة.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">Web Search</span>
+        <span class="tag deep">Research</span>
+      </div>
+    </div>
+
+    <!-- Google Gemini -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">Google Gemini</h3>
+          <i class="fa-brands fa-google" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">استغلال فهرس Google المباشر واللحظي وإنتاج التقارير التحليلية المكثفة.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">Web Search</span>
+        <span class="tag deep">Deep Research</span>
+      </div>
+    </div>
+
+    <!-- DeepSeek -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">DeepSeek</h3>
+          <i class="fa-solid fa-code-compare" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">التفكير المنطقي المتسلسل، وتصفح وبحث شبكي موجه لحل المسائل المعقدة.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">Search</span>
+        <span class="tag deep">DeepSeek-R1 Thinking</span>
+      </div>
+    </div>
+
+    <!-- Kimi AI -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">Kimi AI (Moonshot)</h3>
+          <i class="fa-solid fa-book-open-reader" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">مسح وتلخيص المقالات الطويلة جداً وتصفية روابط الويب بكفاءة استيعابية هائلة.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">Web Search</span>
+        <span class="tag">Long Context</span>
+      </div>
+    </div>
+
+    <!-- Qwen AI -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">Qwen AI (Alibaba)</h3>
+          <i class="fa-solid fa-network-wired" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">تعدد مصادر البحث وتحليل البيانات اللحظية مع خيارات استقصاء معمقة للبيانات.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">Web Search</span>
+        <span class="tag deep">Deep Search</span>
+      </div>
+    </div>
+
+    <!-- Felo AI -->
+    <div class="card engine-card">
+      <div>
+        <div class="engine-header">
+          <h3 class="engine-name">Felo AI</h3>
+          <i class="fa-solid fa-compass" style="color: var(--accent);"></i>
+        </div>
+        <p class="engine-desc">محرك بحث مدعوم بالذكاء الاصطناعي مع إمكانية إنشاء خرائط ذهنية وعروض تفاعلية للموضوع.</p>
+      </div>
+      <div class="engine-tags">
+        <span class="tag">AI Web Search</span>
+        <span class="tag">Topic Mapping</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- القسم 3: معايير التقييم والتحليل المطلوب -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-clipboard-check"></i></span>
+    عناصر التحليل والتقييم المطلوبة لكل أداة
+  </div>
+
+  <div class="grid-3">
+    <!-- تحليل المصادر والتوثيق -->
+    <div class="card">
+      <h3 class="step-title"><i class="fa-solid fa-link text-primary"></i> المصادر وسهولة التحقق</h3>
+      <ul class="checklist">
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>عدد المصادر:</strong> كم مصدراً اعتمدت عليه الأداة؟</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>نوعية المصادر:</strong> أكاديمية، صحفية، أم تقنية؟</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>سهولة التحقق:</strong> هل وفّرت روابط وإحالات مباشرة وقابلة للنقر؟</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>غياب الهلوسة:</strong> هل المصادر حقيقية وموثوقة تماماً؟</li>
+      </ul>
+    </div>
+
+    <!-- هيكلة وعمق التقرير -->
+    <div class="card">
+      <h3 class="step-title"><i class="fa-solid fa-layer-group text-primary"></i> الهيكلة وعمق التحليل</h3>
+      <ul class="checklist">
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>هيكلة متكاملة:</strong> وجود مقدمة، محاور واضحة، وخاتمة.</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>مستوى التفاصيل:</strong> وفرة الأمثلة العملية والإحصائيات الحديثة.</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>حداثة المعلومات:</strong> الاعتماد على معطيات وسياقات حديثة.</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>الاستنتاجات:</strong> وضوح الخلاصات ودعمها بالمراجع والأرقام.</li>
+      </ul>
+    </div>
+
+    <!-- اللغة والجودة المضافة -->
+    <div class="card">
+      <h3 class="step-title"><i class="fa-solid fa-pen-nib text-primary"></i> الجودة واللغة والإضافة</h3>
+      <ul class="checklist">
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>جودة التلخيص:</strong> إجابات مركزة، خالية من الحشو الزائد.</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>دعم اللغة العربية:</strong> جودة الصياغة وقدرة الأداة على إيجاد مصادر عربية.</li>
+        <li><i class="fa-solid fa-arrow-left"></i> <strong>الإبداع والإضافة:</strong> تقديم لمسات ذكية، وزوايا غير تقليدية تثري النتيجة.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- القسم 4: المفاضلة والاستنتاج النهائي -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-award"></i></span>
+    الاستنتاج النهائي والمفاضلة (تحديد نقاط القوة)
+  </div>
+
+  <div class="card" style="margin-bottom: 30px;">
+    <p style="font-size: 0.95rem; color: var(--text); margin-bottom: 15px;">
+      بعد الانتهاء من فحص وتجربة جميع المنصات باستخدام السؤال الموحد، قم بتحديد الأداة الفائزة في كل مجال:
+    </p>
+    <div class="benchmark-grid">
+      <div class="benchmark-item"><i class="fa-solid fa-gauge-high"></i> الأسرع في البحث وظهور النتائج</div>
+      <div class="benchmark-item"><i class="fa-solid fa-quote-right"></i> الأفضل في جودة وتوثيق المصادر</div>
+      <div class="benchmark-item"><i class="fa-solid fa-microscope"></i> الأقوى في التحليل الاستقصائي المتعمق</div>
+      <div class="benchmark-item"><i class="fa-solid fa-compress"></i> الأفضل في التلخيص والتركيز</div>
+      <div class="benchmark-item"><i class="fa-solid fa-language"></i> الأفضل في دعم وصياغة اللغة العربية</div>
+      <div class="benchmark-item"><i class="fa-solid fa-sitemap"></i> الأفضل في تنظيم وهيكلة التقرير</div>
+    </div>
+  </div>
+
+  <!-- القسم 5: سؤال النقاش -->
+  <div class="callout-box">
+    <div class="callout-title">
+      <i class="fa-solid fa-comments"></i> سؤال نقاش
+    </div>
+    <div class="discussion-question">ما الفرق بين:</div>
+    <ul class="discussion-items">
+      <li><i class="fa-solid fa-circle-dot"></i> البحث التقليدي عبر الويب (Web Search)</li>
+      <li><i class="fa-solid fa-circle-dot"></i> البحث المعمق (Deep Search)</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حدود وقيود النماذج اللغوية الكبيرة والذكاء الاصطناعي</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --success: #38a169;
+    --warning: #dd6b20;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 30px 15px;
+  }
+  
+  .container {
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  /* Content Block */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+
+  /* Callout Boxes */
+  .callout {
+    background: var(--bg);
+    border-right: 4px solid var(--secondary);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.98rem;
+  }
+
+  .callout.accent {
+    border-right-color: var(--accent);
+    background: #fffaf0;
+  }
+
+  .callout.danger {
+    border-right-color: var(--danger);
+    background: #fff5f5;
+  }
+
+  .callout.success {
+    border-right-color: var(--success);
+    background: #f0fff4;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Highlight Banner */
+  .highlight-quote {
+    background: linear-gradient(135deg, #1a365d, #2b6cb0);
+    color: #ffffff;
+    padding: 22px 26px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.9;
+    margin: 25px 0;
+    box-shadow: 0 4px 15px rgba(26, 54, 93, 0.15);
+  }
+
+  /* Tables */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+  }
+
+  th {
+    background: var(--primary);
+    color: white;
+    padding: 14px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: var(--bg);
+  }
+
+  /* Lists */
+  .styled-list {
+    list-style: none;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  .styled-list li {
+    position: relative;
+    padding-right: 28px;
+    margin-bottom: 12px;
+    font-size: 1rem;
+  }
+
+  .styled-list li i {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    color: var(--secondary);
+  }
+
+  .styled-list.danger li i {
+    color: var(--danger);
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    background: var(--light);
+    color: var(--primary);
+    border: 1px solid #bee3f8;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tag.danger {
+    background: #fff5f5;
+    color: var(--danger);
+    border-color: #feb2b2;
+  }
+
+  /* Grid Best Practices */
+  .practice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .practice-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .practice-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .practice-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--secondary);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 8px;
+  }
+
+  .practice-title {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.7rem; }
+    .content-card { padding: 20px; }
+    .back-link {
+      position: static;
+      display: inline-flex;
+      margin-bottom: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 01.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <br>
+    <span class="header-badge">الفصل 01 • الدرس الرابع</span>
+    <h1>الحدود والقيود في النماذج اللغوية (LLMs)</h1>
+  </div>
+
+  <!-- 1. ما المقصود بالحدود والقيود؟ -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-scale-unbalanced"></i></div>
+      1. ما المقصود بالحدود والقيود؟
+    </div>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%;">المفهوم</th>
+            <th>التعريف والدلالة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الحدود (Limits)</strong></td>
+            <td>هي الأشياء والمهام التي لا يستطيع النموذج القيام بها بشكل كامل أو دقيق.</td>
+          </tr>
+          <tr>
+            <td><strong>القيود (Constraints)</strong></td>
+            <td>هي المشاكل والتحديات التقنية أو المنهجية التي تؤثر سلباً على أداء النموذج وفاعليته.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> مثال واقعي (الهلوسة وتوليد الخطأ):</div>
+      قد يكتب <strong>ChatGPT</strong> أو أي نموذج لغوي إجابة تبدو مصوغة بلغة واثقة وسليمة جداً ظاهرياً، لكنها في الحقيقة <strong>خاطئة تماماً</strong> أو مبنية على مصادر غير موجودة.
+    </div>
+  </div>
+
+  <!-- 2. نقص الفهم الحقيقي -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-brain"></i></div>
+      2. نقص الفهم الحقيقي
+    </div>
+    <p>
+      النموذج اللغوي <strong>لا يفهم العالم</strong> كما يفهمه الإدراك البشري، بل يعتمد جوهرياً على التعلّم الإحصائي ورصد الأنماط والتكرارات الاحتمالية داخل البيانات الضخمة فقط.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-user-doctor"></i> مثال تطبيقي توضيحي:</div>
+      يعرف النموذج إحصائياً أن كلمة <em>"طبيب"</em> ترتبط بشكل وثيق بكلمة <em>"مستشفى"</em> أو <em>"علاج"</em>، لكنه <strong>لا يمتلك فهماً بشرياً حقيقياً</strong> لمعنى الطب، التجربة الإنسانية، أو جوهر الممارسة العلاجية.
+    </div>
+  </div>
+
+  <!-- 3. الاعتماد على بيانات التدريب -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-database"></i></div>
+      3. الاعتماد على بيانات التدريب
+    </div>
+    <p>
+      تعتمد جودة وموثوقية مخرجات النموذج بشكل مباشر وكلي على جودة البيانات المستخدمة في تدريبه الأولي:
+    </p>
+
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-arrow-left"></i> إذا كانت البيانات <strong>ناقصة</strong> &larr; تصبح معرفة النموذج <strong>ناقصة</strong>.</li>
+      <li><i class="fa-solid fa-arrow-left"></i> إذا كانت البيانات <strong>خاطئة</strong> &larr; قد يتعلم النموذج <strong>أخطاءً ويتبناها</strong>.</li>
+      <li><i class="fa-solid fa-arrow-left"></i> إذا كانت البيانات <strong>متحيزة</strong> &larr; قد ينتج مخرجات <strong>متحيزة وغير موضوعية</strong>.</li>
+    </ul>
+  </div>
+
+  <!-- 4. المعرفة غير المحدثة وحدود المعرفة الزمنية -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+      4. حدود المعرفة الزمنية (Knowledge Cutoff)
+    </div>
+    <p>
+      تم تدريب النماذج على بيانات تصل إلى تاريخ زمني محدد ومعين؛ لذلك فالنموذج <strong>لا يعرف تلقائياً</strong> الأحداث والتطورات الجديدة بعد تاريخ انتهاء تدريبه دون الاعتماد على أدوات خارجية.
+    </p>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-bolt"></i> سبل تجاوز هذا الحد للحصول على معلومات حديثة:</div>
+      <ul class="styled-list" style="margin: 6px 0;">
+        <li><i class="fa-solid fa-globe"></i> <strong>البحث الحي على الإنترنت:</strong> عبر تمكين التصفح الفوري داخل الأدوات الحديثة.</li>
+        <li><i class="fa-solid fa-network-wired"></i> <strong>أنظمة توليد الاسترجاع المعزز (RAG):</strong> تزويد النموذج بقواعد بيانات ووثائق خارجية محدثة لاستخراج الإجابات منها مباشرة.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. محدودية نافذة السياق وطول الإدخال والإخراج -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-window-maximize"></i></div>
+      5. محدودية نافذة السياق وقيود الإدخال/الإخراج
+    </div>
+    <p>
+      لا يستطيع النموذج اللغوي تذكّر وسرد كل شيء إلى ما لا نهاية؛ إذ تحكمه حدود رقمية محددة لحجم البيانات المعالجة:
+    </p>
+
+    <ul class="styled-list">
+      <li><i class="fa-solid fa-ruler-combined"></i> <strong>نافذة السياق (Context Window):</strong> يوجد حد أقصى لحجم النص والرموز الذي يمكن للنموذج معالجته والاحتفاظ به في الذاكرة دفعة واحدة.</li>
+      <li><i class="fa-solid fa-cubes"></i> <strong>قيود الرموز (Tokens):</strong> النماذج محدودة بعدد محدد من الرموز؛ فلا يمكنك إدخال كتاب كامل دفعة واحدة في مطالبة واحدة، كما لا يمكنها إنتاج نص طويل جداً في استجابة مفردة.</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-pen-ruler"></i> الحساسية لصياغة السؤال (Prompt Sensitivity):</div>
+      تتأثر مخرجات النموذج بشكل حاسم بطريقة التعبير؛ فأي تغيير بسيط في الكلمات أو ترتيب الجمل قد يغيّر جودة الإجابة ودقتها بشكل ملحوظ.
+    </div>
+  </div>
+
+  <!-- 6. مشكلات الخصوصية والأمان -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+      6. مشكلات الخصوصية والأمان
+    </div>
+    <p>
+      قد تحتوي البيانات أو المحادثات التي يدخلها المستخدمون على معلومات بالغة الحساسية، وقد تُستخدم أحياناً في إعادة تدريب الأنظمة العامة. لذلك يُحظر تماماً مشاركة:
+    </p>
+
+    <div class="tags-container">
+      <span class="tag danger"><i class="fa-solid fa-key"></i> كلمات المرور</span>
+      <span class="tag danger"><i class="fa-solid fa-credit-card"></i> البيانات البنكية والمالية</span>
+      <span class="tag danger"><i class="fa-solid fa-file-medical"></i> المعلومات الطبية الخاصة</span>
+      <span class="tag danger"><i class="fa-solid fa-user-secret"></i> الوثائق المؤسسية السرية</span>
+    </div>
+  </div>
+
+  <!-- 7. القيود الأخلاقية والقانونية -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-gavel"></i></div>
+      7. القيود الأخلاقية والقانونية
+    </div>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">المجال</th>
+            <th>التحدي الأخلاقي والقانوني</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>حقوق الملكية الفكرية <i class="fa-regular fa-copyright"></i></strong></td>
+            <td>النصوص والصور المولدة قد تعتمد على أعمال وأفكار محمية بحقوق الطبع والنشر، مما يثير جدلاً قانونياً حول نسب الملكية وإعادة الاستخدام.</td>
+          </tr>
+          <tr>
+            <td><strong>الخصوصية <i class="fa-solid fa-lock"></i></strong></td>
+            <td>احتمال تسرب أو إعادة إنتاج معلومات شخصية كانت مشمولة داخل بيانات التدريب أو تم إدخالها لاحقاً من قِبل المستخدمين.</td>
+          </tr>
+          <tr>
+            <td><strong>المعلومات المضللة <i class="fa-regular fa-newspaper"></i></strong></td>
+            <td>سهولة توليد نصوص مقنعة أو صور مزيفة (Deepfakes) تبدو حقيقية تماماً، مما يرفع من خطر انتشار الشائعات والأخبار الكاذبة.</td>
+          </tr>
+          <tr>
+            <td><strong>المساءلة والمسؤولية <i class="fa-solid fa-scale-balanced"></i></strong></td>
+            <td>من المسؤول القانوني عند وقوع ضرر ناجم عن قرار بني على مخرجات الذكاء الاصطناعي؟ سؤال تشريعي وأخلاقي لا يزال مفتوحاً للنقاش العالمي.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 8. القيود والتحديات في السياق التعليمي -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      8. القيود في السياق التعليمي
+    </div>
+    <p>
+      يطرح دمج الذكاء الاصطناعي التوليدي في البيئة التعليمية مجموعة من التحديات التربوية التي تتطلب وعياً وإشرافاً مستمراً:
+    </p>
+
+    <div class="callout accent">
+      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> الاعتماد الزائد (Over-reliance):</div>
+      لجوء الطالب لاستخدام الأداة كبديل كامل عن التفكير النقدي والجهد الذهني الذاتي، بدلاً من استخدامها كمساعد أو موجه تعليمي.
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title"><i class="fa-solid fa-user-xmark"></i> النزاهة الأكاديمية (Academic Integrity):</div>
+      صعوبة التحقق والتمييز الدقيق بين نص مكتوب بجهد الطالب الذاتي ونص مولد آلياً، مما يفرض تحديات جديدة أمام معايير التقييم العادل.
+    </div>
+
+    <div class="callout">
+      <div class="callout-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> الفجوة الرقمية (Digital Divide):</div>
+      عدم تكافؤ الفرص في الوصول؛ فليس لجميع الطلبة نفس الإمكانات التقنية (جودة الاتصال بالإنترنت، الأجهزة الحديثة، أو الاشتراكات المدفوعة).
+    </div>
+
+    <div class="callout success">
+      <div class="callout-title"><i class="fa-solid fa-wand-magic-sparkles"></i> الحاجة إلى مهارات جديدة:</div>
+      يتطلب الاستخدام المثمر اكتساب مهارات هندسة وصياغة الطلبات (Prompting) والتمتع بروح التحقق النقدي الفاحص للمخرجات.
+    </div>
+
+    <!-- Highlight Quote from PDF -->
+    <div class="highlight-quote">
+      <i class="fa-solid fa-quote-right" style="margin-left: 8px;"></i>
+      فهم هذه الحدود لا يعني رفض التكنولوجيا، بل استخدامها بنضج ووعي نقدي — وهذا بالضبط ما يهدف إليه مقياس الذكاء الاصطناعي في التعلّم.
+      <i class="fa-solid fa-quote-left" style="margin-right: 8px;"></i>
+    </div>
+  </div>
+
+  <!-- 9. كيف تتعامل مع الحدود؟ (أفضل الممارسات) -->
+  <div class="content-card">
+    <div class="section-title">
+      <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+      9. كيف تتعامل مع الحدود؟ (أفضل الممارسات)
+    </div>
+    <p>
+      لتحقيق أقصى فائدة عملية والحد من مخاطر وأخطاء النماذج، يُنصح باتباع الممارسات الثمانية التالية:
+    </p>
+
+    <div class="practice-grid">
+      <!-- 1 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">1</span> لا تثق — تحقّق
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          اعتبر كل مخرجات النموذج "مسودة أولية" تحتاج للمراجعة والتدقيق، خاصة الأرقام، الإحصائيات، التواريخ، والمصادر.
+        </p>
+      </div>
+
+      <!-- 2 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">2</span> أعطِ سياقاً واضحاً
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          حدّد الدور، والهدف، والجمهور، والطول المطلوب، والأسلوب؛ فجودة الإجابة ترتبط طردياً بجودة ووضوح صياغة الطلب.
+        </p>
+      </div>
+
+      <!-- 3 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">3</span> قسّم المهام الكبيرة
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          بدلاً من كتابة "اكتب لي بحثاً كاملاً"، اطلب أولاً مخططاً هيكلياً، ثم المقدمة، ثم قم بتوليد كل مبحث وقسم على حدة.
+        </p>
+      </div>
+
+      <!-- 4 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">4</span> استخدم RAG أو البحث الحي
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          زوّد النموذج بالمصادر والمراجع الموثوقة مسبقاً ليجيب منها مباشرة بدلاً من الاعتماد الحصري على ذاكرته الاحتمالية.
+        </p>
+      </div>
+
+      <!-- 5 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">5</span> الإنسان في الحلقة
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          <strong>Human in the Loop:</strong> يجب أن يبقى القرار النهائي بشرياً خالصاً في كل ما له صلة بحياة الناس، أموالهم، أو سمعتهم.
+        </p>
+      </div>
+
+      <!-- 6 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">6</span> احمِ البيانات والخصوصية
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          لا تدخل أي بيانات شخصية، أو أسرار تجارية ومؤسسية، أو معلومات تخص العملاء والطلبة في التطبيقات المفتوحة والعامة.
+        </p>
+      </div>
+
+      <!-- 7 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">7</span> وثّق واذكر المصدر
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          سجّل متى وكيف استُخدم الذكاء الاصطناعي، وأفصح بشفافية وأمانة علمية عن طبيعة الأدوات المستخدمة عند الحاجة.
+        </p>
+      </div>
+
+      <!-- 8 -->
+      <div class="practice-card">
+        <div class="practice-title">
+          <span class="practice-num">8</span> اختر الأداة المناسبة
+        </div>
+        <p style="margin-bottom: 0; font-size: 0.93rem;">
+          لا تستخدم نموذجاً لغوياً عاماً لحل معادلات رياضية معقدة، ولا تعتمد على نماذج غير متخصصة للمهام التي تتطلب دقة فنية عالية.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
+  </div>
+
+</div>
+
+</body>
+</html>
