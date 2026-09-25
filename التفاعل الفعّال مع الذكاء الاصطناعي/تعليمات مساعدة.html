@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الفصل 03 - الدرس 05: تعليمات مساعدة: اضبط سلوك الأداة لا محتواها</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --teal: #319795;
+    --teal-light: #e6fffa;
+    --purple: #6b46c1;
+    --purple-light: #faf5ff;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.05rem;
+    opacity: 0.95;
+    font-weight: 400;
+    max-width: 820px;
+    margin: 0 auto;
+    line-height: 1.9;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* General Cards */
+  .main-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 26px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .lead-text {
+    font-size: 1.12rem;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 16px;
+    line-height: 2;
+  }
+
+  /* Formats Grid */
+  .formats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .format-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    border-top: 4px solid var(--secondary);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .format-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  .format-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .format-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--primary);
+  }
+
+  .format-number {
+    background: var(--light);
+    color: var(--secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+
+  .format-desc {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .format-prompt-box {
+    background: #f8fafc;
+    border-right: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #2d3748;
+    line-height: 1.8;
+    font-weight: 600;
+  }
+
+  /* Golden Rule Box */
+  .template-container {
+    background: linear-gradient(135deg, #f7fafc 0%, var(--teal-light) 100%);
+    border: 2px dashed #4fd1c5;
+    border-radius: 16px;
+    padding: 26px;
+    margin: 20px 0;
+  }
+
+  .template-badge {
+    background: var(--teal);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .template-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #234e52;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .template-code-box {
+    background: white;
+    border: 1px solid #b2f5ea;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 14px;
+    font-family: 'Tajawal', sans-serif;
+    color: #2d3748;
+    line-height: 1.9;
+    font-weight: 500;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.7rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+    .formats-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 03.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+    </a>
+    <span class="header-badge">الفصل 03 • الدرس 05</span>
+    <h1>تعليمات مساعدة: اضبط سلوك الأداة لا محتواها</h1>
+    <div class="subtitle">
+      تُضاف هذه العبارات التوجيهية في آخر الطلب لتغيّر طريقة اشتغال الأداة ونمط تفكيرها، وتحدّ من ميل النموذج الفطري لمجاراتك والموافقة على افتراضاتك.
+    </div>
+  </div>
+
+  <!-- صندوق المفهوم المحوري -->
+  <div class="template-container">
+    <span class="template-badge"><i class="fa-solid fa-sliders"></i> قاعدة ذهبية</span>
+    <div class="template-title">
+      <i class="fa-solid fa-shield-halved"></i> لماذا نضبط سلوك النموذج؟
+    </div>
+    <p style="font-size: 1.05rem; color: #134e4a; margin-bottom: 8px; font-weight: 500;">
+      يميل الذكاء الاصطناعي بطبعه إلى المسايرة والموافقة المفرطة (Sycophancy). ضبط سلوك الأداة يحوّلها من مجرد "مجيب مطيع" إلى شريك تفكير نقدي يمنع الوقوع في الأخطاء قبل حدوثها.
+    </p>
+    <div class="template-code-box">
+      <i class="fa-solid fa-lightbulb" style="color: var(--accent); margin-left: 8px;"></i>
+      <strong>نصيحة تطبيقية:</strong> ضع إحدى هذه التعليمات دائمًا في السطر الأخير من طلبك، وستلاحظ فرقًا فوريًا في عمق ومصداقية الإجابة.
+    </div>
+  </div>
+
+  <!-- القسم الأول: الصدق والنقد ومنع التزييف -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
+    أولاً: تعليمات النقد والمصارحة ومقاومة المجاملة
+  </div>
+
+  <div class="main-card">
+    <p class="lead-text">
+      تعليمات ترغم النموذج على الصدق التام، وتجاوز مجاملتك، والاعتراف بالفجوات المعرفية ونقاط الضعف:
+    </p>
+
+    <div class="formats-grid">
+      <!-- 1. الصدق قبل المجاملة -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">1</span>
+              <span>الصدق قبل المجاملة</span>
+            </div>
+            <i class="fa-solid fa-hand-holding-heart" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يمنع التزلف والمديح الزائد ويركز المجهود على تحسين النتائج.</p>
+        </div>
+        <div class="format-prompt-box">
+          «كن صادقًا وصريحًا. دورك مساعدتي على بلوغ هدفي، لا إرضاء غروري.»
+        </div>
+      </div>
+
+      <!-- 2. لا تخترع -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">2</span>
+              <span>منع الهلوسة (لا تخترع)</span>
+            </div>
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يحد من اختلاق المراجع أو المعلومات الوهمية في حالة الشك.</p>
+        </div>
+        <div class="format-prompt-box">
+          «إن لم تكن متأكّدًا قل: لا أعرف، وحدّد ما يجب التحقّق منه في مرجع.»
+        </div>
+      </div>
+
+      <!-- 3. انتقد عملك -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">3</span>
+              <span>المراجعة الذاتية الصارمة</span>
+            </div>
+            <i class="fa-solid fa-magnifying-glass-chart" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يحفّز آلية التقييم والتنقيح التلقائي قبل تقديم المسودة النهائية.</p>
+        </div>
+        <div class="format-prompt-box">
+          «قيّم جوابك السابق كمقيّم خارجي صارم، ثم قدّم نسخة محسّنة.»
+        </div>
+      </div>
+
+      <!-- 4. اختبار الحدود ونقاط الفشل -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">4</span>
+              <span>اختبار حالات الفشل</span>
+            </div>
+            <i class="fa-solid fa-bomb" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يكشف العيوب المسبقة في المقترحات والحلول التربوية والعملية.</p>
+        </div>
+        <div class="format-prompt-box">
+          «ما الحالات التي يفشل فيها هذا الحل؟ وما الظروف التي لا يعمل فيها إطلاقًا؟»
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- القسم الثاني: مواءمة الفهم وتجنب الفجوات -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-arrows-split-up-and-left"></i></span>
+    ثانياً: تعليمات محاذاة الفهم واستكشاف الفجوات
+  </div>
+
+  <div class="main-card">
+    <p class="lead-text">
+      تضمن هذه التعليمات أن الأداة قد استوعبت سياقك بدقة متناهية قبل أن تشرع في التنفيذ:
+    </p>
+
+    <div class="formats-grid">
+      <!-- 5. اطرح علي الأسئلة -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">5</span>
+              <span>الاستيضاح الاستباقي</span>
+            </div>
+            <i class="fa-solid fa-circle-question" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يمنع إعطاء إجابات عريضة مبنية على تخمينات وافتراضات غير دقيقة.</p>
+        </div>
+        <div class="format-prompt-box">
+          «اسألني أي أسئلة لديك قبل المتابعة.»
+        </div>
+      </div>
+
+      <!-- 6. أعد صياغة طلبي -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">6</span>
+              <span>التلخيص التحققي</span>
+            </div>
+            <i class="fa-solid fa-repeat" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يكشف أي لبس أو سوء فهم لدى النموذج قبل هدر الوقت في مخرج خاطئ.</p>
+        </div>
+        <div class="format-prompt-box">
+          «لخّص ما فهمته من طلبي قبل أن تنفّذه.»
+        </div>
+      </div>
+
+      <!-- 7. ما الذي أغفلته؟ -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">7</span>
+              <span>سد الثغرات المعرفية</span>
+            </div>
+            <i class="fa-solid fa-eye-slash" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يساعدك على استدراك الجوانب التي لم تخطر في بالك أثناء صياغة العمل.</p>
+        </div>
+        <div class="format-prompt-box">
+          «تحقّق إن كان هناك عنصر أساسي نسيته أو غاب عنّي.»
+        </div>
+      </div>
+
+      <!-- 8. المخاطر الخفية -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">8</span>
+              <span>رصد المخاطر غير المرئية</span>
+            </div>
+            <i class="fa-solid fa-shield-virus" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">مفيد جداً قبل اعتماد فرض، أو مشروع صفّي، أو استراتيجية تدريس.</p>
+        </div>
+        <div class="format-prompt-box">
+          «حدّد المخاطر التي لا أراها بعد.»
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- القسم الثالث: التحكم في وتيرة التفكير ومنهجية العرض -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-sliders"></i></span>
+    ثالثاً: تعليمات ضبط الإيقاع وهيكلة الاستجابة
+  </div>
+
+  <div class="main-card">
+    <p class="lead-text">
+      صيغ توجيهية تمكّنك من توجيه وتيرة التفكير خطوة بخطوة، والتحكم في عمق الأسلوب وتنوع البدائل:
+    </p>
+
+    <div class="formats-grid">
+      <!-- 9. مرحلة مرحلة -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">9</span>
+              <span>التفكير المرحلي التفاعلي</span>
+            </div>
+            <i class="fa-solid fa-stairs" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يمنع التسرع، ويتيح لك المراجعة والموافقة عند كل محطة تفكير.</p>
+        </div>
+        <div class="format-prompt-box">
+          «اشرح تمشّيك قبل النتيجة، وتوقّف بعد كل مرحلة حتى أوافق.»
+        </div>
+      </div>
+
+      <!-- 10. تعدد البدائل الجوهرية -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">10</span>
+              <span>البدائل المتمايزة</span>
+            </div>
+            <i class="fa-solid fa-shuffle" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يحميك من الحصول على خيارات متشابهة لا تختلف سوى في الصياغة اللفظية.</p>
+        </div>
+        <div class="format-prompt-box">
+          «اقترح ثلاثة خيارات مختلفة جوهريًا.»
+        </div>
+      </div>
+
+      <!-- 11. التدرج في الإجابة -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">11</span>
+              <span>التدرج (الزبدة أولاً)</span>
+            </div>
+            <i class="fa-solid fa-layer-group" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">يمنحك الخلاصة السريعة المباشرة، متبوعة بالتفاصيل والتحليل عند الحاجة.</p>
+        </div>
+        <div class="format-prompt-box">
+          «ابدأ بجواب مباشر في ثلاثة أسطر، ثم انتقل إلى التفصيل والمبرّرات.»
+        </div>
+      </div>
+
+      <!-- 12. مستويات الشرح -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">12</span>
+              <span>الشرح مزدوج المستوى</span>
+            </div>
+            <i class="fa-solid fa-users-between-lines" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">استيعاب المفهوم من زاوية بديهية بسيطة، ثم من زاوية تخصصية معمقة.</p>
+        </div>
+        <div class="format-prompt-box">
+          «اشرح هذا المفهوم على مستويين: أولاً بأسلوب مبسط لطفل في سن العاشرة، وثانياً بأسلوب تقني لمهندس خبير.»
+        </div>
+      </div>
+
+      <!-- 13. تقييم الفهم -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">13</span>
+              <span>اختبار الفهم الحقيقي</span>
+            </div>
+            <i class="fa-solid fa-clipboard-check" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">تحويل الأداة إلى ممتحن يختبر مدى رسوخ الأفكار في ذهنك.</p>
+        </div>
+        <div class="format-prompt-box">
+          «بعد الشرح، اطرح عليّ ثلاثة أسئلة تكشف إن كنت قد فهمت فعلًا.»
+        </div>
+      </div>
+
+      <!-- 14. الإيجاز والتركيز -->
+      <div class="format-card">
+        <div>
+          <div class="format-card-header">
+            <div class="format-title-group">
+              <span class="format-number">14</span>
+              <span>الإيجاز الصارم</span>
+            </div>
+            <i class="fa-solid fa-bolt" style="color: var(--secondary);"></i>
+          </div>
+          <p class="format-desc">قطع دابر الإطناب والمقدمات الإنشائية الطويلة التي لا فائدة منها.</p>
+        </div>
+        <div class="format-prompt-box">
+          «كن موجزًا بلا حشو.»
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>

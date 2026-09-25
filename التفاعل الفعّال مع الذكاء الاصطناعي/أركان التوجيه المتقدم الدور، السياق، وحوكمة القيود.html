@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الفصل 03 - الدرس 03: أركان التوجيه الدقيق (الدور، السياق، والقيود)</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --danger: #e53e3e;
+    --danger-light: #fff5f5;
+    --success-light: #f0fff4;
+    --purple: #6b46c1;
+    --purple-light: #faf5ff;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.05rem;
+    opacity: 0.95;
+    font-weight: 400;
+    max-width: 820px;
+    margin: 0 auto;
+    line-height: 1.9;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* General Cards */
+  .main-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 26px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .lead-text {
+    font-size: 1.12rem;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 16px;
+    line-height: 2;
+  }
+
+  /* Persona Equation */
+  .equation-container {
+    background: linear-gradient(135deg, #f7fafc 0%, var(--purple-light) 100%);
+    border: 2px dashed #b794f4;
+    border-radius: 16px;
+    padding: 25px;
+    margin: 25px 0;
+    text-align: center;
+  }
+
+  .equation-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--purple);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .equation-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .eq-item {
+    background: white;
+    border: 1px solid #d6bcfa;
+    border-radius: 12px;
+    padding: 12px 18px;
+    min-width: 140px;
+    box-shadow: 0 3px 8px rgba(107, 70, 193, 0.08);
+  }
+
+  .eq-item .icon {
+    font-size: 1.3rem;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+
+  .eq-item .name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary);
+  }
+
+  .eq-item .detail {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .eq-plus {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--purple);
+  }
+
+  /* Grid Layouts for Roles and Context */
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .role-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    border-top: 4px solid var(--secondary);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .role-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  .role-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.08rem;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+
+  .role-card-header i {
+    color: var(--secondary);
+    font-size: 1.15rem;
+  }
+
+  .role-prompt-quote {
+    background: #f8fafc;
+    border-right: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.94rem;
+    color: #2d3748;
+    line-height: 1.8;
+    font-weight: 500;
+  }
+
+  /* 4 Pillars of Context Grid */
+  .context-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+  }
+
+  .context-box {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .context-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  }
+
+  .context-box-icon {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+  }
+
+  .context-box h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+
+  .context-box p {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Context Practical Cards */
+  .context-samples-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 25px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .context-samples-title i {
+    color: #319795;
+  }
+
+  .context-samples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 18px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+  }
+
+  .context-sample-card {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    border-top: 4px solid #319795;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .context-sample-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  .context-sample-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+
+  .context-sample-header i {
+    color: #319795;
+    font-size: 1.15rem;
+  }
+
+  .context-prompt-quote {
+    background: #f0fdfa;
+    border-right: 3px solid #319795;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.94rem;
+    color: #134e4a;
+    line-height: 1.8;
+    font-weight: 500;
+  }
+
+  /* 6 Constraints Table */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .custom-table th, .custom-table td {
+    padding: 14px 16px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.94rem;
+  }
+
+  .custom-table th {
+    background: var(--light);
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .custom-table tr:hover {
+    background-color: #f7fafc;
+  }
+
+  .badge-constraint {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .b-shape { background: #e2e8f0; color: #4a5568; }
+  .b-tone { background: #feebc8; color: #c05621; }
+  .b-forbidden { background: #fed7d7; color: #c53030; }
+  .b-depth { background: #e9d8fd; color: #6b46c1; }
+  .b-time { background: #c6f6d5; color: #22543d; }
+  .b-source { background: #bee3f8; color: #2c5282; }
+
+  /* Practical Example Analysis */
+  .example-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  }
+
+  .prompt-display {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .highlight-role { background: #faf5ff; color: #553c9a; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #d6bcfa; }
+  .highlight-context { background: #e6fffa; color: #234e52; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #b2f5ea; }
+  .highlight-task { background: #ebf8ff; color: #2b6cb0; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #bee3f8; }
+  .highlight-constraint { background: #fff5f5; color: #9b2c2c; padding: 2px 6px; border-radius: 4px; font-weight: 600; border: 1px solid #fed7d7; }
+
+  .breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .breakdown-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+  }
+
+  .breakdown-item strong {
+    display: block;
+    font-size: 0.92rem;
+    margin-bottom: 4px;
+  }
+
+  /* Safety & Priorities */
+  .alert-banner {
+    background: #fffaf0;
+    border-right: 5px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(237, 137, 54, 0.08);
+  }
+
+  .alert-banner i {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-top: 3px;
+  }
+
+  .safety-box {
+    background: var(--danger-light);
+    border: 1px solid #feb2b2;
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 15px;
+  }
+
+  .safety-box h4 {
+    color: var(--danger);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.7rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+    .equation-items { flex-direction: column; }
+    .eq-plus { display: none; }
+    .roles-grid, .context-samples-grid { grid-template-columns: 1fr; }
+    .custom-table th, .custom-table td { padding: 10px; font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 03.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+    </a>
+    <span class="header-badge">الفصل 03 • الدرس 03</span>
+    <h1>أركان التوجيه المتقدم: الدور، السياق، وحوكمة القيود</h1>
+    <div class="subtitle">
+      دليل تطبيقي لإتقان هندسة الموجهات (Prompt Engineering) لأساتذة التعليم (الابتدائي، المتوسط، والثانوي) وفق مقياس "الذكاء الاصطناعي في التعلم".
+    </div>
+  </div>
+
+  <!-- 1. ركن الدور Role / Persona -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-user-gear"></i></span>
+    أولاً: الدور والشخصية الوظيفية (Role / Persona)
+  </div>
+
+  <div class="main-card">
+    <p class="lead-text">
+      <strong>الدور</strong> يحدد الشخصية الوظيفية والمهنية التي نريد من النموذج اللغوي أن يتبناها أثناء تنفيذ المهمة؛ وهو بمثابة العدسة التي تُحدد زاوية التفكير والمفردات الموظفة.
+    </p>
+
+    <!-- معادلة الدور المثالي -->
+    <div class="equation-container">
+      <div class="equation-title">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> معادلة صياغة الدور المثالي المتكامل
+      </div>
+      <div class="equation-items">
+        <div class="eq-item">
+          <div class="icon"><i class="fa-solid fa-id-badge"></i></div>
+          <div class="name">المهنة الأساسية</div>
+          <div class="detail">مثال: خبير تربوي / أستاذ ممارس</div>
+        </div>
+        <span class="eq-plus">+</span>
+        <div class="eq-item">
+          <div class="icon"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="name">الخبرة والإنجاز</div>
+          <div class="detail">مثال: أكثر من 15 سنة في التدريس</div>
+        </div>
+        <span class="eq-plus">+</span>
+        <div class="eq-item">
+          <div class="icon"><i class="fa-solid fa-microscope"></i></div>
+          <div class="name">التخصص الدقيق</div>
+          <div class="detail">مثال: تعليمية المادة والبيداغوجيا</div>
+        </div>
+        <span class="eq-plus">+</span>
+        <div class="eq-item">
+          <div class="icon"><i class="fa-solid fa-feather-pointed"></i></div>
+          <div class="name">الأسلوب والنبرة</div>
+          <div class="detail">مثال: تبسيط تفاعلي مباشر</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- شبكة الأدوار التربوية التطبيقية -->
+    <div class="roles-grid">
+      <!-- 1. تحضير درس -->
+      <div class="role-card">
+        <div class="role-card-header">
+          <i class="fa-solid fa-book-open"></i> 1. تحضير درس
+        </div>
+        <div class="role-prompt-quote">
+          «تصرّف كأستاذ فيزياء في السنة الثانية ثانوي، عارف بمنهاج شعبة العلوم التجريبية.»
+        </div>
+      </div>
+
+      <!-- 2. تبسيط مفهوم صعب -->
+      <div class="role-card">
+        <div class="role-card-header">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> 2. تبسيط مفهوم صعب
+        </div>
+        <div class="role-prompt-quote">
+          «تصرّف كمعلّم يخاطب تلميذًا في الثالثة عشرة: بسّط هذا المفهوم بأمثلة من حياته اليومية.»
+        </div>
+      </div>
+
+      <!-- 3. التصحيح والتقويم -->
+      <div class="role-card">
+        <div class="role-card-header">
+          <i class="fa-solid fa-clipboard-check"></i> 3. التصحيح والتقويم
+        </div>
+        <div class="role-prompt-quote">
+          «تصرّف كمصحّح صارم: قوّم هذه الإجابة على 20 وفق الشبكة، وبرّر كل نقطة منحتها أو خصمتها.»
+        </div>
+      </div>
+
+      <!-- 4. تلميذ يراجع -->
+      <div class="role-card">
+        <div class="role-card-header">
+          <i class="fa-solid fa-user-graduate"></i> 4. تلميذ يراجع
+        </div>
+        <div class="role-prompt-quote">
+          «تصرّف كتلميذ ضعيف المستوى: اطرح عليّ الأسئلة التي قد تربك القسم في هذا الدرس.»
+        </div>
+      </div>
+
+      <!-- 5. التواصل مع الأولياء -->
+      <div class="role-card">
+        <div class="role-card-header">
+          <i class="fa-solid fa-envelope-open-text"></i> 5. التواصل مع الأولياء
+        </div>
+        <div class="role-prompt-quote">
+          «تصرّف كمستشار تربوي: حرّر رسالة قصيرة ومهذّبة لولي تلميذ حول تكرار الغيابات.»
+        </div>
+      </div>
+
+      <!-- 6. ناقد لعملك -->
+      <div class="role-card">
+        <div class="role-card-header">
+          <i class="fa-solid fa-user-check"></i> 6. ناقد لعملك
+        </div>
+        <div class="role-prompt-quote">
+          «تصرّف كمفتّش تربوي: ما نقاط الضعف في مذكّرة الدرس هذه؟ اقترح ثلاثة تحسينات.»
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ركن السياق Context -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-compass"></i></span>
+    ثانياً: السياق (Context) — بوصلة الفهم للنموذج
+  </div>
+
+  <div class="main-card">
+    <p class="lead-text">
+      <strong>السياق</strong> هو مجموعة المعلومات التي يحتاجها النموذج لفهم المهمة قبل أن يبدأ في توليد الإجابة. غياب السياق يُجبر النموذج على افتراض معطيات عشوائية قد لا تناسب الواقع التعليمي.
+    </p>
+
+    <!-- الأركان الأربعة للسياق -->
+    <div class="context-grid">
+      <!-- الجمهور -->
+      <div class="context-box">
+        <div class="context-box-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h4>1. الجمهور المستهدف</h4>
+        <p>مستوى المعرفة، الفئة العمرية، التخصص الأكاديمي، ومدى الخبرة المكتسبة.</p>
+      </div>
+
+      <!-- الهدف -->
+      <div class="context-box">
+        <div class="context-box-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <h4>2. الهدف من المخرجات</h4>
+        <p>ما الذي تريد تحقيقه بالتحديد؟ (تأسيس مفهوم، علاج تعثر، تلخيص، تقييم...).</p>
+      </div>
+
+      <!-- المادة المرجعية -->
+      <div class="context-box">
+        <div class="context-box-icon"><i class="fa-solid fa-file-invoice"></i></div>
+        <h4>3. المادة المرجعية</h4>
+        <p>نصوص المنهاج، وثائق السند، تقارير، بيانات رقمية، كود، أو وضعيات مشكلة مقيدة.</p>
+      </div>
+
+      <!-- البيئة -->
+      <div class="context-box">
+        <div class="context-box-icon"><i class="fa-solid fa-earth-africa"></i></div>
+        <h4>4. البيئة والمجال</h4>
+        <p>المجال والسياق العملي؛ أهو قسم دراسي حقيقي، ورشة مخبرية، أم نشاط داعم؟</p>
+      </div>
+    </div>
+
+    <!-- بطاقات الأمثلة التطبيقية للسياق -->
+    <div class="context-samples-title">
+      <i class="fa-solid fa-chalkboard-user"></i> نماذج واقعية لتحديد سياق القسم والدرس:
+    </div>
+
+    <div class="context-samples-grid">
+      <!-- 1. المستوى والشعبة -->
+      <div class="context-sample-card">
+        <div class="context-sample-header">
+          <i class="fa-solid fa-layer-group"></i> المستوى والشعبة
+        </div>
+        <div class="context-prompt-quote">
+          «التلاميذ في السنة الرابعة متوسط، مستواهم العام متوسط، وضعيف في القواعد.»
+        </div>
+      </div>
+
+      <!-- 2. المنهاج والمرجع -->
+      <div class="context-sample-card">
+        <div class="context-sample-header">
+          <i class="fa-solid fa-book-bookmark"></i> المنهاج والمرجع
+        </div>
+        <div class="context-prompt-quote">
+          «اعتمد على منهاج وزارة التربية الجزائرية والوحدة الثالثة من الكتاب المدرسي.»
+        </div>
+      </div>
+
+      <!-- 3. الزمن المتاح -->
+      <div class="context-sample-card">
+        <div class="context-sample-header">
+          <i class="fa-solid fa-clock"></i> الزمن المتاح
+        </div>
+        <div class="context-prompt-quote">
+          «الحصة 45 دقيقة، منها 20 دقيقة فقط لبناء المفهوم، والباقي للتطبيق.»
+        </div>
+      </div>
+
+      <!-- 4. واقع القسم -->
+      <div class="context-sample-card">
+        <div class="context-sample-header">
+          <i class="fa-solid fa-school"></i> واقع القسم
+        </div>
+        <div class="context-prompt-quote">
+          «القسم فيه 38 تلميذًا، دون جهاز عرض ولا إنترنت: سبورة وأوراق فقط.»
+        </div>
+      </div>
+
+      <!-- 5. المكتسبات القبلية -->
+      <div class="context-sample-card">
+        <div class="context-sample-header">
+          <i class="fa-solid fa-brain"></i> المكتسبات القبلية
+        </div>
+        <div class="context-prompt-quote">
+          «درسوا سابقًا جمع الكسور وطرحها، ولم يدرسوا الضرب فيها بعد.»
+        </div>
+      </div>
+
+      <!-- 6. الصعوبات الملاحظة -->
+      <div class="context-sample-card">
+        <div class="context-sample-header">
+          <i class="fa-solid fa-circle-exclamation"></i> الصعوبات الملاحظة
+        </div>
+        <div class="context-prompt-quote">
+          «أغلبهم يخلط بين الفاعل ونائب الفاعل؛ ركّز على تجاوز هذا الخلط.»
+        </div>
+      </div>
+    </div>
+
+    <!-- تنبيه الانتقائية -->
+    <div class="alert-banner">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <div>
+        <strong style="color: #7b341e;">ملاحظة جوهرية في جودة السياق:</strong>
+        <p style="margin: 0; font-size: 0.94rem; color: #4a2113;">
+          السياق لا يعني إضافة أكبر قدر ممكن من المعلومات لإثقال الموجه؛ <strong>السياق الجيد هو المعلومات ذات الصلة الوثيقة بالمهمة</strong> منعاً لتشتيت انتباه النموذج وتدهور جودة الاستجابة.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ركن القيود Constraints والأنواع الستة -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-sliders"></i></span>
+    ثالثاً: حوكمة القيود (Constraints) والأنواع الستة
+  </div>
+
+  <div class="main-card">
+    <p class="lead-text">
+      القيود تحدد <strong>الحدود التي يجب أن يعمل داخلها النموذج</strong>؛ وهي الفارق بين إجابة عامة مشتتة ومخرج أكاديمي دقيق يخدم كفاءات المنهاج المسطرة.
+    </p>
+
+    <!-- جدول القيود الستة الموجه لبيئة المقياس -->
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">نوع القيد</th>
+          <th style="width: 30%;">المقصود بوظيفته</th>
+          <th style="width: 50%;">نماذج تطبيقية من سياق منهاج مقياس AIL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge-constraint b-shape">1. الشكل (Format & Length)</span></td>
+          <td>هندسة المخرج وبنيته وحجمه</td>
+          <td>«قدّم النتيجة في جدول مقارنة من 3 أعمدة: (المشكلة، السبب المنهجي، الحل المقترح)، في حدود 200 كلمة وبصيغة نقاط محددة لإدراجها في ملف الإنجاز (Portfolio).»</td>
+        </tr>
+        <tr>
+          <td><span class="badge-constraint b-tone">2. اللغة والنبرة (Language & Tone)</span></td>
+          <td>المستوى اللغوي وطبيعة الخطاب</td>
+          <td>«اكتب بلغة عربية فصحى أكاديمية واضحة وبنبرة نقدية محايدة؛ واقتصر على المصطلحات التقنية المعتمدة في المقياس (مثل: LLMs, Hallucination, Prompts) مع كتابتها بين قوسين.»</td>
+        </tr>
+        <tr>
+          <td><span class="badge-constraint b-forbidden">3. المحتوى الممنوع (Negative)</span></td>
+          <td>استبعاد صريح للانتهاكات والانحياز</td>
+          <td>«لا تذكر أي معطيات شخصية حقيقية للطلبة احتراماً للقانون 18-07، ولا تصغ مقالاً جاهزاً يحل محل الجهد الذاتي (منع الانتحال الفكري AI-Plagiarism)، وتجنب النمذجة النمطية والانحياز الخوارزمي.»</td>
+        </tr>
+        <tr>
+          <td><span class="badge-constraint b-depth">4. العمق المعرفي (Depth)</span></td>
+          <td>مستوى التبسيط وتجنب التعقيد</td>
+          <td>«الشرح موجه لطلبة السنة الثانية مدرسة عليا (أساتذة المستقبل): ركّز على الأثر البيداغوجي لظاهرة "الهلوسة" وتدقيق المصادر دون الخوض في التفاصيل الرياضية الحسابية لأوزان الانتباه في الشبكات العصبية.»</td>
+        </tr>
+        <tr>
+          <td><span class="badge-constraint b-time">5. الزمن والكمية (Scope)</span></td>
+          <td>النطاق الزمني أو عدد العناصر</td>
+          <td>«اقترح 3 سيناريوهات صفية فقط لأنشطة تطبيقية مدة كل منها 15 دقيقة، ملائمة لحجم الحصة الأسبوعية (1 سا 30 د) ونموذج القسم المقلوب (Flipped Classroom).»</td>
+        </tr>
+        <tr>
+          <td><span class="badge-constraint b-source">6. حصر المصدر والأمانة (Source & Truth)</span></td>
+          <td>منع الهلوسة وحصر الاعتماد</td>
+          <td>«اعتمد حصرياً على نصوص المنهاج الوزاري والمراجع الموثوقة بروابط حقيقية (DOIs عبر Google Scholar)؛ وإذا لم تجد السند الأكاديمي الكافي صرّح بـ "لا أعرف" بدلاً من توليد مراجع وهمية.»</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- مبدأ الأولويات -->
+    <div class="alert-banner" style="background: #ebf8ff; border-right-color: var(--secondary); margin-top: 25px;">
+      <i class="fa-solid fa-scale-balanced" style="color: var(--secondary);"></i>
+      <div>
+        <strong style="color: var(--primary); font-size: 1.05rem;">مبدأ الأولويات عند تعدد القيود:</strong>
+        <p style="margin: 4px 0 0; font-size: 0.94rem; color: #2d3748;">
+          عندما تضع أكثر من قيد، <strong>حدد ترتيبها صراحة</strong>؛ فالنموذج لا يعرف تلقائياً أي قيد أهم عند التعارض إلا إذا أخبرته (مثال: <em>"الالتزام بشرط الأمانة الأكاديمية والامتناع عن توليد مراجع غير مؤكدة أولى من استيفاء عدد العناصر المطلوبة"</em>).
+        </p>
+      </div>
+    </div>
+
+    <!-- قيود الأمان واللغة والنزاهة -->
+    <div class="safety-box">
+      <h4><i class="fa-solid fa-shield-halved"></i> قيود الأمان، الموثوقية، والمواطنة الرقمية (قانون 18-07 الجزائري)</h4>
+      <p style="font-size: 0.92rem; color: #742a2a; margin-bottom: 8px;">
+        لترسيخ النزاهة الأكاديمية وحماية المعطيات في الوسط المدرسي والجامعي وفق مصفوفة كفاءات المقياس:
+      </p>
+      <ul style="font-size: 0.9rem; color: #742a2a; padding-right: 20px; line-height: 1.8;">
+        <li><strong>قيد اللغة:</strong> «أجب بالعربية الفصحى فقط • لا تخلط مع الإنجليزية إلا عند الضرورة للمصطلحات التقنية المنصوص عليها في المقياس».</li>
+        <li><strong>قيد مكافحة الهلوسة:</strong> «لا تخترع معلومات أو نسب مقالات وهمية • إذا لم تكن متأكداً قل بصراحة: "لا أعرف"».</li>
+        <li><strong>قيد حماية المعطيات (المسؤولية القانونية):</strong> حظر إدراج أسماء الطلبة، أرقام تسجيلهم، أو صورهم التزاماً بأحكام القانون رقم 18-07 المتعلق بحماية الأشخاص الطبيعيين في مجال معالجة المعطيات ذات الطابع الشخصي.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. دراسة تطبيقية — تفكيك أمر بيداغوجي نموذجي -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-code-compare"></i></span>
+    رابعاً: دراسة تطبيقية — تفكيك أمر بيداغوجي نموذجي
+  </div>
+
+  <div class="example-card">
+    <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-bottom: 12px;">
+      نص الأمر العملي الموجه للنموذج (وضعية تعليمية في مادة التاريخ):
+    </h3>
+    
+    <div class="prompt-display">
+      "<span class="highlight-role">تقمص دور معلم ابتدائي بارع في التبسيط، يخاطب تلاميذه مباشرة بلغة قريبة منهم ومحفزة.</span>
+      <span class="highlight-context">أنا أستاذ تاريخ في السنة الثانية متوسط، أحضر درساً حول الثورة الفرنسية لتلاميذ بين 13 و14 سنة لم يدرسوا بعد مفهوم الثورة كمصطلح تاريخي.</span>
+      <span class="highlight-task">اكتب شرحاً لمفهوم الثورة،</span>
+      <span class="highlight-constraint">في حدود 150 كلمة، على شكل فقرة واحدة متصلة، بالفصحى المبسطة، دون استعمال مصطلحات سياسية معقدة، واختم بسؤال واحد يحفز نقاش الحصة."</span>
+    </div>
+
+    <h4 style="font-weight: 700; color: var(--secondary); margin-bottom: 10px;">التفكيك الهندسي للأمر وفق الترتيب المعتمد:</h4>
+    <div class="breakdown-grid">
+      <div class="breakdown-item" style="border-right: 4px solid #805ad5;">
+        <strong style="color: #553c9a;"><i class="fa-solid fa-user-tie"></i> 1. الدور المتبنى (Role):</strong>
+        معلم بارع في التبسيط اللغوي والمفاهيمي ويخاطب تلاميذه مباشرة بود وتشجيع.
+      </div>
+      <div class="breakdown-item" style="border-right: 4px solid #319795;">
+        <strong style="color: #234e52;"><i class="fa-solid fa-circle-info"></i> 2. السياق التعليمي (Context):</strong>
+        أستاذ تاريخ، سنة 2 متوسط، سن 13-14 سنة، لم يتطرقوا لمفهوم الثورة سابقاً.
+      </div>
+      <div class="breakdown-item" style="border-right: 4px solid #3182ce;">
+        <strong style="color: #2b6cb0;"><i class="fa-solid fa-pen-nib"></i> 3. المهمة المطلوبة (Task):</strong>
+        شرح مفهوم تاريخي مجرد (الثورة) وتقريبه للأذهان.
+      </div>
+      <div class="breakdown-item" style="border-right: 4px solid #e53e3e;">
+        <strong style="color: #9b2c2c;"><i class="fa-solid fa-filter"></i> 4. حزمة القيود (Constraints):</strong>
+        150 كلمة، فقرة واحدة، فصحى مبسطة، منع المصطلحات المعقدة، سؤال ختامي محفز.
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>

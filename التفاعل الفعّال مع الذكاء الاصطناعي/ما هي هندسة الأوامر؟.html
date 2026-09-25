@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الفصل 03 - الدرس 01: ما هي هندسة الأوامر؟ (Prompt Engineering)</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --danger: #e53e3e;
+    --danger-light: #fff5f5;
+    --success-light: #f0fff4;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+  }
+  
+  .header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    font-weight: 400;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 35px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* General Cards */
+  .main-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 26px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .lead-text {
+    font-size: 1.15rem;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 16px;
+    line-height: 2;
+  }
+
+  /* Golden Rule Banner */
+  .golden-rule {
+    background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
+    border-right: 5px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px 24px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #7b341e;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .golden-rule i {
+    font-size: 1.8rem;
+    color: var(--accent);
+  }
+
+  /* Grid Layouts */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .feature-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(26, 54, 93, 0.08);
+  }
+
+  .feature-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .feature-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--light);
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+  }
+
+  .feature-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .feature-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* Comparison Cards / Table */
+  .comparison-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 15px;
+  }
+
+  .comp-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .comp-col {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comp-col.weak {
+    background-color: var(--danger-light);
+    border-left: 1px solid #fed7d7;
+  }
+
+  .comp-col.good {
+    background-color: var(--success-light);
+  }
+
+  .badge-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 6px;
+    width: fit-content;
+    margin-bottom: 10px;
+  }
+
+  .badge-weak {
+    background: #feb2b2;
+    color: #9b2c2c;
+  }
+
+  .badge-good {
+    background: #9ae6b4;
+    color: #22543d;
+  }
+
+  .comp-text {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Spotlight Box */
+  .spotlight-card {
+    background: #1a202c;
+    color: #edf2f7;
+    border-radius: 16px;
+    padding: 26px;
+    margin: 30px 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+
+  .spotlight-title {
+    font-size: 1.15rem;
+    color: #fbd38d;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .spotlight-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+  }
+
+  .spotlight-box.weak {
+    border-right: 4px solid #fc8181;
+  }
+
+  .spotlight-box.effective {
+    border-right: 4px solid #68d391;
+  }
+
+  /* Metaphor Callout */
+  .metaphor-box {
+    background: #ebf8ff;
+    border: 1px solid #bee3f8;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .metaphor-box i {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-top: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  
+  @media (max-width: 768px) {
+    .comp-row {
+      grid-template-columns: 1fr;
+    }
+    .comp-col.weak {
+      border-left: none;
+      border-bottom: 1px solid #fed7d7;
+    }
+    .header h1 { font-size: 1.8rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 03.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+    </a>
+    <span class="header-badge">الفصل 03 • الدرس 01</span>
+    <h1>ما هي هندسة الأوامر؟ (Prompt Engineering)</h1>
+    <div class="subtitle">فن وعلم تصميم وصياغة التعليمات لتوجيه نماذج الذكاء الاصطناعي التوليدي للحصول على أعلى درجات الدقة والفاعلية.</div>
+  </div>
+
+  <!-- تعريف هندسة الأوامر -->
+  <div class="main-card">
+    <p class="lead-text">
+      <strong>هندسة الأوامر (Prompt Engineering):</strong> هي فن وعلم تصميم وصياغة التعليمات التي نقدمها لنماذج الذكاء الاصطناعي التوليدي بهدف الحصول على مخرجات أكثر دقة ووضوحاً وملاءمة للمهمة المطلوبة.
+    </p>
+    <p style="color: var(--muted); margin-bottom: 15px;">
+      كلما كان الأمر (Prompt) واضحاً، منظماً، ومفصلاً، زادت جودة الإجابة التي ينتجها النموذج.
+    </p>
+
+    <!-- التشبيه الذهني -->
+    <div class="metaphor-box">
+      <i class="fa-solid fa-brain"></i>
+      <div>
+        <strong style="color: var(--primary); display:block; margin-bottom: 4px;">طريقة التواصل مع العقل الاصطناعي:</strong>
+        تخيّل أنك تتحدث مع مساعد ذكي يملك معرفة هائلة، لكنه <strong>لا يقرأ الأفكار</strong>. كل ما يعرفه عن طلبك هو ما كتبته أنت بالضبط، وهندسة الأوامر هي المهارة التي تجعلك توصل فكرتك لهذا المساعد بأوضح صورة ممكنة.
+      </div>
+    </div>
+
+    <!-- القاعدة الذهبية -->
+    <div class="golden-rule">
+      <i class="fa-solid fa-gem"></i>
+      <div>
+        <strong>القاعدة الذهبية:</strong> القمامة داخل = قمامة خارج | الجودة داخل = جودة خارج.
+      </div>
+    </div>
+  </div>
+
+  <!-- ركائز هندسة الأوامر: علم وفن -->
+  <div class="grid-2">
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="feature-title">هندسة الأوامر كـ "عِلم"</div>
+      </div>
+      <p class="feature-desc">
+        لأنها مبنية على فهم دقيق لكيفية عمل النماذج اللغوية الكبيرة (LLMs)، وآليات توليد النصوص، وطبيعة التوزيع الاحتمالي للكلمات.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon" style="color: var(--accent);"><i class="fa-solid fa-palette"></i></div>
+        <div class="feature-title">هندسة الأوامر كـ "فَن"</div>
+      </div>
+      <p class="feature-desc">
+        لأنها تتطلب مهارة وإبداعاً لغوياً في صياغة السياق وتجربة أساليب متعددة ومستمرة للوصول إلى أفضل نتيجة تناسب الهدف المنشود.
+      </p>
+    </div>
+  </div>
+
+  <!-- لماذا تعتبر مهمة؟ -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+    لماذا تعتبر هندسة الأوامر مهمة؟
+  </div>
+
+  <div class="grid-3">
+    <!-- 1 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-crosshairs"></i></div>
+        <div class="feature-title">إجابات أكثر دقة</div>
+      </div>
+      <p class="feature-desc">الحصول على مخرجات تتطابق تماماً مع المطلوب دون انحراف عن سياق الموضوع.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="feature-title">تقليل الهلاوس</div>
+      </div>
+      <p class="feature-desc">الحد من الأخطاء والمعلومات المزيفة أو غير الواقعية (Hallucinations) التي قد ينتجها النموذج.</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-clock"></i></div>
+        <div class="feature-title">توفير الوقت والجهد</div>
+      </div>
+      <p class="feature-desc">تجنب المحاولات وإعادة الأسئلة العشوائية المتكررة للوصول للنتيجة المطلوبة من أول مرة.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
+        <div class="feature-title">تحسين جودة المحتوى</div>
+      </div>
+      <p class="feature-desc">رفع القيمة الفكرية واللغوية للنصوص المخرجة وجعلها جاهزة للاستخدام العملي والأكاديمي.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-sliders"></i></div>
+        <div class="feature-title">التحكم في الأسلوب والطول</div>
+      </div>
+      <p class="feature-desc">تحديد نبرة الإجابة (علمية، مبسطة، رسمية) وحجمها (عدد الكلمات أو الفقرات بدقة).</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon"><i class="fa-solid fa-network-wired"></i></div>
+        <div class="feature-title">الأتمتة والتوسع</div>
+      </div>
+      <p class="feature-desc">القوالب المصاغة جيداً يمكن ربطها بأنظمة وأدوات رقمية متقدمة لتشغيل مهام متكررة تلقائياً.</p>
+    </div>
+  </div>
+
+  <!-- مقارنة بين أمر ضعيف وأمر جيد -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-code-compare"></i></span>
+    مقارنة عملية: بين الأمر الضعيف والأمر الجيد
+  </div>
+
+  <div class="comparison-container">
+    
+    <!-- مثال 1: كتابة مقال تعليمي -->
+    <div class="comp-row">
+      <div class="comp-col weak">
+        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> أمر ضعيف</span>
+        <div class="comp-text">اكتب عن الذكاء الاصطناعي.</div>
+      </div>
+      <div class="comp-col good">
+        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> أمر جيد</span>
+        <div class="comp-text">اكتب مقالاً من 500 كلمة عن الذكاء الاصطناعي باللغة العربية مع أمثلة من التعليم.</div>
+      </div>
+    </div>
+
+    <!-- مثال 2: مثال بيداغوجي متخصص (بديل NLP) -->
+    <div class="comp-row">
+      <div class="comp-col weak">
+        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> أمر ضعيف</span>
+        <div class="comp-text">اشرح المقاربة بالكفاءات في التدريس.</div>
+      </div>
+      <div class="comp-col good">
+        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> أمر جيد</span>
+        <div class="comp-text">اشرح مفهوم "المقاربة بالكفاءات" لأساتذة متدربين، مع اقتراح وضعية-مشكلة صفية وأداة تقويم تكويني تدعم التعلم النشط.</div>
+      </div>
+    </div>
+
+    <!-- مثال 3: تلخيص النصوص -->
+    <div class="comp-row">
+      <div class="comp-col weak">
+        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> أمر ضعيف</span>
+        <div class="comp-text">لخص النص.</div>
+      </div>
+      <div class="comp-col good">
+        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> أمر جيد</span>
+        <div class="comp-text">لخص النص في 5 نقاط رئيسية مع الحفاظ على الأفكار الأساسية.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- نافذة التباين والتأثير -->
+  <div class="spotlight-card">
+    <div class="spotlight-title">
+      <i class="fa-solid fa-lightbulb"></i>
+      لاحظ كيف يمكن لإعادة صياغة بسيطة أن تُحدث فرقاً كبيراً في جودة الاستجابة:
+    </div>
+
+    <div class="spotlight-box weak">
+      <span style="color: #fc8181; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 6px;">
+        ✕ أمر ضعيف (مبهم وعام جداً):
+      </span>
+      <p style="font-size: 1rem; color: #cbd5e0;">"اكتب لي شيئاً عن الذكاء الاصطناعي."</p>
+    </div>
+
+    <div class="spotlight-box effective">
+      <span style="color: #68d391; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 6px;">
+        ✓ أمر فعّال (محدد الهدف، الجمهور، الحجم، والأسلوب):
+      </span>
+      <p style="font-size: 1rem; color: #fff;">
+        "اكتب فقرة من 150 كلمة تشرح للطلبة في المرحلة الثانوية مفهوم الذكاء الاصطناعي، باستخدام مثال واحد من الحياة اليومية، وبأسلوب مبسط."
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>
