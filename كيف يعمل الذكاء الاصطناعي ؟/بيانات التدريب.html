@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الدرس 01: بيانات التدريب (Training Data)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --danger: #e53e3e;
+    --success-light: #f0fff4;
+    --danger-light: #fff5f5;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.92;
+    font-weight: 400;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 35px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Content Cards */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 26px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+  }
+
+  /* Highlight/Example Box */
+  .example-box {
+    background: #fffaf0;
+    border-inline-start: 4px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    margin-top: 15px;
+    font-size: 0.98rem;
+  }
+
+  html[dir="ltr"] .example-box {
+    border-radius: 12px 0 0 12px;
+  }
+
+  .example-box .example-title {
+    font-weight: 800;
+    color: #c05621;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Comparison Grid */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .comp-card {
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    transition: transform 0.2s ease;
+  }
+
+  .comp-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .comp-card.high-quality {
+    background: var(--success-light);
+    border-color: #c6f6d5;
+  }
+
+  .comp-card.poor-quality {
+    background: var(--danger-light);
+    border-color: #fed7d7;
+  }
+
+  .comp-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+
+  .high-quality .comp-header { color: #22543d; }
+  .poor-quality .comp-header { color: #742a2a; }
+
+  .comp-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .comp-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+  }
+
+  .high-quality .comp-list li i { color: var(--success); flex-shrink: 0; }
+  .poor-quality .comp-list li i { color: var(--danger); flex-shrink: 0; }
+
+  /* Grid 3 Columns */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .source-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .source-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  .source-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 15px;
+  }
+
+  .source-header i {
+    color: var(--secondary);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .source-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-inline-start: 5px;
+  }
+
+  .source-list li {
+    position: relative;
+    padding-inline-start: 18px;
+    color: var(--text);
+  }
+
+  .source-list li::before {
+    content: "•";
+    color: var(--accent);
+    font-size: 1.4rem;
+    position: absolute;
+    inset-inline-start: 0;
+    top: -2px;
+  }
+
+  /* Table Style */
+  .table-responsive {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: start;
+    background: var(--card);
+  }
+
+  table th {
+    background: var(--primary);
+    color: white;
+    padding: 14px 20px;
+    font-weight: 700;
+  }
+
+  table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  table tr:last-child td {
+    border-bottom: none;
+  }
+
+  table tr:nth-child(even) {
+    background: #fdfdfd;
+  }
+
+  .type-badge {
+    background: var(--light);
+    color: var(--secondary);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+
+  /* Code & Structuring */
+  .code-container {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    direction: ltr;
+    text-align: left;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  /* Lifecycle Pipeline */
+  .pipeline-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+
+  .pipeline-step {
+    background: var(--light);
+    color: var(--primary);
+    border: 1px solid #bee3f8;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pipeline-arrow {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+
+  /* Quote Box */
+  .quote-box {
+    background: linear-gradient(135deg, #2a4365 0%, #1a365d 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-top: 35px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-box::before {
+    content: "\f10e";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    inset-inline-end: 20px;
+    bottom: -15px;
+    font-size: 5rem;
+    opacity: 0.08;
+    color: white;
+  }
+
+  .quote-text {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 2;
+    margin-bottom: 18px;
+  }
+
+  .quote-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 35px 20px 20px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.8rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
+    .pipeline-arrow { transform: rotate(90deg); margin: 4px 0; }
+    .pipeline-container { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 02.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 02 • الدرس 01</span>
+    <h1 data-i18n="headerTitle">ما هي بيانات التدريب؟ (Training Data)</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">الأساس الجوهري لتعلم النماذج الذكية: مفهومها، أهميتها مقارنة بالخوارزميات، مصادرها، وهيكلتها.</div>
+  </div>
+
+  <!-- 1. Concept of Training Data -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-brain"></i></span>
+    <span data-i18n="sec1Title">مفهوم بيانات التدريب</span>
+  </div>
+
+  <div class="content-card">
+    <p data-i18n="sec1P1">
+      <strong>بيانات التدريب</strong> هي المعلومات التي يتعلم منها نموذج الذكاء الاصطناعي. تماماً كما يتعلم الطالب من الكتب والأمثلة والتمارين، يتعلم النموذج الإحصائي من البيانات المدخلة إليه.
+    </p>
+    <p style="margin-top: 10px;" data-i18n="sec1P2">
+      <i class="fa-solid fa-check-circle" style="color: var(--secondary);"></i>
+      <strong>قاعدة أساسية:</strong> كلما كانت البيانات أكثر جودة وتنوعاً، كان النموذج أكثر ذكاءً، كفاءةً ودقةً في أداء المهام.
+    </p>
+
+    <div class="example-box">
+      <div class="example-title">
+        <i class="fa-solid fa-lightbulb"></i> <span data-i18n="exTitle">مثال توضيحي:</span>
+      </div>
+      <span data-i18n="exDesc">إذا أردنا تدريب نموذج للتعرف على <strong>القطط</strong>، فإن بيانات التدريب ستكون عبارة عن آلاف الصور المتباينة للقطط (من زوايا، سلالات، وإضاءات مختلفة) وصور أخرى لأشياء وحيوانات ليست قططاً لتمكين النموذج من استخلاص الفروق بدقة.</span>
+    </div>
+  </div>
+
+  <!-- 2. Why Data Matters More Than the Algorithm -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
+    <span data-i18n="sec2Title">لماذا تعتبر البيانات أهم من الخوارزمية؟</span>
+  </div>
+
+  <div class="content-card">
+    <p style="margin-bottom: 20px;" data-i18n="sec2P">
+      في مشاريع الذكاء الاصطناعي الحديثة، غالباً ما تكون <strong>جودة البيانات</strong> أهم بكثير من تعقيد أو اختيار الخوارزمية نفسها:
+    </p>
+
+    <div class="comparison-grid">
+      <!-- High Quality -->
+      <div class="comp-card high-quality">
+        <div class="comp-header">
+          <i class="fa-solid fa-circle-check"></i> <span data-i18n="goodDataTitle">بيانات عالية الجودة</span>
+        </div>
+        <ul class="comp-list">
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="gdItem1">نتائج موثوقة ومستقرة</span></li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="gdItem2">تمثيل أفضل وأشمل للواقع</span></li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="gdItem3">تعلم أسرع واستهلاك أقل للموارد</span></li>
+        </ul>
+      </div>
+
+      <!-- Poor Quality -->
+      <div class="comp-card poor-quality">
+        <div class="comp-header">
+          <i class="fa-solid fa-circle-xmark"></i> <span data-i18n="badDataTitle">بيانات ضعيفة / غير منقاة</span>
+        </div>
+        <ul class="comp-list">
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="bdItem1">نتائج غير دقيقة وتوليد خاطئ</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="bdItem2">تحيزات وانحرافات كثيرة (Biases)</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="bdItem3">صعوبة التعلم وفشل في التعميم</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Sources of Training Data -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-server"></i></span>
+    <span data-i18n="sec3Title">مصادر بيانات التدريب</span>
+  </div>
+
+  <div class="grid-3">
+    <!-- Internet -->
+    <div class="source-card">
+      <div class="source-header">
+        <i class="fa-solid fa-globe"></i>
+        <span data-i18n="srcInternetTitle">شبكة الإنترنت</span>
+      </div>
+      <ul class="source-list">
+        <li data-i18n="srcInt1">المواقع الإلكترونية العامة</li>
+        <li data-i18n="srcInt2">المنصات الإخبارية</li>
+        <li data-i18n="srcInt3">المدونات التقنية والمتخصصة</li>
+        <li data-i18n="srcInt4">المنتديات ومجتمعات النقاش</li>
+      </ul>
+    </div>
+
+    <!-- Social Media -->
+    <div class="source-card">
+      <div class="source-header">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        <span data-i18n="srcSocialTitle">وسائل التواصل الاجتماعي</span>
+      </div>
+      <ul class="source-list">
+        <li data-i18n="srcSoc1">منصة إكس (Twitter سابقاً)</li>
+        <li data-i18n="srcSoc2">فيسبوك (Facebook)</li>
+        <li data-i18n="srcSoc3">إنستغرام (Instagram)</li>
+        <li data-i18n="srcSoc4">تيك توك (TikTok)</li>
+      </ul>
+    </div>
+
+    <!-- Enterprise & Institutions -->
+    <div class="source-card">
+      <div class="source-header">
+        <i class="fa-solid fa-building"></i>
+        <span data-i18n="srcEnterpriseTitle">المؤسسات والشركات</span>
+      </div>
+      <ul class="source-list">
+        <li data-i18n="srcEnt1">السجلات الإدارية والمعاملات</li>
+        <li data-i18n="srcEnt2">قواعد البيانات الداخلية للمؤسسات</li>
+        <li data-i18n="srcEnt3">بيانات وسلوكيات العملاء</li>
+        <li data-i18n="srcEnt4">الأرشيف الأكاديمي والمهني</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. Data Modalities -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-folder-tree"></i></span>
+    <span data-i18n="sec4Title">أنواع البيانات المستخدمة في الذكاء الاصطناعي</span>
+  </div>
+
+  <div class="content-card" style="padding: 0; overflow: hidden;">
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;" data-i18n="thDataType">نوع البيانات</th>
+            <th data-i18n="thExamples">أمثلة وتطبيقات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="type-badge"><i class="fa-regular fa-file-lines"></i> <span data-i18n="typeText">نصوص</span></span></td>
+            <td data-i18n="exText">كتب، مقالات علمية، رسائل إلكترونية، وثائق رسمية</td>
+          </tr>
+          <tr>
+            <td><span class="type-badge"><i class="fa-regular fa-image"></i> <span data-i18n="typeImage">صور</span></span></td>
+            <td data-i18n="exImage">صور طبية وأشعة، صور وجوه، مناظر طبيعية، رسومات تصويرية</td>
+          </tr>
+          <tr>
+            <td><span class="type-badge"><i class="fa-solid fa-microphone"></i> <span data-i18n="typeAudio">صوت</span></span></td>
+            <td data-i18n="exAudio">تسجيلات صوتية، بودكاست، أوامر صوتية، مقاطع موسيقية</td>
+          </tr>
+          <tr>
+            <td><span class="type-badge"><i class="fa-solid fa-video"></i> <span data-i18n="typeVideo">فيديو</span></span></td>
+            <td data-i18n="exVideo">تسجيلات كاميرات المراقبة، فيديوهات تعليمية، مقاطع منصات التواصل</td>
+          </tr>
+          <tr>
+            <td><span class="type-badge"><i class="fa-solid fa-chart-line"></i> <span data-i18n="typeNumeric">بيانات رقمية</span></span></td>
+            <td data-i18n="exNumeric">مبيعات وأسعار، جداول مالية، حساسات الطقس، قياسات حيوية</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 5. Data Cleaning & Structuring -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-filter"></i></span>
+    <span data-i18n="sec5Title">معالجة البيانات: التنظيف والهيكلة</span>
+  </div>
+
+  <div class="comparison-grid">
+    <!-- Cleaning -->
+    <div class="content-card">
+      <h3 style="color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-broom" style="color: var(--accent);"></i> <span data-i18n="cleanTitle">تنظيف البيانات (Data Cleaning)</span>
+      </h3>
+      <p style="font-size: 0.95rem; margin-bottom: 12px;" data-i18n="cleanIntro">
+        تحتوي البيانات الخام غالباً على شوائب وأخطاء تؤدي لتضليل النموذج، ومن أشهر هذه المشاكل:
+      </p>
+      <ul style="padding-inline-start: 20px; font-size: 0.95rem; color: var(--text);">
+        <li><strong data-i18n="cleanItem1Key">قيم مفقودة:</strong> <span data-i18n="cleanItem1Val">حقول فارغة لم تُسجل.</span></li>
+        <li><strong data-i18n="cleanItem2Key">بيانات مكررة:</strong> <span data-i18n="cleanItem2Val">تكرار السجلات دون فائدة.</span></li>
+        <li><strong data-i18n="cleanItem3Key">أخطاء إملائية:</strong> <span data-i18n="cleanItem3Val">كلمات خاطئة لغوياً أو تصنيفياً.</span></li>
+        <li><strong data-i18n="cleanItem4Key">قيم غير منطقية:</strong> <span data-i18n="cleanItem4Val">مدخلات شاذة أو غير واقعية (Outliers).</span></li>
+      </ul>
+    </div>
+
+    <!-- Structuring -->
+    <div class="content-card">
+      <h3 style="color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-sitemap" style="color: var(--secondary);"></i> <span data-i18n="structTitle">هيكلة البيانات (Data Structuring)</span>
+      </h3>
+      <p style="font-size: 0.95rem; margin-bottom: 8px;" data-i18n="structIntro">
+        بعد التنظيف والوسم يتم ترتيب البيانات في صيغ ملائمة للتدريب:
+      </p>
+      
+      <!-- CSV Example -->
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--muted);" data-i18n="csvLabel">مثال CSV:</span>
+      <div class="code-container">Text,Sentiment
+"I love NLP",Positive
+"I hate bugs",Negative</div>
+
+      <!-- JSON Example -->
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-top: 10px; display: block;" data-i18n="jsonLabel">مثال JSON:</span>
+      <div class="code-container">{
+  "text": "I love NLP",
+  "label": "Positive"
+}</div>
+    </div>
+  </div>
+
+  <!-- 6. Data Lifecycle Pipeline -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-arrows-spin"></i></span>
+    <span data-i18n="sec6Title">دورة حياة بيانات التدريب</span>
+  </div>
+
+  <div class="pipeline-container">
+    <div class="pipeline-step"><i class="fa-solid fa-download"></i> <span data-i18n="pipe1">جمع البيانات</span></div>
+    <div class="pipeline-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+    <div class="pipeline-step"><i class="fa-solid fa-broom"></i> <span data-i18n="pipe2">تنظيف البيانات</span></div>
+    <div class="pipeline-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+    <div class="pipeline-step"><i class="fa-solid fa-tag"></i> <span data-i18n="pipe3">وسم البيانات</span></div>
+    <div class="pipeline-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+    <div class="pipeline-step"><i class="fa-solid fa-network-wired"></i> <span data-i18n="pipe4">هيكلة البيانات</span></div>
+    <div class="pipeline-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+    <div class="pipeline-step"><i class="fa-solid fa-scissors"></i> <span data-i18n="pipe5">تقسيم البيانات</span></div>
+    <div class="pipeline-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+    <div class="pipeline-step"><i class="fa-solid fa-gear"></i> <span data-i18n="pipe6">التدريب</span></div>
+    <div class="pipeline-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+    <div class="pipeline-step"><i class="fa-solid fa-square-check"></i> <span data-i18n="pipe7">التقييم</span></div>
+  </div>
+
+  <!-- 7. Conclusion & Golden Axiom -->
+  <div class="quote-box">
+    <div class="quote-text" data-i18n="quoteMain">
+      « النماذج الذكية ليست سحراً — إنها مرآة لبياناتها. من يُتقن جمع البيانات وتنظيفها وهيكلتها وحوكمتها، يملك الميزة الحقيقية في عالم الذكاء الاصطناعي. الخوارزميات متاحة للجميع؛ البيانات الجيدة ليست كذلك. »
+    </div>
+    <p style="opacity: 0.9; margin-bottom: 15px; font-size: 1rem;" data-i18n="quoteSub">
+      <strong>الحجم وحده لا يكفي!</strong> تريليونات من البيانات السيئة أخطر من ملايين من البيانات الجيدة الصحيحة.
+    </p>
+    <div class="quote-badge">
+      <i class="fa-solid fa-fire"></i> <span data-i18n="quoteBadge">الجودة + الحجم + التنوع = المعادلة الصحيحة</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس 01: بيانات التدريب (Training Data)",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 02 • الدرس 01",
+    headerTitle: "ما هي بيانات التدريب؟ (Training Data)",
+    headerSubtitle: "الأساس الجوهري لتعلم النماذج الذكية: مفهومها، أهميتها مقارنة بالخوارزميات، مصادرها، وهيكلتها.",
+    sec1Title: "مفهوم بيانات التدريب",
+    sec1P1: "<strong>بيانات التدريب</strong> هي المعلومات التي يتعلم منها نموذج الذكاء الاصطناعي. تماماً كما يتعلم الطالب من الكتب والأمثلة والتمارين، يتعلم النموذج الإحصائي من البيانات المدخلة إليه.",
+    sec1P2: "<i class=\"fa-solid fa-check-circle\" style=\"color: var(--secondary);\"></i> <strong>قاعدة أساسية:</strong> كلما كانت البيانات أكثر جودة وتنوعاً، كان النموذج أكثر ذكاءً، كفاءةً ودقةً في أداء المهام.",
+    exTitle: "مثال توضيحي:",
+    exDesc: "إذا أردنا تدريب نموذج للتعرف على <strong>القطط</strong>، فإن بيانات التدريب ستكون عبارة عن آلاف الصور المتباينة للقطط (من زوايا، سلالات، وإضاءات مختلفة) وصور أخرى لأشياء وحيوانات ليست قططاً لتمكين النموذج من استخلاص الفروق بدقة.",
+    sec2Title: "لماذا تعتبر البيانات أهم من الخوارزمية؟",
+    sec2P: "في مشاريع الذكاء الاصطناعي الحديثة، غالباً ما تكون <strong>جودة البيانات</strong> أهم بكثير من تعقيد أو اختيار الخوارزمية نفسها:",
+    goodDataTitle: "بيانات عالية الجودة",
+    gdItem1: "نتائج موثوقة ومستقرة",
+    gdItem2: "تمثيل أفضل وأشمل للواقع",
+    gdItem3: "تعلم أسرع واستهلاك أقل للموارد",
+    badDataTitle: "بيانات ضعيفة / غير منقاة",
+    bdItem1: "نتائج غير دقيقة وتوليد خاطئ",
+    bdItem2: "تحيزات وانحرافات كثيرة (Biases)",
+    bdItem3: "صعوبة التعلم وفشل في التعميم",
+    sec3Title: "مصادر بيانات التدريب",
+    srcInternetTitle: "شبكة الإنترنت",
+    srcInt1: "المواقع الإلكترونية العامة",
+    srcInt2: "المنصات الإخبارية",
+    srcInt3: "المدونات التقنية والمتخصصة",
+    srcInt4: "المنتديات ومجتمعات النقاش",
+    srcSocialTitle: "وسائل التواصل الاجتماعي",
+    srcSoc1: "منصة إكس (Twitter سابقاً)",
+    srcSoc2: "فيسبوك (Facebook)",
+    srcSoc3: "إنستغرام (Instagram)",
+    srcSoc4: "تيك توك (TikTok)",
+    srcEnterpriseTitle: "المؤسسات والشركات",
+    srcEnt1: "السجلات الإدارية والمعاملات",
+    srcEnt2: "قواعد البيانات الداخلية للمؤسسات",
+    srcEnt3: "بيانات وسلوكيات العملاء",
+    srcEnt4: "الأرشيف الأكاديمي والمهني",
+    sec4Title: "أنواع البيانات المستخدمة في الذكاء الاصطناعي",
+    thDataType: "نوع البيانات",
+    thExamples: "أمثلة وتطبيقات",
+    typeText: "نصوص",
+    exText: "كتب، مقالات علمية، رسائل إلكترونية، وثائق رسمية",
+    typeImage: "صور",
+    exImage: "صور طبية وأشعة، صور وجوه، مناظر طبيعية، رسومات تصويرية",
+    typeAudio: "صوت",
+    exAudio: "تسجيلات صوتية، بودكاست، أوامر صوتية، مقاطع موسيقية",
+    typeVideo: "فيديو",
+    exVideo: "تسجيلات كاميرات المراقبة، فيديوهات تعليمية، مقاطع منصات التواصل",
+    typeNumeric: "بيانات رقمية",
+    exNumeric: "مبيعات وأسعار، جداول مالية، حساسات الطقس، قياسات حيوية",
+    sec5Title: "معالجة البيانات: التنظيف والهيكلة",
+    cleanTitle: "تنظيف البيانات (Data Cleaning)",
+    cleanIntro: "تحتوي البيانات الخام غالباً على شوائب وأخطاء تؤدي لتضليل النموذج، ومن أشهر هذه المشاكل:",
+    cleanItem1Key: "قيم مفقودة:",
+    cleanItem1Val: "حقول فارغة لم تُسجل.",
+    cleanItem2Key: "بيانات مكررة:",
+    cleanItem2Val: "تكرار السجلات دون فائدة.",
+    cleanItem3Key: "أخطاء إملائية:",
+    cleanItem3Val: "كلمات خاطئة لغوياً أو تصنيفياً.",
+    cleanItem4Key: "قيم غير منطقية:",
+    cleanItem4Val: "مدخلات شاذة أو غير واقعية (Outliers).",
+    structTitle: "هيكلة البيانات (Data Structuring)",
+    structIntro: "بعد التنظيف والوسم يتم ترتيب البيانات في صيغ ملائمة للتدريب:",
+    csvLabel: "مثال CSV:",
+    jsonLabel: "مثال JSON:",
+    sec6Title: "دورة حياة بيانات التدريب",
+    pipe1: "جمع البيانات",
+    pipe2: "تنظيف البيانات",
+    pipe3: "وسم البيانات",
+    pipe4: "هيكلة البيانات",
+    pipe5: "تقسيم البيانات",
+    pipe6: "التدريب",
+    pipe7: "التقييم",
+    quoteMain: "« النماذج الذكية ليست سحراً — إنها مرآة لبياناتها. من يُتقن جمع البيانات وتنظيفها وهيكلتها وحوكمتها، يملك الميزة الحقيقية في عالم الذكاء الاصطناعي. الخوارزميات متاحة للجميع؛ البيانات الجيدة ليست كذلك. »",
+    quoteSub: "<strong>الحجم وحده لا يكفي!</strong> تريليونات من البيانات السيئة أخطر من ملايين من البيانات الجيدة الصحيحة.",
+    quoteBadge: "الجودة + الحجم + التنوع = المعادلة الصحيحة",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Leçon 01 : Données d'Entraînement (Training Data)",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 02 • Leçon 01",
+    headerTitle: "Les Données d'Entraînement (Training Data)",
+    headerSubtitle: "Le socle fondamental de l'apprentissage machine : concept, suprématie des données face aux algorithmes, typologie et structuration.",
+    sec1Title: "Notion de Données d'Entraînement",
+    sec1P1: "Les <strong>données d'entraînement</strong> constituent le corpus d'apprentissage à partir duquel l'IA modélise ses inférences. Tout comme un étudiant forge son savoir au fil de manuels et d'exercices, le modèle extrait ses règles statistiques des données ingérées.",
+    sec1P2: "<i class=\"fa-solid fa-check-circle\" style=\"color: var(--secondary);\"></i> <strong>Axiome fondamental :</strong> Plus le corpus est rigoureux, varié et équilibré, plus le système s'avère perspicace et fidèle dans ses tâches.",
+    exTitle: "Illustration didactique :",
+    exDesc: "Pour calibrer un modèle de reconnaissance de <strong>félins</strong>, le jeu de données comportera des dizaines de milliers de photographies de chats (races variées, angles hétérogènes, éclairages contrastés) associées à des contre-exemples pour contraindre l'algorithme à discriminer les attributs cruciaux.",
+    sec2Title: "Pourquoi les données prévalent-elles sur les algorithmes ?",
+    sec2P: "Dans l'ingénierie contemporaine de l'IA, la <strong>qualité des données</strong> surpasse presque toujours la sophistication du code algorithmique pur :",
+    goodDataTitle: "Données de Haute Qualité",
+    gdItem1: "Inférences reproductibles et stables",
+    gdItem2: "Généralisation fidèle des réalités complexes",
+    gdItem3: "Convergence accélérée et frugalité de calcul",
+    badDataTitle: "Données Bruitées / Mal Curationnées",
+    bdItem1: "Inexactitudes et taux d'hallucinations élevé",
+    bdItem2: "Biais cognitifs et dérives discriminatoires",
+    bdItem3: "Surapprentissage et échec de généralisation",
+    sec3Title: "Sources de Provenance des Données",
+    srcInternetTitle: "Toile Mondiale (Web)",
+    srcInt1: "Portails d'information publics",
+    srcInt2: "Dépêches de presse généraliste",
+    srcInt3: "Blogs techniques et publications expertes",
+    srcInt4: "Forums collaboratifs et communautés",
+    srcSocialTitle: "Médias Sociaux",
+    srcSoc1: "Plateforme X (ex-Twitter)",
+    srcSoc2: "Écosystème Facebook",
+    srcSoc3: "Flux Instagram",
+    srcSoc4: "Formats vidéo TikTok",
+    srcEnterpriseTitle: "Organisations & Entreprises",
+    srcEnt1: "Registres de gestion administrative",
+    srcEnt2: "Bases de données patrimoniales",
+    srcEnt3: "Télémétrie d'usage et comportements clients",
+    srcEnt4: "Archives documentaires et mémoires de recherche",
+    sec4Title: "Typologies et Modalités de Données",
+    thDataType: "Modalité",
+    thExamples: "Cas d'usage et exemples",
+    typeText: "Textuel",
+    exText: "Traités scientifiques, thèses, corpus littéraires, correspondances",
+    typeImage: "Iconographique",
+    exImage: "Imagerie médicale (IRM, scanners), clichés satellites, portraits",
+    typeAudio: "Acoustique",
+    exAudio: "Enregistrements vocaux, podcasts, interfaces vocales, œuvres sonores",
+    typeVideo: "Vidéographique",
+    exVideo: "Vidéoprotection, tutoriels pédagogiques, séquences diffusées en ligne",
+    typeNumeric: "Tabulaire / Métrique",
+    exNumeric: "Séries temporelles financières, relevés météorologiques, capteurs IoT",
+    sec5Title: "Préparation des Données : Nettoyage et Structuration",
+    cleanTitle: "Nettoyage des Données (Data Cleaning)",
+    cleanIntro: "Les jeux bruts regorgent d'artefacts dégradant les prédictions, parmi lesquels :",
+    cleanItem1Key: "Valeurs manquantes :",
+    cleanItem1Val: "Champs vides ou omissions de saisie.",
+    cleanItem2Key: "Doublons :",
+    cleanItem2Val: "Redondances faussant la représentativité.",
+    cleanItem3Key: "Bruit textuel :",
+    cleanItem3Val: "Fautes orthographiques et incohérences syntaxiques.",
+    cleanItem4Key: "Valeurs aberrantes :",
+    cleanItem4Val: "Artefacts physiques ou mesures hors-normes (Outliers).",
+    structTitle: "Structuration et Formatage (Data Structuring)",
+    structIntro: "Après assainissement et labellisation, les données sont sérialisées sous formats normalisés :",
+    csvLabel: "Format CSV :",
+    jsonLabel: "Format JSON :",
+    sec6Title: "Cycle de Vie Opérationnel des Données",
+    pipe1: "Collecte",
+    pipe2: "Nettoyage",
+    pipe3: "Étiquetage",
+    pipe4: "Structuration",
+    pipe5: "Segmentation",
+    pipe6: "Entraînement",
+    pipe7: "Évaluation",
+    quoteMain: "« Les modèles neuronaux ne relèvent pas de la magie : ils sont le strict miroir de leurs données. Quiconque maîtrise la collecte, le nettoyage, la structuration et la gouvernance des données détient le véritable levier de l'IA. Les algorithmes sont ouverts ; les données exceptionnelles sont rares. »",
+    quoteSub: "<strong>Le volume ne suffit pas !</strong> Des trillions de données corrompues sont infiniment plus pernicieuses que des millions d'exemples irréprochables.",
+    quoteBadge: "Qualité + Volume + Diversité = Équation Gagnante",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lesson 01: Training Data",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 02 • Lesson 01",
+    headerTitle: "What is Training Data?",
+    headerSubtitle: "The foundational bedrock of machine learning: conceptual definition, data supremacy over algorithms, acquisition sources, and curation.",
+    sec1Title: "Concept of Training Data",
+    sec1P1: "<strong>Training Data</strong> represents the foundational corpus from which an artificial intelligence model learns. Exactly as students acquire mastery through textbooks, solved problems, and drills, statistical models deduce rules from ingested datasets.",
+    sec1P2: "<i class=\"fa-solid fa-check-circle\" style=\"color: var(--secondary);\"></i> <strong>Core Axiom:</strong> The higher the quality and diversity of the data, the more articulate, reliable, and capable the resulting model becomes.",
+    exTitle: "Practical Analogy:",
+    exDesc: "To train a vision model to distinguish <strong>cats</strong>, the training set must contain tens of thousands of varied cat photographs (spanning multiple breeds, angles, lighting scenarios) juxtaposed with non-cat artifacts to enable sharp feature discrimination.",
+    sec2Title: "Why Data Matters More Than the Algorithm",
+    sec2P: "In modern applied artificial intelligence, <strong>data hygiene and provenance</strong> consistently outweigh mere algorithmic complexity:",
+    goodDataTitle: "High-Quality Data",
+    gdItem1: "Stable, reproducible, and reliable inference",
+    gdItem2: "Representative real-world generalization",
+    gdItem3: "Accelerated convergence and compute efficiency",
+    badDataTitle: "Noisy / Uncurated Data",
+    bdItem1: "Inaccurate, volatile, and hallucinatory outputs",
+    bdItem2: "Amplified social and algorithmic biases",
+    bdItem3: "Optimization bottlenecks and catastrophic overfitting",
+    sec3Title: "Training Data Acquisition Sources",
+    srcInternetTitle: "The Public Web",
+    srcInt1: "Publicly accessible encyclopedic portals",
+    srcInt2: "News syndicates and journalism databases",
+    srcInt3: "Specialized engineering blogs and repositories",
+    srcInt4: "Discussion forums and technical communities",
+    srcSocialTitle: "Social Media Platforms",
+    srcSoc1: "Platform X (formerly Twitter)",
+    srcSoc2: "Facebook ecosystem",
+    srcSoc3: "Instagram media feeds",
+    srcSoc4: "TikTok multimedia data streams",
+    srcEnterpriseTitle: "Institutions & Industry",
+    srcEnt1: "Administrative logs and transactional data",
+    srcEnt2: "Internal enterprise knowledge repositories",
+    srcEnt3: "Client interaction and telemetry records",
+    srcEnt4: "Academic archives and clinical documentation",
+    sec4Title: "Modalities of AI Training Data",
+    thDataType: "Modality",
+    thExamples: "Representative Applications",
+    typeText: "Text",
+    exText: "Peer-reviewed manuscripts, literary volumes, correspondence, legal briefs",
+    typeImage: "Imagery",
+    exImage: "Diagnostic imaging (X-rays, MRI scans), facial datasets, landscapes",
+    typeAudio: "Acoustics",
+    exAudio: "Speech audio, podcasts, voice assistant commands, acoustic music",
+    typeVideo: "Video",
+    exVideo: "Surveillance footage, recorded lectures, digital video streaming",
+    typeNumeric: "Tabular & Sensor Data",
+    exNumeric: "Financial time series, commodity valuations, IoT weather telemetry",
+    sec5Title: "Data Preprocessing: Cleansing & Structuring",
+    cleanTitle: "Data Cleansing",
+    cleanIntro: "Raw scraped data inevitably contains structural impurities that undermine performance, such as:",
+    cleanItem1Key: "Missing Values:",
+    cleanItem1Val: "Omitted features and unrecorded database fields.",
+    cleanItem2Key: "Duplicate Records:",
+    cleanItem2Val: "Redundancies that skew probability distributions.",
+    cleanItem3Key: "Syntactic Noise:",
+    cleanItem3Val: "Misspellings, malformed encodings, and labeling errors.",
+    cleanItem4Key: "Outliers:",
+    cleanItem4Val: "Physically implausible or corrupted observations.",
+    structTitle: "Data Structuring & Serialization",
+    structIntro: "Subsequent to sanitization and annotation, data is organized into standardized schemas:",
+    csvLabel: "CSV Format Sample:",
+    jsonLabel: "JSON Format Sample:",
+    sec6Title: "The Training Data Lifecycle Pipeline",
+    pipe1: "Ingestion",
+    pipe2: "Cleaning",
+    pipe3: "Labeling",
+    pipe4: "Structuring",
+    pipe5: "Splitting",
+    pipe6: "Training",
+    pipe7: "Evaluation",
+    quoteMain: "« Neural models are not magical constructs — they are the direct mirror of their training data. Whoever masters data harvesting, curation, validation, and governance holds the decisive advantage in AI. Algorithms are democratized; exceptional data is not. »",
+    quoteSub: "<strong>Scale alone is insufficient!</strong> Trillions of corrupted tokens inflict vastly more damage than millions of pristine, curated observations.",
+    quoteBadge: "Quality + Volume + Diversity = The Winning Formula",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Adjust Pipeline arrows
+  document.querySelectorAll('.arrow-flow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-arrow-left arrow-flow' : 'fa-solid fa-arrow-right arrow-flow';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

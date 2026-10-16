@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الدرس 04: تحليل موثوقية المخرجات</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --accent-red: #e53e3e;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
+  }
+  
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 45px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.05rem;
+    opacity: 0.95;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  /* Intro Card / Questions */
+  .intro-card {
+    background: var(--card);
+    border-inline-start: 5px solid var(--accent);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--border);
+    border-inline-start-width: 5px;
+  }
+
+  .intro-card h2 {
+    color: var(--primary);
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 35px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Criteria Grid */
+  .criteria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+  }
+
+  .criteria-card {
+    background: var(--card);
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .criteria-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  .criteria-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .criteria-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--light);
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .criteria-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .criteria-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* Table Style */
+  .table-responsive {
+    overflow-x: auto;
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    margin-bottom: 35px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: start;
+  }
+
+  th, td {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    background: #edf2f7;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background: #f8fafc;
+  }
+
+  /* Prompt Cards */
+  .prompt-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+
+  .prompt-header {
+    background: #f1f5f9;
+    padding: 12px 20px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prompt-body {
+    padding: 18px 20px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #334155;
+    background: #fafbfc;
+    line-height: 1.9;
+  }
+
+  /* Techniques List */
+  .strategy-box {
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 35px;
+  }
+
+  .strategy-item {
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .strategy-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .strategy-item h4 {
+    color: var(--secondary);
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .strategy-quote {
+    background: #f8fafc;
+    border-inline-start: 3px solid var(--secondary);
+    padding: 8px 15px;
+    margin-top: 6px;
+    font-size: 0.92rem;
+    color: #475569;
+    border-radius: 0 6px 6px 0;
+  }
+
+  html[dir="ltr"] .strategy-quote {
+    border-radius: 6px 0 0 6px;
+  }
+
+  /* Callout Alert */
+  .alert-warning {
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    border-inline-start: 5px solid var(--accent-red);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 30px 0;
+    color: #742a2a;
+  }
+
+  .alert-warning h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #9b2c2c;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.7rem; }
+    .back-link { position: relative; inset-inline-start: 0; margin-bottom: 15px; display: inline-flex; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 02.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToChapter">العودة لقائمة الفصل</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 02 • الدرس 04</span>
+    <h1 data-i18n="headerTitle">تحليل موثوقية المخرجات</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">تطوير حس نقدي لتقييم صحة وموثوقية المعلومات التي يولدها الذكاء الاصطناعي واكتشاف الهلوسة قبل اعتمادها أكاديمياً.</div>
+  </div>
+
+  <!-- Intro Card -->
+  <div class="intro-card">
+    <h2><i class="fa-solid fa-circle-question"></i> <span data-i18n="introQ">هل كل إجابة تبدو صحيحة هي إجابة صحيحة؟</span></h2>
+    <p data-i18n="introA"><strong>لا.</strong> النموذج التوليدي ينتج مخرجات لغوية بناءً على الأنماط الإحصائية التي تعلمها، وليس لديه ضمان تلقائي بأن كل جملة ينتجها تمثل حقيقة يمكن إثباتها.</p>
+  </div>
+
+  <!-- Section 1: Reliability Criteria -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-clipboard-check"></i></span>
+    <span data-i18n="sec1Title">ما معنى «موثوقية المخرج»؟</span>
+  </div>
+  <p style="margin-bottom: 20px; color: var(--muted);" data-i18n="sec1Intro">الموثوقية ليست خاصية واحدة مجردة، بل هي مجموعة متكاملة من المعايير المعيارية:</p>
+
+  <div class="criteria-grid">
+    <div class="criteria-card">
+      <div class="criteria-head">
+        <div class="criteria-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <div class="criteria-title" data-i18n="c1Title">الصحة — Accuracy</div>
+      </div>
+      <div class="criteria-desc" data-i18n="c1Desc">هل المعلومة دقيقة وصحيحة فعلاً من الناحية الواقعية والعلمية؟</div>
+    </div>
+
+    <div class="criteria-card">
+      <div class="criteria-head">
+        <div class="criteria-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div class="criteria-title" data-i18n="c2Title">الدليل — Evidence</div>
+      </div>
+      <div class="criteria-desc" data-i18n="c2Desc">هل توجد أدلة ومراجع علمية واضحة تدعم الادعاء المقدم؟</div>
+    </div>
+
+    <div class="criteria-card">
+      <div class="criteria-head">
+        <div class="criteria-icon"><i class="fa-solid fa-link"></i></div>
+        <div class="criteria-title" data-i18n="c3Title">قابلية التحقق — Verifiability</div>
+      </div>
+      <div class="criteria-desc" data-i18n="c3Desc">هل يستطيع شخص أو باحث آخر تتبع خطواتك والتحقق من النتيجة ذاتها؟</div>
+    </div>
+
+    <div class="criteria-card">
+      <div class="criteria-head">
+        <div class="criteria-icon"><i class="fa-solid fa-calendar-days"></i></div>
+        <div class="criteria-title" data-i18n="c4Title">الحداثة — Currency</div>
+      </div>
+      <div class="criteria-desc" data-i18n="c4Desc">هل المعلومات مواكبة ومناسبة للفترة الزمنية المطلوبة للبحث؟</div>
+    </div>
+
+    <div class="criteria-card">
+      <div class="criteria-head">
+        <div class="criteria-icon"><i class="fa-solid fa-crosshairs"></i></div>
+        <div class="criteria-title" data-i18n="c5Title">الملاءمة — Relevance</div>
+      </div>
+      <div class="criteria-desc" data-i18n="c5Desc">هل المصدر المستخدم والمعلومة المسترجعة مناسبان لسياق السؤال المطروح؟</div>
+    </div>
+
+    <div class="criteria-card">
+      <div class="criteria-head">
+        <div class="criteria-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="criteria-title" data-i18n="c6Title">جودة المصدر — Source Quality</div>
+      </div>
+      <div class="criteria-desc" data-i18n="c6Desc">هل المصدر ذو ثقل أكاديمي رصين، أم رسمي، أم مصدر أولي موثوق؟</div>
+    </div>
+  </div>
+
+  <!-- Section 2: Source Evaluation Table -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
+    <span data-i18n="sec2Title">كيف نقيّم المصادر؟</span>
+  </div>
+  <p style="margin-bottom: 15px; color: var(--muted);" data-i18n="sec2Intro">ليست كل المصادر متساوية في الموثوقية العلمية؛ يوضح الجدول التالي موازين التقييم:</p>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="thSrcType">نوع المصدر</th>
+          <th data-i18n="thSrcEx">مثال</th>
+          <th data-i18n="thSrcVal">القيمة المحتملة</th>
+          <th data-i18n="thSrcAudit">ما الذي يجب فحصه؟</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong data-i18n="srcT1Type">مصدر أولي</strong></td>
+          <td data-i18n="srcT1Ex">بحث أصلي، بيانات خام، تقرير رسمي</td>
+          <td data-i18n="srcT1Val">مرتفعة جداً للسؤال الذي يغطيه المصدر</td>
+          <td data-i18n="srcT1Audit">المنهج، البيانات، السياق</td>
+        </tr>
+        <tr>
+          <td><strong data-i18n="srcT2Type">مراجعة علمية</strong></td>
+          <td data-i18n="srcT2Ex">Systematic Review (مراجعة منهجية)</td>
+          <td data-i18n="srcT2Val">مفيدة ومثالية لتجميع الأدلة العلمية</td>
+          <td data-i18n="srcT2Audit">معايير الاختيار وحداثة البحث</td>
+        </tr>
+        <tr>
+          <td><strong data-i18n="srcT3Type">مصدر مؤسسي</strong></td>
+          <td data-i18n="srcT3Ex">جامعة معتمدة، مؤسسة بحثية رسمية</td>
+          <td data-i18n="srcT3Val">مفيد حسب موضوع التخصص</td>
+          <td data-i18n="srcT3Audit">الجهة المانحة، التاريخ، والمنهج</td>
+        </tr>
+        <tr>
+          <td><strong data-i18n="srcT4Type">مقال عام</strong></td>
+          <td data-i18n="srcT4Ex">موقع إخباري أو منصة تعليمية عامة</td>
+          <td data-i18n="srcT4Val">قد يكون مفيداً لأخذ سياق عام أولي</td>
+          <td data-i18n="srcT4Audit">المصدر الأصلي للادعاء والكاتب</td>
+        </tr>
+        <tr>
+          <td><strong data-i18n="srcT5Type">منشور مجهول</strong></td>
+          <td data-i18n="srcT5Ex">حساب مجهول، منتدى مفتوح، شبكة تواصل</td>
+          <td data-i18n="srcT5Val">لا يكفي وحده عادةً</td>
+          <td data-i18n="srcT5Audit">الأدلة والمصدر الأصلي الكامن خلفه</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 3: Prompts for Verification -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-terminal"></i></span>
+    <span data-i18n="sec3Title">أوامر عملية لاختبار الموثوقية (Prompts)</span>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header"><i class="fa-solid fa-code"></i> <span data-i18n="p1Title">تفكيك الادعاءات — Prompt 1</span></div>
+    <div class="prompt-body" data-i18n="p1Body">
+      حلّل النص التالي إلى مجموعة من الادعاءات المنفصلة القابلة للتحقق. لكل ادعاء:<br>
+      1. اكتب الادعاء بصياغة واضحة.<br>
+      2. حدد نوعه: (حقيقة، رقم، تفسير، رأي، أو استنتاج).<br>
+      3. حدد نوع المصدر المطلوب للتحقق منه.<br>
+      4. لا تفترض أن الادعاء صحيح.<br>
+      <strong>النص: [ضع النص هنا]</strong>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header"><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="p2Title">البحث عن نقاط الضعف — Prompt 2</span></div>
+    <div class="prompt-body" data-i18n="p2Body">
+      تصرف كمراجع أكاديمي نقدي. لا تحاول الدفاع عن النص. حدد:<br>
+      - الادعاءات غير المدعومة.<br>
+      - الأرقام التي تحتاج إلى تحقق.<br>
+      - المراجع التي تحتاج إلى فحص.<br>
+      - التعميمات المبالغ فيها والقفزات المنطقية.<br>
+      - المعلومات التي تحتاج إلى سياق إضافي.<br>
+      <strong>النص: [ضع النص هنا]</strong>
+    </div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header"><i class="fa-solid fa-file-circle-check"></i> <span data-i18n="p3Title">فحص المراجع — Prompt 3</span></div>
+    <div class="prompt-body" data-i18n="p3Body">
+      حلل المرجع التالي من ناحية التحقق فقط. أريد قائمة بما يجب التحقق منه:<br>
+      - اسم المؤلفين - عنوان البحث - السنة - المجلة أو المؤتمر - معرّف الكائن الرقمي (DOI) - وجود المصدر الفعلي - الادعاء المنسوب إلى المصدر.<br>
+      <strong>تحذير: لا تخترع أي معلومة غير موجودة. المرجع: [ضع المرجع هنا]</strong>
+    </div>
+  </div>
+
+  <!-- Section 4: Mitigation Strategies -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+    <span data-i18n="sec4Title">استراتيجيات تقليل "الهلوسة" بدلاً من اختلاق الثقة</span>
+  </div>
+
+  <div class="strategy-box">
+    <p style="margin-bottom: 20px; font-weight: 500;" data-i18n="stratIntro">لا يمكن القضاء على الهلوسة بالأوامر بنسبة 100%، لكن يمكن تقليلها بشكل ملموس وإجبار النموذج على إظهار عدم اليقين باتباع هذه الأساليب:</p>
+
+    <div class="strategy-item">
+      <h4 data-i18n="st1Title">1) صنّف إجابتك (Classification of Confidence)</h4>
+      <div class="strategy-quote" data-i18n="st1Quote">"اشرح لي نظرية X، ثم صنّف كل جملة في إجابتك إلى: (أ) حقيقة راسخة في المجال، (ب) معلومة شائعة لكن قد تحتاج تحققاً، (ج) تفسير أو رأي."</div>
+    </div>
+
+    <div class="strategy-item">
+      <h4 data-i18n="st2Title">2) اطلب الاعتراف بالجهل (Prompting for Uncertainty)</h4>
+      <div class="strategy-quote" data-i18n="st2Quote">"إذا لم تكن متأكداً من معلومة، قل 'غير متأكد' صراحةً بدلاً من التخمين. لا تخترع أرقاماً أو مراجع أبداً."</div>
+    </div>
+
+    <div class="strategy-item">
+      <h4 data-i18n="st3Title">3) تحقّق مشدد من المراجع (Strict Citation Control)</h4>
+      <div class="strategy-quote" data-i18n="st3Quote">"اذكر الدراسات التي تستند إليها مع تحذيري التام: إن لم تكن متأكداً 100% من وجود دراسة معينة، لا تذكرها أصلاً."</div>
+    </div>
+
+    <div class="strategy-item">
+      <h4 data-i18n="st4Title">4) حلّل نصاً وفّرته أنا — RAG يدوي (Grounding)</h4>
+      <div class="strategy-quote" data-i18n="st4Quote">"بناءً على النص التالي فقط [الصق النص]، أجب عن... ولا تضف أي معلومة من خارج هذا النص إطلاقاً."</div>
+    </div>
+
+    <div class="strategy-item">
+      <h4 data-i18n="st5Title">5) المراجعة الذاتية والنقد الداخلي (Self-Reflection)</h4>
+      <div class="strategy-quote" data-i18n="st5Quote">"راجع إجابتك السابقة واذكر: ما الأجزاء التي قد تكون غير دقيقة؟ وما الأجزاء التي يجب أن أتحقق منها قبل الاعتماد الأكاديمي؟"</div>
+    </div>
+  </div>
+
+  <!-- Section 5: Triangulation Principle -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-shapes"></i></span>
+    <span data-i18n="sec5Title">مبدأ التثليث (Triangulation)</span>
+  </div>
+  <div class="intro-card" style="border-inline-start-color: var(--secondary);">
+    <p data-i18n="triangP1"><strong>التثليث</strong> هو استخدام ثلاثة مصادر مستقلة على الأقل للتحقق من مصداقية المعلومة ذاتها.</p>
+    <p style="margin-top: 8px;" data-i18n="triangP2">في سياق الذكاء الاصطناعي، يقتضي هذا المبدأ: <strong>مقارنة مخرجات نماذج متعددة ومختلفة المعمارية</strong> (مثل: مقارنة ChatGPT مقابل Claude مقابل Gemini) قبل التثبت والرجوع للمصدر المكتبي الأصلي.</p>
+  </div>
+
+  <!-- Warning Box -->
+  <div class="alert-warning">
+    <h3><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="warnHeading">تنبيه أكاديمي وأخلاقي مهم</span></h3>
+    <p data-i18n="warnBody">
+      <strong>لا تعتمد على كواشف الذكاء الاصطناعي (AI Detectors) كدليل إدانة:</strong> 
+      هذه الأدوات تُنتج احتمالات إحصائية ظنية لا أحكاماً قطعية، وتُخطئ كثيراً وتُعطي نتائج إيجابية كاذبة (False Positives) خصوصاً مع الكتابة لغير الناطقين بالإنجليزية، والنصوص الأكاديمية الرسمية الصارمة، والنصوص المحررة بشرياً بعناية. 
+      <strong>استخدامها كدليل اتهامي قطعي يُعد سلوكاً غير أخلاقي أكاديمياً وغير موثوق تقنياً.</strong>
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس 04: تحليل موثوقية المخرجات",
+    backToChapter: "العودة لقائمة الفصل",
+    headerBadge: "الفصل 02 • الدرس 04",
+    headerTitle: "تحليل موثوقية المخرجات",
+    headerSubtitle: "تطوير حس نقدي لتقييم صحة وموثوقية المعلومات التي يولدها الذكاء الاصطناعي واكتشاف الهلوسة قبل اعتمادها أكاديمياً.",
+    introQ: "هل كل إجابة تبدو صحيحة هي إجابة صحيحة؟",
+    introA: "<strong>لا.</strong> النموذج التوليدي ينتج مخرجات لغوية بناءً على الأنماط الإحصائية التي تعلمها، وليس لديه ضمان تلقائي بأن كل جملة ينتجها تمثل حقيقة يمكن إثباتها.",
+    sec1Title: "ما معنى «موثوقية المخرج»؟",
+    sec1Intro: "الموثوقية ليست خاصية واحدة مجردة، بل هي مجموعة متكاملة من المعايير المعيارية:",
+    c1Title: "الصحة — Accuracy",
+    c1Desc: "هل المعلومة دقيقة وصحيحة فعلاً من الناحية الواقعية والعلمية؟",
+    c2Title: "الدليل — Evidence",
+    c2Desc: "هل توجد أدلة ومراجع علمية واضحة تدعم الادعاء المقدم؟",
+    c3Title: "قابلية التحقق — Verifiability",
+    c3Desc: "هل يستطيع شخص أو باحث آخر تتبع خطواتك والتحقق من النتيجة ذاتها؟",
+    c4Title: "الحداثة — Currency",
+    c4Desc: "هل المعلومات مواكبة ومناسبة للفترة الزمنية المطلوبة للبحث؟",
+    c5Title: "الملاءمة — Relevance",
+    c5Desc: "هل المصدر المستخدم والمعلومة المسترجعة مناسبان لسياق السؤال المطروح؟",
+    c6Title: "جودة المصدر — Source Quality",
+    c6Desc: "هل المصدر ذو ثقل أكاديمي رصين، أم رسمي، أم مصدر أولي موثوق؟",
+    sec2Title: "كيف نقيّم المصادر؟",
+    sec2Intro: "ليست كل المصادر متساوية في الموثوقية العلمية؛ يوضح الجدول التالي موازين التقييم:",
+    thSrcType: "نوع المصدر",
+    thSrcEx: "مثال",
+    thSrcVal: "القيمة المحتملة",
+    thSrcAudit: "ما الذي يجب فحصه؟",
+    srcT1Type: "مصدر أولي",
+    srcT1Ex: "بحث أصلي، بيانات خام، تقرير رسمي",
+    srcT1Val: "مرتفعة جداً للسؤال الذي يغطيه المصدر",
+    srcT1Audit: "المنهج، البيانات، السياق",
+    srcT2Type: "مراجعة علمية",
+    srcT2Ex: "Systematic Review (مراجعة منهجية)",
+    srcT2Val: "مفيدة ومثالية لتجميع الأدلة العلمية",
+    srcT2Audit: "معايير الاختيار وحداثة البحث",
+    srcT3Type: "مصدر مؤسسي",
+    srcT3Ex: "جامعة معتمدة، مؤسسة بحثية رسمية",
+    srcT3Val: "مفيد حسب موضوع التخصص",
+    srcT3Audit: "الجهة المانحة، التاريخ، والمنهج",
+    srcT4Type: "مقال عام",
+    srcT4Ex: "موقع إخباري أو منصة تعليمية عامة",
+    srcT4Val: "قد يكون مفيداً لأخذ سياق عام أولي",
+    srcT4Audit: "المصدر الأصلي للادعاء والكاتب",
+    srcT5Type: "منشور مجهول",
+    srcT5Ex: "حساب مجهول، منتدى مفتوح، شبكة تواصل",
+    srcT5Val: "لا يكفي وحده عادةً",
+    srcT5Audit: "الأدلة والمصدر الأصلي الكامن خلفه",
+    sec3Title: "أوامر عملية لاختبار الموثوقية (Prompts)",
+    p1Title: "تفكيك الادعاءات — Prompt 1",
+    p1Body: "حلّل النص التالي إلى مجموعة من الادعاءات المنفصلة القابلة للتحقق. لكل ادعاء:<br>1. اكتب الادعاء بصياغة واضحة.<br>2. حدد نوعه: (حقيقة، رقم، تفسير، رأي، أو استنتاج).<br>3. حدد نوع المصدر المطلوب للتحقق منه.<br>4. لا تفترض أن الادعاء صحيح.<br><strong>النص: [ضع النص هنا]</strong>",
+    p2Title: "البحث عن نقاط الضعف — Prompt 2",
+    p2Body: "تصرف كمراجع أكاديمي نقدي. لا تحاول الدفاع عن النص. حدد:<br>- الادعاءات غير المدعومة.<br>- الأرقام التي تحتاج إلى تحقق.<br>- المراجع التي تحتاج إلى فحص.<br>- التعميمات المبالغ فيها والقفزات المنطقية.<br>- المعلومات التي تحتاج إلى سياق إضافي.<br><strong>النص: [ضع النص هنا]</strong>",
+    p3Title: "فحص المراجع — Prompt 3",
+    p3Body: "حلل المرجع التالي من ناحية التحقق فقط. أريد قائمة بما يجب التحقق منه:<br>- اسم المؤلفين - عنوان البحث - السنة - المجلة أو المؤتمر - معرّف الكائن الرقمي (DOI) - وجود المصدر الفعلي - الادعاء المنسوب إلى المصدر.<br><strong>تحذير: لا تخترع أي معلومة غير موجودة. المرجع: [ضع المرجع هنا]</strong>",
+    sec4Title: "استراتيجيات تقليل \"الهلوسة\" بدلاً من اختلاق الثقة",
+    stratIntro: "لا يمكن القضاء على الهلوسة بالأوامر بنسبة 100%، لكن يمكن تقليلها بشكل ملموس وإجبار النموذج على إظهار عدم اليقين باتباع هذه الأساليب:",
+    st1Title: "1) صنّف إجابتك (Classification of Confidence)",
+    st1Quote: "\"اشرح لي نظرية X، ثم صنّف كل جملة في إجابتك إلى: (أ) حقيقة راسخة في المجال، (ب) معلومة شائعة لكن قد تحتاج تحققاً، (ج) تفسير أو رأي.\"",
+    st2Title: "2) اطلب الاعتراف بالجهل (Prompting for Uncertainty)",
+    st2Quote: "\"إذا لم تكن متأكداً من معلومة، قل 'غير متأكد' صراحةً بدلاً من التخمين. لا تخترع أرقاماً أو مراجع أبداً.\"",
+    st3Title: "3) تحقّق مشدد من المراجع (Strict Citation Control)",
+    st3Quote: "\"اذكر الدراسات التي تستند إليها مع تحذيري التام: إن لم تكن متأكداً 100% من وجود دراسة معينة، لا تذكرها أصلاً.\"",
+    st4Title: "4) حلّل نصاً وفّرته أنا — RAG يدوي (Grounding)",
+    st4Quote: "\"بناءً على النص التالي فقط [الصق النص]، أجب عن... ولا تضف أي معلومة من خارج هذا النص إطلاقاً.\"",
+    st5Title: "5) المراجعة الذاتية والنقد الداخلي (Self-Reflection)",
+    st5Quote: "\"راجع إجابتك السابقة واذكر: ما الأجزاء التي قد تكون غير دقيقة؟ وما الأجزاء التي يجب أن أتحقق منها قبل الاعتماد الأكاديمي؟\"",
+    sec5Title: "مبدأ التثليث (Triangulation)",
+    triangP1: "<strong>التثليث</strong> هو استخدام ثلاثة مصادر مستقلة على الأقل للتحقق من مصداقية المعلومة ذاتها.",
+    triangP2: "في سياق الذكاء الاصطناعي، يقتضي هذا المبدأ: <strong>مقارنة مخرجات نماذج متعددة ومختلفة المعمارية</strong> (مثل: مقارنة ChatGPT مقابل Claude مقابل Gemini) قبل التثبت والرجوع للمصدر المكتبي الأصلي.",
+    warnHeading: "تنبيه أكاديمي وأخلاقي مهم",
+    warnBody: "<strong>لا تعتمد على كواشف الذكاء الاصطناعي (AI Detectors) كدليل إدانة:</strong> هذه الأدوات تُنتج احتمالات إحصائية ظنية لا أحكاماً قطعية، وتُخطئ كثيراً وتُعطي نتائج إيجابية كاذبة (False Positives) خصوصاً مع الكتابة لغير الناطقين بالإنجليزية، والنصوص الأكاديمية الرسمية الصارمة، والنصوص المحررة بشرياً بعناية. <strong>استخدامها كدليل اتهامي قطعي يُعد سلوكاً غير أخلاقي أكاديمياً وغير موثوق تقنياً.</strong>",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Leçon 04 : Analyse de la Fiabilité des Résultats",
+    backToChapter: "Retour au sommaire du chapitre",
+    headerBadge: "Chapitre 02 • Leçon 04",
+    headerTitle: "Analyse de la Fiabilité des Résultats",
+    headerSubtitle: "Développer un esprit critique rigoureux pour auditer la validité des contenus générés par l'IA et déceler les hallucinations avant tout usage académique.",
+    introQ: "Toute réponse plausible est-elle nécessairement exacte ?",
+    introA: "<strong>Non.</strong> Un modèle génératif assemble des énoncés selon des régularités probabilistes apprises ; il ne garantit en rien la matérialité vérifiable de ses assertions.",
+    sec1Title: "Qu'entend-on par « Fiabilité d'un Résultat » ?",
+    sec1Intro: "La fiabilité ne se résume pas à un concept abstrait, mais repose sur six critères cardinaux :",
+    c1Title: "Exactitude — Accuracy",
+    c1Desc: "L'assertion énoncée est-elle conforme aux lois scientifiques et aux faits réels ?",
+    c2Title: "Preuve — Evidence",
+    c2Desc: "Existe-t-il des données probantes et des citations attestées corroborant l'énoncé ?",
+    c3Title: "Vérifiabilité — Verifiability",
+    c3Desc: "Un pair ou un examinateur peut-il retracer la démarche et parvenir au même résultat ?",
+    c4Title: "Actualité — Currency",
+    c4Desc: "L'information est-elle synchronisée avec la période chronologique étudiée ?",
+    c5Title: "Pertinence — Relevance",
+    c5Desc: "Les sources citées répondent-elles adéquatement à la problématique soulevée ?",
+    c6Title: "Qualité de la Source — Source Quality",
+    c6Desc: "Le document mobilisé émane-t-il d'une institution reconnue ou d'une revue à comité de lecture ?",
+    sec2Title: "Comment Évaluer la Typologie des Sources ?",
+    sec2Intro: "Tous les documents ne possèdent pas la même valeur probatoire. Voici la hiérarchie usuelle :",
+    thSrcType: "Nature de la Source",
+    thSrcEx: "Exemple Type",
+    thSrcVal: "Valeur Épistémique",
+    thSrcAudit: "Critères d'Audit Critique",
+    srcT1Type: "Source Primaire",
+    srcT1Ex: "Rapport original, données brutes, décret officiel",
+    srcT1Val: "Maximale pour le périmètre couvert",
+    srcT1Audit: "Méthodologie, échantillon, contexte d'émergence",
+    srcT2Type: "Revue Systématique",
+    srcT2Ex: "Méta-analyse ou Systematic Review",
+    srcT2Val: "Excellente pour agréger l'état de l'art",
+    srcT2Audit: "Critères d'inclusion et fraîcheur des études",
+    srcT3Type: "Source Institutionnelle",
+    srcT3Ex: "Université accréditée, centre national de recherche",
+    srcT3Val: "Solide selon l'aire d'expertise",
+    srcT3Audit: "Tutelle émettrice, date et méthodologie",
+    srcT4Type: "Article Grand Public",
+    srcT4Ex: "Portail d'actualité, site de vulgarisation",
+    srcT4Val: "Utile pour un cadrage introductif sommaire",
+    srcT4Audit: "Sources premières citées et profil de l'auteur",
+    srcT5Type: "Publication Anonyme",
+    srcT5Ex: "Compte non certifié, forum ouvert, réseau social",
+    srcT5Val: "Insuffisante à elle seule en milieu académique",
+    srcT5Audit: "Données sous-jacentes et faisceau d'indices",
+    sec3Title: "Prompts Pratiques d'Audit et de Déconstruction",
+    p1Title: "Déconstruction des Assertions — Prompt 1",
+    p1Body: "Décompose le texte suivant en une série d'affirmations distinctes et vérifiables. Pour chaque affirmation :<br>1. Formule l'assertion avec limpidité.<br>2. Détermine sa nature : (fait, statistique, interprétation, opinion ou inférence).<br>3. Précise le type de source primaire requis pour la corroborer.<br>4. Ne présuppose jamais que l'assertion est vraie.<br><strong>Texte : [Insérez le texte ici]</strong>",
+    p2Title: "Traque des Faiblesses Argumentatives — Prompt 2",
+    p2Body: "Adopte la posture d'un rapporteur de thèse impitoyable. Ne cherche aucunement à défendre le texte. Identifie :<br>- Les affirmations péremptoires non étayées.<br>- Les statistiques nécessitant un contrôle aux sources.<br>- Les références à auditer.<br>- Les généralisations abusives et ruptures logiques.<br>- Les concepts manquant de contextualisation.<br><strong>Texte : [Insérez le texte ici]</strong>",
+    p3Title: "Audit Bibliographique — Prompt 3",
+    p3Body: "Audite scrupuleusement la référence académique suivante. Dresse la check-list des points à vérifier :<br>- Auteurs - Titre - Année - Revue ou colloque - DOI - Existence réelle du document indexé - Conformité du propos attribué.<br><strong>Avertissement : N'invente aucun détail. Référence : [Insérez la référence ici]</strong>",
+    sec4Title: "Stratégies Opératoires Anti-Hallucinations",
+    stratIntro: "Bien qu'on ne puisse éradiquer les hallucinations à 100 % par simple invite, ces formulations contraignent le modèle à exprimer ses doutes :",
+    st1Title: "1) Qualification du degré de certitude",
+    st1Quote: "\"Expose la théorie X, puis classe chaque phrase de ta réponse selon trois degrés : (a) fait scientifique établi, (b) hypothèse répandue nécessitant corroboration, (c) interprétation ou conjecture.\"",
+    st2Title: "2) Injonction explicite à l'aveu d'ignorance",
+    st2Quote: "\"Si tu as le moindre doute sur un fait, formule expressément 'incertain' au lieu de supposer. N'invente jamais de chiffres ni d'auteurs.\"",
+    st3Title: "3) Verrouillage bibliographique strict",
+    st3Quote: "\"Mentionne tes sources avec cette consigne formelle : si tu n'es pas certain à 100 % de l'existence tangible d'un article, ne le cite sous aucun prétexte.\"",
+    st4Title: "4) Ancrage documentaire exclusif (RAG Manuel)",
+    st4Quote: "\"Réponds en t'appuyant STRICTEMENT sur le document ci-après [Collez le texte source]. N'ajoute aucune extrapolation étrangère à cet extrait.\"",
+    st5Title: "5) Auto-réflexion critique interne",
+    st5Quote: "\"Revois ta réponse précédente et spécifie : quels segments contiennent des fragilités factuelles ? Quels éléments dois-je impérativement contre-vérifier ?\"",
+    sec5Title: "Le Principe de Triangulation",
+    triangP1: "<strong>La triangulation</strong> consiste à recouper un même fait auprès d'au moins trois sources indépendantes et contradictoires.",
+    triangP2: "En environnement d'IA, cette démarche implique de <strong>confronter les synthèses de modèles aux architectures distinctes</strong> (ex. ChatGPT vs Claude vs Gemini) avant de valider la thèse sur les ouvrages originaux.",
+    warnHeading: "Mise en Garde Pédagogique et Déontologique",
+    warnBody: "<strong>Ne vous fiez jamais aveuglément aux détecteurs d'IA pour accuser un étudiant :</strong> Ces logiciels calculent de simples probabilités statistiques de perplexité lexicale. Ils génèrent un taux de faux positifs dramatique, particulièrement face à des écrits d'étudiants non-anglophones, des argumentaires scientifiques rigoureux ou des proses très soignées. <strong>Invoquer un score de détecteur comme preuve unique d'accusation est une faute déontologique et une aberration méthodologique.</strong>",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lesson 04: Output Reliability Analysis",
+    backToChapter: "Back to Chapter Outline",
+    headerBadge: "Chapter 02 • Lesson 04",
+    headerTitle: "Analyzing Output Reliability",
+    headerSubtitle: "Cultivating critical appraisal skills to evaluate the factual integrity of AI-generated assertions and detect hallucinations prior to academic adoption.",
+    introQ: "Does every plausible-sounding response represent factual truth?",
+    introA: "<strong>No.</strong> Generative language models craft text by sampling probabilistic distributions; they offer zero inherent architectural guarantee that any statement represents an objectively verifiable fact.",
+    sec1Title: "What Does 'Output Reliability' Mean?",
+    sec1Intro: "Reliability is not a monolithic attribute, but an integrated framework of six standards:",
+    c1Title: "Accuracy",
+    c1Desc: "Is the statement empirically, historically, and scientifically accurate?",
+    c2Title: "Evidence",
+    c2Desc: "Are there documented data points and primary literature supporting the assertion?",
+    c3Title: "Verifiability",
+    c3Desc: "Can an independent peer trace the sources and replicate the exact findings?",
+    c4Title: "Currency",
+    c4Desc: "Is the information synchronous with the temporal period required by the research?",
+    c5Title: "Relevance",
+    c5Desc: "Does the retrieved evidence directly address the core prompt without digression?",
+    c6Title: "Source Quality",
+    c6Desc: "Does the material originate from an accredited peer-reviewed venue or official archive?",
+    sec2Title: "How to Evaluate Information Sources",
+    sec2Intro: "Information sources vary widely in epistemic authority. Use this critical appraisal rubric:",
+    thSrcType: "Source Category",
+    thSrcEx: "Concrete Example",
+    thSrcVal: "Epistemic Weight",
+    thSrcAudit: "Critical Verification Points",
+    srcT1Type: "Primary Source",
+    srcT1Ex: "Empirical paper, raw dataset, government gazette",
+    srcT1Val: "Highest weight for covered domain",
+    srcT1Audit: "Methodology, sample size, historical context",
+    srcT2Type: "Systematic Review",
+    srcT2Ex: "Cochrane review, meta-analysis",
+    srcT2Val: "Gold standard for evidence synthesis",
+    srcT2Audit: "Search strategy, inclusion criteria, recency",
+    srcT3Type: "Institutional Publication",
+    srcT3Ex: "Accredited university press, national lab report",
+    srcT3Val: "Strong within defined discipline",
+    srcT3Audit: "Issuing body, publication date, peer-review status",
+    srcT4Type: "General Article",
+    srcT4Ex: "Mainstream news outlet, educational blog",
+    srcT4Val: "Useful only for preliminary background",
+    srcT4Audit: "Original sources cited, author credentials",
+    srcT5Type: "Anonymous Post",
+    srcT5Ex: "Unverified forum post, social media claim",
+    srcT5Val: "Insufficient on its own in scholarship",
+    srcT5Audit: "Underlying evidence, primary trail",
+    sec3Title: "Actionable Prompts for Fact-Checking",
+    p1Title: "Deconstructing Claims — Prompt 1",
+    p1Body: "Deconstruct the following text into distinct, falsifiable claims. For each claim:<br>1. State the claim with absolute clarity.<br>2. Classify its epistemic nature: (fact, metric, interpretation, opinion, or inference).<br>3. Define the exact primary source required to verify it.<br>4. Do not assume the claim is true.<br><strong>Text: [Insert passage here]</strong>",
+    p2Title: "Hunting Argumentative Weaknesses — Prompt 2",
+    p2Body: "Act as an unsparing academic peer-reviewer. Do not defend this draft. Identify:<br>- Unsupported assertions.<br>- Statistics demanding primary audit.<br>- Citations requiring provenance checks.<br>- Over-generalizations and non-sequiturs.<br>- Assertions missing essential context.<br><strong>Text: [Insert passage here]</strong>",
+    p3Title: "Citation Provenance Audit — Prompt 3",
+    p3Body: "Audit this academic citation strictly for verification. Provide an audit checklist covering:<br>- Authors - Paper Title - Publication Year - Journal/Conference - DOI - Physical existence in indexing databases - Faithfulness of attributed claim.<br><strong>Warning: Do not invent missing facts. Citation: [Insert citation here]</strong>",
+    sec4Title: "Operational Anti-Hallucination Prompt Strategies",
+    stratIntro: "While prompt craft cannot eradicate hallucinations entirely, these prompt templates force models to surface cognitive uncertainty:",
+    st1Title: "1) Confidence Level Tagging",
+    st1Quote: "\"Explain theory X, then label each sentence: (a) established scientific consensus, (b) common assertion needing verification, (c) subjective hypothesis or opinion.\"",
+    st2Title: "2) Injunction to Acknowledge Uncertainty",
+    st2Quote: "\"If you are not entirely certain of a fact, explicitly answer 'uncertain' instead of guessing. Never invent numbers, dates, or citations.\"",
+    st3Title: "3) Strict Citation Verification Lockdown",
+    st3Quote: "\"Cite literature supporting your answer with this strict rule: if you are not 100% sure a specific paper exists in print, do not mention it under any circumstances.\"",
+    st4Title: "4) Closed-Book Document Grounding (Manual RAG)",
+    st4Quote: "\"Answer based EXCLUSIVELY on this provided text [Paste text]. Do not inject any background training knowledge outside this excerpt.\"",
+    st5Title: "5) Critical Self-Auditing",
+    st5Quote: "\"Audit your preceding response: which specific claims carry factual vulnerability? Which points must I verify against independent textbooks?\"",
+    sec5Title: "The Triangulation Principle",
+    triangP1: "<strong>Triangulation</strong> entails validating a given assertion against at least three independent, authoritative sources.",
+    triangP2: "In the AI landscape, this methodology requires: <strong>benchmarking outputs across distinct model architectures</strong> (e.g., comparing ChatGPT vs Claude vs Gemini) prior to auditing primary scholarly literature.",
+    warnHeading: "Critical Academic & Ethical Advisory",
+    warnBody: "<strong>Never treat AI Text Detectors as definitive proof of academic misconduct:</strong> These software tools generate noisy statistical perplexity scores, not forensic certitude. They produce frequent False Positives—disproportionately penalizing non-native English speakers, formal scientific rhetoric, and rigorously human-edited drafts. <strong>Invoking detector outputs as conclusive evidence to accuse students is methodologically flawed and ethically untenable.</strong>",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

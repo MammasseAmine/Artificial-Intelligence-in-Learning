@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>النماذج اللغوية الكبيرة (LLMs)</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">النماذج اللغوية الكبيرة (LLMs)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -36,11 +36,59 @@
     color: var(--text);
     line-height: 1.85;
     padding: 30px 15px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 950px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -58,7 +106,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -70,11 +118,13 @@
     padding: 6px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -126,6 +176,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.15rem;
+    flex-shrink: 0;
   }
 
   p {
@@ -137,7 +188,7 @@
   /* Callout Boxes */
   .callout {
     background: var(--bg);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     border-radius: 8px;
     padding: 16px 20px;
     margin: 20px 0;
@@ -145,7 +196,7 @@
   }
 
   .callout.accent {
-    border-right-color: var(--accent);
+    border-inline-start-color: var(--accent);
     background: #fffaf0;
   }
 
@@ -184,7 +235,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    text-align: right;
+    text-align: start;
   }
 
   th {
@@ -219,14 +270,14 @@
 
   .styled-list li {
     position: relative;
-    padding-right: 28px;
+    padding-inline-start: 28px;
     margin-bottom: 12px;
     font-size: 1rem;
   }
 
   .styled-list li i {
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     top: 5px;
     color: var(--secondary);
   }
@@ -240,12 +291,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    direction: rtl;
     background: #edf2f7;
     padding: 16px;
     border-radius: 12px;
     margin: 15px 0;
   }
+
+  html[dir="rtl"] .token-container { direction: rtl; }
+  html[dir="ltr"] .token-container { direction: ltr; }
 
   .token-chip {
     background: white;
@@ -292,122 +345,132 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • الدرس الثاني</span>
-    <h1>النماذج اللغوية الكبيرة (LLMs)</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • الدرس الثاني</span>
+    <h1 data-i18n="headerTitle">النماذج اللغوية الكبيرة (LLMs)</h1>
   </div>
 
-  <!-- 1. مقدمة -->
+  <!-- 1. Introduction -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-book-open"></i></div>
-      1. مقدمة
+      <span data-i18n="sec1Title">1. مقدمة</span>
     </div>
-    <p>
+    <p data-i18n="sec1P1">
       شهد مجال معالجة اللغة الطبيعية ثورة كبيرة مع ظهور <strong>النماذج اللغوية الكبيرة (Large Language Models - LLMs)</strong>. أصبحت هذه النماذج قادرة على فهم اللغة البشرية وإنتاج نصوص عالية الجودة تشبه بدقة النصوص المكتوبة بواسطة الإنسان.
     </p>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-robot"></i> تبسيط المفهوم:</div>
-      كلمة <strong>LLM</strong> هي اختصار لـ <em>Large Language Model</em>. ببساطة، تخيّل أنك أحضرت روبوتاً وجعلته يقرأ كل الكتب والمقالات والمواقع المتاحة؛ فأصبح لديه حصيلة لغوية ومعرفية ضخمة جداً تمكنه من فهم أسئلتك والرد عليك كأنه إنسان.
+      <div class="callout-title"><i class="fa-solid fa-robot"></i> <span data-i18n="sec1CalloutTitle">تبسيط المفهوم:</span></div>
+      <span data-i18n="sec1CalloutBody">كلمة <strong>LLM</strong> هي اختصار لـ <em>Large Language Model</em>. ببساطة، تخيّل أنك أحضرت روبوتاً وجعلته يقرأ كل الكتب والمقالات والمواقع المتاحة؛ فأصبح لديه حصيلة لغوية ومعرفية ضخمة جداً تمكنه من فهم أسئلتك والرد عليك كأنه إنسان.</span>
     </div>
 
-    <p>
+    <p data-i18n="sec1P2">
       <strong>التعريف التقني:</strong> نموذج ذكاء اصطناعي ضخم يتم تدريبه على كميات هائلة من النصوص بهدف تعلم أنماط وقواعد وتراكيب اللغة. وتعتمد معظم النماذج الحديثة على معمارية <strong>Transformer</strong> التي قُدمت لأول مرة عام 2017.
     </p>
   </div>
 
-  <!-- 2. ما هو النموذج اللغوي؟ -->
+  <!-- 2. What is a Language Model? -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-brain"></i></div>
-      2. ما هو النموذج اللغوي؟ وكيف يعمل؟
+      <span data-i18n="sec2Title">2. ما هو النموذج اللغوي؟ وكيف يعمل؟</span>
     </div>
-    <p>
+    <p data-i18n="sec2P1">
       النموذج اللغوي هو نظام يعتمد على مبدأ التنبؤ بالكلمة التالية بناءً على سياق الكلمات السابقة.
     </p>
 
-    <div class="callout">
+    <div class="callout" data-i18n="sec2Example">
       <strong>مثال توضيحي:</strong> عند إعطاء النموذج الجملة: <em>«أنا أحب شرب...»</em>، يبدأ بحساب الاحتمالات للكلمة التالية؛ فيتوقع كلمات مثل: (القهوة، الشاي، العصير).
     </div>
 
-    <p><strong>الهدف الرياضي (تعلم الاحتمال):</strong></p>
+    <p><strong data-i18n="sec2MathTitle">الهدف الرياضي (تعلم الاحتمال):</strong></p>
     <div class="math-box">
       P(word<sub>t</sub> | word<sub>1</sub> ... word<sub>t-1</sub>)
     </div>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-lightbulb"></i> المدهش في طريقة التعلم:</div>
-      لم يكتب أحد للنموذج قواعد النحو يدوياً! لكي يتوقع الكلمة التالية جيداً، اضطر النموذج لاستنتاج النحو والحقائق وأنماط الكتابة من الأمثلة نفسها أثناء التدريب؛ <strong>كطفل يقرأ آلاف القصص فيتعلم تلقائياً كيف تُبنى الجمل</strong>.
+      <div class="callout-title"><i class="fa-solid fa-lightbulb"></i> <span data-i18n="sec2AmazingTitle">المدهش في طريقة التعلم:</span></div>
+      <span data-i18n="sec2AmazingBody">لم يكتب أحد للنموذج قواعد النحو يدوياً! لكي يتوقع الكلمة التالية جيداً، اضطر النموذج لاستنتاج النحو والحقائق وأنماط الكتابة من الأمثلة نفسها أثناء التدريب؛ <strong>كطفل يقرأ آلاف القصص فيتعلم تلقائياً كيف تُبنى الجمل</strong>.</span>
     </div>
   </div>
 
-  <!-- 3. لماذا سميت كبيرة؟ وما ليس هو النموذج -->
+  <!-- 3. Why Large? What it is NOT -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-server"></i></div>
-      3. لماذا سميت "كبيرة"؟ وما ليس هو النموذج اللغوي؟
+      <span data-i18n="sec3Title">3. لماذا سميت "كبيرة"؟ وما ليس هو النموذج اللغوي؟</span>
     </div>
     
-    <p>تستحق هذه النماذج وصف "كبيرة" نظراً للمقاييس الضخمة التي تبنى عليها:</p>
+    <p data-i18n="sec3P1">تستحق هذه النماذج وصف "كبيرة" نظراً للمقاييس الضخمة التي تبنى عليها:</p>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th>العامل</th>
-            <th>الوصف والمقياس</th>
+            <th data-i18n="tblScaleFactor">العامل</th>
+            <th data-i18n="tblScaleValue">الوصف والمقياس</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>عدد المعاملات (Parameters)</strong></td>
-            <td>قد يصل إلى مئات المليارات</td>
+            <td><strong data-i18n="paramName">عدد المعاملات (Parameters)</strong></td>
+            <td data-i18n="paramVal">قد يصل إلى مئات المليارات</td>
           </tr>
           <tr>
-            <td><strong>حجم البيانات</strong></td>
-            <td>تريليونات الكلمات والمحارف</td>
+            <td><strong data-i18n="dataName">حجم البيانات</strong></td>
+            <td data-i18n="dataVal">تريليونات الكلمات والمحارف</td>
           </tr>
           <tr>
-            <td><strong>قدرات الحوسبة</strong></td>
-            <td>آلاف من معالجات الرسوميات المتقدمة (GPUs)</td>
+            <td><strong data-i18n="computeName">قدرات الحوسبة</strong></td>
+            <td data-i18n="computeVal">آلاف من معالجات الرسوميات المتقدمة (GPUs)</td>
           </tr>
           <tr>
-            <td><strong>حجم النموذج</strong></td>
-            <td>عشرات أو مئات الجيجابايت</td>
+            <td><strong data-i18n="modelSizeName">حجم النموذج</strong></td>
+            <td data-i18n="modelSizeVal">عشرات أو مئات الجيجابايت</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h3 style="color: var(--primary); margin: 24px 0 12px 0; font-size: 1.15rem;">ما ليس هو النموذج اللغوي؟ (تصحيح المفاهيم)</h3>
+    <h3 style="color: var(--primary); margin: 24px 0 12px 0; font-size: 1.15rem;" data-i18n="whatIsNotTitle">ما ليس هو النموذج اللغوي؟ (تصحيح المفاهيم)</h3>
     <ul class="styled-list negative-list">
       <li>
         <i class="fa-solid fa-circle-xmark"></i>
-        <strong>ليس محرك بحث:</strong> لا يبحث في الإنترنت تلقائياً (إلا إذا تم ربطه بأداة تصفح خارجية).
+        <strong data-i18n="notSearchEngineTitle">ليس محرك بحث:</strong> <span data-i18n="notSearchEngineDesc">لا يبحث في الإنترنت تلقائياً (إلا إذا تم ربطه بأداة تصفح خارجية).</span>
       </li>
       <li>
         <i class="fa-solid fa-circle-xmark"></i>
-        <strong>ليس قاعدة بيانات:</strong> لا يسترجع جملاً مخزنة ومحفوظة حرفياً، بل يولد النص من جديد احتمالياً.
+        <strong data-i18n="notDatabaseTitle">ليس قاعدة بيانات:</strong> <span data-i18n="notDatabaseDesc">لا يسترجع جملاً مخزنة ومحفوظة حرفياً، بل يولد النص من جديد احتمالياً.</span>
       </li>
       <li>
         <i class="fa-solid fa-circle-xmark"></i>
-        <strong>ليس عقلاً بشرياً:</strong> يبدو بارعاً جداً في اللغة، لكن طريقة عمله تختلف كلياً عن الإنسان ولا يملك وعياً أو تجربة حياة.
+        <strong data-i18n="notHumanBrainTitle">ليس عقلاً بشرياً:</strong> <span data-i18n="notHumanBrainDesc">يبدو بارعاً جداً في اللغة، لكن طريقة عمله تختلف كلياً عن الإنسان ولا يملك وعياً أو تجربة حياة.</span>
       </li>
     </ul>
 
-    <h3 style="color: var(--primary); margin: 24px 0 12px 0; font-size: 1.15rem;">أشهر النماذج اللغوية الكبيرة في العالم</h3>
+    <h3 style="color: var(--primary); margin: 24px 0 12px 0; font-size: 1.15rem;" data-i18n="famousLLMsTitle">أشهر النماذج اللغوية الكبيرة في العالم</h3>
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th>النموذج</th>
-            <th>الشركة المطورة</th>
+            <th data-i18n="tblModelCol">النموذج</th>
+            <th data-i18n="tblOrgCol">الشركة المطورة</th>
           </tr>
         </thead>
         <tbody>
@@ -440,76 +503,63 @@
     </div>
   </div>
 
-  <!-- 4. الرموز (Tokens) -->
+  <!-- 4. Tokens -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-cubes"></i></div>
-      4. الرموز (Tokens)
+      <span data-i18n="sec4Title">4. الرموز (Tokens)</span>
     </div>
-    <p>
+    <p data-i18n="sec4P1">
       الحاسوب لا يقرأ الحروف الأبجدية، بل يتعامل مع الأرقام حصراً. لذلك يُقطّع النص إلى أجزاء أصغر تُسمى <strong>رموزاً (Tokens)</strong>، ويُمنح كل رمز معرّفاً رقمياً خاصاً به. قد يكون الرمز كلمة كاملة، أو جزءاً من كلمة، أو علامة ترقيم.
     </p>
 
-    <div class="callout-title" style="margin-top: 15px;"><i class="fa-solid fa-scissors"></i> مثال تقريبي لتقطيع جملة: "النماذج اللغوية الكبيرة تتعلم من النصوص."</div>
-    <div class="token-container">
-      <div class="token-chip">الـ <span>629</span></div>
-      <div class="token-chip">نما <span>47896</span></div>
-      <div class="token-chip">ذج <span>884</span></div>
-      <div class="token-chip">الـ <span>629</span></div>
-      <div class="token-chip">لغو <span>45666</span></div>
-      <div class="token-chip">ية <span>1687</span></div>
-      <div class="token-chip">الـ <span>629</span></div>
-      <div class="token-chip">كبي <span>44149</span></div>
-      <div class="token-chip">رة <span>912</span></div>
-      <div class="token-chip">تتعـ <span>20169</span></div>
-      <div class="token-chip">ـلم <span>1529</span></div>
-      <div class="token-chip">من <span>1561</span></div>
-      <div class="token-chip">الـ <span>629</span></div>
-      <div class="token-chip">نصوص <span>21912</span></div>
-      <div class="token-chip">. <span>146</span></div>
+    <div class="callout-title" style="margin-top: 15px;"><i class="fa-solid fa-scissors"></i> <span data-i18n="tokensExampleTitle">مثال تقريبي لتقطيع جملة:</span></div>
+    
+    <div class="token-container" id="token-box">
+      <!-- Token chips generated dynamically -->
     </div>
-    <small style="color: var(--muted); display: block; margin-top: -5px; margin-bottom: 15px;">* الأرقام الموضحة أمثلة تقريبية لشرح الفكرة.</small>
+    <small style="color: var(--muted); display: block; margin-top: -5px; margin-bottom: 15px;" data-i18n="tokensDisclaimer">* الأرقام الموضحة أمثلة تقريبية لشرح الفكرة.</small>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-circle-question"></i> لماذا يهمك فهم التوكنز؟</div>
+      <div class="callout-title"><i class="fa-solid fa-circle-question"></i> <span data-i18n="whyTokensTitle">لماذا يهمك فهم التوكنز؟</span></div>
       <ul class="styled-list" style="margin-bottom: 0;">
-        <li><i class="fa-solid fa-check"></i> <strong>حدود الطول والتكلفة:</strong> الاستهلاك والتسعير في واجهات النماذج يُحسب بعدد الرموز لا بالكلمات.</li>
-        <li><i class="fa-solid fa-check"></i> <strong>اللغة العربية:</strong> تستهلك في كثير من النماذج رموزاً أكثر من الإنجليزية لنفس عدد الكلمات؛ لذلك فإن كتابة المطالبات (Prompts) بإيجاز واختصار يوفر مساحة وتكلفة.</li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="tokenReason1Title">حدود الطول والتكلفة:</strong> <span data-i18n="tokenReason1Desc">الاستهلاك والتسعير في واجهات النماذج يُحسب بعدد الرموز لا بالكلمات.</span></li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="tokenReason2Title">اللغات والتكلفة:</strong> <span data-i18n="tokenReason2Desc">تستهلك بعض اللغات (كالعربية) رموزاً أكثر لنفس المعنى مقارنة بالإنجليزية؛ لذا فإن الاختصار يوفر تكلفة وسياقاً.</span></li>
       </ul>
     </div>
   </div>
 
-  <!-- 5. نافذة السياق (Context Window) -->
+  <!-- 5. Context Window -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-window-maximize"></i></div>
-      5. نافذة السياق (Context Window)
+      <span data-i18n="sec5Title">5. نافذة السياق (Context Window)</span>
     </div>
-    <p>
+    <p data-i18n="sec5P1">
       هي أقصى كمية نص يستطيع النموذج "رؤيتها ومعالجتها" دفعة واحدة في اللحظة الواحدة — وتتضمن: <strong>سؤالك + المحادثة السابقة + أي مستندات مرفقة + الإجابة التي يولدها</strong>.
     </p>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-chalkboard"></i> تشبيه السبورة:</div>
-      تخيل نافذة السياق كأنها <strong>سبورة محدودة المساحة</strong>؛ إذا امتلأت بالكامل يُحذف أو يُلخص الكلام القديم لإفساح المجال للجديد، مما قد يجعل النموذج ينسى ما ذُكر في بداية المحادثة الطويلة.
+      <div class="callout-title"><i class="fa-solid fa-chalkboard"></i> <span data-i18n="blackboardTitle">تشبيه السبورة:</span></div>
+      <span data-i18n="blackboardBody">تخيل نافذة السياق كأنها <strong>سبورة محدودة المساحة</strong>؛ إذا امتلأت بالكامل يُحذف أو يُلخص الكلام القديم لإفساح المجال للجديد، مما قد يجعل النموذج ينسى ما ذُكر في بداية المحادثة الطويلة.</span>
     </div>
 
     <div class="callout accent">
-      <strong>قاعدة تقريبية:</strong> كل <strong>1000 توكن</strong> تعادل تقريباً:
-      <ul style="margin-right: 25px; margin-top: 8px;">
-        <li>~ 750 كلمة باللغة الإنجليزية.</li>
-        <li>~ 400 إلى 500 كلمة باللغة العربية.</li>
+      <span data-i18n="tokenRuleHead"><strong>قاعدة تقريبية:</strong> كل <strong>1000 توكن</strong> تعادل تقريباً:</span>
+      <ul style="margin-inline-start: 25px; margin-top: 8px;">
+        <li data-i18n="tokenRule1">~ 750 كلمة باللغة الإنجليزية.</li>
+        <li data-i18n="tokenRule2">~ 400 إلى 500 كلمة باللغة العربية.</li>
       </ul>
     </div>
   </div>
 
-  <!-- 6. إعدادات التوليد -->
+  <!-- 6. Hyperparameters / Generation Settings -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-sliders"></i></div>
-      6. إعدادات التوليد: كيف تتحكم في «مزاج» النموذج؟
+      <span data-i18n="sec6Title">6. إعدادات التوليد: كيف تتحكم في «مزاج» النموذج؟</span>
     </div>
-    <p>
+    <p data-i18n="sec6P1">
       تتحكم هذه الإعدادات في طريقة اختيار الكلمة التالية، وفهمها يمنحك سيطرة كاملة على جودة ونوعية المخرجات:
     </p>
 
@@ -517,60 +567,396 @@
       <table>
         <thead>
           <tr>
-            <th>الإعداد</th>
-            <th>ماذا يفعل؟</th>
-            <th>قيمة منخفضة</th>
-            <th>قيمة مرتفعة</th>
+            <th data-i18n="thSetting">الإعداد</th>
+            <th data-i18n="thFunction">ماذا يفعل؟</th>
+            <th data-i18n="thLowVal">قيمة منخفضة</th>
+            <th data-i18n="thHighVal">قيمة مرتفعة</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Temperature</strong></td>
-            <td>مقدار العشوائية والإبداع</td>
-            <td>دقيق ومتوقع (0.0)</td>
-            <td>إبداعي ومتنوع (1.0)</td>
+            <td data-i18n="tempDesc">مقدار العشوائية والإبداع</td>
+            <td data-i18n="tempLow">دقيق ومتوقع (0.0)</td>
+            <td data-i18n="tempHigh">إبداعي ومتنوع (1.0)</td>
           </tr>
           <tr>
             <td><strong>Top-p</strong></td>
-            <td>يختار من أكثر الكلمات احتمالاً فقط</td>
-            <td>محافظ جداً (0.1)</td>
-            <td>منفتح على بدائل (0.95)</td>
+            <td data-i18n="toppDesc">يختار من أكثر الكلمات احتمالاً فقط</td>
+            <td data-i18n="toppLow">محافظ جداً (0.1)</td>
+            <td data-i18n="toppHigh">منفتح على بدائل (0.95)</td>
           </tr>
           <tr>
             <td><strong>Max Tokens</strong></td>
-            <td>أقصى طول مسموح به للجواب</td>
-            <td>ردود قصيرة وموجزة</td>
-            <td>ردود طويلة ومفصلة</td>
+            <td data-i18n="maxtokDesc">أقصى طول مسموح به للجواب</td>
+            <td data-i18n="maxtokLow">ردود قصيرة وموجزة</td>
+            <td data-i18n="maxtokHigh">ردود طويلة ومفصلة</td>
           </tr>
           <tr>
             <td><strong>Frequency Penalty</strong></td>
-            <td>يعاقب تكرار الكلمات نفسها</td>
-            <td>قد يكرر نفسه أحياناً</td>
-            <td>لغة أكثر تنوعاً ومفردات أغنى</td>
+            <td data-i18n="freqDesc">يعاقب تكرار الكلمات نفسها</td>
+            <td data-i18n="freqLow">قد يكرر نفسه أحياناً</td>
+            <td data-i18n="freqHigh">لغة أكثر تنوعاً ومفردات أغنى</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-compass"></i> متى أستخدم ماذا؟ (درجة الحرارة Temperature)</div>
+      <div class="callout-title"><i class="fa-solid fa-compass"></i> <span data-i18n="guideTempTitle">متى أستخدم ماذا؟ (درجة الحرارة Temperature)</span></div>
       <ul class="styled-list">
-        <li><i class="fa-solid fa-terminal"></i> <strong>Temperature = 0:</strong> للمهام المنطقية والدقيقة (تحليل بيانات / كتابة كود / حل مسائل رياضيات).</li>
-        <li><i class="fa-solid fa-comments"></i> <strong>Temperature = 0.7:</strong> للمهام المتوازنة (المحادثات العامة والإجابات الحوارية).</li>
-        <li><i class="fa-solid fa-pen-nib"></i> <strong>Temperature = 0.8 – 1.0:</strong> للمهام الابتكارية (كتابة إعلانية / تأليف قصص / العصف الذهني).</li>
+        <li><i class="fa-solid fa-terminal"></i> <strong>Temperature = 0:</strong> <span data-i18n="temp0Desc">للمهام المنطقية والدقيقة (تحليل بيانات / كتابة كود / حل مسائل رياضيات).</span></li>
+        <li><i class="fa-solid fa-comments"></i> <strong>Temperature = 0.7:</strong> <span data-i18n="temp07Desc">للمهام المتوازنة (المحادثات العامة والإجابات الحوارية).</span></li>
+        <li><i class="fa-solid fa-pen-nib"></i> <strong>Temperature = 0.8 – 1.0:</strong> <span data-i18n="temp1Desc">للمهام الابتكارية (كتابة إعلانية / تأليف قصص / العصف الذهني).</span></li>
       </ul>
-      <div style="font-weight: 700; margin-top: 10px; color: var(--primary);">
+      <div style="font-weight: 700; margin-top: 10px; color: var(--primary);" data-i18n="tempGoldenRule">
         💡 القاعدة الذهبية: «للدقة اخفض الحرارة، وللإبداع ارفعها».
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي التوليدي 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const tokenSamples = {
+  ar: [
+    { text: "الـ", id: "629" },
+    { text: "نما", id: "47896" },
+    { text: "ذج", id: "884" },
+    { text: "الـ", id: "629" },
+    { text: "لغو", id: "45666" },
+    { text: "ية", id: "1687" },
+    { text: "الـ", id: "629" },
+    { text: "كبي", id: "44149" },
+    { text: "رة", id: "912" },
+    { text: "تتعـ", id: "20169" },
+    { text: "ـلم", id: "1529" },
+    { text: "من", id: "1561" },
+    { text: "الـ", id: "629" },
+    { text: "نصوص", id: "21912" },
+    { text: ".", id: "146" }
+  ],
+  fr: [
+    { text: "Les", id: "1424" },
+    { text: " grands", id: "19318" },
+    { text: " modèles", id: "12845" },
+    { text: " lingu", id: "41932" },
+    { text: "istiques", id: "8871" },
+    { text: " app", id: "812" },
+    { text: "rennent", id: "2841" },
+    { text: " des", id: "602" },
+    { text: " textes", id: "14022" },
+    { text: ".", id: "13" }
+  ],
+  en: [
+    { text: "Large", id: "8472" },
+    { text: " language", id: "3303" },
+    { text: " models", id: "4981" },
+    { text: " learn", id: "2199" },
+    { text: " from", id: "422" },
+    { text: " text", id: "1495" },
+    { text: " data", id: "1366" },
+    { text: ".", id: "13" }
+  ]
+};
+
+const translations = {
+  ar: {
+    pageTitle: "النماذج اللغوية الكبيرة (LLMs)",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 01 • الدرس الثاني",
+    headerTitle: "النماذج اللغوية الكبيرة (LLMs)",
+    sec1Title: "1. مقدمة",
+    sec1P1: "شهد مجال معالجة اللغة الطبيعية ثورة كبيرة مع ظهور <strong>النماذج اللغوية الكبيرة (Large Language Models - LLMs)</strong>. أصبحت هذه النماذج قادرة على فهم اللغة البشرية وإنتاج نصوص عالية الجودة تشبه بدقة النصوص المكتوبة بواسطة الإنسان.",
+    sec1CalloutTitle: "تبسيط المفهوم:",
+    sec1CalloutBody: "كلمة <strong>LLM</strong> هي اختصار لـ <em>Large Language Model</em>. ببساطة، تخيّل أنك أحضرت روبوتاً وجعلته يقرأ كل الكتب والمقالات والمواقع المتاحة؛ فأصبح لديه حصيلة لغوية ومعرفية ضخمة جداً تمكنه من فهم أسئلتك والرد عليك كأنه إنسان.",
+    sec1P2: "<strong>التعريف التقني:</strong> نموذج ذكاء اصطناعي ضخم يتم تدريبه على كميات هائلة من النصوص بهدف تعلم أنماط وقواعد وتراكيب اللغة. وتعتمد معظم النماذج الحديثة على معمارية <strong>Transformer</strong> التي قُدمت لأول مرة عام 2017.",
+    sec2Title: "2. ما هو النموذج اللغوي؟ وكيف يعمل؟",
+    sec2P1: "النموذج اللغوي هو نظام يعتمد على مبدأ التنبؤ بالكلمة التالية بناءً على سياق الكلمات السابقة.",
+    sec2Example: "<strong>مثال توضيحي:</strong> عند إعطاء النموذج الجملة: <em>«أنا أحب شرب...»</em>، يبدأ بحساب الاحتمالات للكلمة التالية؛ فيتوقع كلمات مثل: (القهوة، الشاي، العصير).",
+    sec2MathTitle: "الهدف الرياضي (تعلم الاحتمال):",
+    sec2AmazingTitle: "المدهش في طريقة التعلم:",
+    sec2AmazingBody: "لم يكتب أحد للنموذج قواعد النحو يدوياً! لكي يتوقع الكلمة التالية جيداً، اضطر النموذج لاستنتاج النحو والحقائق وأنماط الكتابة من الأمثلة نفسها أثناء التدريب؛ <strong>كطفل يقرأ آلاف القصص فيتعلم تلقائياً كيف تُبنى الجمل</strong>.",
+    sec3Title: "3. لماذا سميت \"كبيرة\"؟ وما ليس هو النموذج اللغوي؟",
+    sec3P1: "تستحق هذه النماذج وصف \"كبيرة\" نظراً للمقاييس الضخمة التي تبنى عليها:",
+    tblScaleFactor: "العامل",
+    tblScaleValue: "الوصف والمقياس",
+    paramName: "عدد المعاملات (Parameters)",
+    paramVal: "قد يصل إلى مئات المليارات",
+    dataName: "حجم البيانات",
+    dataVal: "تريليونات الكلمات والمحارف",
+    computeName: "قدرات الحوسبة",
+    computeVal: "آلاف من معالجات الرسوميات المتقدمة (GPUs)",
+    modelSizeName: "حجم النموذج",
+    modelSizeVal: "عشرات أو مئات الجيجابايت",
+    whatIsNotTitle: "ما ليس هو النموذج اللغوي؟ (تصحيح المفاهيم)",
+    notSearchEngineTitle: "ليس محرك بحث:",
+    notSearchEngineDesc: "لا يبحث في الإنترنت تلقائياً (إلا إذا تم ربطه بأداة تصفح خارجية).",
+    notDatabaseTitle: "ليس قاعدة بيانات:",
+    notDatabaseDesc: "لا يسترجع جملاً مخزنة ومحفوظة حرفياً، بل يولد النص من جديد احتمالياً.",
+    notHumanBrainTitle: "ليس عقلاً بشرياً:",
+    notHumanBrainDesc: "يبدو بارعاً جداً في اللغة، لكن طريقة عمله تختلف كلياً عن الإنسان ولا يملك وعياً أو تجربة حياة.",
+    famousLLMsTitle: "أشهر النماذج اللغوية الكبيرة في العالم",
+    tblModelCol: "النموذج",
+    tblOrgCol: "الشركة المطورة",
+    sec4Title: "4. الرموز (Tokens)",
+    sec4P1: "الحاسوب لا يقرأ الحروف الأبجدية، بل يتعامل مع الأرقام حصراً. لذلك يُقطّع النص إلى أجزاء أصغر تُسمى <strong>رموزاً (Tokens)</strong>، ويُمنح كل رمز معرّفاً رقمياً خاصاً به. قد يكون الرمز كلمة كاملة، أو جزءاً من كلمة، أو علامة ترقيم.",
+    tokensExampleTitle: "مثال تقريبي لتقطيع جملة:",
+    tokensDisclaimer: "* الأرقام الموضحة أمثلة تقريبية لشرح الفكرة.",
+    whyTokensTitle: "لماذا يهمك فهم التوكنز؟",
+    tokenReason1Title: "حدود الطول والتكلفة:",
+    tokenReason1Desc: "الاستهلاك والتسعير في واجهات النماذج يُحسب بعدد الرموز لا بالكلمات.",
+    tokenReason2Title: "اللغات والتكلفة:",
+    tokenReason2Desc: "تستهلك بعض اللغات (كالعربية) رموزاً أكثر لنفس المعنى مقارنة بالإنجليزية؛ لذا فإن الاختصار يوفر تكلفة وسياقاً.",
+    sec5Title: "5. نافذة السياق (Context Window)",
+    sec5P1: "هي أقصى كمية نص يستطيع النموذج \"رؤيتها ومعالجتها\" دفعة واحدة في اللحظة الواحدة — وتتضمن: <strong>سؤالك + المحادثة السابقة + أي مستندات مرفقة + الإجابة التي يولدها</strong>.",
+    blackboardTitle: "تشبيه السبورة:",
+    blackboardBody: "تخيل نافذة السياق كأنها <strong>سبورة محدودة المساحة</strong>؛ إذا امتلأت بالكامل يُحذف أو يُلخص الكلام القديم لإفساح المجال للجديد، مما قد يجعل النموذج ينسى ما ذُكر في بداية المحادثة الطويلة.",
+    tokenRuleHead: "<strong>قاعدة تقريبية:</strong> كل <strong>1000 توكن</strong> تعادل تقريباً:",
+    tokenRule1: "~ 750 كلمة باللغة الإنجليزية.",
+    tokenRule2: "~ 400 إلى 500 كلمة باللغة العربية.",
+    sec6Title: "6. إعدادات التوليد: كيف تتحكم في «مزاج» النموذج؟",
+    sec6P1: "تتحكم هذه الإعدادات في طريقة اختيار الكلمة التالية، وفهمها يمنحك سيطرة كاملة على جودة ونوعية المخرجات:",
+    thSetting: "الإعداد",
+    thFunction: "ماذا يفعل؟",
+    thLowVal: "قيمة منخفضة",
+    thHighVal: "قيمة مرتفعة",
+    tempDesc: "مقدار العشوائية والإبداع",
+    tempLow: "دقيق ومتوقع (0.0)",
+    tempHigh: "إبداعي ومتنوع (1.0)",
+    toppDesc: "يختار من أكثر الكلمات احتمالاً فقط",
+    toppLow: "محافظ جداً (0.1)",
+    toppHigh: "منفتح على بدائل (0.95)",
+    maxtokDesc: "أقصى طول مسموح به للجواب",
+    maxtokLow: "ردود قصيرة وموجزة",
+    maxtokHigh: "ردود طويلة ومفصلة",
+    freqDesc: "يعاقب تكرار الكلمات نفسها",
+    freqLow: "قد يكرر نفسه أحياناً",
+    freqHigh: "لغة أكثر تنوعاً ومفردات أغنى",
+    guideTempTitle: "متى أستخدم ماذا؟ (درجة الحرارة Temperature)",
+    temp0Desc: "للمهام المنطقية والدقيقة (تحليل بيانات / كتابة كود / حل مسائل رياضيات).",
+    temp07Desc: "للمهام المتوازنة (المحادثات العامة والإجابات الحوارية).",
+    temp1Desc: "للمهام الابتكارية (كتابة إعلانية / تأليف قصص / العصف الذهني).",
+    tempGoldenRule: "💡 القاعدة الذهبية: «للدقة اخفض الحرارة، وللإبداع ارفعها».",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي التوليدي 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Les Grands Modèles de Langage (LLM)",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Leçon 02",
+    headerTitle: "Les Grands Modèles de Langage (LLM)",
+    sec1Title: "1. Introduction",
+    sec1P1: "Le traitement automatique du langage naturel (NLP) a connu un tournant majeur avec l'avènement des <strong>Grands Modèles de Langage (Large Language Models - LLM)</strong>. Ces systèmes peuvent interpréter la syntaxe humaine et générer des textes sophistiqués indistinguables de ceux d'un être humain.",
+    sec1CalloutTitle: "Vulgarisation didactique :",
+    sec1CalloutBody: "L'acronyme <strong>LLM</strong> désigne un <em>Large Language Model</em>. Imaginez un agent autonome ayant ingurgité l'ensemble des bibliothèques, articles et pages web du monde : il dispose d'un vaste répertoire lexical lui permettant de converser avec fluidité.",
+    sec1P2: "<strong>Définition technique :</strong> Modèle d'intelligence artificielle massif entraîné sur des corpus textuels gigantesques pour modéliser la grammaire, le contexte et la sémantique. La majorité repose sur l'architecture <strong>Transformer</strong> introduite en 2017.",
+    sec2Title: "2. Qu'est-ce qu'un modèle de langage et comment fonctionne-t-il ?",
+    sec2P1: "Un modèle de langage calcule statistiquement la probabilité du mot suivant en se fondant sur l'historique des mots précédents.",
+    sec2Example: "<strong>Illustration concrète :</strong> Soit la phrase : <em>« J'aime boire du... »</em>. Le modèle attribue des probabilités élevées aux mots logiques comme : (café, thé, jus).",
+    sec2MathTitle: "Objectif mathématique (probabilité conditionnelle) :",
+    sec2AmazingTitle: "Le paradoxe de l'apprentissage :",
+    sec2AmazingBody: "Aucune règle grammaticale n'a été codée manuellement ! Pour prédire avec précision le terme consécutif, le réseau induit la grammaire, la logique et les faits à partir des motifs d'entraînement : <strong>tel un enfant qui apprend la syntaxe en dévorant des milliers de romans</strong>.",
+    sec3Title: "3. Pourquoi « Grands » ? Et ce que le modèle N'EST PAS",
+    sec3P1: "Le qualificatif « Grand » se justifie par l'ampleur inédite des paramètres de conception :",
+    tblScaleFactor: "Facteur d'échelle",
+    tblScaleValue: "Ordre de grandeur",
+    paramName: "Paramètres (Poids synaptiques)",
+    paramVal: "Plusieurs dizaines à centaines de milliards",
+    dataName: "Volume du corpus",
+    dataVal: "Des trillions de tokens et caractères",
+    computeName: "Puissance de calcul",
+    computeVal: "Des grappes de milliers de processeurs GPU ultra-modernes",
+    modelSizeName: "Taille mémoire du modèle",
+    modelSizeVal: "Des dizaines à centaines de gigaoctets (Go)",
+    whatIsNotTitle: "Ce que le LLM n'est pas (Démystification)",
+    notSearchEngineTitle: "Pas un moteur de recherche :",
+    notSearchEngineDesc: "Il ne parcourt pas spontanément le Web en direct (sauf s'il est expressément interfacé avec un navigateur).",
+    notDatabaseTitle: "Pas une base de données :",
+    notDatabaseDesc: "Il ne restitue pas de fiches stockées textuellement ; chaque phrase est une reconstruction probabiliste instantanée.",
+    notHumanBrainTitle: "Pas un esprit humain :",
+    notHumanBrainDesc: "Brillant formulateur, son architecture est purement algorithmique : il n'a ni conscience, ni intention, ni éprouvé existentiel.",
+    famousLLMsTitle: "Modèles de référence à l'échelle mondiale",
+    tblModelCol: "Modèle",
+    tblOrgCol: "Laboratoire concepteur",
+    sec4Title: "4. Les Unités Lexicales (Tokens)",
+    sec4P1: "L'ordinateur ne traite pas les lettres alphabétiques mais des vecteurs numériques. Tout texte est segmenté en sous-unités appelées <strong>Tokens</strong>, chacune associée à un identifiant unique. Un token peut représenter un mot complet, une syllabe ou un signe de ponctuation.",
+    tokensExampleTitle: "Exemple indicatif de tokenisation :",
+    tokensDisclaimer: "* Les identifiants numériques sont fournis à titre pédagogique.",
+    whyTokensTitle: "Pourquoi la maîtrise des tokens est-elle capitale ?",
+    tokenReason1Title: "Facturation & quotas :",
+    tokenReason1Desc: "La consommation et le coût API sont décomptés en volume de tokens, et non en mots.",
+    tokenReason2Title: "Poids linguistique :",
+    tokenReason2Desc: "Certaines langues non latines (comme l'arabe) nécessitent parfois davantage de tokens par concept, rendant la concision essentielle.",
+    sec5Title: "5. Fenêtre de Contexte (Context Window)",
+    sec5P1: "Volume textuel maximal que le modèle peut conserver simultanément en mémoire active lors de l'inférence : <strong>votre consigne + l'historique + les pièces jointes + la réponse en cours</strong>.",
+    blackboardTitle: "L'analogie du tableau scolaire :",
+    blackboardBody: "Considérez le contexte comme un <strong>tableau noir de dimension finie</strong>. Lorsqu'il est saturé, les anciennes lignes sont effacées ou résumées pour libérer de l'espace, provoquant parfois l'oubli des premières instructions.",
+    tokenRuleHead: "<strong>Ordre de grandeur indicatif :</strong> 1000 tokens équivalent à :",
+    tokenRule1: "~ 750 mots en langue anglaise.",
+    tokenRule2: "~ 400 à 500 mots en langue arabe ou française soutenue.",
+    sec6Title: "6. Hyperparamètres de Génération : Moduler le comportement du LLM",
+    sec6P1: "Ces paramètres régulent la stratégie probabiliste de sélection lexicale et conditionnent directement la créativité du résultat :",
+    thSetting: "Hyperparamètre",
+    thFunction: "Action opératoire",
+    thLowVal: "Valeur faible",
+    thHighVal: "Valeur élevée",
+    tempDesc: "Degré d'aléa et de liberté créative",
+    tempLow: "Déterministe & prévisible (0.0)",
+    tempHigh: "Créatif & varié (1.0)",
+    toppDesc: "Échantillonnage par noyau cumulé",
+    toppLow: "Sélectif et conservateur (0.1)",
+    toppHigh: "Ouvert aux tournures rares (0.95)",
+    maxtokDesc: "Plafond de tokens autorisés en sortie",
+    maxtokLow: "Réponses courtes et synthétiques",
+    maxtokHigh: "Explications exhaustives et longues",
+    freqDesc: "Pénalisation des répétitions de tokens",
+    freqLow: "Répétitions potentielles",
+    freqHigh: "Vocabulaire riche et diversifié",
+    guideTempTitle: "Guide d'application didactique (Température) :",
+    temp0Desc: "Tâches formelles et calculatoires (programmation, correction syntaxique, mathématiques).",
+    temp07Desc: "Tâches équilibrées (dialogue explicatif standard, vulgarisation didactique).",
+    temp1Desc: "Génération inventive (rédaction publicitaire, fiction, brainstorming).",
+    tempGoldenRule: "💡 Règle d'or : « Baissez la température pour la rigueur, augmentez-la pour l'imagination ».",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa — Module IA Générative 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Large Language Models (LLMs)",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Lesson 02",
+    headerTitle: "Large Language Models (LLMs)",
+    sec1Title: "1. Introduction",
+    sec1P1: "Natural language processing has undergone a revolution with the rise of <strong>Large Language Models (LLMs)</strong>. These neural systems exhibit remarkable fluency, parsing human prompts and generating nuanced prose indistinguishable from human writing.",
+    sec1CalloutTitle: "Conceptual Simplification:",
+    sec1CalloutBody: "<strong>LLM</strong> stands for <em>Large Language Model</em>. Imagine a software agent that has processed virtually every open book, scholarly paper, and website on Earth; it possesses an immense linguistic repertoire, allowing it to converse naturally.",
+    sec1P2: "<strong>Technical Definition:</strong> A deep learning model trained on petabytes of unstructured text to master syntax, semantics, and real-world representations. Most current foundation architectures rely on the <strong>Transformer</strong> model introduced in 2017.",
+    sec2Title: "2. What is a Language Model and How Does It Work?",
+    sec2P1: "At its core, a language model is a probabilistic engine trained to predict the next token given an antecedent text prompt.",
+    sec2Example: "<strong>Concrete Example:</strong> Presented with the fragment: <em>'I enjoy drinking hot...'</em>, the system assigns high probabilities to words such as: (coffee, tea, cocoa).",
+    sec2MathTitle: "Mathematical Objective (Next-Token Probability):",
+    sec2AmazingTitle: "The Emergent Training Phenomenon:",
+    sec2AmazingBody: "No human hand-coded formal grammar rules! In striving to minimize token prediction errors across billions of iterations, the model implicitly deduced syntax, factual patterns, and style: <strong>much like an avid child absorbing sentence patterns from reading thousands of books</strong>.",
+    sec3Title: "3. Why 'Large'? And What a Language Model IS NOT",
+    sec3P1: "These systems are characterized as 'Large' due to their scale across key dimensions:",
+    tblScaleFactor: "Dimension",
+    tblScaleValue: "Representative Scale",
+    paramName: "Parameters (Weights)",
+    paramVal: "Tens to hundreds of billions",
+    dataName: "Training Data Corpus",
+    dataVal: "Trillions of words and tokens",
+    computeName: "Compute Resources",
+    computeVal: "Thousands of enterprise-grade GPUs",
+    modelSizeName: "Model Disk Footprint",
+    modelSizeVal: "Dozens to hundreds of gigabytes",
+    whatIsNotTitle: "What a Language Model IS NOT (Myths Debunked)",
+    notSearchEngineTitle: "Not a search engine:",
+    notSearchEngineDesc: "It does not crawl the web in real-time unless explicitly augmented with an external browsing tool.",
+    notDatabaseTitle: "Not a factual database:",
+    notDatabaseDesc: "It does not store and retrieve canned text files; it dynamically generates token probabilities on the fly.",
+    notHumanBrainTitle: "Not a human consciousness:",
+    notHumanBrainDesc: "Though linguistically articulate, it possesses no true cognitive intent, self-awareness, or lived personal experience.",
+    famousLLMsTitle: "Leading Large Language Models Worldwide",
+    tblModelCol: "Model",
+    tblOrgCol: "Developer / Laboratory",
+    sec4Title: "4. Tokens",
+    sec4P1: "Computers do not natively interpret letters; they process numerical vectors. Raw input text is segmented into atomic chunks known as <strong>Tokens</strong>, each mapped to a numerical identifier. A token may correspond to a full word, a sub-word root, or punctuation.",
+    tokensExampleTitle: "Sample Tokenization Breakdown:",
+    tokensDisclaimer: "* Numerical token IDs shown are representative illustrations.",
+    whyTokensTitle: "Why Does Understanding Tokens Matter?",
+    tokenReason1Title: "Length limits & API costs:",
+    tokenReason1Desc: "API quotas, billing, and system limits are calculated strictly per token, not per word.",
+    tokenReason2Title: "Multilingual efficiency:",
+    tokenReason2Desc: "Non-English scripts (such as Arabic) can require more tokens for identical semantic phrases; concise prompt formulation saves cost and context.",
+    sec5Title: "5. Context Window",
+    sec5P1: "The maximum token memory a model can hold active simultaneously: <strong>your prompt + conversation history + attached documents + generated answer</strong>.",
+    blackboardTitle: "The Blackboard Metaphor:",
+    blackboardBody: "Visualize the context window as a <strong>blackboard with finite surface area</strong>. When full, earlier chalk writings must be erased or compressed, causing the model to forget facts stated earlier in a prolonged chat.",
+    tokenRuleHead: "<strong>Rule of Thumb:</strong> 1,000 tokens correspond roughly to:",
+    tokenRule1: "~ 750 English words.",
+    tokenRule2: "~ 400 to 500 words in Arabic or complex French.",
+    sec6Title: "6. Generation Hyperparameters: Steering the Model's Persona",
+    sec6P1: "These parameters control the probability distribution from which next tokens are sampled, directly calibrating precision versus novelty:",
+    thSetting: "Parameter",
+    thFunction: "Functionality",
+    thLowVal: "Low Value",
+    thHighVal: "High Value",
+    tempDesc: "Controls randomness and creative liberty",
+    tempLow: "Deterministic & factual (0.0)",
+    tempHigh: "Creative & diverse (1.0)",
+    toppDesc: "Cumulative probability threshold (Nucleus)",
+    toppLow: "Narrow & conservative (0.1)",
+    toppHigh: "Open to diverse vocabulary (0.95)",
+    maxtokDesc: "Maximum output length ceiling",
+    maxtokLow: "Brief and direct outputs",
+    maxtokHigh: "Comprehensive and lengthy answers",
+    freqDesc: "Penalizes immediate token repetition",
+    freqLow: "Permits occasional repetition",
+    freqHigh: "Encourages broader lexical variety",
+    guideTempTitle: "Pedagogical Guide for Temperature Selection:",
+    temp0Desc: "Formal and deterministic tasks (data analysis, coding, mathematical proofs).",
+    temp07Desc: "Balanced tasks (instructional dialog, standard explanatory prose).",
+    temp1Desc: "Brainstorming and divergent thinking (creative writing, metaphors, ideation).",
+    tempGoldenRule: "💡 Golden Rule: 'Lower temperature for precision; raise it for imagination.'",
+    footerText: "Higher Normal School - Bejaia Annex — Generative AI Course 2026 / 2027"
+  }
+};
+
+function renderTokens(lang) {
+  const container = document.getElementById('token-box');
+  if (!container) return;
+  const list = tokenSamples[lang] || tokenSamples['en'];
+  container.innerHTML = list.map(t => `
+    <div class="token-chip">${t.text} <span>${t.id}</span></div>
+  `).join('');
+}
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Render tokens in the matching language
+  renderTokens(lang);
+
+  // Update back arrow icon direction
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update language button state
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize with other course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

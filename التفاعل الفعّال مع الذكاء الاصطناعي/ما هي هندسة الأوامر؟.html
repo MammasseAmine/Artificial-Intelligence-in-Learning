@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 03 - الدرس 01: ما هي هندسة الأوامر؟ (Prompt Engineering)</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">الفصل 03 - الدرس 01: ما هي هندسة الأوامر؟ (Prompt Engineering)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -38,11 +38,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -60,7 +108,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -99,7 +149,7 @@
     font-size: 1.1rem;
     opacity: 0.95;
     font-weight: 400;
-    max-width: 750px;
+    max-width: 780px;
     margin: 0 auto;
   }
   
@@ -126,6 +176,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
   /* General Cards */
@@ -149,7 +200,7 @@
   /* Golden Rule Banner */
   .golden-rule {
     background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
-    border-right: 5px solid var(--accent);
+    border-inline-start: 5px solid var(--accent);
     border-radius: 12px;
     padding: 18px 24px;
     margin: 20px 0;
@@ -158,12 +209,13 @@
     gap: 16px;
     color: #7b341e;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .golden-rule i {
     font-size: 1.8rem;
     color: var(--accent);
+    flex-shrink: 0;
   }
 
   /* Grid Layouts */
@@ -211,6 +263,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
+    flex-shrink: 0;
   }
 
   .feature-title {
@@ -251,7 +304,7 @@
 
   .comp-col.weak {
     background-color: var(--danger-light);
-    border-left: 1px solid #fed7d7;
+    border-inline-end: 1px solid #fed7d7;
   }
 
   .comp-col.good {
@@ -315,11 +368,11 @@
   }
 
   .spotlight-box.weak {
-    border-right: 4px solid #fc8181;
+    border-inline-start: 4px solid #fc8181;
   }
 
   .spotlight-box.effective {
-    border-right: 4px solid #68d391;
+    border-inline-start: 4px solid #68d391;
   }
 
   /* Metaphor Callout */
@@ -338,6 +391,7 @@
     font-size: 1.8rem;
     color: var(--secondary);
     margin-top: 4px;
+    flex-shrink: 0;
   }
 
   /* Footer */
@@ -356,33 +410,43 @@
       grid-template-columns: 1fr;
     }
     .comp-col.weak {
-      border-left: none;
+      border-inline-end: none;
       border-bottom: 1px solid #fed7d7;
     }
     .header h1 { font-size: 1.8rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 03.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToLessons">العودة لقائمة الدروس</span>
     </a>
-    <span class="header-badge">الفصل 03 • الدرس 01</span>
-    <h1>ما هي هندسة الأوامر؟ (Prompt Engineering)</h1>
-    <div class="subtitle">فن وعلم تصميم وصياغة التعليمات لتوجيه نماذج الذكاء الاصطناعي التوليدي للحصول على أعلى درجات الدقة والفاعلية.</div>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 03 • الدرس 01</span>
+    <h1 data-i18n="headerTitle">ما هي هندسة الأوامر؟ (Prompt Engineering)</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">فن وعلم تصميم وصياغة التعليمات لتوجيه نماذج الذكاء الاصطناعي التوليدي للحصول على أعلى درجات الدقة والفاعلية.</div>
   </div>
 
   <!-- تعريف هندسة الأوامر -->
   <div class="main-card">
-    <p class="lead-text">
+    <p class="lead-text" data-i18n="defLead">
       <strong>هندسة الأوامر (Prompt Engineering):</strong> هي فن وعلم تصميم وصياغة التعليمات التي نقدمها لنماذج الذكاء الاصطناعي التوليدي بهدف الحصول على مخرجات أكثر دقة ووضوحاً وملاءمة للمهمة المطلوبة.
     </p>
-    <p style="color: var(--muted); margin-bottom: 15px;">
+    <p style="color: var(--muted); margin-bottom: 15px;" data-i18n="defSub">
       كلما كان الأمر (Prompt) واضحاً، منظماً، ومفصلاً، زادت جودة الإجابة التي ينتجها النموذج.
     </p>
 
@@ -390,8 +454,8 @@
     <div class="metaphor-box">
       <i class="fa-solid fa-brain"></i>
       <div>
-        <strong style="color: var(--primary); display:block; margin-bottom: 4px;">طريقة التواصل مع العقل الاصطناعي:</strong>
-        تخيّل أنك تتحدث مع مساعد ذكي يملك معرفة هائلة، لكنه <strong>لا يقرأ الأفكار</strong>. كل ما يعرفه عن طلبك هو ما كتبته أنت بالضبط، وهندسة الأوامر هي المهارة التي تجعلك توصل فكرتك لهذا المساعد بأوضح صورة ممكنة.
+        <strong style="color: var(--primary); display:block; margin-bottom: 4px;" data-i18n="metaphorTitle">طريقة التواصل مع العقل الاصطناعي:</strong>
+        <span data-i18n="metaphorBody">تخيّل أنك تتحدث مع مساعد ذكي يملك معرفة هائلة، لكنه <strong>لا يقرأ الأفكار</strong>. كل ما يعرفه عن طلبك هو ما كتبته أنت بالضبط، وهندسة الأوامر هي المهارة التي تجعلك توصل فكرتك لهذا المساعد بأوضح صورة ممكنة.</span>
       </div>
     </div>
 
@@ -399,7 +463,7 @@
     <div class="golden-rule">
       <i class="fa-solid fa-gem"></i>
       <div>
-        <strong>القاعدة الذهبية:</strong> القمامة داخل = قمامة خارج | الجودة داخل = جودة خارج.
+        <span data-i18n="goldenRuleText"><strong>القاعدة الذهبية:</strong> القمامة داخل = قمامة خارج | الجودة داخل = جودة خارج.</span>
       </div>
     </div>
   </div>
@@ -409,9 +473,9 @@
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
-        <div class="feature-title">هندسة الأوامر كـ "عِلم"</div>
+        <div class="feature-title" data-i18n="scienceTitle">هندسة الأوامر كـ "عِلم"</div>
       </div>
-      <p class="feature-desc">
+      <p class="feature-desc" data-i18n="scienceDesc">
         لأنها مبنية على فهم دقيق لكيفية عمل النماذج اللغوية الكبيرة (LLMs)، وآليات توليد النصوص، وطبيعة التوزيع الاحتمالي للكلمات.
       </p>
     </div>
@@ -419,9 +483,9 @@
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon" style="color: var(--accent);"><i class="fa-solid fa-palette"></i></div>
-        <div class="feature-title">هندسة الأوامر كـ "فَن"</div>
+        <div class="feature-title" data-i18n="artTitle">هندسة الأوامر كـ "فَن"</div>
       </div>
-      <p class="feature-desc">
+      <p class="feature-desc" data-i18n="artDesc">
         لأنها تتطلب مهارة وإبداعاً لغوياً في صياغة السياق وتجربة أساليب متعددة ومستمرة للوصول إلى أفضل نتيجة تناسب الهدف المنشود.
       </p>
     </div>
@@ -430,7 +494,7 @@
   <!-- لماذا تعتبر مهمة؟ -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-robot"></i></span>
-    لماذا تعتبر هندسة الأوامر مهمة؟
+    <span data-i18n="whyTitle">لماذا تعتبر هندسة الأوامر مهمة؟</span>
   </div>
 
   <div class="grid-3">
@@ -438,98 +502,98 @@
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-crosshairs"></i></div>
-        <div class="feature-title">إجابات أكثر دقة</div>
+        <div class="feature-title" data-i18n="why1Title">إجابات أكثر دقة</div>
       </div>
-      <p class="feature-desc">الحصول على مخرجات تتطابق تماماً مع المطلوب دون انحراف عن سياق الموضوع.</p>
+      <p class="feature-desc" data-i18n="why1Desc">الحصول على مخرجات تتطابق تماماً مع المطلوب دون انحراف عن سياق الموضوع.</p>
     </div>
 
     <!-- 2 -->
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="feature-title">تقليل الهلاوس</div>
+        <div class="feature-title" data-i18n="why2Title">تقليل الهلاوس</div>
       </div>
-      <p class="feature-desc">الحد من الأخطاء والمعلومات المزيفة أو غير الواقعية (Hallucinations) التي قد ينتجها النموذج.</p>
+      <p class="feature-desc" data-i18n="why2Desc">الحد من الأخطاء والمعلومات المزيفة أو غير الواقعية (Hallucinations) التي قد ينتجها النموذج.</p>
     </div>
 
     <!-- 3 -->
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-clock"></i></div>
-        <div class="feature-title">توفير الوقت والجهد</div>
+        <div class="feature-title" data-i18n="why3Title">توفير الوقت والجهد</div>
       </div>
-      <p class="feature-desc">تجنب المحاولات وإعادة الأسئلة العشوائية المتكررة للوصول للنتيجة المطلوبة من أول مرة.</p>
+      <p class="feature-desc" data-i18n="why3Desc">تجنب المحاولات وإعادة الأسئلة العشوائية المتكررة للوصول للنتيجة المطلوبة من أول مرة.</p>
     </div>
 
     <!-- 4 -->
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-star"></i></div>
-        <div class="feature-title">تحسين جودة المحتوى</div>
+        <div class="feature-title" data-i18n="why4Title">تحسين جودة المحتوى</div>
       </div>
-      <p class="feature-desc">رفع القيمة الفكرية واللغوية للنصوص المخرجة وجعلها جاهزة للاستخدام العملي والأكاديمي.</p>
+      <p class="feature-desc" data-i18n="why4Desc">رفع القيمة الفكرية واللغوية للنصوص المخرجة وجعلها جاهزة للاستخدام العملي والأكاديمي.</p>
     </div>
 
     <!-- 5 -->
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-sliders"></i></div>
-        <div class="feature-title">التحكم في الأسلوب والطول</div>
+        <div class="feature-title" data-i18n="why5Title">التحكم في الأسلوب والطول</div>
       </div>
-      <p class="feature-desc">تحديد نبرة الإجابة (علمية، مبسطة، رسمية) وحجمها (عدد الكلمات أو الفقرات بدقة).</p>
+      <p class="feature-desc" data-i18n="why5Desc">تحديد نبرة الإجابة (علمية، مبسطة، رسمية) وحجمها (عدد الكلمات أو الفقرات بدقة).</p>
     </div>
 
     <!-- 6 -->
     <div class="feature-card">
       <div class="feature-header">
         <div class="feature-icon"><i class="fa-solid fa-network-wired"></i></div>
-        <div class="feature-title">الأتمتة والتوسع</div>
+        <div class="feature-title" data-i18n="why6Title">الأتمتة والتوسع</div>
       </div>
-      <p class="feature-desc">القوالب المصاغة جيداً يمكن ربطها بأنظمة وأدوات رقمية متقدمة لتشغيل مهام متكررة تلقائياً.</p>
+      <p class="feature-desc" data-i18n="why6Desc">القوالب المصاغة جيداً يمكن ربطها بأنظمة وأدوات رقمية متقدمة لتشغيل مهام متكررة تلقائياً.</p>
     </div>
   </div>
 
   <!-- مقارنة بين أمر ضعيف وأمر جيد -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-code-compare"></i></span>
-    مقارنة عملية: بين الأمر الضعيف والأمر الجيد
+    <span data-i18n="compTitle">مقارنة عملية: بين الأمر الضعيف والأمر الجيد</span>
   </div>
 
   <div class="comparison-container">
     
-    <!-- مثال 1: كتابة مقال تعليمي -->
+    <!-- مثال 1 -->
     <div class="comp-row">
       <div class="comp-col weak">
-        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> أمر ضعيف</span>
-        <div class="comp-text">اكتب عن الذكاء الاصطناعي.</div>
+        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> <span data-i18n="tagWeak">أمر ضعيف</span></span>
+        <div class="comp-text" data-i18n="comp1Weak">اكتب عن الذكاء الاصطناعي.</div>
       </div>
       <div class="comp-col good">
-        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> أمر جيد</span>
-        <div class="comp-text">اكتب مقالاً من 500 كلمة عن الذكاء الاصطناعي باللغة العربية مع أمثلة من التعليم.</div>
+        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> <span data-i18n="tagGood">أمر جيد</span></span>
+        <div class="comp-text" data-i18n="comp1Good">اكتب مقالاً من 500 كلمة عن الذكاء الاصطناعي باللغة العربية مع أمثلة من التعليم.</div>
       </div>
     </div>
 
-    <!-- مثال 2: مثال بيداغوجي متخصص (بديل NLP) -->
+    <!-- مثال 2 -->
     <div class="comp-row">
       <div class="comp-col weak">
-        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> أمر ضعيف</span>
-        <div class="comp-text">اشرح المقاربة بالكفاءات في التدريس.</div>
+        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> <span data-i18n="tagWeak">أمر ضعيف</span></span>
+        <div class="comp-text" data-i18n="comp2Weak">اشرح المقاربة بالكفاءات في التدريس.</div>
       </div>
       <div class="comp-col good">
-        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> أمر جيد</span>
-        <div class="comp-text">اشرح مفهوم "المقاربة بالكفاءات" لأساتذة متدربين، مع اقتراح وضعية-مشكلة صفية وأداة تقويم تكويني تدعم التعلم النشط.</div>
+        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> <span data-i18n="tagGood">أمر جيد</span></span>
+        <div class="comp-text" data-i18n="comp2Good">اشرح مفهوم "المقاربة بالكفاءات" لأساتذة متدربين، مع اقتراح وضعية-مشكلة صفية وأداة تقويم تكويني تدعم التعلم النشط.</div>
       </div>
     </div>
 
-    <!-- مثال 3: تلخيص النصوص -->
+    <!-- مثال 3 -->
     <div class="comp-row">
       <div class="comp-col weak">
-        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> أمر ضعيف</span>
-        <div class="comp-text">لخص النص.</div>
+        <span class="badge-tag badge-weak"><i class="fa-solid fa-xmark"></i> <span data-i18n="tagWeak">أمر ضعيف</span></span>
+        <div class="comp-text" data-i18n="comp3Weak">لخص النص.</div>
       </div>
       <div class="comp-col good">
-        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> أمر جيد</span>
-        <div class="comp-text">لخص النص في 5 نقاط رئيسية مع الحفاظ على الأفكار الأساسية.</div>
+        <span class="badge-tag badge-good"><i class="fa-solid fa-check"></i> <span data-i18n="tagGood">أمر جيد</span></span>
+        <div class="comp-text" data-i18n="comp3Good">لخص النص في 5 نقاط رئيسية مع الحفاظ على الأفكار الأساسية.</div>
       </div>
     </div>
 
@@ -539,31 +603,229 @@
   <div class="spotlight-card">
     <div class="spotlight-title">
       <i class="fa-solid fa-lightbulb"></i>
-      لاحظ كيف يمكن لإعادة صياغة بسيطة أن تُحدث فرقاً كبيراً في جودة الاستجابة:
+      <span data-i18n="spotlightTitle">لاحظ كيف يمكن لإعادة صياغة بسيطة أن تُحدث فرقاً كبيراً في جودة الاستجابة:</span>
     </div>
 
     <div class="spotlight-box weak">
-      <span style="color: #fc8181; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 6px;">
+      <span style="color: #fc8181; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 6px;" data-i18n="spotWeakLabel">
         ✕ أمر ضعيف (مبهم وعام جداً):
       </span>
-      <p style="font-size: 1rem; color: #cbd5e0;">"اكتب لي شيئاً عن الذكاء الاصطناعي."</p>
+      <p style="font-size: 1rem; color: #cbd5e0;" data-i18n="spotWeakText">"اكتب لي شيئاً عن الذكاء الاصطناعي."</p>
     </div>
 
     <div class="spotlight-box effective">
-      <span style="color: #68d391; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 6px;">
+      <span style="color: #68d391; font-weight: 800; font-size: 0.85rem; display: block; margin-bottom: 6px;" data-i18n="spotGoodLabel">
         ✓ أمر فعّال (محدد الهدف، الجمهور، الحجم، والأسلوب):
       </span>
-      <p style="font-size: 1rem; color: #fff;">
+      <p style="font-size: 1rem; color: #fff;" data-i18n="spotGoodText">
         "اكتب فقرة من 150 كلمة تشرح للطلبة في المرحلة الثانوية مفهوم الذكاء الاصطناعي، باستخدام مثال واحد من الحياة اليومية، وبأسلوب مبسط."
       </p>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 03 - الدرس 01: ما هي هندسة الأوامر؟ (Prompt Engineering)",
+    backToLessons: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 03 • الدرس 01",
+    headerTitle: "ما هي هندسة الأوامر؟ (Prompt Engineering)",
+    headerSubtitle: "فن وعلم تصميم وصياغة التعليمات لتوجيه نماذج الذكاء الاصطناعي التوليدي للحصول على أعلى درجات الدقة والفاعلية.",
+    defLead: "<strong>هندسة الأوامر (Prompt Engineering):</strong> هي فن وعلم تصميم وصياغة التعليمات التي نقدمها لنماذج الذكاء الاصطناعي التوليدي بهدف الحصول على مخرجات أكثر دقة ووضوحاً وملاءمة للمهمة المطلوبة.",
+    defSub: "كلما كان الأمر (Prompt) واضحاً، منظماً، ومفصلاً، زادت جودة الإجابة التي ينتجها النموذج.",
+    metaphorTitle: "طريقة التواصل مع العقل الاصطناعي:",
+    metaphorBody: "تخيّل أنك تتحدث مع مساعد ذكي يملك معرفة هائلة، لكنه <strong>لا يقرأ الأفكار</strong>. كل ما يعرفه عن طلبك هو ما كتبته أنت بالضبط، وهندسة الأوامر هي المهارة التي تجعلك توصل فكرتك لهذا المساعد بأوضح صورة ممكنة.",
+    goldenRuleText: "<strong>القاعدة الذهبية:</strong> القمامة داخل = قمامة خارج | الجودة داخل = جودة خارج.",
+    
+    scienceTitle: "هندسة الأوامر كـ \"عِلم\"",
+    scienceDesc: "لأنها مبنية على فهم دقيق لكيفية عمل النماذج اللغوية الكبيرة (LLMs)، وآليات توليد النصوص، وطبيعة التوزيع الاحتمالي للكلمات.",
+    artTitle: "هندسة الأوامر كـ \"فَن\"",
+    artDesc: "لأنها تتطلب مهارة وإبداعاً لغوياً في صياغة السياق وتجربة أساليب متعددة ومستمرة للوصول إلى أفضل نتيجة تناسب الهدف المنشود.",
+    
+    whyTitle: "لماذا تعتبر هندسة الأوامر مهمة؟",
+    why1Title: "إجابات أكثر دقة",
+    why1Desc: "الحصول على مخرجات تتطابق تماماً مع المطلوب دون انحراف عن سياق الموضوع.",
+    why2Title: "تقليل الهلاوس",
+    why2Desc: "الحد من الأخطاء والمعلومات المزيفة أو غير الواقعية (Hallucinations) التي قد ينتجها النموذج.",
+    why3Title: "توفير الوقت والجهد",
+    why3Desc: "تجنب المحاولات وإعادة الأسئلة العشوائية المتكررة للوصول للنتيجة المطلوبة من أول مرة.",
+    why4Title: "تحسين جودة المحتوى",
+    why4Desc: "رفع القيمة الفكرية واللغوية للنصوص المخرجة وجعلها جاهزة للاستخدام العملي والأكاديمي.",
+    why5Title: "التحكم في الأسلوب والطول",
+    why5Desc: "تحديد نبرة الإجابة (علمية، مبسطة، رسمية) وحجمها (عدد الكلمات أو الفقرات بدقة).",
+    why6Title: "الأتمتة والتوسع",
+    why6Desc: "القوالب المصاغة جيداً يمكن ربطها بأنظمة وأدوات رقمية متقدمة لتشغيل مهام متكررة تلقائياً.",
+    
+    compTitle: "مقارنة عملية: بين الأمر الضعيف والأمر الجيد",
+    tagWeak: "أمر ضعيف",
+    tagGood: "أمر جيد",
+    comp1Weak: "اكتب عن الذكاء الاصطناعي.",
+    comp1Good: "اكتب مقالاً من 500 كلمة عن الذكاء الاصطناعي باللغة العربية مع أمثلة من التعليم.",
+    comp2Weak: "اشرح المقاربة بالكفاءات في التدريس.",
+    comp2Good: "اشرح مفهوم \"المقاربة بالكفاءات\" لأساتذة متدربين، مع اقتراح وضعية-مشكلة صفية وأداة تقويم تكويني تدعم التعلم النشط.",
+    comp3Weak: "لخص النص.",
+    comp3Good: "لخص النص في 5 نقاط رئيسية مع الحفاظ على الأفكار الأساسية.",
+    
+    spotlightTitle: "لاحظ كيف يمكن لإعادة صياغة بسيطة أن تُحدث فرقاً كبيراً في جودة الاستجابة:",
+    spotWeakLabel: "✕ أمر ضعيف (مبهم وعام جداً):",
+    spotWeakText: "\"اكتب لي شيئاً عن الذكاء الاصطناعي.\"",
+    spotGoodLabel: "✓ أمر فعّال (محدد الهدف، الجمهور، الحجم، والأسلوب):",
+    spotGoodText: "\"اكتب فقرة من 150 كلمة تشرح للطلبة في المرحلة الثانوية مفهوم الذكاء الاصطناعي، باستخدام مثال واحد من الحياة اليومية، وبأسلوب مبسط.\"",
+    
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 03 - Leçon 01 : Qu'est-ce que l'Ingénierie de Prompt ? (Prompt Engineering)",
+    backToLessons: "Retour à la liste des leçons",
+    headerBadge: "Chapitre 03 • Leçon 01",
+    headerTitle: "Qu'est-ce que l'Ingénierie de Prompt ?",
+    headerSubtitle: "L'art et la science de concevoir et structurer des instructions pour guider les modèles d'IA générative vers un niveau maximal de précision et d'efficacité.",
+    defLead: "<strong>L'ingénierie de prompt (Prompt Engineering) :</strong> est l'art et la science de concevoir et formuler les instructions fournies aux modèles d'IA générative afin d'obtenir des sorties plus rigoureuses, claires et adaptées à la tâche cible.",
+    defSub: "Plus l'instruction (Prompt) est précise, organisée et contextualisée, plus la réponse générée par le modèle gagne en qualité.",
+    metaphorTitle: "Dialogue avec l'esprit artificiel :",
+    metaphorBody: "Imaginez échanger avec un assistant brillant doté d'un savoir immense, mais <strong>incapable de lire dans vos pensées</strong>. Il ne sait de votre intention que ce que vous formulez explicitement. L'ingénierie de prompt est l'art de lui transmettre vos exigences avec une netteté absolue.",
+    goldenRuleText: "<strong>Règle d'or :</strong> Entrée médiocre = sortie médiocre | Entrée de qualité = sortie de qualité (GIGO).",
+    
+    scienceTitle: "Le Prompting comme « Science »",
+    scienceDesc: "Fondé sur la compréhension technique du fonctionnement des grands modèles linguistiques (LLM), de la génération de texte et des probabilités sous-jacentes.",
+    artTitle: "Le Prompting comme « Art »",
+    artDesc: "Exige une sensibilité linguistique, une créativité stylistique et une démarche d'expérimentation continue pour trouver la formulation idéale.",
+    
+    whyTitle: "Pourquoi l'Ingénierie de Prompt est-elle cruciale ?",
+    why1Title: "Réponses plus précises",
+    why1Desc: "Obtenir des livrables parfaitement alignés sur les objectifs sans déviation thématique.",
+    why2Title: "Réduction des hallucinations",
+    why2Desc: "Limiter les erreurs factuelles, les approximations et les affabulations générées par le modèle.",
+    why3Title: "Gain de temps et d'effort",
+    why3Desc: "Éviter les itérations désordonnées et obtenir le résultat escompté dès la première formulation.",
+    why4Title: "Excellence du contenu",
+    why4Desc: "Rehausser la valeur analytique et pédagogique des textes produits pour un usage académique direct.",
+    why5Title: "Maîtrise du style et de la longueur",
+    why5Desc: "Définir avec rigueur la tonalité (académique, vulgarisée, formelle) et le gabarit (nombre de mots ou de paragraphes).",
+    why6Title: "Automatisation et passage à l'échelle",
+    why6Desc: "Les gabarits optimisés peuvent être intégrés dans des workflows automatisés et des systèmes logiciels.",
+    
+    compTitle: "Comparaison pratique : Prompt Naïf vs Prompt Structuré",
+    tagWeak: "Prompt faible",
+    tagGood: "Prompt optimisé",
+    comp1Weak: "Écris sur l'intelligence artificielle.",
+    comp1Good: "Rédige un article de 500 mots sur l'intelligence artificielle en français, illustré par des exemples concrets dans l'enseignement.",
+    comp2Weak: "Explique l'approche par compétences dans l'enseignement.",
+    comp2Good: "Expliquez le concept d'« approche par compétences » à des enseignants stagiaires, en proposant une situation-problème de classe et un outil d'évaluation formative favorisant la pédagogie active.",
+    comp3Weak: "Résume ce texte.",
+    comp3Good: "Résume ce texte en 5 points clés en préservant fidèlement les thèses fondamentales.",
+    
+    spotlightTitle: "Observez comment une simple reformulation transforme radicalement la qualité de la réponse :",
+    spotWeakLabel: "✕ Prompt faible (vague et flou) :",
+    spotWeakText: "« Écris-moi quelque chose sur l'intelligence artificielle. »",
+    spotGoodLabel: "✓ Prompt efficace (objectif délimité, public ciblé, longueur et style précis) :",
+    spotGoodText: "« Rédige un paragraphe de 150 mots expliquant aux élèves du secondaire le concept d'intelligence artificielle, en mobilisant un exemple tiré de la vie quotidienne et un ton pédagogique accessible. »",
+    
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 03 - Lesson 01: What is Prompt Engineering?",
+    backToLessons: "Back to Lessons List",
+    headerBadge: "Chapter 03 • Lesson 01",
+    headerTitle: "What is Prompt Engineering?",
+    headerSubtitle: "The art and science of formulating instructions to steer generative AI models toward optimal precision and efficacy.",
+    defLead: "<strong>Prompt Engineering:</strong> is the art and science of structuring inputs given to generative AI models to elicit more accurate, coherent, and task-aligned responses.",
+    defSub: "The clearer, more structured, and detailed the prompt is, the higher the quality and relevance of the model's generated output.",
+    metaphorTitle: "Interfacing with the Artificial Mind:",
+    metaphorBody: "Imagine conversing with a brilliant assistant endowed with vast knowledge, but who <strong>cannot read your mind</strong>. It only perceives what you explicitly write down. Prompt engineering is the craft of articulating your exact intent with flawless precision.",
+    goldenRuleText: "<strong>Golden Rule:</strong> Garbage In = Garbage Out | Quality In = Quality Out (GIGO).",
+    
+    scienceTitle: "Prompting as a \"Science\"",
+    scienceDesc: "Rooted in an understanding of large language model (LLM) architectures, tokenization mechanics, and autoregressive probabilistic distributions.",
+    artTitle: "Prompting as an \"Art\"",
+    artDesc: "Requires linguistic nuance, contextual craftsmanship, and iterative experimentation to achieve optimal results for specific scenarios.",
+    
+    whyTitle: "Why is Prompt Engineering Essential?",
+    why1Title: "Sharper Precision",
+    why1Desc: "Extract answers that strictly match requirements without contextual drift or off-topic elaboration.",
+    why2Title: "Hallucination Mitigation",
+    why2Desc: "Minimize factual inaccuracies, fabricated citations, and ungrounded statements produced by the model.",
+    why3Title: "Time & Effort Efficiency",
+    why3Desc: "Eliminate repetitive trial-and-error queries by obtaining usable results on the initial generation.",
+    why4Title: "Elevated Content Quality",
+    why4Desc: "Enhance analytical depth and pedagogical polish, making deliverables ready for academic use.",
+    why5Title: "Tone & Length Calibration",
+    why5Desc: "Precisely specify response register (scholarly, plain language, formal) and structural limits (word or paragraph count).",
+    why6Title: "Scalability & Automation",
+    why6Desc: "Standardized prompts can be embedded into automated pipelines, software applications, and agents.",
+    
+    compTitle: "Practical Comparison: Weak Prompt vs. Engineered Prompt",
+    tagWeak: "Weak Prompt",
+    tagGood: "Engineered Prompt",
+    comp1Weak: "Write about artificial intelligence.",
+    comp1Good: "Write a 500-word article on artificial intelligence in English, including concrete real-world educational use cases.",
+    comp2Weak: "Explain the competency-based approach in teaching.",
+    comp2Good: "Explain the \"competency-based approach\" for trainee teachers, including a classroom problem-situation and a formative assessment rubric supporting active learning.",
+    comp3Weak: "Summarize the text.",
+    comp3Good: "Summarize this text into 5 core bullet points while strictly preserving its primary arguments.",
+    
+    spotlightTitle: "Notice how a precise reformulation fundamentally elevates response fidelity:",
+    spotWeakLabel: "✕ Weak Prompt (vague and open-ended):",
+    spotWeakText: "\"Write me something about AI.\"",
+    spotGoodLabel: "✓ Effective Prompt (defined goal, audience, length, and style):",
+    spotGoodText: "\"Write a 150-word paragraph explaining the concept of Artificial Intelligence to high school students, using a single everyday analogy and an accessible, engaging tone.\"",
+    
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      // Use innerHTML for keys that contain formatting tags (strong, etc.)
+      if (['defLead', 'metaphorBody', 'goldenRuleText'].includes(key)) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state on language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Persist choice to sync across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language or default to Arabic
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

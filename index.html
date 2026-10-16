@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الذكاء الاصطناعي في التعلم</title>
+<title id="page-title">الذكاء الاصطناعي في التعلم</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
   
   :root {
     --primary: #1a365d;
@@ -31,11 +31,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Adjust typography for Latin scripts */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1050px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -81,19 +129,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .logo-placeholder .logo-icon {
-    font-size: 1.8rem;
-    line-height: 1;
-  }
-
-  .logo-placeholder .logo-label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: white;
-    margin-top: 4px;
-    opacity: 0.9;
   }
   
   .header h1 {
@@ -164,7 +199,7 @@
     background: var(--bg);
     padding: 16px;
     border-radius: 12px;
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
   }
 
   .profile-item .label {
@@ -239,7 +274,7 @@
 
   .info-box ul li {
     position: relative;
-    padding-right: 18px;
+    padding-inline-start: 18px;
     margin-bottom: 8px;
     font-size: 0.95rem;
   }
@@ -250,11 +285,11 @@
     font-weight: bold;
     font-size: 1.3rem;
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     top: -2px;
   }
 
-  /* See Programs Button */
+  /* Button Container */
   .see-programs-container {
     text-align: center;
     padding: 20px 10px;
@@ -284,17 +319,18 @@
     border-color: var(--accent);
   }
 
-  .see-programs-btn .btn-icon {
-    font-size: 1.3rem;
-  }
-
   .see-programs-btn .arrow {
+    display: inline-block;
     font-size: 1.2rem;
     transition: transform 0.3s ease;
   }
 
-  .see-programs-btn:hover .arrow {
+  /* Invert hover arrow direction for LTR and RTL */
+  html[dir="rtl"] .see-programs-btn:hover .arrow {
     transform: translateX(-5px);
+  }
+  html[dir="ltr"] .see-programs-btn:hover .arrow {
+    transform: translateX(5px);
   }
 
   /* Footer */
@@ -307,7 +343,6 @@
     margin-top: 10px;
   }
   
-  /* Responsive */
   @media (max-width: 650px) {
     .header h1 { font-size: 1.6rem; }
     .see-programs-btn { width: 100%; padding: 14px 20px; font-size: 1.05rem; }
@@ -317,72 +352,79 @@
 <body>
 <div class="container">
 
-  <!-- الرأس -->
-  <div class="header">
-    
-    <div class="logo-placeholder" title="شعار المدرسة">
-      <img src="assets/logo.jpg" alt="شعار المدرسة">
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
     </div>
-
-    <h1>الذكاء الاصطناعي في التعلم</h1>
-    <div class="subtitle">استكشاف وتوظيف تقنيات الذكاء الاصطناعي التوليدي في السياق الأكاديمي والتربوي</div>
-    <span class="badge">المدرسة العليا للأساتذة ملحقة بجاية</span>
   </div>
 
-  <!-- معلومات الأستاذ -->
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-placeholder" data-i18n-attr="title" data-i18n="logoTitle">
+      <img src="assets/logo.jpg" alt="Logo">
+    </div>
+    <h1 data-i18n="headerTitle">الذكاء الاصطناعي في التعلم</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">استكشاف وتوظيف تقنيات الذكاء الاصطناعي التوليدي في السياق الأكاديمي والتربوي</div>
+    <span class="badge" data-i18n="headerBadge">المدرسة العليا للأساتذة ملحقة بجاية</span>
+  </div>
+
+  <!-- Instructor Info Section -->
   <div class="section">
     <div class="section-title">
       <span class="icon">👨‍🏫</span>
-      معلومات الأستاذ والاتصال
+      <span data-i18n="sectionInstructor">معلومات الأستاذ والاتصال</span>
     </div>
     <div class="profile-grid">
       <div class="profile-item">
-        <span class="label">الأستاذ المؤطر</span>
-        <span class="val">أمين مماص</span>
+        <span class="label" data-i18n="labelInstructor">الأستاذ المؤطر</span>
+        <span class="val" data-i18n="valInstructor">أمين مماص</span>
       </div>
       <div class="profile-item">
-        <span class="label">الرتبة الأكاديمية</span>
-        <span class="val">دكتور في علم البيانات</span>
+        <span class="label" data-i18n="labelRank">الرتبة الأكاديمية</span>
+        <span class="val" data-i18n="valRank">دكتور في علم البيانات</span>
       </div>
       <div class="profile-item">
-        <span class="label">المكتب والموقع</span>
-        <span class="val">بجانب المدرج</span>
+        <span class="label" data-i18n="labelOffice">المكتب والموقع</span>
+        <span class="val" data-i18n="valOffice">بجانب المدرج</span>
       </div>
       <div class="profile-item">
-        <span class="label">البريد الإلكتروني</span>
+        <span class="label" data-i18n="labelEmail">البريد الإلكتروني</span>
         <span class="val">mammasse@estin.dz</span>
       </div>
       <div class="profile-item" style="grid-column: 1 / -1;">
-        <span class="label">المؤسسة الجامعية</span>
-        <span class="val">المدرسة العليا لعلوم و تكنولوجيات الإعلام الآلي و الرقمنة - ESTIN</span>
+        <span class="label" data-i18n="labelInstitution">المؤسسة الجامعية</span>
+        <span class="val" data-i18n="valInstitution">المدرسة العليا لعلوم و تكنولوجيات الإعلام الآلي و الرقمنة - ESTIN</span>
       </div>
     </div>
   </div>
 
-  <!-- بطاقة التعريف بالمقياس -->
+  <!-- Course Specs Section -->
   <div class="section">
     <div class="section-title">
       <span class="icon">📋</span>
-      عن المقياس
+      <span data-i18n="sectionAbout">عن المقياس</span>
     </div>
     <div class="table-responsive">
       <table class="module-table">
         <thead>
           <tr>
-            <th>عنوان المقياس</th>
-            <th>السداسي</th>
-            <th>أعمال تطبيقية أسبوعية</th>
-            <th>الحجم الساعي الفصلي</th>
-            <th>المعامل</th>
-            <th>الرصيد</th>
+            <th data-i18n="thModule">عنوان المقياس</th>
+            <th data-i18n="thSemester">السداسي</th>
+            <th data-i18n="thWeekly">أعمال تطبيقية أسبوعية</th>
+            <th data-i18n="thTotal">الحجم الساعي الفصلي</th>
+            <th data-i18n="thCoeff">المعامل</th>
+            <th data-i18n="thCredits">الرصيد</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>الذكاء الاصطناعي في التعلم</strong></td>
-            <td>السداسي الأول</td>
-            <td>1 سا 30 د</td>
-            <td>22.5 ساعة</td>
+            <td><strong data-i18n="tbModuleName">الذكاء الاصطناعي في التعلم</strong></td>
+            <td data-i18n="tbSemester">السداسي الأول</td>
+            <td data-i18n="tbWeekly">1 سا 30 د</td>
+            <td data-i18n="tbTotal">22.5 ساعة</td>
             <td><strong>1</strong></td>
             <td><strong>2</strong></td>
           </tr>
@@ -391,46 +433,213 @@
     </div>
   </div>
 
-  <!-- ما نحتاجه -->
+  <!-- Requirements / What We Need -->
   <div class="section">
     <div class="section-title">
       <span class="icon">💻</span>
-      ما نحتاجه
+      <span data-i18n="sectionNeeds">ما نحتاجه</span>
     </div>
     <div class="cards-grid">
       <div class="info-box">
-        <h4><span>📢</span> جوجل كلاس روم</h4>
+        <h4><span>📢</span> <span data-i18n="box1Title">جوجل كلاس روم</span></h4>
         <ul>
-          <li>التواصل والإعلانات البيداغوجية المستمرة</li>
-          <li>التنظيم والتسيير الإداري للمقياس</li>
-          <li>إدارة الواجبات والمهام المطلوبة</li>
+          <li data-i18n="box1Item1">التواصل والإعلانات البيداغوجية المستمرة</li>
+          <li data-i18n="box1Item2">التنظيم والتسيير الإداري للمقياس</li>
+          <li data-i18n="box1Item3">إدارة الواجبات والمهام المطلوبة</li>
         </ul>
       </div>
       <div class="info-box">
-        <h4><span>🎓</span> منصة التعليم الإلكتروني</h4>
+        <h4><span>🎓</span> <span data-i18n="box2Title">منصة التعليم الإلكتروني</span></h4>
         <ul>
-          <li>تحميل الدروس والمحاضرات المقررة</li>
-          <li>كراسات الأعمال التطبيقية والمشاريع</li>
-          <li>الفيديوهات والمصادر التعليمية المساندة</li>
+          <li data-i18n="box2Item1">تحميل الدروس والمحاضرات المقررة</li>
+          <li data-i18n="box2Item2">كراسات الأعمال التطبيقية والمشاريع</li>
+          <li data-i18n="box2Item3">الفيديوهات والمصادر التعليمية المساندة</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- زر الاطلاع على البرنامج -->
+  <!-- See Programs Button -->
   <div class="see-programs-container">
     <a href="outline.html" class="see-programs-btn">
       <span class="btn-icon">📑</span>
-      <span>اطّلع على البرنامج</span>
-      <span class="arrow">←</span>
+      <span data-i18n="btnSyllabus">اطّلع على البرنامج</span>
+      <span class="arrow" id="btn-arrow">←</span>
     </a>
   </div>
 
-  <!-- التذييل -->
-  <div class="footer">
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Translation & Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الذكاء الاصطناعي في التعلم",
+    logoTitle: "شعار المدرسة",
+    headerTitle: "الذكاء الاصطناعي في التعلم",
+    headerSubtitle: "استكشاف وتوظيف تقنيات الذكاء الاصطناعي التوليدي في السياق الأكاديمي والتربوي",
+    headerBadge: "المدرسة العليا للأساتذة ملحقة بجاية",
+    sectionInstructor: "معلومات الأستاذ والاتصال",
+    labelInstructor: "الأستاذ المؤطر",
+    valInstructor: "أمين مماص",
+    labelRank: "الرتبة الأكاديمية",
+    valRank: "دكتور في علم البيانات",
+    labelOffice: "المكتب والموقع",
+    valOffice: "بجانب المدرج",
+    labelEmail: "البريد الإلكتروني",
+    labelInstitution: "المؤسسة الجامعية",
+    valInstitution: "المدرسة العليا لعلوم و تكنولوجيات الإعلام الآلي و الرقمنة - ESTIN",
+    sectionAbout: "عن المقياس",
+    thModule: "عنوان المقياس",
+    thSemester: "السداسي",
+    thWeekly: "أعمال تطبيقية أسبوعية",
+    thTotal: "الحجم الساعي الفصلي",
+    thCoeff: "المعامل",
+    thCredits: "الرصيد",
+    tbModuleName: "الذكاء الاصطناعي في التعلم",
+    tbSemester: "السداسي الأول",
+    tbWeekly: "1 سا 30 د",
+    tbTotal: "22.5 ساعة",
+    sectionNeeds: "ما نحتاجه",
+    box1Title: "جوجل كلاس روم",
+    box1Item1: "التواصل والإعلانات البيداغوجية المستمرة",
+    box1Item2: "التنظيم والتسيير الإداري للمقياس",
+    box1Item3: "إدارة الواجبات والمهام المطلوبة",
+    box2Title: "منصة التعليم الإلكتروني",
+    box2Item1: "تحميل الدروس والمحاضرات المقررة",
+    box2Item2: "كراسات الأعمال التطبيقية والمشاريع",
+    box2Item3: "الفيديوهات والمصادر التعليمية المساندة",
+    btnSyllabus: "اطّلع على البرنامج",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "L'IA dans l'Apprentissage",
+    logoTitle: "Logo de l'école",
+    headerTitle: "L'IA dans l'Apprentissage",
+    headerSubtitle: "Explorer et intégrer l'intelligence artificielle générative dans l'enseignement supérieur",
+    headerBadge: "École Normale Supérieure - Annexe de Béjaïa",
+    sectionInstructor: "Coordonnées de l'Enseignant",
+    labelInstructor: "Enseignant",
+    valInstructor: "Amine Mammasse",
+    labelRank: "Grade académique",
+    valRank: "Docteur en Science des Données",
+    labelOffice: "Bureau",
+    valOffice: "Près de l'amphithéâtre",
+    labelEmail: "E-mail",
+    labelInstitution: "Établissement d'origine",
+    valInstitution: "École Supérieure en Sciences et Technologies de l'Informatique et du Numérique - ESTIN",
+    sectionAbout: "Fiche du Module",
+    thModule: "Intitulé du module",
+    thSemester: "Semestre",
+    thWeekly: "TP hebdomadaires",
+    thTotal: "Volume horaire global",
+    thCoeff: "Coefficient",
+    thCredits: "Crédits",
+    tbModuleName: "L'IA dans l'Apprentissage",
+    tbSemester: "Semestre 1",
+    tbWeekly: "1h 30min",
+    tbTotal: "22.5 heures",
+    sectionNeeds: "Outils Nécessaires",
+    box1Title: "Google Classroom",
+    box1Item1: "Communications et annonces pédagogiques",
+    box1Item2: "Gestion et suivi administratif du module",
+    box1Item3: "Dépôt et évaluation des devoirs",
+    box2Title: "Plateforme E-learning",
+    box2Item1: "Supports de cours et présentations",
+    box2Item2: "Énoncés de TP et guides de projets",
+    box2Item3: "Vidéos et ressources complémentaires",
+    btnSyllabus: "Voir le Programme",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "AI in Learning",
+    logoTitle: "School Logo",
+    headerTitle: "AI in Learning",
+    headerSubtitle: "Exploring and applying Generative AI tools in higher education and pedagogy",
+    headerBadge: "Higher Normal School - Bejaia Annex",
+    sectionInstructor: "Instructor Information",
+    labelInstructor: "Instructor",
+    valInstructor: "Amine Mammasse",
+    labelRank: "Academic Title",
+    valRank: "Ph.D. in Data Science",
+    labelOffice: "Office Location",
+    valOffice: "Beside the Auditorium",
+    labelEmail: "Email",
+    labelInstitution: "Affiliation",
+    valInstitution: "Higher School of Computer Science and Digital Technologies - ESTIN",
+    sectionAbout: "Course Overview",
+    thModule: "Course Title",
+    thSemester: "Semester",
+    thWeekly: "Weekly Lab (TP)",
+    thTotal: "Total Hours",
+    thCoeff: "Coeff.",
+    thCredits: "Credits",
+    tbModuleName: "AI in Learning",
+    tbSemester: "Semester 1",
+    tbWeekly: "1h 30m",
+    tbTotal: "22.5 Hours",
+    sectionNeeds: "Tools & Platforms",
+    box1Title: "Google Classroom",
+    box1Item1: "Continuous communication and announcements",
+    box1Item2: "Administrative organization and updates",
+    box1Item3: "Assignment management and submissions",
+    box2Title: "E-Learning Platform",
+    box2Item1: "Download lecture slides and course notes",
+    box2Item2: "Lab guides, templates, and project files",
+    box2Item3: "Educational videos and extra resources",
+    btnSyllabus: "View Course Syllabus",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update Text Elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      const attr = el.getAttribute('data-i18n-attr');
+      if (attr) {
+        el.setAttribute(attr, translations[lang][key]);
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Adjust arrow symbol depending on direction
+  const arrow = document.getElementById('btn-arrow');
+  if (arrow) {
+    arrow.textContent = isRtl ? '←' : '→';
+  }
+
+  // Update button active state
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selection
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 </body>
 </html>

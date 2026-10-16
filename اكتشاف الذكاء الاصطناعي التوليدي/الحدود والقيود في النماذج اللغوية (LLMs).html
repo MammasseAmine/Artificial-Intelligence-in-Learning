@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>حدود وقيود النماذج اللغوية الكبيرة والذكاء الاصطناعي</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">حدود وقيود النماذج اللغوية الكبيرة والذكاء الاصطناعي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -37,11 +37,59 @@
     color: var(--text);
     line-height: 1.85;
     padding: 30px 15px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 950px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -59,7 +107,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     padding: 6px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -139,7 +189,7 @@
   /* Callout Boxes */
   .callout {
     background: var(--bg);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     border-radius: 8px;
     padding: 16px 20px;
     margin: 20px 0;
@@ -147,17 +197,17 @@
   }
 
   .callout.accent {
-    border-right-color: var(--accent);
+    border-inline-start-color: var(--accent);
     background: #fffaf0;
   }
 
   .callout.danger {
-    border-right-color: var(--danger);
+    border-inline-start-color: var(--danger);
     background: #fff5f5;
   }
 
   .callout.success {
-    border-right-color: var(--success);
+    border-inline-start-color: var(--success);
     background: #f0fff4;
   }
 
@@ -195,7 +245,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    text-align: right;
+    text-align: start;
   }
 
   th {
@@ -230,14 +280,14 @@
 
   .styled-list li {
     position: relative;
-    padding-right: 28px;
+    padding-inline-start: 28px;
     margin-bottom: 12px;
     font-size: 1rem;
   }
 
   .styled-list li i {
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     top: 5px;
     color: var(--secondary);
   }
@@ -304,7 +354,8 @@
     border-radius: 50%;
     font-size: 0.85rem;
     font-weight: 700;
-    margin-left: 8px;
+    margin-inline-end: 8px;
+    flex-shrink: 0;
   }
 
   .practice-title {
@@ -341,223 +392,233 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • الدرس الرابع</span>
-    <h1>الحدود والقيود في النماذج اللغوية (LLMs)</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • الدرس الرابع</span>
+    <h1 data-i18n="headerTitle">الحدود والقيود في النماذج اللغوية (LLMs)</h1>
   </div>
 
-  <!-- 1. ما المقصود بالحدود والقيود؟ -->
+  <!-- 1. What are limits & constraints? -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-scale-unbalanced"></i></div>
-      1. ما المقصود بالحدود والقيود؟
+      <span data-i18n="sec1Title">1. ما المقصود بالحدود والقيود؟</span>
     </div>
     
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th style="width: 30%;">المفهوم</th>
-            <th>التعريف والدلالة</th>
+            <th style="width: 30%;" data-i18n="thConcept">المفهوم</th>
+            <th data-i18n="thDef">التعريف والدلالة</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>الحدود (Limits)</strong></td>
-            <td>هي الأشياء والمهام التي لا يستطيع النموذج القيام بها بشكل كامل أو دقيق.</td>
+            <td><strong data-i18n="conceptLimits">الحدود (Limits)</strong></td>
+            <td data-i18n="descLimits">هي الأشياء والمهام التي لا يستطيع النموذج القيام بها بشكل كامل أو دقيق.</td>
           </tr>
           <tr>
-            <td><strong>القيود (Constraints)</strong></td>
-            <td>هي المشاكل والتحديات التقنية أو المنهجية التي تؤثر سلباً على أداء النموذج وفاعليته.</td>
+            <td><strong data-i18n="conceptConstraints">القيود (Constraints)</strong></td>
+            <td data-i18n="descConstraints">هي المشاكل والتحديات التقنية أو المنهجية التي تؤثر سلباً على أداء النموذج وفاعليته.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout danger">
-      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> مثال واقعي (الهلوسة وتوليد الخطأ):</div>
-      قد يكتب <strong>ChatGPT</strong> أو أي نموذج لغوي إجابة تبدو مصوغة بلغة واثقة وسليمة جداً ظاهرياً، لكنها في الحقيقة <strong>خاطئة تماماً</strong> أو مبنية على مصادر غير موجودة.
+      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="hallucinationTitle">مثال واقعي (الهلوسة وتوليد الخطأ):</span></div>
+      <span data-i18n="hallucinationDesc">قد يكتب <strong>ChatGPT</strong> أو أي نموذج لغوي إجابة تبدو مصوغة بلغة واثقة وسليمة جداً ظاهرياً، لكنها في الحقيقة <strong>خاطئة تماماً</strong> أو مبنية على مصادر غير موجودة.</span>
     </div>
   </div>
 
-  <!-- 2. نقص الفهم الحقيقي -->
+  <!-- 2. Lack of True Understanding -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-brain"></i></div>
-      2. نقص الفهم الحقيقي
+      <span data-i18n="sec2Title">2. نقص الفهم الحقيقي</span>
     </div>
-    <p>
+    <p data-i18n="sec2P1">
       النموذج اللغوي <strong>لا يفهم العالم</strong> كما يفهمه الإدراك البشري، بل يعتمد جوهرياً على التعلّم الإحصائي ورصد الأنماط والتكرارات الاحتمالية داخل البيانات الضخمة فقط.
     </p>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-user-doctor"></i> مثال تطبيقي توضيحي:</div>
-      يعرف النموذج إحصائياً أن كلمة <em>"طبيب"</em> ترتبط بشكل وثيق بكلمة <em>"مستشفى"</em> أو <em>"علاج"</em>، لكنه <strong>لا يمتلك فهماً بشرياً حقيقياً</strong> لمعنى الطب، التجربة الإنسانية، أو جوهر الممارسة العلاجية.
+      <div class="callout-title"><i class="fa-solid fa-user-doctor"></i> <span data-i18n="sec2ExTitle">مثال تطبيقي توضيحي:</span></div>
+      <span data-i18n="sec2ExDesc">يعرف النموذج إحصائياً أن كلمة <em>"طبيب"</em> ترتبط بشكل وثيق بكلمة <em>"مستشفى"</em> أو <em>"علاج"</em>، لكنه <strong>لا يمتلك فهماً بشرياً حقيقياً</strong> لمعنى الطب، التجربة الإنسانية، أو جوهر الممارسة العلاجية.</span>
     </div>
   </div>
 
-  <!-- 3. الاعتماد على بيانات التدريب -->
+  <!-- 3. Dependence on Training Data -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-database"></i></div>
-      3. الاعتماد على بيانات التدريب
+      <span data-i18n="sec3Title">3. الاعتماد على بيانات التدريب</span>
     </div>
-    <p>
+    <p data-i18n="sec3P1">
       تعتمد جودة وموثوقية مخرجات النموذج بشكل مباشر وكلي على جودة البيانات المستخدمة في تدريبه الأولي:
     </p>
 
     <ul class="styled-list">
-      <li><i class="fa-solid fa-arrow-left"></i> إذا كانت البيانات <strong>ناقصة</strong> &larr; تصبح معرفة النموذج <strong>ناقصة</strong>.</li>
-      <li><i class="fa-solid fa-arrow-left"></i> إذا كانت البيانات <strong>خاطئة</strong> &larr; قد يتعلم النموذج <strong>أخطاءً ويتبناها</strong>.</li>
-      <li><i class="fa-solid fa-arrow-left"></i> إذا كانت البيانات <strong>متحيزة</strong> &larr; قد ينتج مخرجات <strong>متحيزة وغير موضوعية</strong>.</li>
+      <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span data-i18n="dataIssue1">إذا كانت البيانات <strong>ناقصة</strong> &larr; تصبح معرفة النموذج <strong>ناقصة</strong>.</span></li>
+      <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span data-i18n="dataIssue2">إذا كانت البيانات <strong>خاطئة</strong> &larr; قد يتعلم النموذج <strong>أخطاءً ويتبناها</strong>.</span></li>
+      <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span data-i18n="dataIssue3">إذا كانت البيانات <strong>متحيزة</strong> &larr; قد ينتج مخرجات <strong>متحيزة وغير موضوعية</strong>.</span></li>
     </ul>
   </div>
 
-  <!-- 4. المعرفة غير المحدثة وحدود المعرفة الزمنية -->
+  <!-- 4. Temporal Limits (Knowledge Cutoff) -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-      4. حدود المعرفة الزمنية (Knowledge Cutoff)
+      <span data-i18n="sec4Title">4. حدود المعرفة الزمنية (Knowledge Cutoff)</span>
     </div>
-    <p>
+    <p data-i18n="sec4P1">
       تم تدريب النماذج على بيانات تصل إلى تاريخ زمني محدد ومعين؛ لذلك فالنموذج <strong>لا يعرف تلقائياً</strong> الأحداث والتطورات الجديدة بعد تاريخ انتهاء تدريبه دون الاعتماد على أدوات خارجية.
     </p>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-bolt"></i> سبل تجاوز هذا الحد للحصول على معلومات حديثة:</div>
+      <div class="callout-title"><i class="fa-solid fa-bolt"></i> <span data-i18n="cutoffSolutionTitle">سبل تجاوز هذا الحد للحصول على معلومات حديثة:</span></div>
       <ul class="styled-list" style="margin: 6px 0;">
-        <li><i class="fa-solid fa-globe"></i> <strong>البحث الحي على الإنترنت:</strong> عبر تمكين التصفح الفوري داخل الأدوات الحديثة.</li>
-        <li><i class="fa-solid fa-network-wired"></i> <strong>أنظمة توليد الاسترجاع المعزز (RAG):</strong> تزويد النموذج بقواعد بيانات ووثائق خارجية محدثة لاستخراج الإجابات منها مباشرة.</li>
+        <li><i class="fa-solid fa-globe"></i> <strong data-i18n="sol1Name">البحث الحي على الإنترنت:</strong> <span data-i18n="sol1Desc">عبر تمكين التصفح الفوري داخل الأدوات الحديثة.</span></li>
+        <li><i class="fa-solid fa-network-wired"></i> <strong data-i18n="sol2Name">أنظمة توليد الاسترجاع المعزز (RAG):</strong> <span data-i18n="sol2Desc">تزويد النموذج بقواعد بيانات ووثائق خارجية محدثة لاستخراج الإجابات منها مباشرة.</span></li>
       </ul>
     </div>
   </div>
 
-  <!-- 5. محدودية نافذة السياق وطول الإدخال والإخراج -->
+  <!-- 5. Context Window & Token Limitations -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-window-maximize"></i></div>
-      5. محدودية نافذة السياق وقيود الإدخال/الإخراج
+      <span data-i18n="sec5Title">5. محدودية نافذة السياق وقيود الإدخال/الإخراج</span>
     </div>
-    <p>
+    <p data-i18n="sec5P1">
       لا يستطيع النموذج اللغوي تذكّر وسرد كل شيء إلى ما لا نهاية؛ إذ تحكمه حدود رقمية محددة لحجم البيانات المعالجة:
     </p>
 
     <ul class="styled-list">
-      <li><i class="fa-solid fa-ruler-combined"></i> <strong>نافذة السياق (Context Window):</strong> يوجد حد أقصى لحجم النص والرموز الذي يمكن للنموذج معالجته والاحتفاظ به في الذاكرة دفعة واحدة.</li>
-      <li><i class="fa-solid fa-cubes"></i> <strong>قيود الرموز (Tokens):</strong> النماذج محدودة بعدد محدد من الرموز؛ فلا يمكنك إدخال كتاب كامل دفعة واحدة في مطالبة واحدة، كما لا يمكنها إنتاج نص طويل جداً في استجابة مفردة.</li>
+      <li><i class="fa-solid fa-ruler-combined"></i> <strong data-i18n="ctxName">نافذة السياق (Context Window):</strong> <span data-i18n="ctxDesc">يوجد حد أقصى لحجم النص والرموز الذي يمكن للنموذج معالجته والاحتفاظ به في الذاكرة دفعة واحدة.</span></li>
+      <li><i class="fa-solid fa-cubes"></i> <strong data-i18n="tokLimitName">قيود الرموز (Tokens):</strong> <span data-i18n="tokLimitDesc">النماذج محدودة بعدد محدد من الرموز؛ فلا يمكنك إدخال كتاب كامل دفعة واحدة في مطالبة واحدة، كما لا يمكنها إنتاج نص طويل جداً في استجابة مفردة.</span></li>
     </ul>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-pen-ruler"></i> الحساسية لصياغة السؤال (Prompt Sensitivity):</div>
-      تتأثر مخرجات النموذج بشكل حاسم بطريقة التعبير؛ فأي تغيير بسيط في الكلمات أو ترتيب الجمل قد يغيّر جودة الإجابة ودقتها بشكل ملحوظ.
+      <div class="callout-title"><i class="fa-solid fa-pen-ruler"></i> <span data-i18n="promptSensTitle">الحساسية لصياغة السؤال (Prompt Sensitivity):</span></div>
+      <span data-i18n="promptSensDesc">تتأثر مخرجات النموذج بشكل حاسم بطريقة التعبير؛ فأي تغيير بسيط في الكلمات أو ترتيب الجمل قد يغيّر جودة الإجابة ودقتها بشكل ملحوظ.</span>
     </div>
   </div>
 
-  <!-- 6. مشكلات الخصوصية والأمان -->
+  <!-- 6. Privacy & Security -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
-      6. مشكلات الخصوصية والأمان
+      <span data-i18n="sec6Title">6. مشكلات الخصوصية والأمان</span>
     </div>
-    <p>
+    <p data-i18n="sec6P1">
       قد تحتوي البيانات أو المحادثات التي يدخلها المستخدمون على معلومات بالغة الحساسية، وقد تُستخدم أحياناً في إعادة تدريب الأنظمة العامة. لذلك يُحظر تماماً مشاركة:
     </p>
 
     <div class="tags-container">
-      <span class="tag danger"><i class="fa-solid fa-key"></i> كلمات المرور</span>
-      <span class="tag danger"><i class="fa-solid fa-credit-card"></i> البيانات البنكية والمالية</span>
-      <span class="tag danger"><i class="fa-solid fa-file-medical"></i> المعلومات الطبية الخاصة</span>
-      <span class="tag danger"><i class="fa-solid fa-user-secret"></i> الوثائق المؤسسية السرية</span>
+      <span class="tag danger"><i class="fa-solid fa-key"></i> <span data-i18n="tagPass">كلمات المرور</span></span>
+      <span class="tag danger"><i class="fa-solid fa-credit-card"></i> <span data-i18n="tagBank">البيانات البنكية والمالية</span></span>
+      <span class="tag danger"><i class="fa-solid fa-file-medical"></i> <span data-i18n="tagMed">المعلومات الطبية الخاصة</span></span>
+      <span class="tag danger"><i class="fa-solid fa-user-secret"></i> <span data-i18n="tagSecret">الوثائق المؤسسية السرية</span></span>
     </div>
   </div>
 
-  <!-- 7. القيود الأخلاقية والقانونية -->
+  <!-- 7. Ethical & Legal Constraints -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-gavel"></i></div>
-      7. القيود الأخلاقية والقانونية
+      <span data-i18n="sec7Title">7. القيود الأخلاقية والقانونية</span>
     </div>
     
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th style="width: 25%;">المجال</th>
-            <th>التحدي الأخلاقي والقانوني</th>
+            <th style="width: 25%;" data-i18n="thDomain">المجال</th>
+            <th data-i18n="thEthicalChallenge">التحدي الأخلاقي والقانوني</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>حقوق الملكية الفكرية <i class="fa-regular fa-copyright"></i></strong></td>
-            <td>النصوص والصور المولدة قد تعتمد على أعمال وأفكار محمية بحقوق الطبع والنشر، مما يثير جدلاً قانونياً حول نسب الملكية وإعادة الاستخدام.</td>
+            <td><strong data-i18n="domainIP">حقوق الملكية الفكرية</strong> <i class="fa-regular fa-copyright"></i></td>
+            <td data-i18n="descIP">النصوص والصور المولدة قد تعتمد على أعمال وأفكار محمية بحقوق الطبع والنشر، مما يثير جدلاً قانونياً حول نسب الملكية وإعادة الاستخدام.</td>
           </tr>
           <tr>
-            <td><strong>الخصوصية <i class="fa-solid fa-lock"></i></strong></td>
-            <td>احتمال تسرب أو إعادة إنتاج معلومات شخصية كانت مشمولة داخل بيانات التدريب أو تم إدخالها لاحقاً من قِبل المستخدمين.</td>
+            <td><strong data-i18n="domainPrivacy">الخصوصية</strong> <i class="fa-solid fa-lock"></i></td>
+            <td data-i18n="descPrivacy">احتمال تسرب أو إعادة إنتاج معلومات شخصية كانت مشمولة داخل بيانات التدريب أو تم إدخالها لاحقاً من قِبل المستخدمين.</td>
           </tr>
           <tr>
-            <td><strong>المعلومات المضللة <i class="fa-regular fa-newspaper"></i></strong></td>
-            <td>سهولة توليد نصوص مقنعة أو صور مزيفة (Deepfakes) تبدو حقيقية تماماً، مما يرفع من خطر انتشار الشائعات والأخبار الكاذبة.</td>
+            <td><strong data-i18n="domainMisinfo">المعلومات المضللة</strong> <i class="fa-regular fa-newspaper"></i></td>
+            <td data-i18n="descMisinfo">سهولة توليد نصوص مقنعة أو صور مزيفة (Deepfakes) تبدو حقيقية تماماً، مما يرفع من خطر انتشار الشائعات والأخبار الكاذبة.</td>
           </tr>
           <tr>
-            <td><strong>المساءلة والمسؤولية <i class="fa-solid fa-scale-balanced"></i></strong></td>
-            <td>من المسؤول القانوني عند وقوع ضرر ناجم عن قرار بني على مخرجات الذكاء الاصطناعي؟ سؤال تشريعي وأخلاقي لا يزال مفتوحاً للنقاش العالمي.</td>
+            <td><strong data-i18n="domainAccountability">المساءلة والمسؤولية</strong> <i class="fa-solid fa-scale-balanced"></i></td>
+            <td data-i18n="descAccountability">من المسؤول القانوني عند وقوع ضرر ناجم عن قرار بني على مخرجات الذكاء الاصطناعي؟ سؤال تشريعي وأخلاقي لا يزال مفتوحاً للنقاش العالمي.</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 8. القيود والتحديات في السياق التعليمي -->
+  <!-- 8. Constraints in Education -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-      8. القيود في السياق التعليمي
+      <span data-i18n="sec8Title">8. القيود في السياق التعليمي</span>
     </div>
-    <p>
+    <p data-i18n="sec8P1">
       يطرح دمج الذكاء الاصطناعي التوليدي في البيئة التعليمية مجموعة من التحديات التربوية التي تتطلب وعياً وإشرافاً مستمراً:
     </p>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> الاعتماد الزائد (Over-reliance):</div>
-      لجوء الطالب لاستخدام الأداة كبديل كامل عن التفكير النقدي والجهد الذهني الذاتي، بدلاً من استخدامها كمساعد أو موجه تعليمي.
+      <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="eduChal1Title">الاعتماد الزائد (Over-reliance):</span></div>
+      <span data-i18n="eduChal1Desc">لجوء الطالب لاستخدام الأداة كبديل كامل عن التفكير النقدي والجهد الذهني الذاتي، بدلاً من استخدامها كمساعد أو موجه تعليمي.</span>
     </div>
 
     <div class="callout danger">
-      <div class="callout-title"><i class="fa-solid fa-user-xmark"></i> النزاهة الأكاديمية (Academic Integrity):</div>
-      صعوبة التحقق والتمييز الدقيق بين نص مكتوب بجهد الطالب الذاتي ونص مولد آلياً، مما يفرض تحديات جديدة أمام معايير التقييم العادل.
+      <div class="callout-title"><i class="fa-solid fa-user-xmark"></i> <span data-i18n="eduChal2Title">النزاهة الأكاديمية (Academic Integrity):</span></div>
+      <span data-i18n="eduChal2Desc">صعوبة التحقق والتمييز الدقيق بين نص مكتوب بجهد الطالب الذاتي ونص مولد آلياً، مما يفرض تحديات جديدة أمام معايير التقييم العادل.</span>
     </div>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> الفجوة الرقمية (Digital Divide):</div>
-      عدم تكافؤ الفرص في الوصول؛ فليس لجميع الطلبة نفس الإمكانات التقنية (جودة الاتصال بالإنترنت، الأجهزة الحديثة، أو الاشتراكات المدفوعة).
+      <div class="callout-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> <span data-i18n="eduChal3Title">الفجوة الرقمية (Digital Divide):</span></div>
+      <span data-i18n="eduChal3Desc">عدم تكافؤ الفرص في الوصول؛ فليس لجميع الطلبة نفس الإمكانات التقنية (جودة الاتصال بالإنترنت، الأجهزة الحديثة، أو الاشتراكات المدفوعة).</span>
     </div>
 
     <div class="callout success">
-      <div class="callout-title"><i class="fa-solid fa-wand-magic-sparkles"></i> الحاجة إلى مهارات جديدة:</div>
-      يتطلب الاستخدام المثمر اكتساب مهارات هندسة وصياغة الطلبات (Prompting) والتمتع بروح التحقق النقدي الفاحص للمخرجات.
+      <div class="callout-title"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="eduChal4Title">الحاجة إلى مهارات جديدة:</span></div>
+      <span data-i18n="eduChal4Desc">يتطلب الاستخدام المثمر اكتساب مهارات هندسة وصياغة الطلبات (Prompting) والتمتع بروح التحقق النقدي الفاحص للمخرجات.</span>
     </div>
 
-    <!-- Highlight Quote from PDF -->
+    <!-- Highlight Quote -->
     <div class="highlight-quote">
-      <i class="fa-solid fa-quote-right" style="margin-left: 8px;"></i>
-      فهم هذه الحدود لا يعني رفض التكنولوجيا، بل استخدامها بنضج ووعي نقدي — وهذا بالضبط ما يهدف إليه مقياس الذكاء الاصطناعي في التعلّم.
-      <i class="fa-solid fa-quote-left" style="margin-right: 8px;"></i>
+      <i class="fa-solid fa-quote-right quote-r"></i>
+      <span data-i18n="quoteText">فهم هذه الحدود لا يعني رفض التكنولوجيا، بل استخدامها بنضج ووعي نقدي — وهذا بالضبط ما يهدف إليه مقياس الذكاء الاصطناعي في التعلّم.</span>
+      <i class="fa-solid fa-quote-left quote-l"></i>
     </div>
   </div>
 
-  <!-- 9. كيف تتعامل مع الحدود؟ (أفضل الممارسات) -->
+  <!-- 9. Best Practices -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-list-check"></i></div>
-      9. كيف تتعامل مع الحدود؟ (أفضل الممارسات)
+      <span data-i18n="sec9Title">9. كيف تتعامل مع الحدود؟ (أفضل الممارسات)</span>
     </div>
-    <p>
+    <p data-i18n="sec9P1">
       لتحقيق أقصى فائدة عملية والحد من مخاطر وأخطاء النماذج، يُنصح باتباع الممارسات الثمانية التالية:
     </p>
 
@@ -565,9 +626,9 @@
       <!-- 1 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">1</span> لا تثق — تحقّق
+          <span class="practice-num">1</span> <span data-i18n="p1Title">لا تثق — تحقّق</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p1Desc">
           اعتبر كل مخرجات النموذج "مسودة أولية" تحتاج للمراجعة والتدقيق، خاصة الأرقام، الإحصائيات، التواريخ، والمصادر.
         </p>
       </div>
@@ -575,9 +636,9 @@
       <!-- 2 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">2</span> أعطِ سياقاً واضحاً
+          <span class="practice-num">2</span> <span data-i18n="p2Title">أعطِ سياقاً واضحاً</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p2Desc">
           حدّد الدور، والهدف، والجمهور، والطول المطلوب، والأسلوب؛ فجودة الإجابة ترتبط طردياً بجودة ووضوح صياغة الطلب.
         </p>
       </div>
@@ -585,9 +646,9 @@
       <!-- 3 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">3</span> قسّم المهام الكبيرة
+          <span class="practice-num">3</span> <span data-i18n="p3Title">قسّم المهام الكبيرة</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p3Desc">
           بدلاً من كتابة "اكتب لي بحثاً كاملاً"، اطلب أولاً مخططاً هيكلياً، ثم المقدمة، ثم قم بتوليد كل مبحث وقسم على حدة.
         </p>
       </div>
@@ -595,9 +656,9 @@
       <!-- 4 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">4</span> استخدم RAG أو البحث الحي
+          <span class="practice-num">4</span> <span data-i18n="p4Title">استخدم RAG أو البحث الحي</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p4Desc">
           زوّد النموذج بالمصادر والمراجع الموثوقة مسبقاً ليجيب منها مباشرة بدلاً من الاعتماد الحصري على ذاكرته الاحتمالية.
         </p>
       </div>
@@ -605,9 +666,9 @@
       <!-- 5 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">5</span> الإنسان في الحلقة
+          <span class="practice-num">5</span> <span data-i18n="p5Title">الإنسان في الحلقة</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p5Desc">
           <strong>Human in the Loop:</strong> يجب أن يبقى القرار النهائي بشرياً خالصاً في كل ما له صلة بحياة الناس، أموالهم، أو سمعتهم.
         </p>
       </div>
@@ -615,9 +676,9 @@
       <!-- 6 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">6</span> احمِ البيانات والخصوصية
+          <span class="practice-num">6</span> <span data-i18n="p6Title">احمِ البيانات والخصوصية</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p6Desc">
           لا تدخل أي بيانات شخصية، أو أسرار تجارية ومؤسسية، أو معلومات تخص العملاء والطلبة في التطبيقات المفتوحة والعامة.
         </p>
       </div>
@@ -625,9 +686,9 @@
       <!-- 7 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">7</span> وثّق واذكر المصدر
+          <span class="practice-num">7</span> <span data-i18n="p7Title">وثّق واذكر المصدر</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p7Desc">
           سجّل متى وكيف استُخدم الذكاء الاصطناعي، وأفصح بشفافية وأمانة علمية عن طبيعة الأدوات المستخدمة عند الحاجة.
         </p>
       </div>
@@ -635,9 +696,9 @@
       <!-- 8 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">8</span> اختر الأداة المناسبة
+          <span class="practice-num">8</span> <span data-i18n="p8Title">اختر الأداة المناسبة</span>
         </div>
-        <p style="margin-bottom: 0; font-size: 0.93rem;">
+        <p style="margin-bottom: 0; font-size: 0.93rem;" data-i18n="p8Desc">
           لا تستخدم نموذجاً لغوياً عاماً لحل معادلات رياضية معقدة، ولا تعتمد على نماذج غير متخصصة للمهام التي تتطلب دقة فنية عالية.
         </p>
       </div>
@@ -645,11 +706,336 @@
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "حدود وقيود النماذج اللغوية الكبيرة والذكاء الاصطناعي",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 01 • الدرس الرابع",
+    headerTitle: "الحدود والقيود في النماذج اللغوية (LLMs)",
+    sec1Title: "1. ما المقصود بالحدود والقيود؟",
+    thConcept: "المفهوم",
+    thDef: "التعريف والدلالة",
+    conceptLimits: "الحدود (Limits)",
+    descLimits: "هي الأشياء والمهام التي لا يستطيع النموذج القيام بها بشكل كامل أو دقيق.",
+    conceptConstraints: "القيود (Constraints)",
+    descConstraints: "هي المشاكل والتحديات التقنية أو المنهجية التي تؤثر سلباً على أداء النموذج وفاعليته.",
+    hallucinationTitle: "مثال واقعي (الهلوسة وتوليد الخطأ):",
+    hallucinationDesc: "قد يكتب <strong>ChatGPT</strong> أو أي نموذج لغوي إجابة تبدو مصوغة بلغة واثقة وسليمة جداً ظاهرياً، لكنها في الحقيقة <strong>خاطئة تماماً</strong> أو مبنية على مصادر غير موجودة.",
+    sec2Title: "2. نقص الفهم الحقيقي",
+    sec2P1: "النموذج اللغوي <strong>لا يفهم العالم</strong> كما يفهمه الإدراك البشري، بل يعتمد جوهرياً على التعلّم الإحصائي ورصد الأنماط والتكرارات الاحتمالية داخل البيانات الضخمة فقط.",
+    sec2ExTitle: "مثال تطبيقي توضيحي:",
+    sec2ExDesc: "يعرف النموذج إحصائياً أن كلمة <em>\"طبيب\"</em> ترتبط بشكل وثيق بكلمة <em>\"مستشفى\"</em> أو <em>\"علاج\"</em>، لكنه <strong>لا يمتلك فهماً بشرياً حقيقياً</strong> لمعنى الطب، التجربة الإنسانية، أو جوهر الممارسة العلاجية.",
+    sec3Title: "3. الاعتماد على بيانات التدريب",
+    sec3P1: "تعتمد جودة وموثوقية مخرجات النموذج بشكل مباشر وكلي على جودة البيانات المستخدمة في تدريبه الأولي:",
+    dataIssue1: "إذا كانت البيانات <strong>ناقصة</strong> &larr; تصبح معرفة النموذج <strong>ناقصة</strong>.",
+    dataIssue2: "إذا كانت البيانات <strong>خاطئة</strong> &larr; قد يتعلم النموذج <strong>أخطاءً ويتبناها</strong>.",
+    dataIssue3: "إذا كانت البيانات <strong>متحيزة</strong> &larr; قد ينتج مخرجات <strong>متحيزة وغير موضوعية</strong>.",
+    sec4Title: "4. حدود المعرفة الزمنية (Knowledge Cutoff)",
+    sec4P1: "تم تدريب النماذج على بيانات تصل إلى تاريخ زمني محدد ومعين؛ لذلك فالنموذج <strong>لا يعرف تلقائياً</strong> الأحداث والتطورات الجديدة بعد تاريخ انتهاء تدريبه دون الاعتماد على أدوات خارجية.",
+    cutoffSolutionTitle: "سبل تجاوز هذا الحد للحصول على معلومات حديثة:",
+    sol1Name: "البحث الحي على الإنترنت:",
+    sol1Desc: "عبر تمكين التصفح الفوري داخل الأدوات الحديثة.",
+    sol2Name: "أنظمة توليد الاسترجاع المعزز (RAG):",
+    sol2Desc: "تزويد النموذج بقواعد بيانات ووثائق خارجية محدثة لاستخراج الإجابات منها مباشرة.",
+    sec5Title: "5. محدودية نافذة السياق وقيود الإدخال/الإخراج",
+    sec5P1: "لا يستطيع النموذج اللغوي تذكّر وسرد كل شيء إلى ما لا نهاية؛ إذ تحكمه حدود رقمية محددة لحجم البيانات المعالجة:",
+    ctxName: "نافذة السياق (Context Window):",
+    ctxDesc: "يوجد حد أقصى لحجم النص والرموز الذي يمكن للنموذج معالجته والاحتفاظ به في الذاكرة دفعة واحدة.",
+    tokLimitName: "قيود الرموز (Tokens):",
+    tokLimitDesc: "النماذج محدودة بعدد محدد من الرموز؛ فلا يمكنك إدخال كتاب كامل دفعة واحدة في مطالبة واحدة، كما لا يمكنها إنتاج نص طويل جداً في استجابة مفردة.",
+    promptSensTitle: "الحساسية لصياغة السؤال (Prompt Sensitivity):",
+    promptSensDesc: "تتأثر مخرجات النموذج بشكل حاسم بطريقة التعبير؛ فأي تغيير بسيط في الكلمات أو ترتيب الجمل قد يغيّر جودة الإجابة ودقتها بشكل ملحوظ.",
+    sec6Title: "6. مشكلات الخصوصية والأمان",
+    sec6P1: "قد تحتوي البيانات أو المحادثات التي يدخلها المستخدمون على معلومات بالغة الحساسية، وقد تُستخدم أحياناً في إعادة تدريب الأنظمة العامة. لذلك يُحظر تماماً مشاركة:",
+    tagPass: "كلمات المرور",
+    tagBank: "البيانات البنكية والمالية",
+    tagMed: "المعلومات الطبية الخاصة",
+    tagSecret: "الوثائق المؤسسية السرية",
+    sec7Title: "7. القيود الأخلاقية والقانونية",
+    thDomain: "المجال",
+    thEthicalChallenge: "التحدي الأخلاقي والقانوني",
+    domainIP: "حقوق الملكية الفكرية",
+    descIP: "النصوص والصور المولدة قد تعتمد على أعمال وأفكار محمية بحقوق الطبع والنشر، مما يثير جدلاً قانونياً حول نسب الملكية وإعادة الاستخدام.",
+    domainPrivacy: "الخصوصية",
+    descPrivacy: "احتمال تسرب أو إعادة إنتاج معلومات شخصية كانت مشمولة داخل بيانات التدريب أو تم إدخالها لاحقاً من قِبل المستخدمين.",
+    domainMisinfo: "المعلومات المضللة",
+    descMisinfo: "سهولة توليد نصوص مقنعة أو صور مزيفة (Deepfakes) تبدو حقيقية تماماً، مما يرفع من خطر انتشار الشائعات والأخبار الكاذبة.",
+    domainAccountability: "المساءلة والمسؤولية",
+    descAccountability: "من المسؤول القانوني عند وقوع ضرر ناجم عن قرار بني على مخرجات الذكاء الاصطناعي؟ سؤال تشريعي وأخلاقي لا يزال مفتوحاً للنقاش العالمي.",
+    sec8Title: "8. القيود في السياق التعليمي",
+    sec8P1: "يطرح دمج الذكاء الاصطناعي التوليدي في البيئة التعليمية مجموعة من التحديات التربوية التي تتطلب وعياً وإشرافاً مستمراً:",
+    eduChal1Title: "الاعتماد الزائد (Over-reliance):",
+    eduChal1Desc: "لجوء الطالب لاستخدام الأداة كبديل كامل عن التفكير النقدي والجهد الذهني الذاتي، بدلاً من استخدامها كمساعد أو موجه تعليمي.",
+    eduChal2Title: "النزاهة الأكاديمية (Academic Integrity):",
+    eduChal2Desc: "صعوبة التحقق والتمييز الدقيق بين نص مكتوب بجهد الطالب الذاتي ونص مولد آلياً، مما يفرض تحديات جديدة أمام معايير التقييم العادل.",
+    eduChal3Title: "الفجوة الرقمية (Digital Divide):",
+    eduChal3Desc: "عدم تكافؤ الفرص في الوصول؛ فليس لجميع الطلبة نفس الإمكانات التقنية (جودة الاتصال بالإنترنت، الأجهزة الحديثة، أو الاشتراكات المدفوعة).",
+    eduChal4Title: "الحاجة إلى مهارات جديدة:",
+    eduChal4Desc: "يتطلب الاستخدام المثمر اكتساب مهارات هندسة وصياغة الطلبات (Prompting) والتمتع بروح التحقق النقدي الفاحص للمخرجات.",
+    quoteText: "فهم هذه الحدود لا يعني رفض التكنولوجيا، بل استخدامها بنضج ووعي نقدي — وهذا بالضبط ما يهدف إليه مقياس الذكاء الاصطناعي في التعلّم.",
+    sec9Title: "9. كيف تتعامل مع الحدود؟ (أفضل الممارسات)",
+    sec9P1: "لتحقيق أقصى فائدة عملية والحد من مخاطر وأخطاء النماذج، يُنصح باتباع الممارسات الثمانية التالية:",
+    p1Title: "لا تثق — تحقّق",
+    p1Desc: "اعتبر كل مخرجات النموذج \"مسودة أولية\" تحتاج للمراجعة والتدقيق، خاصة الأرقام، الإحصائيات، التواريخ، والمصادر.",
+    p2Title: "أعطِ سياقاً واضحاً",
+    p2Desc: "حدّد الدور، والهدف، والجمهور، والطول المطلوب، والأسلوب؛ فجودة الإجابة ترتبط طردياً بجودة ووضوح صياغة الطلب.",
+    p3Title: "قسّم المهام الكبيرة",
+    p3Desc: "بدلاً من كتابة \"اكتب لي بحثاً كاملاً\"، اطلب أولاً مخططاً هيكلياً، ثم المقدمة، ثم قم بتوليد كل مبحث وقسم على حدة.",
+    p4Title: "استخدم RAG أو البحث الحي",
+    p4Desc: "زوّد النموذج بالمصادر والمراجع الموثوقة مسبقاً ليجيب منها مباشرة بدلاً من الاعتماد الحصري على ذاكرته الاحتمالية.",
+    p5Title: "الإنسان في الحلقة",
+    p5Desc: "<strong>Human in the Loop:</strong> يجب أن يبقى القرار النهائي بشرياً خالصاً في كل ما له صلة بحياة الناس، أموالهم، أو سمعتهم.",
+    p6Title: "احمِ البيانات والخصوصية",
+    p6Desc: "لا تدخل أي بيانات شخصية، أو أسرار تجارية ومؤسسية، أو معلومات تخص العملاء والطلبة في التطبيقات المفتوحة والعامة.",
+    p7Title: "وثّق واذكر المصدر",
+    p7Desc: "سجّل متى وكيف استُخدم الذكاء الاصطناعي، وأفصح بشفافية وأمانة علمية عن طبيعة الأدوات المستخدمة عند الحاجة.",
+    p8Title: "اختر الأداة المناسبة",
+    p8Desc: "لا تستخدم نموذجاً لغوياً عاماً لحل معادلات رياضية معقدة، ولا تعتمد على نماذج غير متخصصة للمهام التي تتطلب دقة فنية عالية.",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Limites et Contraintes des LLM et de l'IA",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Leçon 04",
+    headerTitle: "Limites et Contraintes des LLM",
+    sec1Title: "1. Que signifient Limites et Contraintes ?",
+    thConcept: "Notion",
+    thDef: "Définition et implications",
+    conceptLimits: "Limites (Limits)",
+    descLimits: "Tâches ou domaines cognitifs que le modèle ne peut accomplir de manière exhaustive ou exacte.",
+    conceptConstraints: "Contraintes (Constraints)",
+    descConstraints: "Obstacles structurels, méthodologiques ou techniques dégradant l'efficacité opérationnelle du modèle.",
+    hallucinationTitle: "Exemple concret (L'hallucination factuelle) :",
+    hallucinationDesc: "<strong>ChatGPT</strong> ou tout autre LLM peut générer une réponse formulée avec une parfaite assurance stylistique, tout en énonçant des faits <strong>totalement erronés</strong> ou en citant des sources fictives.",
+    sec2Title: "2. Absence de Compréhension Réelle",
+    sec2P1: "Le modèle de langage <strong>ne possède aucune représentation du monde</strong> équivalente à la cognition humaine. Il s'appuie exclusivement sur des corrélations probabilistes et des régularités lexicales au sein de ses données d'entraînement.",
+    sec2ExTitle: "Illustration empirique :",
+    sec2ExDesc: "Le système relie statistiquement les termes <em>« médecin »</em>, <em>« hôpital »</em> et <em>« traitement »</em>, sans posséder la <strong>moindre appréhension vécue</strong> de la maladie, de l'éthique médicale ou de la condition humaine.",
+    sec3Title: "3. Dépendance Fondamentale aux Données d'Entraînement",
+    sec3P1: "La fiabilité des réponses dépend intrinsèquement de l'intégrité du corpus d'apprentissage d'origine :",
+    dataIssue1: "Données <strong>incomplètes</strong> &larr; Connaissances du modèle <strong>lacunaires</strong>.",
+    dataIssue2: "Données <strong>erronées</strong> &larr; Intégration et réplication de <strong>faussetés</strong>.",
+    dataIssue3: "Données <strong>biaisées</strong> &larr; Production de résultats <strong>partiaux ou stéréotypés</strong>.",
+    sec4Title: "4. Limite Temporelle des Connaissances (Knowledge Cutoff)",
+    sec4P1: "L'apprentissage d'un modèle fige son socle de données à une date butoir déterminée. Sans outils externes, il <strong>ignore spontanément</strong> tout événement survenu ultérieurement.",
+    cutoffSolutionTitle: "Approches pour surmonter l'obsolescence :",
+    sol1Name: "Navigation web en temps réel :",
+    sol1Desc: "Interfaçage du modèle avec des moteurs de recherche en direct.",
+    sol2Name: "Architecture RAG (Retrieval-Augmented Generation) :",
+    sol2Desc: "Injection dynamique de corpus documentaires récents et vérifiés directement dans le prompt.",
+    sec5Title: "5. Fenêtre de Contexte et Plafonds d'Émission",
+    sec5P1: "La mémoire active d'un LLM est strictement bornée par des contraintes matérielles de calcul :",
+    ctxName: "Fenêtre de Contexte (Context Window) :",
+    ctxDesc: "Volume plafond de tokens que le modèle peut traiter de concert en une seule passe d'inférence.",
+    tokLimitName: "Plafond de génération (Tokens) :",
+    tokLimitDesc: "Impossibilité de soumettre un volume encyclopédique en une seule consigne ou d'obtenir un livre entier en une réponse unique.",
+    promptSensTitle: "Sensibilité à la formulation (Prompt Sensitivity) :",
+    promptSensDesc: "Une variation minime d'ordre de mots ou de registre lexical peut altérer substantiellement la qualité et l'exactitude de la réponse.",
+    sec6Title: "6. Confidentialité et Sécurité des Données",
+    sec6P1: "Les requêtes saisies par les utilisateurs peuvent être exploitées pour le réentraînement des modèles publics. Il est formellement prohibé d'y soumettre :",
+    tagPass: "Mots de passe",
+    tagBank: "Coordonnées bancaires",
+    tagMed: "Dossiers médicaux",
+    tagSecret: "Documents confidentiels",
+    sec7Title: "7. Contraintes Éthiques et Légales",
+    thDomain: "Domaine",
+    thEthicalChallenge: "Défis éthiques et juridiques",
+    domainIP: "Propriété intellectuelle",
+    descIP: "Les synthèses produites s'inspirent d'œuvres protégées, soulevant d'épineux litiges quant aux droits d'auteur et au plagiat involontaire.",
+    domainPrivacy: "Vie privée",
+    descPrivacy: "Risque de divulgation ou de régurgitation fortuite de données privées incluses dans le corpus d'entraînement.",
+    domainMisinfo: "Désinformation",
+    descMisinfo: "Production massive et instantanée de narratifs fallacieux ou de contenus synthétiques (deepfakes) indétectables.",
+    domainAccountability: "Responsabilité juridique",
+    descAccountability: "En cas de préjudice consécutif à une décision fondée sur l'IA, l'attribution des responsabilités (concepteur, utilisateur) demeure irrésolue.",
+    sec8Title: "8. Contraintes en Contexte Universitaire et Éducatif",
+    sec8P1: "L'irruption de l'IA en milieu éducatif engendre des dilemmes didactiques majeurs :",
+    eduChal1Title: "Surdépendance cognitive (Over-reliance) :",
+    eduChal1Desc: "Risque d'atrophie de l'esprit critique lorsque l'apprenant délègue son effort réflexif au lieu d'utiliser l'IA comme un tuteur interactif.",
+    eduChal2Title: "Intégrité académique (Academic Integrity) :",
+    eduChal2Desc: "Complexité croissante pour distinguer la production authentique de l'étudiant d'un devoir entièrement généré par algorithme.",
+    eduChal3Title: "Fracture numérique (Digital Divide) :",
+    eduChal3Desc: "Inégalités d'accès accentuées par les disparités matérielles (haut débit, terminaux récents, abonnements aux modèles payants).",
+    eduChal4Title: "Exigence de nouvelles littératies :",
+    eduChal4Desc: "Nécessité de former les apprenants à l'ingénierie de prompt et au fact-checking systématique des données générées.",
+    quoteText: "Comprendre ces limites ne revient nullement à rejeter la technologie, mais à l'exploiter avec maturité critique — tel est l'objectif de notre cours.",
+    sec9Title: "9. Comment contourner ces limites ? (Bonnes Pratiques)",
+    sec9P1: "Pour maximiser la valeur didactique et pallier les écueils des LLM, appliquez ces 8 recommandations méthodologiques :",
+    p1Title: "Ne faites pas confiance, vérifiez",
+    p1Desc: "Considérez toute réponse générée comme un premier brouillon devant subir une relecture critique, particulièrement les chiffres et citations.",
+    p2Title: "Fournissez un contexte exhaustif",
+    p2Desc: "Spécifiez le rôle, l'objectif, le public cible et le format attendu ; la pertinence est directement corrélée à la précision de la consigne.",
+    p3Title: "Décomposez les travaux complexes",
+    p3Desc: "Plutôt que d'exiger un mémoire complet, sollicitez un plan détaillé, puis validez chaque section pas à pas.",
+    p4Title: "Exploitez le RAG ou la recherche en direct",
+    p4Desc: "Fournissez des sources fiables en annexe de votre requête pour contraindre le modèle à raisonner sur des données vérifiées.",
+    p5Title: "L'humain dans la boucle (Human in the Loop)",
+    p5Desc: "L'arbitrage décisionnel final doit demeurer l'apanage strict de l'humain lorsqu'il impacte l'évaluation ou la carrière d'autrui.",
+    p6Title: "Préservez l'étanchéité des données",
+    p6Desc: "N'insérez jamais d'informations nominatives scolaires ou institutionnelles dans les interfaces d'IA publiques grand public.",
+    p7Title: "Citez et documentez vos usages",
+    p7Desc: "Mentionnez en toute transparence scientifique le recours à l'IA, les outils mobilisés et les prompts structurants retenus.",
+    p8Title: "Sélectionnez l'outil adéquat",
+    p8Desc: "Évitez les LLM généralistes pour des calculs formels stricts ; privilégiez des solveurs spécialisés pour les besoins de haute précision.",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa — Module : L'IA dans l'Apprentissage 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Limitations and Constraints of LLMs and AI",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Lesson 04",
+    headerTitle: "Limitations & Constraints of Large Language Models (LLMs)",
+    sec1Title: "1. What Are Limits and Constraints?",
+    thConcept: "Concept",
+    thDef: "Definition and Implications",
+    conceptLimits: "Limits (Boundaries)",
+    descLimits: "Cognitive tasks or knowledge frontiers that the model cannot perform thoroughly or accurately.",
+    conceptConstraints: "Constraints (Hurdles)",
+    descConstraints: "Architectural, technical, or methodological bottlenecks that negatively impair the model's reliability.",
+    hallucinationTitle: "Real-world Scenario (Hallucination Phenomenon):",
+    hallucinationDesc: "<strong>ChatGPT</strong> or any foundation model can author an articulate, grammatically impeccable answer that is nonetheless <strong>factually false</strong> or reliant on fabricated citations.",
+    sec2Title: "2. Absence of Genuine Understanding",
+    sec2P1: "A language model <strong>does not comprehend the physical world</strong> in the human cognitive sense. It operates strictly via statistical inference and semantic pattern matching across enormous corpora.",
+    sec2ExTitle: "Illustrative Analogy:",
+    sec2ExDesc: "The system knows probabilistically that <em>'physician'</em> strongly co-occurs with <em>'hospital'</em> and <em>'diagnosis'</em>, yet it possesses <strong>no lived perception</strong> of health, empathy, or medical stewardship.",
+    sec3Title: "3. Direct Dependence on Training Data",
+    sec3P1: "The validity and fidelity of an LLM's outputs are inextricably tied to the quality of its antecedent training data:",
+    dataIssue1: "If data is <strong>incomplete</strong> &larr; The model's knowledge remains <strong>fragmented</strong>.",
+    dataIssue2: "If data contains <strong>errors</strong> &larr; The model <strong>absorbs and amplifies falsehoods</strong>.",
+    dataIssue3: "If data is <strong>skewed</strong> &larr; The model generates <strong>biased, non-objective statements</strong>.",
+    sec4Title: "4. Temporal Boundaries (Knowledge Cutoff)",
+    sec4P1: "Foundation models are trained on datasets frozen at a specific calendar date. Without tool integration, they <strong>remain completely unaware</strong> of contemporary world developments.",
+    cutoffSolutionTitle: "Standard Strategies to Overcome Cutoffs:",
+    sol1Name: "Live Web Retrieval:",
+    sol1Desc: "Enabling search-augmented tools within current modern chat interfaces.",
+    sol2Name: "Retrieval-Augmented Generation (RAG):",
+    sol2Desc: "Supplying models with curated, external up-to-date document stores to ground responses.",
+    sec5Title: "5. Context Window & Token Bounds",
+    sec5P1: "An LLM cannot sustain an infinite conversation stream; it is bound by rigid computational boundaries:",
+    ctxName: "Context Window:",
+    ctxDesc: "The upper threshold of tokens the model can hold in working memory in a single inference pass.",
+    tokLimitName: "Token Generation Limits:",
+    tokLimitDesc: "Inability to absorb an entire multi-volume work in a single prompt or output an entire manual in one turn.",
+    promptSensTitle: "Prompt Sensitivity:",
+    promptSensDesc: "Subtle phrasing variations, vocabulary selection, or word order can drastically sway the quality and correctness of the outcome.",
+    sec6Title: "6. Data Privacy and Security Vulnerabilities",
+    sec6P1: "User prompts submitted to commercial cloud services may be incorporated into subsequent model fine-tuning. Never disclose:",
+    tagPass: "Passwords & Keys",
+    tagBank: "Financial & Banking Info",
+    tagMed: "Protected Health Data",
+    tagSecret: "Classified Institutional Files",
+    sec7Title: "7. Ethical and Legal Dilemmas",
+    thDomain: "Domain",
+    thEthicalChallenge: "Legal & Ethical Considerations",
+    domainIP: "Intellectual Property",
+    descIP: "Generated prose and artwork are synthesized from copyrighted assets, sparking intense legal debates over fair use and authorship attribution.",
+    domainPrivacy: "Privacy Protections",
+    descPrivacy: "The latent risk of models regurgitating private personally identifiable information (PII) harvested during web scraping.",
+    domainMisinfo: "Misinformation",
+    descMisinfo: "The frictionless velocity at which convincing misinformation, propaganda, and synthetic media (deepfakes) can be created at scale.",
+    domainAccountability: "Legal Accountability",
+    descAccountability: "When an algorithmic recommendation incurs harm or damages, attributing legal liability remains an unresolved jurisprudence challenge.",
+    sec8Title: "8. Constraints in Higher Education",
+    sec8P1: "Incorporating Generative AI into university settings poses pedagogical challenges that necessitate deliberate guidance:",
+    eduChal1Title: "Over-reliance:",
+    eduChal1Desc: "Students substituting AI output for primary cognitive struggle and independent critical reasoning instead of using it as a scaffold.",
+    eduChal2Title: "Academic Integrity:",
+    eduChal2Desc: "The acute challenge of differentiating self-authored student reasoning from model-generated text, complicating fair assessment.",
+    eduChal3Title: "Digital Divide:",
+    eduChal3Desc: "Structural inequalities in access (bandwidth quality, modern hardware, premium model subscriptions) skewing equal learning opportunity.",
+    eduChal4Title: "Emergence of New Literacies:",
+    eduChal4Desc: "The imperative need to instruct students in rigorous prompt engineering, epistemic skepticism, and fact verification.",
+    quoteText: "Grasping these limitations does not advocate for rejecting AI, but rather for employing it with mature critical scrutiny — the core mission of our course.",
+    sec9Title: "9. Navigating the Limitations (Best Practices)",
+    sec9P1: "To extract optimal educational value while neutralizing algorithmic hazards, adhere to these 8 practical rules:",
+    p1Title: "Do Not Trust — Verify",
+    p1Desc: "Treat every generated response as an unverified draft demanding scrutiny, especially numbers, dates, statistics, and references.",
+    p2Title: "Supply Rich Context",
+    p2Desc: "Specify persona, objectives, audience, and length; prompt output quality is directly proportional to prompt clarity.",
+    p3Title: "Deconstruct Large Tasks",
+    p3Desc: "Rather than asking for a complete term paper, solicit an outline, review the introduction, and iteratively generate individual chapters.",
+    p4Title: "Leverage RAG or Live Search",
+    p4Desc: "Ground the model by pasting trusted source literature into the prompt so that it draws directly from verified data.",
+    p5Title: "Human in the Loop",
+    p5Desc: "Final decision-making must remain strictly human when grading, assessing individuals, or publishing scholarly contributions.",
+    p6Title: "Protect Confidentiality",
+    p6Desc: "Never paste student transcripts, proprietary grading sheets, or confidential institutional documents into public cloud models.",
+    p7Title: "Document and Disclose",
+    p7Desc: "Acknowledge AI usage transparently in academic work, reporting the models, versions, and prompt methods utilized.",
+    p8Title: "Select the Right Tool",
+    p8Desc: "Do not deploy general-purpose LLMs for strict deterministic math; utilize dedicated mathematical engines for formal problem-solving.",
+    footerText: "Higher Normal School - Bejaia Annex — AI in Learning Course 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow direction
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Adjust list bullet arrows
+  document.querySelectorAll('.list-bullet').forEach(icon => {
+    icon.className = isRtl ? 'fa-solid fa-arrow-left list-bullet' : 'fa-solid fa-arrow-right list-bullet';
+  });
+
+  // Adjust quotation marks
+  const quoteR = document.querySelector('.quote-r');
+  const quoteL = document.querySelector('.quote-l');
+  if (quoteR && quoteL) {
+    if (isRtl) {
+      quoteR.style.marginLeft = '8px';
+      quoteR.style.marginRight = '0';
+      quoteL.style.marginRight = '8px';
+      quoteL.style.marginLeft = '0';
+    } else {
+      quoteR.style.marginRight = '8px';
+      quoteR.style.marginLeft = '0';
+      quoteL.style.marginLeft = '8px';
+      quoteL.style.marginRight = '0';
+    }
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

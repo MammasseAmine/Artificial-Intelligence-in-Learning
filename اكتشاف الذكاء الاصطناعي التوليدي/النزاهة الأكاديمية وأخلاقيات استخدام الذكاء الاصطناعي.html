@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -37,11 +37,59 @@
     color: var(--text);
     line-height: 1.85;
     padding: 30px 15px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 950px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -59,7 +107,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     padding: 6px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -139,7 +189,7 @@
   /* Callout Boxes */
   .callout {
     background: var(--bg);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     border-radius: 8px;
     padding: 16px 20px;
     margin: 20px 0;
@@ -147,17 +197,17 @@
   }
 
   .callout.accent {
-    border-right-color: var(--accent);
+    border-inline-start-color: var(--accent);
     background: #fffaf0;
   }
 
   .callout.danger {
-    border-right-color: var(--danger);
+    border-inline-start-color: var(--danger);
     background: #fff5f5;
   }
 
   .callout.success {
-    border-right-color: var(--success);
+    border-inline-start-color: var(--success);
     background: #f0fff4;
   }
 
@@ -193,14 +243,14 @@
 
   .styled-list li {
     position: relative;
-    padding-right: 28px;
+    padding-inline-start: 28px;
     margin-bottom: 12px;
     font-size: 1rem;
   }
 
   .styled-list li i {
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     top: 5px;
     color: var(--secondary);
   }
@@ -286,7 +336,8 @@
     border-radius: 50%;
     font-size: 0.85rem;
     font-weight: 700;
-    margin-left: 8px;
+    margin-inline-end: 8px;
+    flex-shrink: 0;
   }
 
   .practice-title {
@@ -298,19 +349,6 @@
     align-items: center;
   }
 
-  .prompt-example {
-    background: #fff;
-    border-right: 3px solid var(--accent);
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 0.92rem;
-    color: #4a5568;
-    margin-top: 10px;
-    line-height: 1.7;
-    border: 1px solid var(--border);
-    border-right: 3px solid var(--accent);
-  }
-
   /* Statement Block */
   .statement-box {
     background: #f8fafc;
@@ -319,16 +357,15 @@
     padding: 22px;
     margin: 20px 0;
     position: relative;
-    font-style: normal;
   }
 
   .statement-box i.quote-icon {
     font-size: 1.8rem;
     color: var(--secondary);
-    opacity: 0.3;
+    opacity: 0.25;
     position: absolute;
     top: 15px;
-    left: 20px;
+    inset-inline-end: 20px;
   }
 
   /* Footer */
@@ -357,202 +394,479 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • الدرس السادس</span>
-    <h1>النزاهة الأكاديمية واستخدام الذكاء الاصطناعي</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • الدرس السادس</span>
+    <h1 data-i18n="headerTitle">النزاهة الأكاديمية واستخدام الذكاء الاصطناعي</h1>
   </div>
 
-  <!-- 1. مفهوم النزاهة الأكاديمية -->
+  <!-- 1. Concept of Academic Integrity -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
-      1. مفهوم النزاهة الأكاديمية ومبادئها
+      <span data-i18n="sec1Title">1. مفهوم النزاهة الأكاديمية ومبادئها</span>
     </div>
-    <p>
+    <p data-i18n="sec1P">
       <strong>النزاهة الأكاديمية</strong> تعني الالتزام التام بقيم الصدق والأمانة في مجالات التعلم، التدريس، وإجراء الأبحاث العلمية، بما يضمن مصداقية الإنتاج الفكري والمعرفي.
     </p>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-star"></i> المبادئ الأساسية:</div>
+      <div class="callout-title"><i class="fa-solid fa-star"></i> <span data-i18n="principlesTitle">المبادئ الأساسية:</span></div>
       <ul class="styled-list" style="margin: 8px 0 0 0;">
-        <li><i class="fa-solid fa-check"></i> <strong>الصدق:</strong> نقل الحقائق والنتائج بدقة دون تزييف أو تحريف.</li>
-        <li><i class="fa-solid fa-check"></i> <strong>المسؤولية:</strong> تحمّل التبعات العلمية والأخلاقية لكل ما يقدّمه الباحث.</li>
-        <li><i class="fa-solid fa-check"></i> <strong>الشفافية:</strong> الوضوح الكامل في توضيح الأدوات والمصادر المعتمدة.</li>
-        <li><i class="fa-solid fa-check"></i> <strong>احترام حقوق الآخرين:</strong> حفظ الملكية الفكرية وتوثيق جهود الآخرين بنزاهة.</li>
-        <li><i class="fa-solid fa-check"></i> <strong>الالتزام بقوانين المؤسسة التعليمية:</strong> تطبيق المعايير واللوائح النافذة.</li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="pHonestyKey">الصدق:</strong> <span data-i18n="pHonestyVal">نقل الحقائق والنتائج بدقة دون تزييف أو تحريف.</span></li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="pResponsibilityKey">المسؤولية:</strong> <span data-i18n="pResponsibilityVal">تحمّل التبعات العلمية والأخلاقية لكل ما يقدّمه الباحث.</span></li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="pTransparencyKey">الشفافية:</strong> <span data-i18n="pTransparencyVal">الوضوح الكامل في توضيح الأدوات والمصادر المعتمدة.</span></li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="pRespectKey">احترام حقوق الآخرين:</strong> <span data-i18n="pRespectVal">حفظ الملكية الفكرية وتوثيق جهود الآخرين بنزاهة.</span></li>
+        <li><i class="fa-solid fa-check"></i> <strong data-i18n="pComplianceKey">الالتزام بقوانين المؤسسة:</strong> <span data-i18n="pComplianceVal">تطبيق المعايير واللوائح الأكاديمية النافذة.</span></li>
       </ul>
     </div>
   </div>
 
-  <!-- 2. قواعد الاستخدام المسؤول -->
+  <!-- 2. Responsible Use Rules -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
-      2. قواعد الاستخدام المسؤول للذكاء الاصطناعي
+      <span data-i18n="sec2Title">2. قواعد الاستخدام المسؤول للذكاء الاصطناعي</span>
     </div>
-    <p>
+    <p data-i18n="sec2P">
       يعد الذكاء الاصطناعي شريكاً مساعداً في العملية البحثية وليس بديلاً عن الجهد البشري والفكري المستقل؛ وفيما يلي ضوابط الممارسة:
     </p>
 
     <div class="comparison-grid">
-      <!-- مسموح -->
+      <!-- Allowed -->
       <div class="comparison-card allowed">
         <div class="comparison-header">
-          <i class="fa-solid fa-circle-check"></i> مسموح ومقبول (✓)
+          <i class="fa-solid fa-circle-check"></i> <span data-i18n="allowedHeader">مسموح ومقبول (✓)</span>
         </div>
         <ul class="styled-list success">
-          <li><i class="fa-solid fa-check"></i> طلب شرح وتبسيط المفاهيم العلمية المعقدة.</li>
-          <li><i class="fa-solid fa-check"></i> تصحيح الأخطاء اللغوية وتحسين الأسلوب.</li>
-          <li><i class="fa-solid fa-check"></i> اقتراح أفكار أولية وتوليد فرضيات للعصف الذهني.</li>
-          <li><i class="fa-solid fa-check"></i> تلخيص النصوص العلمية للأغراض الاستيعابية والمراجعة.</li>
-          <li><i class="fa-solid fa-check"></i> المساعدة في البرمجة والتعلم وتصحيح الأكواد.</li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="allow1">طلب شرح وتبسيط المفاهيم العلمية المعقدة.</span></li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="allow2">تصحيح الأخطاء اللغوية وتحسين الأسلوب.</span></li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="allow3">اقتراح أفكار أولية وتوليد فرضيات للعصف الذهني.</span></li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="allow4">تلخيص النصوص العلمية للأغراض الاستيعابية والمراجعة.</span></li>
+          <li><i class="fa-solid fa-check"></i> <span data-i18n="allow5">المساعدة في البرمجة والتعلم وتصحيح الأكواد.</span></li>
         </ul>
       </div>
 
-      <!-- غير مسموح -->
+      <!-- Forbidden -->
       <div class="comparison-card forbidden">
         <div class="comparison-header">
-          <i class="fa-solid fa-circle-xmark"></i> غير مسموح ومرفوض (✗)
+          <i class="fa-solid fa-circle-xmark"></i> <span data-i18n="forbiddenHeader">غير مسموح ومرفوض (✗)</span>
         </div>
         <ul class="styled-list danger">
-          <li><i class="fa-solid fa-xmark"></i> تسليم واجب كامل أو أطروحة من إنتاج الذكاء الاصطناعي دون تصريح.</li>
-          <li><i class="fa-solid fa-xmark"></i> نسخ ولصق المحتوى مباشرة دون تدقيق ومراجعة نقدية.</li>
-          <li><i class="fa-solid fa-xmark"></i> اختلاق بيانات ميدانية أو نتائج تجارب وهمية.</li>
-          <li><i class="fa-solid fa-xmark"></i> الاستشهاد بمراجع غير حقيقية أو مفبركة.</li>
-          <li><i class="fa-solid fa-xmark"></i> إخفاء دور الأداة عند إقرار المؤسسة بوجوب الإفصاح.</li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="forbid1">تسليم واجب كامل أو أطروحة من إنتاج الذكاء الاصطناعي دون تصريح.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="forbid2">نسخ ولصق المحتوى مباشرة دون تدقيق ومراجعة نقدية.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="forbid3">اختلاق بيانات ميدانية أو نتائج تجارب وهمية.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="forbid4">الاستشهاد بمراجع غير حقيقية أو مفبركة.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="forbid5">إخفاء دور الأداة عند إقرار المؤسسة بوجوب الإفصاح.</span></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- 3. استخدام الذكاء الاصطناعي في البحث العلمي -->
+  <!-- 3. AI in Academic Research -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-flask-vial"></i></div>
-      3. استخدام الذكاء الاصطناعي في البحث العلمي
+      <span data-i18n="sec3Title">3. استخدام الذكاء الاصطناعي في البحث العلمي</span>
     </div>
     
     <div class="practice-grid">
-      <!-- الاستخدامات المقبولة -->
+      <!-- Acceptable uses -->
       <div class="practice-card">
         <div class="practice-title" style="color: var(--success);">
-          <i class="fa-solid fa-thumbs-up" style="margin-left: 8px;"></i> استخدامات مقبولة
+          <i class="fa-solid fa-thumbs-up" style="margin-inline-end: 8px;"></i> <span data-i18n="researchGoodTitle">استخدامات مقبولة</span>
         </div>
         <ul class="styled-list success" style="margin: 0;">
-          <li><i class="fa-solid fa-check"></i> <strong>تحسين الصياغة اللغوية:</strong> ضبط الركاكة وتدقيق القواعد.</li>
-          <li><i class="fa-solid fa-check"></i> <strong>تلخيص الأدبيات:</strong> قراءة موجزة للدراسات السابقة.</li>
-          <li><i class="fa-solid fa-check"></i> <strong>اقتراح كلمات مفتاحية:</strong> توسيع نطاق استرجاع المصادر.</li>
-          <li><i class="fa-solid fa-check"></i> <strong>تنظيم وهيكلة الأفكار:</strong> ترتيب العناوين والمحاور.</li>
+          <li><i class="fa-solid fa-check"></i> <strong data-i18n="resGood1Key">تحسين الصياغة اللغوية:</strong> <span data-i18n="resGood1Val">ضبط الركاكة وتدقيق القواعد.</span></li>
+          <li><i class="fa-solid fa-check"></i> <strong data-i18n="resGood2Key">تلخيص الأدبيات:</strong> <span data-i18n="resGood2Val">قراءة موجزة للدراسات السابقة.</span></li>
+          <li><i class="fa-solid fa-check"></i> <strong data-i18n="resGood3Key">اقتراح كلمات مفتاحية:</strong> <span data-i18n="resGood3Val">توسيع نطاق استرجاع المصادر.</span></li>
+          <li><i class="fa-solid fa-check"></i> <strong data-i18n="resGood4Key">تنظيم وهيكلة الأفكار:</strong> <span data-i18n="resGood4Val">ترتيب العناوين والمحاور.</span></li>
         </ul>
       </div>
 
-      <!-- الاستخدامات غير المقبولة -->
+      <!-- Unacceptable uses -->
       <div class="practice-card">
         <div class="practice-title" style="color: var(--danger);">
-          <i class="fa-solid fa-triangle-exclamation" style="margin-left: 8px;"></i> استخدامات غير مقبولة
+          <i class="fa-solid fa-triangle-exclamation" style="margin-inline-end: 8px;"></i> <span data-i18n="researchBadTitle">استخدامات غير مقبولة</span>
         </div>
         <ul class="styled-list danger" style="margin: 0;">
-          <li><i class="fa-solid fa-xmark"></i> اختلاق نتائج التجارب والفحوصات العلمية.</li>
-          <li><i class="fa-solid fa-xmark"></i> إنشاء بيانات واستبيانات إحصائية مزيفة.</li>
-          <li><i class="fa-solid fa-xmark"></i> إنشاء وتضمين مراجع ودراسات وهمية.</li>
-          <li><i class="fa-solid fa-xmark"></i> إخفاء الاعتماد على الذكاء الاصطناعي وادعاء الملكية الفردية.</li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="resBad1">اختلاق نتائج التجارب والفحوصات العلمية.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="resBad2">إنشاء بيانات واستبيانات إحصائية مزيفة.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="resBad3">إنشاء وتضمين مراجع ودراسات وهمية.</span></li>
+          <li><i class="fa-solid fa-xmark"></i> <span data-i18n="resBad4">إخفاء الاعتماد على الذكاء الاصطناعي وادعاء الملكية الفردية.</span></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- 4. الإفصاح عن استخدام الذكاء الاصطناعي -->
+  <!-- 4. Disclosure Guidelines -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-bullhorn"></i></div>
-      4. الإفصاح عن استخدام الذكاء الاصطناعي
+      <span data-i18n="sec4Title">4. الإفصاح عن استخدام الذكاء الاصطناعي</span>
     </div>
-    <p>
+    <p data-i18n="sec4P">
       إذا سمحت المؤسسة التعليمية أو البحثية باستخدام أدوات الذكاء الاصطناعي، فيجب توضيح ذلك بكل شفافية ومصداقية.
     </p>
 
-    <div class="highlight-quote">
+    <div class="highlight-quote" data-i18n="disclosureQuote">
       «الإفصاح ليس عقوبة ولا اعترافاً بضعف، بل هو ممارسة أكاديمية رفيعة وأخلاقية تُبيّن حدود مساهمتك بوضوح.»
     </div>
 
-    <h4 style="color: var(--primary); margin: 20px 0 10px 0; font-weight: 700;">ماذا يجب أن تفصح عنه بالتحديد؟</h4>
+    <h4 style="color: var(--primary); margin: 20px 0 10px 0; font-weight: 700;" data-i18n="whatToDiscloseTitle">ماذا يجب أن تفصح عنه بالتحديد؟</h4>
     <ul class="styled-list">
-      <li><i class="fa-solid fa-cube"></i> <strong>اسم الأداة وإصدارها:</strong> (مثل ChatGPT-4o أو Claude 3.5 Sonnet).</li>
-      <li><i class="fa-solid fa-calendar-day"></i> <strong>تاريخ الاستخدام:</strong> لتحديد النسخة البرمجية ونطاق معلوماتها.</li>
-      <li><i class="fa-solid fa-bullseye"></i> <strong>الغرض من الاستخدام:</strong> (توليد أفكار أولية، تلخيص نصوص، تحرير لغوي، برمجة...).</li>
-      <li><i class="fa-solid fa-terminal"></i> <strong>الطلب المستخدم (Prompt):</strong> إدراج نص الأمر الأساسي كلما كان ذلك متاحاً ومطلوباً.</li>
+      <li><i class="fa-solid fa-cube"></i> <strong data-i18n="discToolKey">اسم الأداة وإصدارها:</strong> <span data-i18n="discToolVal">(مثل ChatGPT-4o أو Claude 3.5 Sonnet).</span></li>
+      <li><i class="fa-solid fa-calendar-day"></i> <strong data-i18n="discDateKey">تاريخ الاستخدام:</strong> <span data-i18n="discDateVal">لتحديد النسخة البرمجية ونطاق معلوماتها.</span></li>
+      <li><i class="fa-solid fa-bullseye"></i> <strong data-i18n="discPurposeKey">الغرض من الاستخدام:</strong> <span data-i18n="discPurposeVal">(توليد أفكار أولية، تلخيص نصوص، تحرير لغوي، برمجة...).</span></li>
+      <li><i class="fa-solid fa-terminal"></i> <strong data-i18n="discPromptKey">الطلب المستخدم (Prompt):</strong> <span data-i18n="discPromptVal">إدراج نص الأمر الأساسي كلما كان ذلك متاحاً ومطلوباً.</span></li>
     </ul>
 
-    <!-- سياقات عملية للإفصاح -->
-    <h4 style="color: var(--primary); margin: 25px 0 10px 0; font-weight: 700;">سياقات وتطبيقات شائعة للإفصاح:</h4>
+    <!-- Disclosure Contexts -->
+    <h4 style="color: var(--primary); margin: 25px 0 10px 0; font-weight: 700;" data-i18n="contextsTitle">سياقات وتطبيقات شائعة للإفصاح:</h4>
     <div class="practice-grid">
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">1</span> بناء المخطط الأولي (Outlining)
+          <span class="practice-num">1</span> <span data-i18n="ctx1Title">بناء المخطط الأولي (Outlining)</span>
         </div>
-        <p style="font-size: 0.92rem;">المساعدة في اقتراح عناصر خطة البحث أو تنظيم فصول الرسالة العلمية.</p>
+        <p style="font-size: 0.92rem;" data-i18n="ctx1Desc">المساعدة في اقتراح عناصر خطة البحث أو تنظيم فصول الرسالة العلمية.</p>
       </div>
 
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">2</span> التدقيق اللغوي والتحرير
+          <span class="practice-num">2</span> <span data-i18n="ctx2Title">التدقيق اللغوي والتحرير</span>
         </div>
-        <p style="font-size: 0.92rem;">تحسين سلامة القواعد والأسلوب (خاصة للناطقين بغير الإنجليزية في الأبحاث المنشورة دولياً).</p>
+        <p style="font-size: 0.92rem;" data-i18n="ctx2Desc">تحسين سلامة القواعد والأسلوب (خاصة للناطقين بغير الإنجليزية في الأبحاث المنشورة دولياً).</p>
       </div>
 
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">3</span> شرح المفاهيم الصعبة
+          <span class="practice-num">3</span> <span data-i18n="ctx3Title">شرح المفاهيم الصعبة</span>
         </div>
-        <p style="font-size: 0.92rem;">تبسيط النظريات بدقة، مثل: <em>"اشرح لي خوارزمية X كأنني طالب في السنة الأولى"</em>.</p>
+        <p style="font-size: 0.92rem;" data-i18n="ctx3Desc">تبسيط النظريات بدقة، مثل: <em>"اشرح لي خوارزمية X كأنني طالب في السنة الأولى"</em>.</p>
       </div>
     </div>
   </div>
 
-  <!-- 5. صياغة فقرة الإفصاح الأكاديمي -->
+  <!-- 5. Disclosure Statement Templates -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-file-signature"></i></div>
-      5. صيغ ونماذج فقرة الإفصاح (Disclosure Statement)
+      <span data-i18n="sec5Title">5. صيغ ونماذج فقرة الإفصاح (Disclosure Statement)</span>
     </div>
-    <p>
+    <p data-i18n="sec5P">
       يتم إدراج فقرة الإفصاح عادة داخل قسم <strong>"المنهجية" (Methodology)</strong> أو في قسم مخصص يُوضع <strong>مباشرة قبل قائمة المراجع</strong> لتحديد نطاق استخدام الأداة بدقة.
     </p>
 
-    <!-- نموذج 1 -->
+    <!-- Template 1 -->
     <div class="statement-box">
       <i class="fa-solid fa-quote-left quote-icon"></i>
       <strong style="color: var(--primary); display: block; margin-bottom: 8px;">
-        <i class="fa-solid fa-pen-fancy"></i> نموذج عام لصيغة الإفصاح:
+        <i class="fa-solid fa-pen-fancy"></i> <span data-i18n="tpl1Heading">نموذج عام لصيغة الإفصاح:</span>
       </strong>
-      <p style="margin: 0; color: #334155;">
+      <p style="margin: 0; color: #334155;" data-i18n="tpl1Body">
         «استُخدمت أداة <strong>[اسم الأداة]</strong> بتاريخ <strong>[التاريخ]</strong> لـ <strong>[تحديد الغرض: مثل توليد أفكار أولية حول المحور الثاني]</strong>. وقد راجعتُ جميع المخرجات وتحقّقتُ من صحة المعلومات بالرجوع إلى مصادر مستقلة وموثوقة.»
       </p>
     </div>
 
-    <!-- نموذج 2 -->
+    <!-- Template 2 -->
     <div class="statement-box" style="background: #f0fff4; border-color: #9ae6b4;">
       <i class="fa-solid fa-quote-left quote-icon" style="color: var(--success);"></i>
       <strong style="color: var(--success); display: block; margin-bottom: 8px;">
-        <i class="fa-solid fa-check-circle"></i> نموذج إفصاح تطبيقي ومكتمل:
+        <i class="fa-solid fa-check-circle"></i> <span data-i18n="tpl2Heading">نموذج إفصاح تطبيقي ومكتمل:</span>
       </strong>
-      <p style="margin: 0; color: #22543d; font-weight: 500;">
+      <p style="margin: 0; color: #22543d; font-weight: 500;" data-i18n="tpl2Body">
         "بتاريخ <strong>20-09-2026</strong>، استخدمتُ في إعداد هذا البحث أداة <strong>Claude (نموذج Claude Sonnet)</strong> للمساعدة في العصف الذهني لعناوين الفصول وتنقيح الصياغة اللغوية، وأتحمّل المسؤولية الكاملة عن المحتوى النهائي وتحقّقتُ من جميع الحقائق والمراجع بنفسي."
       </p>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 01 • الدرس السادس",
+    headerTitle: "النزاهة الأكاديمية واستخدام الذكاء الاصطناعي",
+    sec1Title: "1. مفهوم النزاهة الأكاديمية ومبادئها",
+    sec1P: "<strong>النزاهة الأكاديمية</strong> تعني الالتزام التام بقيم الصدق والأمانة في مجالات التعلم، التدريس، وإجراء الأبحاث العلمية، بما يضمن مصداقية الإنتاج الفكري والمعرفي.",
+    principlesTitle: "المبادئ الأساسية:",
+    pHonestyKey: "الصدق:",
+    pHonestyVal: "نقل الحقائق والنتائج بدقة دون تزييف أو تحريف.",
+    pResponsibilityKey: "المسؤولية:",
+    pResponsibilityVal: "تحمّل التبعات العلمية والأخلاقية لكل ما يقدّمه الباحث.",
+    pTransparencyKey: "الشفافية:",
+    pTransparencyVal: "الوضوح الكامل في توضيح الأدوات والمصادر المعتمدة.",
+    pRespectKey: "احترام حقوق الآخرين:",
+    pRespectVal: "حفظ الملكية الفكرية وتوثيق جهود الآخرين بنزاهة.",
+    pComplianceKey: "الالتزام بقوانين المؤسسة:",
+    pComplianceVal: "تطبيق المعايير واللوائح الأكاديمية النافذة.",
+    sec2Title: "2. قواعد الاستخدام المسؤول للذكاء الاصطناعي",
+    sec2P: "يعد الذكاء الاصطناعي شريكاً مساعداً في العملية البحثية وليس بديلاً عن الجهد البشري والفكري المستقل؛ وفيما يلي ضوابط الممارسة:",
+    allowedHeader: "مسموح ومقبول (✓)",
+    allow1: "طلب شرح وتبسيط المفاهيم العلمية المعقدة.",
+    allow2: "تصحيح الأخطاء اللغوية وتحسين الأسلوب.",
+    allow3: "اقتراح أفكار أولية وتوليد فرضيات للعصف الذهني.",
+    allow4: "تلخيص النصوص العلمية للأغراض الاستيعابية والمراجعة.",
+    allow5: "المساعدة في البرمجة والتعلم وتصحيح الأكواد.",
+    forbiddenHeader: "غير مسموح ومرفوض (✗)",
+    forbid1: "تسليم واجب كامل أو أطروحة من إنتاج الذكاء الاصطناعي دون تصريح.",
+    forbid2: "نسخ ولصق المحتوى مباشرة دون تدقيق ومراجعة نقدية.",
+    forbid3: "اختلاق بيانات ميدانية أو نتائج تجارب وهمية.",
+    forbid4: "الاستشهاد بمراجع غير حقيقية أو مفبركة.",
+    forbid5: "إخفاء دور الأداة عند إقرار المؤسسة بوجوب الإفصاح.",
+    sec3Title: "3. استخدام الذكاء الاصطناعي في البحث العلمي",
+    researchGoodTitle: "استخدامات مقبولة",
+    resGood1Key: "تحسين الصياغة اللغوية:",
+    resGood1Val: "ضبط الركاكة وتدقيق القواعد.",
+    resGood2Key: "تلخيص الأدبيات:",
+    resGood2Val: "قراءة موجزة للدراسات السابقة.",
+    resGood3Key: "اقتراح كلمات مفتاحية:",
+    resGood3Val: "توسيع نطاق استرجاع المصادر.",
+    resGood4Key: "تنظيم وهيكلة الأفكار:",
+    resGood4Val: "ترتيب العناوين والمحاور.",
+    researchBadTitle: "استخدامات غير مقبولة",
+    resBad1: "اختلاق نتائج التجارب والفحوصات العلمية.",
+    resBad2: "إنشاء بيانات واستبيانات إحصائية مزيفة.",
+    resBad3: "إنشاء وتضمين مراجع ودراسات وهمية.",
+    resBad4: "إخفاء الاعتماد على الذكاء الاصطناعي وادعاء الملكية الفردية.",
+    sec4Title: "4. الإفصاح عن استخدام الذكاء الاصطناعي",
+    sec4P: "إذا سمحت المؤسسة التعليمية أو البحثية باستخدام أدوات الذكاء الاصطناعي، فيجب توضيح ذلك بكل شفافية ومصداقية.",
+    disclosureQuote: "«الإفصاح ليس عقوبة ولا اعترافاً بضعف، بل هو ممارسة أكاديمية رفيعة وأخلاقية تُبيّن حدود مساهمتك بوضوح.»",
+    whatToDiscloseTitle: "ماذا يجب أن تفصح عنه بالتحديد؟",
+    discToolKey: "اسم الأداة وإصدارها:",
+    discToolVal: "(مثل ChatGPT-4o أو Claude 3.5 Sonnet).",
+    discDateKey: "تاريخ الاستخدام:",
+    discDateVal: "لتحديد النسخة البرمجية ونطاق معلوماتها.",
+    discPurposeKey: "الغرض من الاستخدام:",
+    discPurposeVal: "(توليد أفكار أولية، تلخيص نصوص، تحرير لغوي، برمجة...).",
+    discPromptKey: "الطلب المستخدم (Prompt):",
+    discPromptVal: "إدراج نص الأمر الأساسي كلما كان ذلك متاحاً ومطلوباً.",
+    contextsTitle: "سياقات وتطبيقات شائعة للإفصاح:",
+    ctx1Title: "بناء المخطط الأولي (Outlining)",
+    ctx1Desc: "المساعدة في اقتراح عناصر خطة البحث أو تنظيم فصول الرسالة العلمية.",
+    ctx2Title: "التدقيق اللغوي والتحرير",
+    ctx2Desc: "تحسين سلامة القواعد والأسلوب (خاصة للناطقين بغير الإنجليزية في الأبحاث المنشورة دولياً).",
+    ctx3Title: "شرح المفاهيم الصعبة",
+    ctx3Desc: "تبسيط النظريات بدقة، مثل: <em>\"اشرح لي خوارزمية X كأنني طالب في السنة الأولى\"</em>.",
+    sec5Title: "5. صيغ ونماذج فقرة الإفصاح (Disclosure Statement)",
+    sec5P: "يتم إدراج فقرة الإفصاح عادة داخل قسم <strong>\"المنهجية\" (Methodology)</strong> أو في قسم مخصص يُوضع <strong>مباشرة قبل قائمة المراجع</strong> لتحديد نطاق استخدام الأداة بدقة.",
+    tpl1Heading: "نموذج عام لصيغة الإفصاح:",
+    tpl1Body: "«استُخدمت أداة <strong>[اسم الأداة]</strong> بتاريخ <strong>[التاريخ]</strong> لـ <strong>[تحديد الغرض: مثل توليد أفكار أولية حول المحور الثاني]</strong>. وقد راجعتُ جميع المخرجات وتحقّقتُ من صحة المعلومات بالرجوع إلى مصادر مستقلة وموثوقة.»",
+    tpl2Heading: "نموذج إفصاح تطبيقي ومكتمل:",
+    tpl2Body: "\"بتاريخ <strong>20-09-2026</strong>، استخدمتُ في إعداد هذا البحث أداة <strong>Claude (نموذج Claude Sonnet)</strong> للمساعدة في العصف الذهني لعناوين الفصول وتنقيح الصياغة اللغوية، وأتحمّل المسؤولية الكاملة عن المحتوى النهائي وتحقّقتُ من جميع الحقائق والمراجع بنفسي.\"",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Intégrité Académique et Éthique de l'IA",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Leçon 06",
+    headerTitle: "Intégrité Académique et Usage de l'IA",
+    sec1Title: "1. Concept et Principes de l'Intégrité Académique",
+    sec1P: "L'<strong>Intégrité Académique</strong> incarne l'adhésion rigoureuse aux valeurs de véracité, d'équité et de responsabilité dans l'apprentissage, l'enseignement et la recherche, garantissant la légitimité de la production intellectuelle.",
+    principlesTitle: "Piliers fondamentaux :",
+    pHonestyKey: "Honnêteté intellectuelle :",
+    pHonestyVal: "Restituer fidèlement faits, résultats et données empiriques sans travestissement.",
+    pResponsibilityKey: "Responsabilité :",
+    pResponsibilityVal: "Assumer la pleine paternité épistémologique et déontologique de ses écrits.",
+    pTransparencyKey: "Transparence :",
+    pTransparencyVal: "Déclarer explicitement les corpus, aides logicielles et protocoles mis en œuvre.",
+    pRespectKey: "Respect du droit d'auteur :",
+    pRespectVal: "Sanctuariser la propriété intellectuelle en attribuant justement tout apport extérieur.",
+    pComplianceKey: "Respect des règlements :",
+    pComplianceVal: "Conformer ses pratiques aux chartes éthiques de l'établissement d'attache.",
+    sec2Title: "2. Charte d'Utilisation Responsable de l'IA",
+    sec2P: "L'IA s'appréhende comme un partenaire cognitif d'appoint et non comme un substitut à l'effort réflexif personnel :",
+    allowedHeader: "Pratiques autorisées et vertueuses (✓)",
+    allow1: "Solliciter des vulgarisations de concepts théoriques complexes.",
+    allow2: "Améliorer la fluidité syntaxique et polir le style d'un premier jet personnel.",
+    allow3: "Suggérer des pistes exploratoires ou stimuler le brainstorming initial.",
+    allow4: "Synthétiser des articles d'envergure à des fins d'assimilation documentaire.",
+    allow5: "Débugger et commenter des scripts algorithmiques d'apprentissage.",
+    forbiddenHeader: "Pratiques proscrites et frauduleuses (✗)",
+    forbid1: "Soumettre une dissertation ou un mémoire généré par l'IA sans mention explicite.",
+    forbid2: "Copier-coller des réponses brutes sans regard critique ni examen probatoire.",
+    forbid3: "Fabriquer des jeux de données d'enquêtes ou des résultats d'expériences chimériques.",
+    forbid4: "Insérer des références bibliographiques artificielles ou déformées.",
+    forbid5: "Dissimuler le recours aux outils d'IA lorsque l'institution prescrit leur déclaration.",
+    sec3Title: "3. L'IA dans la Recherche Scientifique",
+    researchGoodTitle: "Usages académiques légitimes",
+    resGood1Key: "Polissage linguistique :",
+    resGood1Val: "Corriger tournures maladroites et coquilles grammaticales.",
+    resGood2Key: "Synthèse de l'état de l'art :",
+    resGood2Val: "Débroussailler les corpus théoriques volumineux.",
+    resGood3Key: "Extraction lexicale :",
+    resGood3Val: "Identifier des mots-clés pour optimiser les requêtes documentaires.",
+    resGood4Key: "Structuration thématique :",
+    resGood4Val: "Organiser les sections et harmoniser les enchaînements logiques.",
+    researchBadTitle: "Dérives et fraudes scientifiques",
+    resBad1: "Fabriquer des mesures expérimentales ou des observations cliniques.",
+    resBad2: "Forger des échantillons statistiques fictifs pour valider une hypothèse.",
+    resBad3: "Générer de fausses citations pour étoffer artificiellement une bibliographie.",
+    resBad4: "Revendiquer la conception intellectuelle exclusive d'un texte généré par agent.",
+    sec4Title: "4. Protocole de Déclaration (Disclosure)",
+    sec4P: "Dès lors que l'encadrement pédagogique ou scientifique autorise l'usage des LLM, la transparence méthodologique s'impose impérativement.",
+    disclosureQuote: "« L'obligation de transparence n'est ni un aveu d'insuffisance ni un blâme, mais l'affirmation d'une éthique scientifique irréprochable. »",
+    whatToDiscloseTitle: "Quels éléments constitutifs déclarer ?",
+    discToolKey: "Agent et version :",
+    discToolVal: "(ex. ChatGPT-4o, Claude 3.5 Sonnet).",
+    discDateKey: "Date d'exécution :",
+    discDateVal: "Permettant de situer la version du modèle et l'état des connaissances associées.",
+    discPurposeKey: "Nature de l'intervention :",
+    discPurposeVal: "(brainstorming préliminaire, aide à la révision stylistique, débogage de code...).",
+    discPromptKey: "Prompt structurant :",
+    discPromptVal: "Consigner l'injonction principale soumise au modèle lorsque requis.",
+    contextsTitle: "Cas d'usage types sujets à déclaration :",
+    ctx1Title: "Élaboration du plan (Outlining)",
+    ctx1Desc: "Aide à la hiérarchisation des axes d'une problématique ou des chapitres de mémoire.",
+    ctx2Title: "Relecture et polissage stylistique",
+    ctx2Desc: "Perfectionnement formel (particulièrement précieux pour publier en anglais langue non-maternelle).",
+    ctx3Title: "Explicitation didactique",
+    ctx3Desc: "Vulgarisation d'axiomes ardus : <em>« Expose l'algorithme X avec le niveau didactique d'une licence 1 »</em>.",
+    sec5Title: "5. Formules et Modèles de Déclaration (Disclosure Statements)",
+    sec5P: "La déclaration s'insère conventionnellement au sein de la section <strong>« Méthodologie »</strong> ou dans un paragraphe autonome placé <strong>immédiatement avant la bibliographie</strong>.",
+    tpl1Heading: "Formule cadre type :",
+    tpl1Body: "« Le système <strong>[Nom du modèle/outil]</strong> a été consulté le <strong>[Date]</strong> afin de <strong>[Objectif précis : ex. assister la formulation du plan du chapitre II]</strong>. L'auteur a minutieusement examiné et vérifié l'intégralité des productions générées à l'aide de sources scientifiques primaires indépendantes. »",
+    tpl2Heading: "Exemple appliqué complet :",
+    tpl2Body: "\"En date du <strong>20-09-2026</strong>, j'ai mobilisé l'agent conversationnel <strong>Claude (modèle Claude Sonnet)</strong> pour stimuler le brainstorming des intitulés de parties et optimiser la syntaxe du manuscrit. J'assume l'entière responsabilité du contenu final, ayant procédé personnellement au contrôle de tous les faits et références énoncés.\"",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa — Module : L'IA dans l'Apprentissage 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Academic Integrity and AI Ethics",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Lesson 06",
+    headerTitle: "Academic Integrity & Ethical AI Use",
+    sec1Title: "1. Concept and Principles of Academic Integrity",
+    sec1P: "<strong>Academic Integrity</strong> represents the commitment to honesty, trust, fairness, respect, and responsibility in scholarship, ensuring the credibility of intellectual output.",
+    principlesTitle: "Foundational Principles:",
+    pHonestyKey: "Honesty:",
+    pHonestyVal: "Accurately conveying facts, experiments, and citations without distortion.",
+    pResponsibilityKey: "Responsibility:",
+    pResponsibilityVal: "Assuming full ownership of scientific and moral consequences of all submitted work.",
+    pTransparencyKey: "Transparency:",
+    pTransparencyVal: "Explicitly declaring methods, algorithmic tools, and external assistance deployed.",
+    pRespectKey: "Respect for Authorship:",
+    pRespectVal: "Protecting intellectual property through rigorous and equitable attribution.",
+    pComplianceKey: "Institutional Compliance:",
+    pComplianceVal: "Adhering to university honor codes and departmental regulations.",
+    sec2Title: "2. Guidelines for Responsible AI Use",
+    sec2P: "Artificial intelligence serves as a cognitive scaffold, not an autonomous proxy for independent human scholarship:",
+    allowedHeader: "Permissible & Constructive Uses (✓)",
+    allow1: "Requesting explanations of dense scientific models and theories.",
+    allow2: "Proofreading grammar, syntax, and flow of student-authored prose.",
+    allow3: "Brainstorming conceptual frameworks and initial research hypotheses.",
+    allow4: "Condensing scientific literature for foundational comprehension.",
+    allow5: "Debugging student-developed code and explaining compiler errors.",
+    forbiddenHeader: "Prohibited & Dishonest Practices (✗)",
+    forbid1: "Submitting AI-authored papers or assignments as self-authored work.",
+    forbid2: "Direct copy-pasting of model outputs without rigorous fact-checking.",
+    forbid3: "Fabricating simulated empirical surveys or lab findings.",
+    forbid4: "Citing phantom or hallucinated scholarly literature.",
+    forbid5: "Concealing AI assistance when institutional disclosure is mandated.",
+    sec3Title: "3. Artificial Intelligence in Scholarly Research",
+    researchGoodTitle: "Legitimate Scholarly Practices",
+    resGood1Key: "Stylistic Polish:",
+    resGood1Val: "Eliminating clumsy phrasing and refining scholarly prose.",
+    resGood2Key: "Literature Overviews:",
+    resGood2Val: "Extracting key findings from secondary literature.",
+    resGood3Key: "Keyword Synthesis:",
+    resGood3Val: "Expanding terminology to bolster bibliographical discovery.",
+    resGood4Key: "Structural Ideation:",
+    resGood4Val: "Organizing logical outlines and sub-headings.",
+    researchBadTitle: "Unethical Conduct & Fraud",
+    resBad1: "Fabricating laboratory measurements or clinical observations.",
+    resBad2: "Manufacturing synthetic participant data sets.",
+    resBad3: "Injecting non-existent references to inflate bibliography depth.",
+    resBad4: "Falsely claiming solo human authorship over agent-generated prose.",
+    sec4Title: "4. Methodological AI Disclosure",
+    sec4P: "When faculty or publishers authorize generative AI tools, complete and authentic transparency becomes mandatory.",
+    disclosureQuote: "« Disclosure is neither a penalty nor a confession of inadequacy; it is the hallmark of exemplary scientific ethics clearly defining intellectual contributions. »",
+    whatToDiscloseTitle: "What Exactly Must Be Disclosed?",
+    discToolKey: "Tool Name & Version:",
+    discToolVal: "(e.g., ChatGPT-4o or Claude 3.5 Sonnet).",
+    discDateKey: "Date of Consultation:",
+    discDateVal: "Documenting the underlying model checkpoint and training cutoff.",
+    discPurposeKey: "Scope of Application:",
+    discPurposeVal: "(conceptual brainstorming, stylistic editing, syntax verification, etc.).",
+    discPromptKey: "Primary Prompts:",
+    discPromptVal: "Reporting core prompt formulations where applicable.",
+    contextsTitle: "Common Reporting Scenarios:",
+    ctx1Title: "Structural Outlining",
+    ctx1Desc: "Synthesizing prospective dissertation chapter divisions and logical frameworks.",
+    ctx2Title: "Grammatical Editing",
+    ctx2Desc: "Polishing grammatical fidelity (especially for ESL researchers publishing in international journals).",
+    ctx3Title: "Conceptual Simplification",
+    ctx3Desc: "Clarifying dense mathematics: <em>'Explain algorithm X at an undergraduate introductory level'</em>.",
+    sec5Title: "5. Sample Disclosure Statements",
+    sec5P: "A disclosure statement is conventionally placed within the <strong>'Methodology'</strong> chapter or in an unnumbered section situated <strong>immediately preceding the Reference List</strong>.",
+    tpl1Heading: "Standard General Template:",
+    tpl1Body: "« The author utilized <strong>[Tool Name]</strong> on <strong>[Date]</strong> to <strong>[Specify purpose: e.g., brainstorm initial themes for Chapter 2]</strong>. All outputs were critically verified against independent primary scholarly sources, and the author assumes full responsibility for all content. »",
+    tpl2Heading: "Concrete Exemplary Statement:",
+    tpl2Body: "\"On <strong>September 20, 2026</strong>, I utilized <strong>Claude (Claude Sonnet model)</strong> to assist with brainstorming section headings and polishing syntax. I take full intellectual responsibility for the final text and independently verified all factual assertions and citations.\"",
+    footerText: "Higher Normal School - Bejaia Annex — AI in Learning Course 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

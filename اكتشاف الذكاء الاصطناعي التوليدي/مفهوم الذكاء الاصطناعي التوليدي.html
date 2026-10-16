@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الدرس 01: مفهوم الذكاء الاصطناعي التوليدي</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">الدرس 01: مفهوم الذكاء الاصطناعي التوليدي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -36,11 +36,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -58,7 +106,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -69,11 +117,13 @@
     background: rgba(255,255,255,0.12);
     padding: 8px 18px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -138,7 +188,7 @@
     color: var(--primary);
   }
 
-  /* Comparison Highlight (Classic AI vs GenAI) */
+  /* Contrast Cards */
   .contrast-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -149,7 +199,7 @@
   .contrast-card {
     padding: 20px;
     border-radius: 12px;
-    border-right: 4px solid;
+    border-inline-start: 4px solid;
     background: var(--bg);
   }
 
@@ -172,7 +222,7 @@
   .contrast-card.traditional h4 { color: var(--secondary); }
   .contrast-card.generative h4 { color: #dd6b20; }
 
-  /* Steps Flow (How it works) */
+  /* Flow Steps */
   .flow-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -197,7 +247,7 @@
   .flow-number {
     position: absolute;
     top: -12px;
-    right: 20px;
+    inset-inline-start: 20px;
     background: var(--primary);
     color: white;
     width: 28px;
@@ -227,7 +277,7 @@
     background: var(--card);
     border-radius: 14px;
     border: 1px solid var(--border);
-    overflow: hidden;
+    overflow-x: auto;
     margin-bottom: 35px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   }
@@ -235,7 +285,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    text-align: right;
+    text-align: start;
   }
 
   th {
@@ -291,7 +341,7 @@
     color: var(--muted);
   }
 
-  /* Capabilities Grid (Teaching focus) */
+  /* Capabilities Grid */
   .capabilities-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -326,6 +376,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
+    flex-shrink: 0;
   }
 
   .cap-title {
@@ -343,7 +394,7 @@
 
   .cap-edu {
     background: #f0fdf4;
-    border-right: 3px solid var(--success);
+    border-inline-start: 3px solid var(--success);
     padding: 10px 14px;
     border-radius: 6px;
     font-size: 0.88rem;
@@ -360,7 +411,7 @@
   .takeaway-box {
     background: #fffaf0;
     border: 1px solid #feebc8;
-    border-right: 6px solid var(--accent);
+    border-inline-start: 6px solid var(--accent);
     border-radius: 12px;
     padding: 24px;
     margin: 30px 0;
@@ -382,19 +433,21 @@
 
   .takeaway-box ul li {
     position: relative;
-    padding-right: 25px;
+    padding-inline-start: 25px;
     margin-bottom: 10px;
     font-size: 0.95rem;
     color: #7b341e;
   }
 
   .takeaway-box ul li::before {
-    content: "◀";
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     color: var(--accent);
     font-size: 0.8rem;
   }
+
+  html[dir="rtl"] .takeaway-box ul li::before { content: "◀"; }
+  html[dir="ltr"] .takeaway-box ul li::before { content: "▶"; }
 
   /* Footer */
   .footer {
@@ -417,149 +470,159 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToList">العودة لقائمة الدروس</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • الدرس الأول</span>
-    <h1>مفهوم الذكاء الاصطناعي التوليدي</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • الدرس الأول</span>
+    <h1 data-i18n="headerTitle">مفهوم الذكاء الاصطناعي التوليدي</h1>
   </div>
 
-  <!-- 1. المدخل والمفهوم الأساسي -->
+  <!-- 1. Concept Introduction -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-lightbulb"></i></span>
-    1. ما هو الذكاء الاصطناعي التوليدي؟ (Generative AI)
+    <span data-i18n="sec1Title">1. ما هو الذكاء الاصطناعي التوليدي؟ (Generative AI)</span>
   </div>
 
   <div class="concept-box">
-    <p class="concept-text">
+    <p class="concept-text" data-i18n="conceptAI">
       <strong>الذكاء الاصطناعي (AI):</strong> هو علم بناء أنظمة وخوارزميات حاسوبية قادرة على أداء مهام تحاكي الذكاء البشري؛ مثل الفهم اللغوي، التعرف على الأنماط، اتخاذ القرارات وحل المشكلات المعقدة.
     </p>
-    <p class="concept-text">
+    <p class="concept-text" data-i18n="conceptGenAI">
       <strong>الذكاء الاصطناعي التوليدي (GenAI):</strong> هو فئة متقدمة من هذه الأنظمة لا تكتفي بتحليل البيانات المصنفة أو استرجاعها فقط، بل <strong>تُنتج محتوى جديداً ومبتكراً</strong> (نصوص، صور، أكواد، أصوات) يشبه ما تعلمته خلال تدريبها على مليارات النماذج والأمثلة.
     </p>
 
     <!-- Contrast Mini Cards -->
     <div class="contrast-cards">
       <div class="contrast-card traditional">
-        <h4><i class="fa-solid fa-shield-halved"></i> ذكاء اصطناعي تمييزي (تقليدي)</h4>
-        <p>عندما يتعرف هاتفك الذكي على ملامح وجهك لفتح القفل؛ هو هنا يقوم بـ <em>التعرف والتصنيف</em> فقط (هل هذا الوجه يطابق صاحب الهاتف أم لا؟).</p>
+        <h4><i class="fa-solid fa-shield-halved"></i> <span data-i18n="contrastTradTitle">ذكاء اصطناعي تمييزي (تقليدي)</span></h4>
+        <p data-i18n="contrastTradDesc">عندما يتعرف هاتفك الذكي على ملامح وجهك لفتح القفل؛ هو هنا يقوم بـ <em>التعرف والتصنيف</em> فقط (هل هذا الوجه يطابق صاحب الهاتف أم لا؟).</p>
       </div>
 
       <div class="contrast-card generative">
-        <h4><i class="fa-solid fa-wand-magic-sparkles"></i> ذكاء اصطناعي توليدي</h4>
-        <p>عندما تطلب من النظام كتابة قصة قصيرة، أو رسم صورة مبتكرة لقط يرتدي زياً رسمياً؛ يقوم النظام بـ <em>إنشاء محتوى أصيل تماماً</em> اعتماداً على ما تعلمه سابقاً.</p>
+        <h4><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="contrastGenTitle">ذكاء اصطناعي توليدي</span></h4>
+        <p data-i18n="contrastGenDesc">عندما تطلب من النظام كتابة قصة قصيرة، أو رسم صورة مبتكرة لقط يرتدي زياً رسمياً؛ يقوم النظام بـ <em>إنشاء محتوى أصيل تماماً</em> اعتماداً على ما تعلمه سابقاً.</p>
       </div>
     </div>
   </div>
 
-  <!-- 2. كيف يعمل؟ -->
+  <!-- 2. How it works -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-gears"></i></span>
-    2. كيف تعمل نماذج الذكاء الاصطناعي التوليدي؟
+    <span data-i18n="sec2Title">2. كيف تعمل نماذج الذكاء الاصطناعي التوليدي؟</span>
   </div>
 
   <div class="flow-grid">
     <div class="flow-card">
       <div class="flow-number">1</div>
-      <h4>جمع البيانات الضخمة</h4>
-      <p>يتم تدريب النموذج وتغذيته بمليارات النصوص، المقالات، الكتب، الأكواد البرمجية والصور المتاحة.</p>
+      <h4 data-i18n="step1Title">جمع البيانات الضخمة</h4>
+      <p data-i18n="step1Desc">يتم تدريب النموذج وتغذيته بمليارات النصوص، المقالات، الكتب، الأكواد البرمجية والصور المتاحة.</p>
     </div>
 
     <div class="flow-card">
       <div class="flow-number">2</div>
-      <h4>التدريب وبناء العلاقات</h4>
-      <p>يتعلم النموذج الشبكي العلاقات العميقة والأنماط اللغوية والدلالية والرياضية الكامنة داخل البيانات.</p>
+      <h4 data-i18n="step2Title">التدريب وبناء العلاقات</h4>
+      <p data-i18n="step2Desc">يتعلم النموذج الشبكي العلاقات العميقة والأنماط اللغوية والدلالية والرياضية الكامنة داخل البيانات.</p>
     </div>
 
     <div class="flow-card">
       <div class="flow-number">3</div>
-      <h4>التنبؤ الإحصائي المستمر</h4>
-      <p>يتنبأ النموذج بالكلمة (أو العنصر) الأكثر احتمالاً ومنطقية للمجيء تالياً بناءً على سياق المحفز (Prompt).</p>
+      <h4 data-i18n="step3Title">التنبؤ الإحصائي المستمر</h4>
+      <p data-i18n="step3Desc">يتنبأ النموذج بالكلمة (أو العنصر) الأكثر احتمالاً ومنطقية للمجيء تالياً بناءً على سياق المحفز (Prompt).</p>
     </div>
 
     <div class="flow-card">
       <div class="flow-number">4</div>
-      <h4>التوليد النهائي</h4>
-      <p>إنتاج نص مكتمل، صورة جديدة، أو ملف صوتي متماسك كإجابة متناسقة تُحاكي الإبداع البشري.</p>
+      <h4 data-i18n="step4Title">التوليد النهائي</h4>
+      <p data-i18n="step4Desc">إنتاج نص مكتمل، صورة جديدة، أو ملف صوتي متماسك كإجابة متناسقة تُحاكي الإبداع البشري.</p>
     </div>
   </div>
 
-  <!-- 3. المقارنة بين التقليدي والتوليدي -->
+  <!-- 3. Comparison Table -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-table-columns"></i></span>
-    3. الفرق الجوهري: الذكاء التقليدي vs الذكاء التوليدي
+    <span data-i18n="sec3Title">3. الفرق الجوهري: الذكاء التقليدي vs الذكاء التوليدي</span>
   </div>
 
   <div class="table-wrapper">
     <table>
       <thead>
         <tr>
-          <th>وجه المقارنة</th>
-          <th>الذكاء التمييزي (التقليدي)</th>
-          <th>الذكاء الاصطناعي التوليدي</th>
+          <th data-i18n="thCriterion">وجه المقارنة</th>
+          <th data-i18n="thTraditional">الذكاء التمييزي (التقليدي)</th>
+          <th data-i18n="thGenerative">الذكاء الاصطناعي التوليدي</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>الهدف الأساسي</strong></td>
-          <td>التعرف، التصنيف، والتنبؤ بقيم محددة.</td>
-          <td>إنشاء وابتكار وتوليد محتوى جديد كلياً.</td>
+          <td><strong data-i18n="row1Criterion">الهدف الأساسي</strong></td>
+          <td data-i18n="row1Trad">التعرف، التصنيف، والتنبؤ بقيم محددة.</td>
+          <td data-i18n="row1Gen">إنشاء وابتكار وتوليد محتوى جديد كلياً.</td>
         </tr>
         <tr>
-          <td><strong>مثال تطبيقي</strong></td>
-          <td>تحديد ما إذا كانت الصورة المرفقة لكلب أم لقطة.</td>
-          <td>رسم صورة إبداعية جديدة لم تُوجد من قبل لكلب يطير في الفضاء.</td>
+          <td><strong data-i18n="row2Criterion">مثال تطبيقي</strong></td>
+          <td data-i18n="row2Trad">تحديد ما إذا كانت الصورة المرفقة لكلب أم لقطة.</td>
+          <td data-i18n="row2Gen">رسم صورة إبداعية جديدة لم تُوجد من قبل لكلب يطير في الفضاء.</td>
         </tr>
         <tr>
-          <td><strong>نوع المخرجات</strong></td>
-          <td>أرقام، تصنيفات، احتمالات أو قرارات (نعم / لا).</td>
-          <td>نصوص كاملة، صور فنية، وسائط صوتية، وفيديو.</td>
+          <td><strong data-i18n="row3Criterion">نوع المخرجات</strong></td>
+          <td data-i18n="row3Trad">أرقام، تصنيفات، احتمالات أو قرارات (نعم / لا).</td>
+          <td data-i18n="row3Gen">نصوص كاملة، صور فنية، وسائط صوتية، وفيديو.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- 4. أشهر الأدوات العالمية -->
+  <!-- 4. Known Tools -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-toolbox"></i></span>
-    4. أشهر نماذج وأدوات الذكاء التوليدي الحالية
+    <span data-i18n="sec4Title">4. أشهر نماذج وأدوات الذكاء التوليدي الحالية</span>
   </div>
 
   <div class="tools-grid">
     <div class="tool-item">
       <i class="fa-solid fa-comments"></i>
       <h4>ChatGPT</h4>
-      <span>توليد النصوص والمحادثة الذكية</span>
+      <span data-i18n="tool1Desc">توليد النصوص والمحادثة الذكية</span>
     </div>
     <div class="tool-item">
       <i class="fa-solid fa-brain"></i>
       <h4>Claude</h4>
-      <span>التحليل العميق والكتابة الأكاديمية</span>
+      <span data-i18n="tool2Desc">التحليل العميق والكتابة الأكاديمية</span>
     </div>
     <div class="tool-item">
       <i class="fa-solid fa-layer-group"></i>
       <h4>Google Gemini</h4>
-      <span>نموذج متعدد الوسائط الفائقة</span>
+      <span data-i18n="tool3Desc">نموذج متعدد الوسائط الفائقة</span>
     </div>
     <div class="tool-item">
       <i class="fa-solid fa-palette"></i>
       <h4>Midjourney</h4>
-      <span>إنشاء الصور الفنية والواقعية</span>
+      <span data-i18n="tool4Desc">إنشاء الصور الفنية والواقعية</span>
     </div>
     <div class="tool-item">
       <i class="fa-solid fa-image"></i>
       <h4>DALL-E</h4>
-      <span>تحويل الأوامر النصية إلى صور</span>
+      <span data-i18n="tool5Desc">تحويل الأوامر النصية إلى صور</span>
     </div>
   </div>
 
-  <!-- 5. القدرات وإسقاطاتها في مهنة التدريس -->
+  <!-- 5. Capabilities in Teaching -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-chalkboard-user"></i></span>
-    5. ماذا يستطيع أن يفعل؟ (إسقاطات تطبيقية على مهنة التدريس)
+    <span data-i18n="sec5Title">5. ماذا يستطيع أن يفعل؟ (إسقاطات تطبيقية على مهنة التدريس)</span>
   </div>
 
   <div class="capabilities-grid">
@@ -567,12 +630,12 @@
     <div class="cap-card">
       <div class="cap-head">
         <div class="cap-icon"><i class="fa-solid fa-pen-nib"></i></div>
-        <div class="cap-title">إعادة الصياغة والتبسيط اللغوي</div>
+        <div class="cap-title" data-i18n="cap1Title">إعادة الصياغة والتبسيط اللغوي</div>
       </div>
-      <p class="cap-desc">تحويل الفقرات العلمية الصعبة إلى لغة سهلة ومباشرة، أو العكس بما يناسب الفئة المستهدفة.</p>
+      <p class="cap-desc" data-i18n="cap1Desc">تحويل الفقرات العلمية الصعبة إلى لغة سهلة ومباشرة، أو العكس بما يناسب الفئة المستهدفة.</p>
       <div class="cap-edu">
-        <strong>في مهنة التدريس:</strong>
-        تكييف النص الواحد ليتلاءم مع مستويات استيعاب مختلفة للتلاميذ ذوي الفروق الفردية.
+        <strong data-i18n="eduLead">في مهنة التدريس:</strong>
+        <span data-i18n="cap1Edu">تكييف النص الواحد ليتلاءم مع مستويات استيعاب مختلفة للتلاميذ ذوي الفروق الفردية.</span>
       </div>
     </div>
 
@@ -580,12 +643,12 @@
     <div class="cap-card">
       <div class="cap-head">
         <div class="cap-icon"><i class="fa-solid fa-spell-check"></i></div>
-        <div class="cap-title">التدقيق والترجمة المتخصصة</div>
+        <div class="cap-title" data-i18n="cap2Title">التدقيق والترجمة المتخصصة</div>
       </div>
-      <p class="cap-desc">تصحيح الأخطاء اللغوية والنحوية واقتراح تعبيرات بديلة أكثر دقة وتماسكاً.</p>
+      <p class="cap-desc" data-i18n="cap2Desc">تصحيح الأخطاء اللغوية والنحوية واقتراح تعبيرات بديلة أكثر دقة وتماسكاً.</p>
       <div class="cap-edu">
-        <strong>في مهنة التدريس:</strong>
-        مراجعة مذكرات الدروس اليومية، تقارير التربص الميداني، والبحوث الصفية.
+        <strong data-i18n="eduLead">في مهنة التدريس:</strong>
+        <span data-i18n="cap2Edu">مراجعة مذكرات الدروس اليومية، تقارير التربص الميداني، والبحوث الصفية.</span>
       </div>
     </div>
 
@@ -593,12 +656,12 @@
     <div class="cap-card">
       <div class="cap-head">
         <div class="cap-icon"><i class="fa-solid fa-book-open-reader"></i></div>
-        <div class="cap-title">الفهم وتلخيص الوثائق الطويلة</div>
+        <div class="cap-title" data-i18n="cap3Title">الفهم وتلخيص الوثائق الطويلة</div>
       </div>
-      <p class="cap-desc">استخراج الأفكار الرئيسة والمفاهيم المحورية من المقالات والمراجع المعقدة في ثوانٍ.</p>
+      <p class="cap-desc" data-i18n="cap3Desc">استخراج الأفكار الرئيسة والمفاهيم المحورية من المقالات والمراجع المعقدة في ثوانٍ.</p>
       <div class="cap-edu">
-        <strong>في مهنة التدريس:</strong>
-        الاطلاع السريع والمكثف على المراجع والمقالات العلمية قبل إعداد الدرس.
+        <strong data-i18n="eduLead">في مهنة التدريس:</strong>
+        <span data-i18n="cap3Edu">الاطلاع السريع والمكثف على المراجع والمقالات العلمية قبل إعداد الدرس.</span>
       </div>
     </div>
 
@@ -606,12 +669,12 @@
     <div class="cap-card">
       <div class="cap-head">
         <div class="cap-icon"><i class="fa-solid fa-chart-pie"></i></div>
-        <div class="cap-title">تحليل الجداول والرسومات البيانية</div>
+        <div class="cap-title" data-i18n="cap4Title">تحليل الجداول والرسومات البيانية</div>
       </div>
-      <p class="cap-desc">قراءة الجداول الإحصائية والمخططات ووصف دلالاتها واستخراج مؤشراتها النصية.</p>
+      <p class="cap-desc" data-i18n="cap4Desc">قراءة الجداول الإحصائية والمخططات ووصف دلالاتها واستخراج مؤشراتها النصية.</p>
       <div class="cap-edu">
-        <strong>في مهنة التدريس:</strong>
-        تفسير نسب النجاح ونتائج التقويمات الفصلية وتحديد مواطن التعثر الصفي.
+        <strong data-i18n="eduLead">في مهنة التدريس:</strong>
+        <span data-i18n="cap4Edu">تفسير نسب النجاح ونتائج التقويمات الفصلية وتحديد مواطن التعثر الصفي.</span>
       </div>
     </div>
 
@@ -619,12 +682,12 @@
     <div class="cap-card">
       <div class="cap-head">
         <div class="cap-icon"><i class="fa-solid fa-list-check"></i></div>
-        <div class="cap-title">بناء الأسئلة وسلالم التقويم</div>
+        <div class="cap-title" data-i18n="cap5Title">بناء الأسئلة وسلالم التقويم</div>
       </div>
-      <p class="cap-desc">اقتراح بنوك أسئلة متدرجة الصعوبة (تذكر، فهم، تطبيق) وشبكات تصحيح معيارية.</p>
+      <p class="cap-desc" data-i18n="cap5Desc">اقتراح بنوك أسئلة متدرجة الصعوبة (تذكر، فهم، تطبيق) وشبكات تصحيح معيارية.</p>
       <div class="cap-edu">
-        <strong>في مهنة التدريس:</strong>
-        إنشاء التمارين والواجبات الصفية وتجهيز معايير تصحيح منصفة وسريعة.
+        <strong data-i18n="eduLead">في مهنة التدريس:</strong>
+        <span data-i18n="cap5Edu">إنشاء التمارين والواجبات الصفية وتجهيز معايير تصحيح منصفة وسريعة.</span>
       </div>
     </div>
 
@@ -632,35 +695,281 @@
     <div class="cap-card">
       <div class="cap-head">
         <div class="cap-icon"><i class="fa-solid fa-sitemap"></i></div>
-        <div class="cap-title">الخرائط المفاهيمية والأتمتة</div>
+        <div class="cap-title" data-i18n="cap6Title">الخرائط المفاهيمية والأتمتة</div>
       </div>
-      <p class="cap-desc">تنظيم الأفكار في لوائح وخرائط ذهنية، وكتابة صيغ ودوال برمجية مثل دوال Excel.</p>
+      <p class="cap-desc" data-i18n="cap6Desc">تنظيم الأفكار في لوائح وخرائط ذهنية، وكتابة صيغ ودوال برمجية مثل دوال Excel.</p>
       <div class="cap-edu">
-        <strong>في مهنة التدريس:</strong>
-        أتمتة حساب معدلات الأقسام وتلخيص محاور الوحدات التعليمية بصرياً للطلبة.
+        <strong data-i18n="eduLead">في مهنة التدريس:</strong>
+        <span data-i18n="cap6Edu">أتمتة حساب معدلات الأقسام وتلخيص محاور الوحدات التعليمية بصرياً للطلبة.</span>
       </div>
     </div>
   </div>
 
-  <!-- 6. قواعد ذهبية وتنبيهات حاسمة -->
+  <!-- 6. Golden Rules & Takeaways -->
   <div class="takeaway-box">
-    <h3><i class="fa-solid fa-triangle-exclamation"></i> قاعدة نقدية هامة للأستاذ الباحث:</h3>
-    <p>
+    <h3><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="takeawayTitle">قاعدة نقدية هامة للأستاذ الباحث:</span></h3>
+    <p data-i18n="takeawayIntro">
       النماذج التوليدية <strong>لا "تفهم"</strong> بالمعنى الإنساني الحقيقي، ولا تملك وعياً بالمفاهيم؛ بل هي خوارزميات تتنبأ بالأنماط الإحصائية بدقة بالغة تبدو معها وكأنها تفهم وتبدع.
     </p>
     <ul>
-      <li><strong>المسؤولية الأكاديمية:</strong> هذه الأدوات تسرع تحضير دروسك وتمارينك، لكن التحقق العلمي والتدقيق الدائم يظل مسؤوليتك المطلقة.</li>
-      <li><strong>التوجيه الصفي:</strong> تلامذتك وطلبتك يستخدمون هذه الأدوات بالفعل؛ دورك هو إرشادهم نحو الاستعمال الناقد والأخلاقي.</li>
-      <li><strong>حماية المعطيات:</strong> بيانات التلاميذ وأسرارهم لها حماية قانونية وأخلاقية كاملة، ولا يجوز إدخال البيانات الشخصية الحساسة في النماذج العامة.</li>
+      <li data-i18n="takeawayItem1"><strong>المسؤولية الأكاديمية:</strong> هذه الأدوات تسرع تحضير دروسك وتمارينك، لكن التحقق العلمي والتدقيق الدائم يظل مسؤوليتك المطلقة.</li>
+      <li data-i18n="takeawayItem2"><strong>التوجيه الصفي:</strong> تلامذتك وطلبتك يستخدمون هذه الأدوات بالفعل؛ دورك هو إرشادهم نحو الاستعمال الناقد والأخلاقي.</li>
+      <li data-i18n="takeawayItem3"><strong>حماية المعطيات:</strong> بيانات التلاميذ وأسرارهم لها حماية قانونية وأخلاقية كاملة، ولا يجوز إدخال البيانات الشخصية الحساسة في النماذج العامة.</li>
     </ul>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية • مساق الذكاء الاصطناعي في التعليم • 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس 01: مفهوم الذكاء الاصطناعي التوليدي",
+    backToList: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 01 • الدرس الأول",
+    headerTitle: "مفهوم الذكاء الاصطناعي التوليدي",
+    sec1Title: "1. ما هو الذكاء الاصطناعي التوليدي؟ (Generative AI)",
+    conceptAI: "<strong>الذكاء الاصطناعي (AI):</strong> هو علم بناء أنظمة وخوارزميات حاسوبية قادرة على أداء مهام تحاكي الذكاء البشري؛ مثل الفهم اللغوي، التعرف على الأنماط، اتخاذ القرارات وحل المشكلات المعقدة.",
+    conceptGenAI: "<strong>الذكاء الاصطناعي التوليدي (GenAI):</strong> هو فئة متقدمة من هذه الأنظمة لا تكتفي بتحليل البيانات المصنفة أو استرجاعها فقط، بل <strong>تُنتج محتوى جديداً ومبتكراً</strong> (نصوص، صور، أكواد، أصوات) يشبه ما تعلمته خلال تدريبها على مليارات النماذج والأمثلة.",
+    contrastTradTitle: "ذكاء اصطناعي تمييزي (تقليدي)",
+    contrastTradDesc: "عندما يتعرف هاتفك الذكي على ملامح وجهك لفتح القفل؛ هو هنا يقوم بـ <em>التعرف والتصنيف</em> فقط (هل هذا الوجه يطابق صاحب الهاتف أم لا؟).",
+    contrastGenTitle: "ذكاء اصطناعي توليدي",
+    contrastGenDesc: "عندما تطلب من النظام كتابة قصة قصيرة، أو رسم صورة مبتكرة لقط يرتدي زياً رسمياً؛ يقوم النظام بـ <em>إنشاء محتوى أصيل تماماً</em> اعتماداً على ما تعلمه سابقاً.",
+    sec2Title: "2. كيف تعمل نماذج الذكاء الاصطناعي التوليدي؟",
+    step1Title: "جمع البيانات الضخمة",
+    step1Desc: "يتم تدريب النموذج وتغذيته بمليارات النصوص، المقالات، الكتب، الأكواد البرمجية والصور المتاحة.",
+    step2Title: "التدريب وبناء العلاقات",
+    step2Desc: "يتعلم النموذج الشبكي العلاقات العميقة والأنماط اللغوية والدلالية والرياضية الكامنة داخل البيانات.",
+    step3Title: "التنبؤ الإحصائي المستمر",
+    step3Desc: "يتنبأ النموذج بالكلمة (أو العنصر) الأكثر احتمالاً ومنطقية للمجيء تالياً بناءً على سياق المحفز (Prompt).",
+    step4Title: "التوليد النهائي",
+    step4Desc: "إنتاج نص مكتمل، صورة جديدة، أو ملف صوتي متماسك كإجابة متناسقة تُحاكي الإبداع البشري.",
+    sec3Title: "3. الفرق الجوهري: الذكاء التقليدي vs الذكاء التوليدي",
+    thCriterion: "وجه المقارنة",
+    thTraditional: "الذكاء التمييزي (التقليدي)",
+    thGenerative: "الذكاء الاصطناعي التوليدي",
+    row1Criterion: "الهدف الأساسي",
+    row1Trad: "التعرف، التصنيف، والتنبؤ بقيم محددة.",
+    row1Gen: "إنشاء وابتكار وتوليد محتوى جديد كلياً.",
+    row2Criterion: "مثال تطبيقي",
+    row2Trad: "تحديد ما إذا كانت الصورة المرفقة لكلب أم لقطة.",
+    row2Gen: "رسم صورة إبداعية جديدة لم تُوجد من قبل لكلب يطير في الفضاء.",
+    row3Criterion: "نوع المخرجات",
+    row3Trad: "أرقام، تصنيفات، احتمالات أو قرارات (نعم / لا).",
+    row3Gen: "نصوص كاملة، صور فنية، وسائط صوتية، وفيديو.",
+    sec4Title: "4. أشهر نماذج وأدوات الذكاء التوليدي الحالية",
+    tool1Desc: "توليد النصوص والمحادثة الذكية",
+    tool2Desc: "التحليل العميق والكتابة الأكاديمية",
+    tool3Desc: "نموذج متعدد الوسائط الفائقة",
+    tool4Desc: "إنشاء الصور الفنية والواقعية",
+    tool5Desc: "تحويل الأوامر النصية إلى صور",
+    sec5Title: "5. ماذا يستطيع أن يفعل؟ (إسقاطات تطبيقية على مهنة التدريس)",
+    eduLead: "في مهنة التدريس:",
+    cap1Title: "إعادة الصياغة والتبسيط اللغوي",
+    cap1Desc: "تحويل الفقرات العلمية الصعبة إلى لغة سهلة ومباشرة، أو العكس بما يناسب الفئة المستهدفة.",
+    cap1Edu: "تكييف النص الواحد ليتلاءم مع مستويات استيعاب مختلفة للتلاميذ ذوي الفروق الفردية.",
+    cap2Title: "التدقيق والترجمة المتخصصة",
+    cap2Desc: "تصحيح الأخطاء اللغوية والنحوية واقتراح تعبيرات بديلة أكثر دقة وتماسكاً.",
+    cap2Edu: "مراجعة مذكرات الدروس اليومية، تقارير التربص الميداني، والبحوث الصفية.",
+    cap3Title: "الفهم وتلخيص الوثائق الطويلة",
+    cap3Desc: "استخراج الأفكار الرئيسة والمفاهيم المحورية من المقالات والمراجع المعقدة في ثوانٍ.",
+    cap3Edu: "الاطلاع السريع والمكثف على المراجع والمقالات العلمية قبل إعداد الدرس.",
+    cap4Title: "تحليل الجداول والرسومات البيانية",
+    cap4Desc: "قراءة الجداول الإحصائية والمخططات ووصف دلالاتها واستخراج مؤشراتها النصية.",
+    cap4Edu: "تفسير نسب النجاح ونتائج التقويمات الفصلية وتحديد مواطن التعثر الصفي.",
+    cap5Title: "بناء الأسئلة وسلالم التقويم",
+    cap5Desc: "اقتراح بنوك أسئلة متدرجة الصعوبة (تذكر، فهم، تطبيق) وشبكات تصحيح معيارية.",
+    cap5Edu: "إنشاء التمارين والواجبات الصفية وتجهيز معايير تصحيح منصفة وسريعة.",
+    cap6Title: "الخرائط المفاهيمية والأتمتة",
+    cap6Desc: "تنظيم الأفكار في لوائح وخرائط ذهنية، وكتابة صيغ ودوال برمجية مثل دوال Excel.",
+    cap6Edu: "أتمتة حساب معدلات الأقسام وتلخيص محاور الوحدات التعليمية بصرياً للطلبة.",
+    takeawayTitle: "قاعدة نقدية هامة للأستاذ الباحث:",
+    takeawayIntro: "النماذج التوليدية <strong>لا \"تفهم\"</strong> بالمعنى الإنساني الحقيقي، ولا تملك وعياً بالمفاهيم؛ بل هي خوارزميات تتنبأ بالأنماط الإحصائية بدقة بالغة تبدو معها وكأنها تفهم وتبدع.",
+    takeawayItem1: "<strong>المسؤولية الأكاديمية:</strong> هذه الأدوات تسرع تحضير دروسك وتمارينك، لكن التحقق العلمي والتدقيق الدائم يظل مسؤوليتك المطلقة.",
+    takeawayItem2: "<strong>التوجيه الصفي:</strong> تلامذتك وطلبتك يستخدمون هذه الأدوات بالفعل؛ دورك هو إرشادهم نحو الاستعمال الناقد والأخلاقي.",
+    takeawayItem3: "<strong>حماية المعطيات:</strong> بيانات التلاميذ وأسرارهم لها حماية قانونية وأخلاقية كاملة، ولا يجوز إدخال البيانات الشخصية الحساسة في النماذج العامة.",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية • مساق الذكاء الاصطناعي في التعليم • 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Leçon 01 : Notion d'IA Générative",
+    backToList: "Retour aux leçons",
+    headerBadge: "Chapitre 01 • Leçon 01",
+    headerTitle: "Notion d'Intelligence Artificielle Générative",
+    sec1Title: "1. Qu'est-ce que l'IA Générative ? (GenAI)",
+    conceptAI: "<strong>Intelligence Artificielle (IA) :</strong> Discipline scientifique visant à concevoir des systèmes capables de réaliser des tâches requérant l'intelligence humaine : raisonnement, traitement du langage, prise de décision et résolution de problèmes.",
+    conceptGenAI: "<strong>IA Générative (GenAI) :</strong> Branche avancée de l'IA qui ne se limite pas à classer ou analyser des données, mais <strong>génère de nouveaux contenus originaux</strong> (textes, images, code, audio) en s'appuyant sur l'apprentissage de milliards d'exemples.",
+    contrastTradTitle: "IA Discriminative (Traditionnelle)",
+    contrastTradDesc: "Lorsque votre smartphone reconnaît votre visage pour se déverrouiller, il effectue une simple tâche de <em>reconnaissance et classification</em> (ce visage est-il bien celui du propriétaire ?).",
+    contrastGenTitle: "IA Générative",
+    contrastGenDesc: "Lorsque vous demandez au système d'écrire un poème ou de dessiner un chat en costume, il effectue une <em>création entièrement nouvelle</em> basée sur les patterns appris.",
+    sec2Title: "2. Comment fonctionnent les modèles d'IA générative ?",
+    step1Title: "Collecte massive de données",
+    step1Desc: "Le modèle est entraîné sur des milliards de textes, d'articles scientifiques, d'ouvrages, de codes sources et d'images.",
+    step2Title: "Apprentissage & modélisation",
+    step2Desc: "Le réseau de neurones extrait les structures statistiques, sémantiques et logiques profondes du langage.",
+    step3Title: "Prédiction probabiliste",
+    step3Desc: "Le modèle calcule et prédit le mot (ou pixel) le plus probable suivant la consigne (Prompt) fournie.",
+    step4Title: "Génération du résultat",
+    step4Desc: "Production d'un texte fluide, d'une image ou d'un extrait audio cohérent imitant la créativité humaine.",
+    sec3Title: "3. Différence Fondamentale : IA Traditionnelle vs IA Générative",
+    thCriterion: "Critère de comparaison",
+    thTraditional: "IA Discriminative (Traditionnelle)",
+    thGenerative: "IA Générative",
+    row1Criterion: "Objectif principal",
+    row1Trad: "Reconnaître, trier, classer et prédire des valeurs.",
+    row1Gen: "Créer, inventer et générer de nouveaux contenus.",
+    row2Criterion: "Exemple concret",
+    row2Trad: "Déterminer si une photo représente un chat ou un chien.",
+    row2Gen: "Générer une image inédite d'un chien astronaute sur Mars.",
+    row3Criterion: "Nature des sorties",
+    row3Trad: "Nombres, étiquettes, probabilités, décisions binaires.",
+    row3Gen: "Textes complets, graphismes, voix synthétique, vidéos.",
+    sec4Title: "4. Principaux Modèles et Outils Actuels",
+    tool1Desc: "Génération textuelle et dialogue intelligent",
+    tool2Desc: "Raisonnement avancé et rédaction académique",
+    tool3Desc: "Modèle multimodal ultra-polyvalent",
+    tool4Desc: "Création artistique et rendu photoréaliste",
+    tool5Desc: "Conversion de descriptions textuelles en images",
+    sec5Title: "5. Que peut-elle faire ? (Applications au métier d'enseignant)",
+    eduLead: "Application pédagogique :",
+    cap1Title: "Reformulation & vulgarisation",
+    cap1Desc: "Adapter un texte scientifique complexe vers un niveau accessible et didactique selon le public visé.",
+    cap1Edu: "Différencier l'enseignement en adaptant un même support à des profils d'élèves variés.",
+    cap2Title: "Relecture & traduction spécialisée",
+    cap2Desc: "Corriger la syntaxe, l'orthographe et enrichir le niveau lexical des documents de travail.",
+    cap2Edu: "Réviser les fiches de cours, comptes-rendus de stage et mémoires académiques.",
+    cap3Title: "Synthèse documentaire",
+    cap3Desc: "Extraire les axes majeurs et concepts clés d'articles de recherche volumineux en quelques secondes.",
+    cap3Edu: "Accélérer la veille bibliographique et scientifique avant la conception des cours.",
+    cap4Title: "Analyse de graphiques et données",
+    cap4Desc: "Interpréter des tableaux statistiques, identifier des tendances et les formuler textuellement.",
+    cap4Edu: "Analyser les taux de réussite aux évaluations et cibler les notions non acquises.",
+    cap5Title: "Conception d'évaluations",
+    cap5Desc: "Proposer des banques d'exercices calibrées (taxonomie de Bloom) et des grilles critériées.",
+    cap5Edu: "Concevoir des interrogations et uniformiser les barèmes d'évaluation.",
+    cap6Title: "Cartes conceptuelles & automatisation",
+    cap6Desc: "Structurer des concepts sous forme de listes, cartes heuristiques ou formules tableurs complexes.",
+    cap6Edu: "Automatiser le traitement des moyennes et synthétiser visuellement les chapitres.",
+    takeawayTitle: "Règle épistémologique pour l'enseignant-chercheur :",
+    takeawayIntro: "Les modèles génératifs <strong>ne « comprennent » pas</strong> au sens cognitif humain ; ce sont de formidables moteurs statistiques prédisant des suites de symboles avec une très haute cohérence apparente.",
+    takeawayItem1: "<strong>Responsabilité intellectuelle :</strong> L'IA accélère la préparation de vos cours, mais la rigueur et la vérification factuelle restent votre prérogative exclusive.",
+    takeawayItem2: "<strong>Guidage pédagogique :</strong> Vos étudiants exploitent déjà ces outils ; votre mission est de former leur esprit critique et leur déontologie.",
+    takeawayItem3: "<strong>Confidentialité des données :</strong> Les données scolaires et personnelles des élèves sont protégées ; ne divulguez jamais d'informations confidentielles dans des modèles publics.",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa • Cours : L'IA dans l'Éducation • 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lesson 01: Concept of Generative AI",
+    backToList: "Back to Lessons List",
+    headerBadge: "Chapter 01 • Lesson 01",
+    headerTitle: "Concept of Generative Artificial Intelligence",
+    sec1Title: "1. What is Generative AI? (GenAI)",
+    conceptAI: "<strong>Artificial Intelligence (AI):</strong> The scientific field dedicated to building machines and algorithms capable of performing tasks requiring human cognition: reasoning, pattern recognition, decision-making, and problem solving.",
+    conceptGenAI: "<strong>Generative AI (GenAI):</strong> An advanced class of AI systems that goes beyond analyzing or retrieving data to <strong>generate brand-new, original content</strong> (text, images, code, audio) modeled on patterns learned from billions of training examples.",
+    contrastTradTitle: "Discriminative (Traditional) AI",
+    contrastTradDesc: "When your phone scans your face to unlock, it performs a <em>recognition and classification</em> task (Does this face match the phone owner?).",
+    contrastGenTitle: "Generative AI",
+    contrastGenDesc: "When you ask a system to draft a creative story or illustrate a cat in business attire, it <em>creates entirely new content</em> based on acquired knowledge.",
+    sec2Title: "2. How Do Generative AI Models Work?",
+    step1Title: "Massive Data Collection",
+    step1Desc: "Models are trained on billions of texts, scholarly papers, digital books, source code files, and images.",
+    step2Title: "Training & Pattern Learning",
+    step2Desc: "Deep neural networks map intricate semantic, syntactic, and structural relationships within data.",
+    step3Title: "Statistical Prediction",
+    step3Desc: "The system calculates the most probable next word (or token) given the prompt's context.",
+    step4Title: "Final Output Generation",
+    step4Desc: "Produces polished text, artwork, or synthesized audio mirroring human creativity.",
+    sec3Title: "3. Core Difference: Traditional AI vs Generative AI",
+    thCriterion: "Comparison Criterion",
+    thTraditional: "Discriminative (Traditional) AI",
+    thGenerative: "Generative AI",
+    row1Criterion: "Primary Purpose",
+    row1Trad: "Recognition, classification, and value prediction.",
+    row1Gen: "Creation, synthesis, and novel content generation.",
+    row2Criterion: "Real-world Example",
+    row2Trad: "Determining whether an image shows a dog or a cat.",
+    row2Gen: "Generating an original artwork of a dog floating in outer space.",
+    row3Criterion: "Output Format",
+    row3Trad: "Labels, numbers, probabilities, binary outcomes.",
+    row3Gen: "Coherent text, artwork, synthetic voice, and videos.",
+    sec4Title: "4. Prominent Current Generative AI Tools",
+    tool1Desc: "Conversational intelligence and text generation",
+    tool2Desc: "Deep analysis, synthesis, and academic writing",
+    tool3Desc: "Ultra-capable multimodal foundation model",
+    tool4Desc: "Artistic and photorealistic image generation",
+    tool5Desc: "Text-to-image synthesis engine",
+    sec5Title: "5. What Can It Do? (Applications for Educators)",
+    eduLead: "Educational Application:",
+    cap1Title: "Rewording & Simplification",
+    cap1Desc: "Converting dense scientific prose into clear, pedagogically suited explanations.",
+    cap1Edu: "Differentiating instruction by tailoring materials to varying student reading levels.",
+    cap2Title: "Proofreading & Specialized Translation",
+    cap2Desc: "Refining grammar, syntax, terminology, and overall stylistic coherence.",
+    cap2Edu: "Polishing daily lesson plans, practicum reports, and classroom research drafts.",
+    cap3Title: "Long-Document Synthesis",
+    cap3Desc: "Extracting core theses, concepts, and key findings from lengthy papers in seconds.",
+    cap3Edu: "Accelerating literature review and background research ahead of curriculum design.",
+    cap4Title: "Data & Chart Interpretation",
+    cap4Desc: "Reading tabular data and charts to summarize actionable pedagogical insights.",
+    cap4Edu: "Analyzing student exam performance trends and pin-pointing learning deficits.",
+    cap5Title: "Question & Rubric Design",
+    cap5Desc: "Generating Bloom-aligned question banks and multi-criteria evaluation rubrics.",
+    cap5Edu: "Assembling balanced assessments and transparent scoring criteria rapidly.",
+    cap6Title: "Mind Mapping & Automation",
+    cap6Desc: "Organizing topics into conceptual diagrams or drafting spreadsheet automated formulas.",
+    cap6Edu: "Automating grade sheet calculations and visually summarizing course units for students.",
+    takeawayTitle: "Critical Takeaway for Educator-Researchers:",
+    takeawayIntro: "Generative models <strong>do not 'understand'</strong> in the human cognitive sense; they are sophisticated statistical engines calculating token probabilities that happen to look profoundly coherent.",
+    takeawayItem1: "<strong>Academic Responsibility:</strong> While AI accelerates course planning, rigorous scientific verification remains exclusively your duty.",
+    takeawayItem2: "<strong>Classroom Guidance:</strong> Your students are already using these systems; your role is to foster critical thinking and ethical use.",
+    takeawayItem3: "<strong>Data Privacy:</strong> Student records and sensitive institutional data are protected by law; never input private information into public models.",
+    footerText: "Higher Normal School - Bejaia Annex • AI in Education Course • 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update text & HTML elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow direction
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

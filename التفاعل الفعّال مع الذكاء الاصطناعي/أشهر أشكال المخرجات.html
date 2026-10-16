@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 03 - الدرس 04: أشهر أشكال المخرجات</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">الفصل 03 - الدرس 04: أشهر أشكال المخرجات</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -39,11 +39,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -61,7 +109,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -72,11 +120,13 @@
     background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -87,6 +137,7 @@
     font-weight: 700;
     display: inline-block;
     margin-bottom: 15px;
+    letter-spacing: 0.5px;
   }
   
   .header h1 {
@@ -127,6 +178,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
   /* General Cards */
@@ -204,7 +256,7 @@
 
   .format-prompt-box {
     background: #f8fafc;
-    border-right: 3px solid var(--accent);
+    border-inline-start: 3px solid var(--accent);
     padding: 12px 14px;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -249,7 +301,7 @@
     border-radius: 12px;
     padding: 18px 22px;
     margin-top: 14px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: inherit;
     color: #2d3748;
     line-height: 2;
     font-weight: 500;
@@ -297,7 +349,7 @@
 
   .length-quote {
     background: #f8fafc;
-    border-right: 3px solid var(--accent);
+    border-inline-start: 3px solid var(--accent);
     padding: 10px 12px;
     border-radius: 8px;
     font-size: 0.92rem;
@@ -319,7 +371,7 @@
 
   @media (max-width: 768px) {
     .header h1 { font-size: 1.7rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
     .formats-grid, .length-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -327,14 +379,24 @@
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 03.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToLessons">العودة لقائمة الدروس</span>
     </a>
-    <span class="header-badge">الفصل 03 • الدرس 04</span>
-    <h1>أشهر أشكال المخرجات</h1>
-    <div class="subtitle">
+    <span class="header-badge" data-i18n="headerBadge">الفصل 03 • الدرس 04</span>
+    <h1 data-i18n="headerTitle">أشهر أشكال المخرجات</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">
       دليل تطبيقي لإتقان هندسة المخرجات وهيكلتها والتحكم الدقيق في حجم النتائج الناتجة عن نماذج الذكاء الاصطناعي التوليدي.
     </div>
   </div>
@@ -342,11 +404,11 @@
   <!-- القسم الأول: أشهر أشكال المخرجات -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-table-cells-large"></i></span>
-    أولاً: أشهر أشكال المخرجات
+    <span data-i18n="sec1Title">أولاً: أشهر أشكال المخرجات</span>
   </div>
 
   <div class="main-card">
-    <p class="lead-text">
+    <p class="lead-text" data-i18n="sec1Lead">
       يُمكّنك تحديد شكل المخرج المطلوب بدقة من تفادي الإجابات غير المنظمة، والحصول مباشرة على نصوص مهيكلة وجاهزة للاستخدام في القسم أو التحضير التربوي:
     </p>
 
@@ -356,11 +418,11 @@
         <div class="format-card-header">
           <div class="format-title-group">
             <span class="format-number">1</span>
-            <span>الفقرة النصية</span>
+            <span data-i18n="f1Title">الفقرة النصية</span>
           </div>
           <i class="fa-solid fa-paragraph" style="color: var(--secondary);"></i>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="f1Prompt">
           «اشرح أهمية التعلم التعاوني في فقرة من 100 كلمة.»
         </div>
       </div>
@@ -370,11 +432,11 @@
         <div class="format-card-header">
           <div class="format-title-group">
             <span class="format-number">2</span>
-            <span>القائمة النقطية</span>
+            <span data-i18n="f2Title">القائمة النقطية</span>
           </div>
           <i class="fa-solid fa-list-ul" style="color: var(--secondary);"></i>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="f2Prompt">
           «اذكر مزايا التعلم بالمشاريع في خمس نقاط.»
         </div>
       </div>
@@ -384,11 +446,11 @@
         <div class="format-card-header">
           <div class="format-title-group">
             <span class="format-number">3</span>
-            <span>الخطوات المرقمة</span>
+            <span data-i18n="f3Title">الخطوات المرقمة</span>
           </div>
           <i class="fa-solid fa-list-ol" style="color: var(--secondary);"></i>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="f3Prompt">
           «اعرض خطوات تنفيذ التجربة العلمية بشكل مرقم.»
         </div>
       </div>
@@ -398,11 +460,11 @@
         <div class="format-card-header">
           <div class="format-title-group">
             <span class="format-number">4</span>
-            <span>الجدول</span>
+            <span data-i18n="f4Title">الجدول</span>
           </div>
           <i class="fa-solid fa-table-columns" style="color: var(--secondary);"></i>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="f4Prompt">
           «قارن بين التعلم التقليدي والتعلم النشط في جدول.»
         </div>
       </div>
@@ -412,11 +474,11 @@
         <div class="format-card-header">
           <div class="format-title-group">
             <span class="format-number">5</span>
-            <span>خطة الدرس</span>
+            <span data-i18n="f5Title">خطة الدرس</span>
           </div>
           <i class="fa-solid fa-chalkboard-user" style="color: var(--secondary);"></i>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="f5Prompt">
           «أنشئ خطة درس تتضمن: الهدف – الوسائل – النشاط – التقويم.»
         </div>
       </div>
@@ -426,20 +488,20 @@
   <!-- القسم الثاني: القوالب (Templates) -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-file-code"></i></span>
-    ثانياً: القوالب (Templates)
+    <span data-i18n="sec2Title">ثانياً: القوالب (Templates)</span>
   </div>
 
   <div class="main-card">
     <div class="template-container">
-      <span class="template-badge"><i class="fa-solid fa-lock"></i> حوكمة دقيقة للمخرج</span>
+      <span class="template-badge"><i class="fa-solid fa-lock"></i> <span data-i18n="tmplBadge">حوكمة دقيقة للمخرج</span></span>
       <div class="template-title">
-        <i class="fa-solid fa-wand-magic-sparkles"></i> القوالب هي أقصى درجات التحكم
+        <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="tmplTitle">القوالب هي أقصى درجات التحكم</span>
       </div>
-      <p style="font-size: 1.05rem; color: #134e4a; margin-bottom: 12px; font-weight: 500;">
+      <p style="font-size: 1.05rem; color: #134e4a; margin-bottom: 12px; font-weight: 500;" data-i18n="tmplDesc">
         تحدد القوالب الشكل الحرفي والهيكل الدقيق الذي تريد أن يملأه النموذج، مانعةً إياه من الاستطراد أو تغيير نسق الإجابة.
       </p>
 
-      <div class="template-code-box">
+      <div class="template-code-box" data-i18n="tmplBox">
         <strong>مثال تطبيقي لصياغة القالب:</strong><br>
         «املأ القالب التالي بالبيانات التعليمية المناسبة:<br>
         • <strong>المفهوم المستهدف:</strong> [اسم المفهوم]<br>
@@ -453,11 +515,11 @@
   <!-- القسم الثالث: تحديد طول المخرجات -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-ruler-combined"></i></span>
-    ثالثاً: تحديد طول المخرجات
+    <span data-i18n="sec3Title">ثالثاً: تحديد طول المخرجات</span>
   </div>
 
   <div class="main-card">
-    <p class="lead-text">
+    <p class="lead-text" data-i18n="sec3Lead">
       <strong>التحكم بطول المخرجات لا يقل أهمية عن التحكم بشكلها.</strong> يمكنك تحديد حجم الإجابة بدقة من خلال الأنماط الأربعة التالية:
     </p>
 
@@ -466,49 +528,244 @@
       <div class="length-box">
         <div>
           <div class="length-icon"><i class="fa-solid fa-font"></i></div>
-          <h4>1. عدد الكلمات</h4>
-          <p style="font-size: 0.88rem; color: var(--muted);">ضبط الحجم بعدد محدد من الكلمات.</p>
+          <h4 data-i18n="len1Title">1. عدد الكلمات</h4>
+          <p style="font-size: 0.88rem; color: var(--muted);" data-i18n="len1Desc">ضبط الحجم بعدد محدد من الكلمات.</p>
         </div>
-        <div class="length-quote">"في 100 كلمة فقط"</div>
+        <div class="length-quote" data-i18n="len1Quote">"في 100 كلمة فقط"</div>
       </div>
 
       <!-- 2. عدد الجمل -->
       <div class="length-box">
         <div>
           <div class="length-icon"><i class="fa-solid fa-align-right"></i></div>
-          <h4>2. عدد الجمل</h4>
-          <p style="font-size: 0.88rem; color: var(--muted);">حصر الاستجابة في عبارات مقتضبة.</p>
+          <h4 data-i18n="len2Title">2. عدد الجمل</h4>
+          <p style="font-size: 0.88rem; color: var(--muted);" data-i18n="len2Desc">حصر الاستجابة في عبارات مقتضبة.</p>
         </div>
-        <div class="length-quote">"في 3 جمل"</div>
+        <div class="length-quote" data-i18n="len2Quote">"في 3 جمل"</div>
       </div>
 
       <!-- 3. عدد العناصر -->
       <div class="length-box">
         <div>
           <div class="length-icon"><i class="fa-solid fa-list-ol"></i></div>
-          <h4>3. عدد العناصر</h4>
-          <p style="font-size: 0.88rem; color: var(--muted);">تحديد عدد النقاط المعروضة.</p>
+          <h4 data-i18n="len3Title">3. عدد العناصر</h4>
+          <p style="font-size: 0.88rem; color: var(--muted);" data-i18n="len3Desc">تحديد عدد النقاط المعروضة.</p>
         </div>
-        <div class="length-quote">"نقاط فقط 5"</div>
+        <div class="length-quote" data-i18n="len3Quote">"5 نقاط فقط"</div>
       </div>
 
       <!-- 4. ميزانية الكلمات لكل قسم -->
       <div class="length-box">
         <div>
           <div class="length-icon"><i class="fa-solid fa-chart-pie"></i></div>
-          <h4>4. ميزانية الكلمات لكل قسم</h4>
-          <p style="font-size: 0.88rem; color: var(--muted);">توزيع دقيق للكلمات بحسب أجزاء الإجابة.</p>
+          <h4 data-i18n="len4Title">4. ميزانية الكلمات لكل قسم</h4>
+          <p style="font-size: 0.88rem; color: var(--muted);" data-i18n="len4Desc">توزيع دقيق للكلمات بحسب أجزاء الإجابة.</p>
         </div>
-        <div class="length-quote">"المقدمة 50 كلمة، التحليل 150 كلمة، الخلاصة 50 كلمة"</div>
+        <div class="length-quote" data-i18n="len4Quote">"المقدمة 50 كلمة، التحليل 150 كلمة، الخلاصة 50 كلمة"</div>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 03 - الدرس 04: أشهر أشكال المخرجات",
+    backToLessons: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 03 • الدرس 04",
+    headerTitle: "أشهر أشكال المخرجات",
+    headerSubtitle: "دليل تطبيقي لإتقان هندسة المخرجات وهيكلتها والتحكم الدقيق في حجم النتائج الناتجة عن نماذج الذكاء الاصطناعي التوليدي.",
+
+    sec1Title: "أولاً: أشهر أشكال المخرجات",
+    sec1Lead: "يُمكّنك تحديد شكل المخرج المطلوب بدقة من تفادي الإجابات غير المنظمة، والحصول مباشرة على نصوص مهيكلة وجاهزة للاستخدام في القسم أو التحضير التربوي:",
+    f1Title: "الفقرة النصية",
+    f1Prompt: "«اشرح أهمية التعلم التعاوني في فقرة من 100 كلمة.»",
+    f2Title: "القائمة النقطية",
+    f2Prompt: "«اذكر مزايا التعلم بالمشاريع في خمس نقاط.»",
+    f3Title: "الخطوات المرقمة",
+    f3Prompt: "«اعرض خطوات تنفيذ التجربة العلمية بشكل مرقم.»",
+    f4Title: "الجدول",
+    f4Prompt: "«قارن بين التعلم التقليدي والتعلم النشط في جدول.»",
+    f5Title: "خطة الدرس",
+    f5Prompt: "«أنشئ خطة درس تتضمن: الهدف – الوسائل – النشاط – التقويم.»",
+
+    sec2Title: "ثانياً: القوالب (Templates)",
+    tmplBadge: "حوكمة دقيقة للمخرج",
+    tmplTitle: "القوالب هي أقصى درجات التحكم",
+    tmplDesc: "تحدد القوالب الشكل الحرفي والهيكل الدقيق الذي تريد أن يملأه النموذج، مانعةً إياه من الاستطراد أو تغيير نسق الإجابة.",
+    tmplBox: `<strong>مثال تطبيقي لصياغة القالب:</strong><br>
+      «املأ القالب التالي بالبيانات التعليمية المناسبة:<br>
+      • <strong>المفهوم المستهدف:</strong> [اسم المفهوم]<br>
+      • <strong>النشاط الصفي المقترح:</strong> [وصف في سطرين]<br>
+      • <strong>الوسيلة التعليمية:</strong> [الوسيلة المستخدمة]<br>
+      • <strong>مؤشر النجاح:</strong> [كيف نتأكد من تحقق الهدف]»`,
+
+    sec3Title: "ثالثاً: تحديد طول المخرجات",
+    sec3Lead: "<strong>التحكم بطول المخرجات لا يقل أهمية عن التحكم بشكلها.</strong> يمكنك تحديد حجم الإجابة بدقة من خلال الأنماط الأربعة التالية:",
+    len1Title: "1. عدد الكلمات",
+    len1Desc: "ضبط الحجم بعدد محدد من الكلمات.",
+    len1Quote: "\"في 100 كلمة فقط\"",
+    len2Title: "2. عدد الجمل",
+    len2Desc: "حصر الاستجابة في عبارات مقتضبة.",
+    len2Quote: "\"في 3 جمل\"",
+    len3Title: "3. عدد العناصر",
+    len3Desc: "تحديد عدد النقاط المعروضة.",
+    len3Quote: "\"5 نقاط فقط\"",
+    len4Title: "4. ميزانية الكلمات لكل قسم",
+    len4Desc: "توزيع دقيق للكلمات بحسب أجزاء الإجابة.",
+    len4Quote: "\"المقدمة 50 كلمة، التحليل 150 كلمة، الخلاصة 50 كلمة\"",
+
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 03 - Leçon 04 : Formats et Gabarits des Sorties",
+    backToLessons: "Retour à la liste des leçons",
+    headerBadge: "Chapitre 03 • Leçon 04",
+    headerTitle: "Formats Usuels des Sorties Génératives",
+    headerSubtitle: "Guide pratique pour maîtriser la structuration des livrables et le calibrage précis du volume textuel généré par les modèles d'IA.",
+
+    sec1Title: "I. Formats et Structures Majeures",
+    sec1Lead: "Définir expressément la structure attendue permet de neutraliser le flou rédactionnel et d'obtenir des contenus directement exploitables en classe ou en ingénierie didactique :",
+    f1Title: "Paragraphe Narratif",
+    f1Prompt: "« Explique l'importance de l'apprentissage coopératif en un paragraphe de 100 mots. »",
+    f2Title: "Liste à Puces",
+    f2Prompt: "« Énumère les avantages de la pédagogie par projet en cinq points clés. »",
+    f3Title: "Étapes Numérotées",
+    f3Prompt: "« Détaille les étapes de réalisation de cette démarche scientifique sous forme numérotée. »",
+    f4Title: "Tableau Comparatif",
+    f4Prompt: "« Compare l'enseignement traditionnel et les pédagogies actives dans un tableau synthétique. »",
+    f5Title: "Canevas de Séance",
+    f5Prompt: "« Élabore un plan de cours comprenant : Objectif visé – Moyens didactiques – Activité – Évaluation. »",
+
+    sec2Title: "II. Les Gabarits Structurés (Templates)",
+    tmplBadge: "Gouvernance stricte de la sortie",
+    tmplTitle: "Les gabarits (Templates) : le niveau ultime de contrôle",
+    tmplDesc: "Les gabarits imposent un schéma textuel rigide que le modèle doit renseigner à l'identique, empêchant toute digression ou dérive formelle.",
+    tmplBox: `<strong>Exemple concret de prompt avec gabarit :</strong><br>
+      « Complète le gabarit suivant avec les données pédagogiques requises :<br>
+      • <strong>Notion cible :</strong> [Nom du concept]<br>
+      • <strong>Activité proposée :</strong> [Description en 2 lignes]<br>
+      • <strong>Support didactique :</strong> [Ressource mobilisée]<br>
+      • <strong>Indicateur de réussite :</strong> [Preuve d'atteinte de l'objectif] »`,
+
+    sec3Title: "III. Calibrage de la Longueur des Réponses",
+    sec3Lead: "<strong>Le contrôle de la longueur est tout aussi déterminant que le choix du format.</strong> Vous pouvez encadrer la verbosité du modèle via quatre approches opérationnelles :",
+    len1Title: "1. Quota de Mots",
+    len1Desc: "Encadrer le volume par un nombre défini de mots.",
+    len1Quote: "« En 100 mots exactement »",
+    len2Title: "2. Quota de Phrases",
+    len2Desc: "Circonscrire la réponse à des propositions brèves.",
+    len2Quote: "« En 3 phrases concises »",
+    len3Title: "3. Nombre d'Items",
+    len3Desc: "Fixer le nombre précis de points énumérés.",
+    len3Quote: "« 5 éléments seulement »",
+    len4Title: "4. Budget Lexical par Section",
+    len4Desc: "Distribution pondérée des mots selon les sous-parties.",
+    len4Quote: "« Introduction : 50 mots, Analyse : 150 mots, Synthèse : 50 mots »",
+
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 03 - Lesson 04: Common Output Formats",
+    backToLessons: "Back to Lessons List",
+    headerBadge: "Chapter 03 • Lesson 04",
+    headerTitle: "Common Generative Output Formats",
+    headerSubtitle: "A practical blueprint for mastering generative output structuring, templating schemas, and precise volume calibration in LLM prompts.",
+
+    sec1Title: "I. Core Output Formats",
+    sec1Lead: "Explicitly dictating the expected output schema suppresses unstructured rambling, yielding ready-to-use classroom materials and pedagogical artifacts:",
+    f1Title: "Text Paragraph",
+    f1Prompt: "\"Explain the significance of cooperative learning in a single 100-word paragraph.\"",
+    f2Title: "Bulleted List",
+    f2Prompt: "\"Enumerate the benefits of project-based learning across five distinct points.\"",
+    f3Title: "Numbered Steps",
+    f3Prompt: "\"Present the implementation steps of the laboratory experiment in numbered sequence.\"",
+    f4Title: "Comparative Table",
+    f4Prompt: "\"Compare traditional instruction with active learning inside a structured table.\"",
+    f5Title: "Lesson Plan Schema",
+    f5Prompt: "\"Generate a lesson blueprint containing: Target Objective – Media – Learning Task – Evaluation.\"",
+
+    sec2Title: "II. Templating & Structured Schemas",
+    tmplBadge: "Strict Output Governance",
+    tmplTitle: "Templates: The Pinnacle of Structural Control",
+    tmplDesc: "Templates enforce rigid schemas for the model to fill, strictly preventing conversational sprawl and layout drift.",
+    tmplBox: `<strong>Applied Templating Prompt Example:</strong><br>
+      \"Populate the following template with appropriate educational parameters:<br>
+      • <strong>Target Concept:</strong> [Concept Name]<br>
+      • <strong>Proposed Activity:</strong> [2-line description]<br>
+      • <strong>Instructional Media:</strong> [Tool/Resource used]<br>
+      • <strong>Success Indicator:</strong> [Evidence of objective mastery]\"`,
+
+    sec3Title: "III. Calibrating Output Length",
+    sec3Lead: "<strong>Regulating response length is just as crucial as prescribing format.</strong> You can control verbosity using four distinct constraints:",
+    len1Title: "1. Word Count",
+    len1Desc: "Calibrate output scale to an exact word limit.",
+    len1Quote: "\"In 100 words only\"",
+    len2Title: "2. Sentence Count",
+    len2Desc: "Restrict answers to concise, standalone statements.",
+    len2Quote: "\"In 3 sentences\"",
+    len3Title: "3. Item / Bullet Count",
+    len3Desc: "Determine the exact number of list items.",
+    len3Quote: "\"Exactly 5 points\"",
+    len4Title: "4. Sectional Word Budget",
+    len4Desc: "Allocate explicit word counts across subheadings.",
+    len4Quote: "\"Intro: 50 words, Body: 150 words, Conclusion: 50 words\"",
+
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML root attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic translatable nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      const htmlKeys = ['sec1Lead', 'tmplBox', 'sec3Lead'];
+      if (htmlKeys.includes(key)) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state on language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Persist language selection
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initial load check
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 04: أخلاقيات الذكاء الاصطناعي والنزاهة الأكاديمية</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">الفصل 04: أخلاقيات الذكاء الاصطناعي والنزاهة الأكاديمية</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -34,11 +34,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -56,22 +104,24 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
-    color: rgba(255, 255, 255, 0.8);
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: color 0.3s;
-    background: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -94,7 +144,7 @@
     font-size: 1.1rem;
     opacity: 0.9;
     font-weight: 400;
-    max-width: 700px;
+    max-width: 780px;
     margin: 0 auto;
   }
   
@@ -120,6 +170,8 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    color: var(--secondary);
+    flex-shrink: 0;
   }
 
   /* Grid & Cards */
@@ -184,7 +236,7 @@
     font-size: 0.95rem;
     color: var(--muted);
     margin-bottom: 24px;
-    flex-grow: 1; /* يدفع الزر للأسفل دائماً */
+    flex-grow: 1;
   }
 
   .btn-open {
@@ -219,138 +271,193 @@
   /* Responsive */
   @media (max-width: 600px) {
     .header h1 { font-size: 1.8rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="../outline.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
-    <span class="header-badge">الفصل 04</span>
-    <h1>أخلاقيات الذكاء الاصطناعي والنزاهة الأكاديمية</h1>
-    <div class="subtitle">تعلم كيفية استخدام تقنيات الذكاء الاصطناعي بمسؤولية تامة، مع احترام حقوق الملكية الفكرية، وضمان الشفافية وحماية البيانات في البحث العلمي.</div>
+    <span class="header-badge" data-i18n="chapterBadge">الفصل 04</span>
+    <h1 data-i18n="headerTitle">أخلاقيات الذكاء الاصطناعي والنزاهة الأكاديمية</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">تعلم كيفية استخدام تقنيات الذكاء الاصطناعي بمسؤولية تامة، مع احترام حقوق الملكية الفكرية، وضمان الشفافية وحماية البيانات في البحث العلمي.</div>
   </div>
 
-  <!-- عنوان القسم الأول (الدروس) -->
+  <!-- Section 1: Lessons -->
   <div class="section-title">
     <span class="icon">📖</span>
-    مواضيع ودروس الفصل
+    <span data-i18n="secLessonsTitle">مواضيع ودروس الفصل</span>
   </div>
 
-  <!-- شبكة الدروس (Grid) -->
+  <!-- Lessons Grid -->
   <div class="lessons-grid">
 
-    <!-- الدرس 01 -->
+    <!-- Lesson 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-award"></i></div>
-      <div class="lesson-badge">الدرس 01</div>
-      <h3 class="lesson-title">النزاهة الأكاديمية</h3>
-      <p class="lesson-desc">ترسيخ مبادئ الأمانة العلمية وكيفية استخدام الذكاء الاصطناعي كأداة مساعدة دون المساس بالجوهر الأخلاقي للبحث والدراسة.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 02 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-file-signature"></i></div>
-      <div class="lesson-badge">الدرس 02</div>
-      <h3 class="lesson-title">الشفافية والإفصاح</h3>
-      <p class="lesson-desc">تعلم الطرق المنهجية للتصريح الواضح باستخدام أدوات الذكاء الاصطناعي في الأعمال الجامعية وتوثيق دورها بشكل صحيح.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 03 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-copy"></i></div>
-      <div class="lesson-badge">الدرس 03</div>
-      <h3 class="lesson-title">السرقة العلمية والانتحال</h3>
-      <p class="lesson-desc">التمييز بين الاستعانة المشروعة بالذكاء الاصطناعي والانتحال الفكري الرقمي، وكيفية تجنب الوقوع في المخالفات الأكاديمية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 04 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-user-shield"></i></div>
-      <div class="lesson-badge">الدرس 04</div>
-      <h3 class="lesson-title">المسؤولية الفكرية</h3>
-      <p class="lesson-desc">تحمل الباحث والطالب المسؤولية الكاملة عن المحتوى المقدم، حتى وإن تم إنشاؤه أو تحسينه وتلخيصه بواسطة أدوات ذكية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 05 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-lock"></i></div>
-      <div class="lesson-badge">الدرس 05</div>
-      <h3 class="lesson-title">حماية البيانات الشخصية</h3>
-      <p class="lesson-desc">إدراك المخاطر المرتبطة بمشاركة المعلومات الحساسة مع النماذج اللغوية، وتعلم كيفية الحفاظ على الخصوصية الرقمية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 06 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-gavel"></i></div>
-      <div class="lesson-badge">الدرس 06</div>
-      <h3 class="lesson-title">القوانين المنظمة لاستخدام البيانات</h3>
-      <p class="lesson-desc">استعراض الأطر القانونية والتشريعات التي تضبط وتحد من التعامل مع المعلومات في البيئة الرقمية الذكية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l1Badge">الدرس 01</div>
+      <h3 class="lesson-title" data-i18n="l1Title">النزاهة الأكاديمية</h3>
+      <p class="lesson-desc" data-i18n="l1Desc">ترسيخ مبادئ الأمانة العلمية وكيفية استخدام الذكاء الاصطناعي كأداة مساعدة دون المساس بالجوهر الأخلاقي للبحث والدراسة.</p>
+      <a href="النزاهة الأكاديمية.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
   </div>
 
-  <!-- عنوان القسم الثاني (الأعمال التطبيقية) -->
+  <!-- Section 2: Practical Labs -->
   <div class="section-title">
     <span class="icon">💻</span>
-    الأعمال التطبيقية
+    <span data-i18n="secLabsTitle">الأعمال التطبيقية</span>
   </div>
 
-  <!-- شبكة الأعمال التطبيقية -->
+  <!-- Activities Grid -->
   <div class="lessons-grid">
     
-    <!-- النشاط 01 -->
+    <!-- Activity 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-user-check"></i></div>
-      <div class="lesson-badge">النشاط 01</div>
-      <h3 class="lesson-title">النشاط الأول: التمييز بين الاستخدام المساعد والانتحال</h3>
-      <p class="lesson-desc">دراسة حالات واقعية وسيناريوهات أكاديمية لتحديد الخط الفاصل بين الاستفادة المشروعة من أدوات الذكاء الاصطناعي والانتحال العلمي.</p>
-      <a href="#" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- النشاط 02 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-book-bookmark"></i></div>
-      <div class="lesson-badge">النشاط 02</div>
-      <h3 class="lesson-title">النشاط الثاني: ورشة التوثيق الأكاديمي للمخرجات التوليدية</h3>
-      <p class="lesson-desc">تطبيق عملي لكتابة إقرارات الشفافية وتوثيق المحتوى المولد بأدوات الذكاء الاصطناعي وفق المعايير الأكاديمية المعمول بها.</p>
-      <a href="#" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="act1Badge">النشاط 01</div>
+      <h3 class="lesson-title" data-i18n="act1Title">النشاط الأول: تحويل الممارسات غير الأخلاقية إلى ممارسات مسؤولة</h3>
+      <p class="lesson-desc" data-i18n="act1Desc">دراسة حالات واقعية وسيناريوهات أكاديمية لتحديد الخط الفاصل بين الاستفادة المشروعة من أدوات الذكاء الاصطناعي والانتحال العلمي.</p>
+      <a href="تحويل الممارسات غير الأخلاقية إلى ممارسات مسؤولة.html" class="btn-open">
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 04: أخلاقيات الذكاء الاصطناعي والنزاهة الأكاديمية",
+    backToSyllabus: "العودة للبرنامج",
+    chapterBadge: "الفصل 04",
+    headerTitle: "أخلاقيات الذكاء الاصطناعي والنزاهة الأكاديمية",
+    headerSubtitle: "تعلم كيفية استخدام تقنيات الذكاء الاصطناعي بمسؤولية تامة، مع احترام حقوق الملكية الفكرية، وضمان الشفافية وحماية البيانات في البحث العلمي.",
+    secLessonsTitle: "مواضيع ودروس الفصل",
+    btnOpenLesson: "فتح الدرس",
+    btnOpenActivity: "فتح النشاط",
+    secLabsTitle: "الأعمال التطبيقية",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027",
+
+    l1Badge: "الدرس 01",
+    l1Title: "النزاهة الأكاديمية",
+    l1Desc: "ترسيخ مبادئ الأمانة العلمية وكيفية استخدام الذكاء الاصطناعي كأداة مساعدة دون المساس بالجوهر الأخلاقي للبحث والدراسة.",
+
+    act1Badge: "النشاط 01",
+    act1Title: "النشاط الأول: تحويل الممارسات غير الأخلاقية إلى ممارسات مسؤولة",
+    act1Desc: "دراسة حالات واقعية وسيناريوهات أكاديمية لتحديد الخط الفاصل بين الاستفادة المشروعة من أدوات الذكاء الاصطناعي والانتحال العلمي."
+  },
+  fr: {
+    pageTitle: "Chapitre 04 : Éthique de l'IA et Intégrité Académique",
+    backToSyllabus: "Retour au programme",
+    chapterBadge: "Chapitre 04",
+    headerTitle: "Éthique de l'IA et Intégrité Académique",
+    headerSubtitle: "Apprendre à utiliser les technologies d'IA avec rigueur et responsabilité, en respectant la propriété intellectuelle, la transparence et la protection des données.",
+    secLessonsTitle: "Leçons et Cours du Chapitre",
+    btnOpenLesson: "Consulter la leçon",
+    btnOpenActivity: "Consulter l'activité",
+    secLabsTitle: "Travaux Pratiques (TP)",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027",
+
+    l1Badge: "Leçon 01",
+    l1Title: "Intégrité Académique",
+    l1Desc: "Consolider les principes de probité scientifique et employer l'IA comme levier d'assistance sans altérer la rigueur morale et intellectuelle de la recherche.",
+
+    act1Badge: "Activité 01",
+    act1Title: "TP 1 : Transformer les Pratiques Déviantes en Usages Responsables",
+    act1Desc: "Analyse d'études de cas réels et de scénarios universitaires pour tracer une frontière nette entre exploitation légitime de l'IA et plagiat académique."
+  },
+  en: {
+    pageTitle: "Chapter 04: AI Ethics and Academic Integrity",
+    backToSyllabus: "Back to Syllabus",
+    chapterBadge: "Chapter 04",
+    headerTitle: "AI Ethics and Academic Integrity",
+    headerSubtitle: "Learn to deploy AI models responsibly, upholding intellectual property rights, algorithmic transparency, and data privacy in academic scholarship.",
+    secLessonsTitle: "Chapter Topics & Lessons",
+    btnOpenLesson: "Open Lesson",
+    btnOpenActivity: "Open Activity",
+    secLabsTitle: "Practical Labs",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027",
+
+    l1Badge: "Lesson 01",
+    l1Title: "Academic Integrity",
+    l1Desc: "Anchor core principles of scholarly honesty and leverage AI as a cognitive assistant without compromising ethical rigour.",
+
+    act1Badge: "Activity 01",
+    act1Title: "Lab 1: Converting Unethical Habits into Responsible Practices",
+    act1Desc: "Case study examination and academic scenarios aimed at distinguishing legitimate AI augmentation from academic misconduct and plagiarism."
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic texts
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Flip card button arrow icons
+  document.querySelectorAll('.action-arrow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-arrow-left action-arrow' : 'fa-solid fa-arrow-right action-arrow';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

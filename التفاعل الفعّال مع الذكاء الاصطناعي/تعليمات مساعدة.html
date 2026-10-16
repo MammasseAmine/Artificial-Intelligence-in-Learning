@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 03 - الدرس 05: تعليمات مساعدة: اضبط سلوك الأداة لا محتواها</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">الفصل 03 - الدرس 05: تعليمات مساعدة: اضبط سلوك الأداة لا محتواها</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -39,11 +39,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -61,7 +109,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -72,11 +120,13 @@
     background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -87,6 +137,7 @@
     font-weight: 700;
     display: inline-block;
     margin-bottom: 15px;
+    letter-spacing: 0.5px;
   }
   
   .header h1 {
@@ -127,6 +178,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
   /* General Cards */
@@ -211,7 +263,7 @@
 
   .format-prompt-box {
     background: #f8fafc;
-    border-right: 3px solid var(--accent);
+    border-inline-start: 3px solid var(--accent);
     padding: 12px 14px;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -256,7 +308,7 @@
     border-radius: 12px;
     padding: 18px 22px;
     margin-top: 14px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: inherit;
     color: #2d3748;
     line-height: 1.9;
     font-weight: 500;
@@ -275,7 +327,7 @@
 
   @media (max-width: 768px) {
     .header h1 { font-size: 1.7rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
     .formats-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -283,29 +335,39 @@
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 03.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToLessons">العودة لقائمة الدروس</span>
     </a>
-    <span class="header-badge">الفصل 03 • الدرس 05</span>
-    <h1>تعليمات مساعدة: اضبط سلوك الأداة لا محتواها</h1>
-    <div class="subtitle">
+    <span class="header-badge" data-i18n="headerBadge">الفصل 03 • الدرس 05</span>
+    <h1 data-i18n="headerTitle">تعليمات مساعدة: اضبط سلوك الأداة لا محتواها</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">
       تُضاف هذه العبارات التوجيهية في آخر الطلب لتغيّر طريقة اشتغال الأداة ونمط تفكيرها، وتحدّ من ميل النموذج الفطري لمجاراتك والموافقة على افتراضاتك.
     </div>
   </div>
 
   <!-- صندوق المفهوم المحوري -->
   <div class="template-container">
-    <span class="template-badge"><i class="fa-solid fa-sliders"></i> قاعدة ذهبية</span>
+    <span class="template-badge"><i class="fa-solid fa-sliders"></i> <span data-i18n="goldenBadge">قاعدة ذهبية</span></span>
     <div class="template-title">
-      <i class="fa-solid fa-shield-halved"></i> لماذا نضبط سلوك النموذج؟
+      <i class="fa-solid fa-shield-halved"></i> <span data-i18n="whyCalibrateTitle">لماذا نضبط سلوك النموذج؟</span>
     </div>
-    <p style="font-size: 1.05rem; color: #134e4a; margin-bottom: 8px; font-weight: 500;">
+    <p style="font-size: 1.05rem; color: #134e4a; margin-bottom: 8px; font-weight: 500;" data-i18n="whyCalibrateDesc">
       يميل الذكاء الاصطناعي بطبعه إلى المسايرة والموافقة المفرطة (Sycophancy). ضبط سلوك الأداة يحوّلها من مجرد "مجيب مطيع" إلى شريك تفكير نقدي يمنع الوقوع في الأخطاء قبل حدوثها.
     </p>
-    <div class="template-code-box">
-      <i class="fa-solid fa-lightbulb" style="color: var(--accent); margin-left: 8px;"></i>
+    <div class="template-code-box" data-i18n="tipBox">
+      <i class="fa-solid fa-lightbulb" style="color: var(--accent); margin-inline-end: 8px;"></i>
       <strong>نصيحة تطبيقية:</strong> ضع إحدى هذه التعليمات دائمًا في السطر الأخير من طلبك، وستلاحظ فرقًا فوريًا في عمق ومصداقية الإجابة.
     </div>
   </div>
@@ -313,11 +375,11 @@
   <!-- القسم الأول: الصدق والنقد ومنع التزييف -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
-    أولاً: تعليمات النقد والمصارحة ومقاومة المجاملة
+    <span data-i18n="sec1Title">أولاً: تعليمات النقد والمصارحة ومقاومة المجاملة</span>
   </div>
 
   <div class="main-card">
-    <p class="lead-text">
+    <p class="lead-text" data-i18n="sec1Lead">
       تعليمات ترغم النموذج على الصدق التام، وتجاوز مجاملتك، والاعتراف بالفجوات المعرفية ونقاط الضعف:
     </p>
 
@@ -328,13 +390,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">1</span>
-              <span>الصدق قبل المجاملة</span>
+              <span data-i18n="c1Title">الصدق قبل المجاملة</span>
             </div>
             <i class="fa-solid fa-hand-holding-heart" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يمنع التزلف والمديح الزائد ويركز المجهود على تحسين النتائج.</p>
+          <p class="format-desc" data-i18n="c1Desc">يمنع التزلف والمديح الزائد ويركز المجهود على تحسين النتائج.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c1Prompt">
           «كن صادقًا وصريحًا. دورك مساعدتي على بلوغ هدفي، لا إرضاء غروري.»
         </div>
       </div>
@@ -345,13 +407,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">2</span>
-              <span>منع الهلوسة (لا تخترع)</span>
+              <span data-i18n="c2Title">منع الهلوسة (لا تخترع)</span>
             </div>
             <i class="fa-solid fa-triangle-exclamation" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يحد من اختلاق المراجع أو المعلومات الوهمية في حالة الشك.</p>
+          <p class="format-desc" data-i18n="c2Desc">يحد من اختلاق المراجع أو المعلومات الوهمية في حالة الشك.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c2Prompt">
           «إن لم تكن متأكّدًا قل: لا أعرف، وحدّد ما يجب التحقّق منه في مرجع.»
         </div>
       </div>
@@ -362,13 +424,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">3</span>
-              <span>المراجعة الذاتية الصارمة</span>
+              <span data-i18n="c3Title">المراجعة الذاتية الصارمة</span>
             </div>
             <i class="fa-solid fa-magnifying-glass-chart" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يحفّز آلية التقييم والتنقيح التلقائي قبل تقديم المسودة النهائية.</p>
+          <p class="format-desc" data-i18n="c3Desc">يحفّز آلية التقييم والتنقيح التلقائي قبل تقديم المسودة النهائية.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c3Prompt">
           «قيّم جوابك السابق كمقيّم خارجي صارم، ثم قدّم نسخة محسّنة.»
         </div>
       </div>
@@ -379,13 +441,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">4</span>
-              <span>اختبار حالات الفشل</span>
+              <span data-i18n="c4Title">اختبار حالات الفشل</span>
             </div>
             <i class="fa-solid fa-bomb" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يكشف العيوب المسبقة في المقترحات والحلول التربوية والعملية.</p>
+          <p class="format-desc" data-i18n="c4Desc">يكشف العيوب المسبقة في المقترحات والحلول التربوية والعملية.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c4Prompt">
           «ما الحالات التي يفشل فيها هذا الحل؟ وما الظروف التي لا يعمل فيها إطلاقًا؟»
         </div>
       </div>
@@ -395,11 +457,11 @@
   <!-- القسم الثاني: مواءمة الفهم وتجنب الفجوات -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-arrows-split-up-and-left"></i></span>
-    ثانياً: تعليمات محاذاة الفهم واستكشاف الفجوات
+    <span data-i18n="sec2Title">ثانياً: تعليمات محاذاة الفهم واستكشاف الفجوات</span>
   </div>
 
   <div class="main-card">
-    <p class="lead-text">
+    <p class="lead-text" data-i18n="sec2Lead">
       تضمن هذه التعليمات أن الأداة قد استوعبت سياقك بدقة متناهية قبل أن تشرع في التنفيذ:
     </p>
 
@@ -410,13 +472,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">5</span>
-              <span>الاستيضاح الاستباقي</span>
+              <span data-i18n="c5Title">الاستيضاح الاستباقي</span>
             </div>
             <i class="fa-solid fa-circle-question" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يمنع إعطاء إجابات عريضة مبنية على تخمينات وافتراضات غير دقيقة.</p>
+          <p class="format-desc" data-i18n="c5Desc">يمنع إعطاء إجابات عريضة مبنية على تخمينات وافتراضات غير دقيقة.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c5Prompt">
           «اسألني أي أسئلة لديك قبل المتابعة.»
         </div>
       </div>
@@ -427,13 +489,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">6</span>
-              <span>التلخيص التحققي</span>
+              <span data-i18n="c6Title">التلخيص التحققي</span>
             </div>
             <i class="fa-solid fa-repeat" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يكشف أي لبس أو سوء فهم لدى النموذج قبل هدر الوقت في مخرج خاطئ.</p>
+          <p class="format-desc" data-i18n="c6Desc">يكشف أي لبس أو سوء فهم لدى النموذج قبل هدر الوقت في مخرج خاطئ.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c6Prompt">
           «لخّص ما فهمته من طلبي قبل أن تنفّذه.»
         </div>
       </div>
@@ -444,13 +506,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">7</span>
-              <span>سد الثغرات المعرفية</span>
+              <span data-i18n="c7Title">سد الثغرات المعرفية</span>
             </div>
             <i class="fa-solid fa-eye-slash" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يساعدك على استدراك الجوانب التي لم تخطر في بالك أثناء صياغة العمل.</p>
+          <p class="format-desc" data-i18n="c7Desc">يساعدك على استدراك الجوانب التي لم تخطر في بالك أثناء صياغة العمل.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c7Prompt">
           «تحقّق إن كان هناك عنصر أساسي نسيته أو غاب عنّي.»
         </div>
       </div>
@@ -461,13 +523,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">8</span>
-              <span>رصد المخاطر غير المرئية</span>
+              <span data-i18n="c8Title">رصد المخاطر غير المرئية</span>
             </div>
             <i class="fa-solid fa-shield-virus" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">مفيد جداً قبل اعتماد فرض، أو مشروع صفّي، أو استراتيجية تدريس.</p>
+          <p class="format-desc" data-i18n="c8Desc">مفيد جداً قبل اعتماد فرض، أو مشروع صفّي، أو استراتيجية تدريس.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c8Prompt">
           «حدّد المخاطر التي لا أراها بعد.»
         </div>
       </div>
@@ -477,11 +539,11 @@
   <!-- القسم الثالث: التحكم في وتيرة التفكير ومنهجية العرض -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-sliders"></i></span>
-    ثالثاً: تعليمات ضبط الإيقاع وهيكلة الاستجابة
+    <span data-i18n="sec3Title">ثالثاً: تعليمات ضبط الإيقاع وهيكلة الاستجابة</span>
   </div>
 
   <div class="main-card">
-    <p class="lead-text">
+    <p class="lead-text" data-i18n="sec3Lead">
       صيغ توجيهية تمكّنك من توجيه وتيرة التفكير خطوة بخطوة، والتحكم في عمق الأسلوب وتنوع البدائل:
     </p>
 
@@ -492,13 +554,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">9</span>
-              <span>التفكير المرحلي التفاعلي</span>
+              <span data-i18n="c9Title">التفكير المرحلي التفاعلي</span>
             </div>
             <i class="fa-solid fa-stairs" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يمنع التسرع، ويتيح لك المراجعة والموافقة عند كل محطة تفكير.</p>
+          <p class="format-desc" data-i18n="c9Desc">يمنع التسرع، ويتيح لك المراجعة والموافقة عند كل محطة تفكير.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c9Prompt">
           «اشرح تمشّيك قبل النتيجة، وتوقّف بعد كل مرحلة حتى أوافق.»
         </div>
       </div>
@@ -509,13 +571,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">10</span>
-              <span>البدائل المتمايزة</span>
+              <span data-i18n="c10Title">البدائل المتمايزة</span>
             </div>
             <i class="fa-solid fa-shuffle" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يحميك من الحصول على خيارات متشابهة لا تختلف سوى في الصياغة اللفظية.</p>
+          <p class="format-desc" data-i18n="c10Desc">يحميك من الحصول على خيارات متشابهة لا تختلف سوى في الصياغة اللفظية.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c10Prompt">
           «اقترح ثلاثة خيارات مختلفة جوهريًا.»
         </div>
       </div>
@@ -526,13 +588,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">11</span>
-              <span>التدرج (الزبدة أولاً)</span>
+              <span data-i18n="c11Title">التدرج (الزبدة أولاً)</span>
             </div>
             <i class="fa-solid fa-layer-group" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">يمنحك الخلاصة السريعة المباشرة، متبوعة بالتفاصيل والتحليل عند الحاجة.</p>
+          <p class="format-desc" data-i18n="c11Desc">يمنحك الخلاصة السريعة المباشرة، متبوعة بالتفاصيل والتحليل عند الحاجة.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c11Prompt">
           «ابدأ بجواب مباشر في ثلاثة أسطر، ثم انتقل إلى التفصيل والمبرّرات.»
         </div>
       </div>
@@ -543,13 +605,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">12</span>
-              <span>الشرح مزدوج المستوى</span>
+              <span data-i18n="c12Title">الشرح مزدوج المستوى</span>
             </div>
             <i class="fa-solid fa-users-between-lines" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">استيعاب المفهوم من زاوية بديهية بسيطة، ثم من زاوية تخصصية معمقة.</p>
+          <p class="format-desc" data-i18n="c12Desc">استيعاب المفهوم من زاوية بديهية بسيطة، ثم من زاوية تخصصية معمقة.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c12Prompt">
           «اشرح هذا المفهوم على مستويين: أولاً بأسلوب مبسط لطفل في سن العاشرة، وثانياً بأسلوب تقني لمهندس خبير.»
         </div>
       </div>
@@ -560,13 +622,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">13</span>
-              <span>اختبار الفهم الحقيقي</span>
+              <span data-i18n="c13Title">اختبار الفهم الحقيقي</span>
             </div>
             <i class="fa-solid fa-clipboard-check" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">تحويل الأداة إلى ممتحن يختبر مدى رسوخ الأفكار في ذهنك.</p>
+          <p class="format-desc" data-i18n="c13Desc">تحويل الأداة إلى ممتحن يختبر مدى رسوخ الأفكار في ذهنك.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c13Prompt">
           «بعد الشرح، اطرح عليّ ثلاثة أسئلة تكشف إن كنت قد فهمت فعلًا.»
         </div>
       </div>
@@ -577,13 +639,13 @@
           <div class="format-card-header">
             <div class="format-title-group">
               <span class="format-number">14</span>
-              <span>الإيجاز الصارم</span>
+              <span data-i18n="c14Title">الإيجاز الصارم</span>
             </div>
             <i class="fa-solid fa-bolt" style="color: var(--secondary);"></i>
           </div>
-          <p class="format-desc">قطع دابر الإطناب والمقدمات الإنشائية الطويلة التي لا فائدة منها.</p>
+          <p class="format-desc" data-i18n="c14Desc">قطع دابر الإطناب والمقدمات الإنشائية الطويلة التي لا فائدة منها.</p>
         </div>
-        <div class="format-prompt-box">
+        <div class="format-prompt-box" data-i18n="c14Prompt">
           «كن موجزًا بلا حشو.»
         </div>
       </div>
@@ -591,10 +653,292 @@
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 03 - الدرس 05: تعليمات مساعدة: اضبط سلوك الأداة لا محتواها",
+    backToLessons: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 03 • الدرس 05",
+    headerTitle: "تعليمات مساعدة: اضبط سلوك الأداة لا محتواها",
+    headerSubtitle: "تُضاف هذه العبارات التوجيهية في آخر الطلب لتغيّر طريقة اشتغال الأداة ونمط تفكيرها، وتحدّ من ميل النموذج الفطري لمجاراتك والموافقة على افتراضاتك.",
+
+    goldenBadge: "قاعدة ذهبية",
+    whyCalibrateTitle: "لماذا نضبط سلوك النموذج؟",
+    whyCalibrateDesc: "يميل الذكاء الاصطناعي بطبعه إلى المسايرة والموافقة المفرطة (Sycophancy). ضبط سلوك الأداة يحوّلها من مجرد \"مجيب مطيع\" إلى شريك تفكير نقدي يمنع الوقوع في الأخطاء قبل حدوثها.",
+    tipBox: `<i class="fa-solid fa-lightbulb" style="color: var(--accent); margin-inline-end: 8px;"></i>
+      <strong>نصيحة تطبيقية:</strong> ضع إحدى هذه التعليمات دائمًا في السطر الأخير من طلبك، وستلاحظ فرقًا فوريًا في عمق ومصداقية الإجابة.`,
+
+    sec1Title: "أولاً: تعليمات النقد والمصارحة ومقاومة المجاملة",
+    sec1Lead: "تعليمات ترغم النموذج على الصدق التام، وتجاوز مجاملتك، والاعتراف بالفجوات المعرفية ونقاط الضعف:",
+    c1Title: "الصدق قبل المجاملة",
+    c1Desc: "يمنع التزلف والمديح الزائد ويركز المجهود على تحسين النتائج.",
+    c1Prompt: "«كن صادقًا وصريحًا. دورك مساعدتي على بلوغ هدفي، لا إرضاء غروري.»",
+
+    c2Title: "منع الهلوسة (لا تخترع)",
+    c2Desc: "يحد من اختلاق المراجع أو المعلومات الوهمية في حالة الشك.",
+    c2Prompt: "«إن لم تكن متأكّدًا قل: لا أعرف، وحدّد ما يجب التحقّق منه في مرجع.»",
+
+    c3Title: "المراجعة الذاتية الصارمة",
+    c3Desc: "يحفّز آلية التقييم والتنقيح التلقائي قبل تقديم المسودة النهائية.",
+    c3Prompt: "«قيّم جوابك السابق كمقيّم خارجي صارم، ثم قدّم نسخة محسّنة.»",
+
+    c4Title: "اختبار حالات الفشل",
+    c4Desc: "يكشف العيوب المسبقة في المقترحات والحلول التربوية والعملية.",
+    c4Prompt: "«ما الحالات التي يفشل فيها هذا الحل؟ وما الظروف التي لا يعمل فيها إطلاقًا؟»",
+
+    sec2Title: "ثانياً: تعليمات محاذاة الفهم واستكشاف الفجوات",
+    sec2Lead: "تضمن هذه التعليمات أن الأداة قد استوعبت سياقك بدقة متناهية قبل أن تشرع في التنفيذ:",
+    c5Title: "الاستيضاح الاستباقي",
+    c5Desc: "يمنع إعطاء إجابات عريضة مبنية على تخمينات وافتراضات غير دقيقة.",
+    c5Prompt: "«اسألني أي أسئلة لديك قبل المتابعة.»",
+
+    c6Title: "التلخيص التحققي",
+    c6Desc: "يكشف أي لبس أو سوء فهم لدى النموذج قبل هدر الوقت في مخرج خاطئ.",
+    c6Prompt: "«لخّص ما فهمته من طلبي قبل أن تنفّذه.»",
+
+    c7Title: "سد الثغرات المعرفية",
+    c7Desc: "يساعدك على استدراك الجوانب التي لم تخطر في بالك أثناء صياغة العمل.",
+    c7Prompt: "«تحقّق إن كان هناك عنصر أساسي نسيته أو غاب عنّي.»",
+
+    c8Title: "رصد المخاطر غير المرئية",
+    c8Desc: "مفيد جداً قبل اعتماد فرض، أو مشروع صفّي، أو استراتيجية تدريس.",
+    c8Prompt: "«حدّد المخاطر التي لا أراها بعد.»",
+
+    sec3Title: "ثالثاً: تعليمات ضبط الإيقاع وهيكلة الاستجابة",
+    sec3Lead: "صيغ توجيهية تمكّنك من توجيه وتيرة التفكير خطوة بخطوة، والتحكم في عمق الأسلوب وتنوع البدائل:",
+    c9Title: "التفكير المرحلي التفاعلي",
+    c9Desc: "يمنع التسرع، ويتيح لك المراجعة والموافقة عند كل محطة تفكير.",
+    c9Prompt: "«اشرح تمشّيك قبل النتيجة، وتوقّف بعد كل مرحلة حتى أوافق.»",
+
+    c10Title: "البدائل المتمايزة",
+    c10Desc: "يحميك من الحصول على خيارات متشابهة لا تختلف سوى في الصياغة اللفظية.",
+    c10Prompt: "«اقترح ثلاثة خيارات مختلفة جوهريًا.»",
+
+    c11Title: "التدرج (الزبدة أولاً)",
+    c11Desc: "يمنحك الخلاصة السريعة المباشرة، متبوعة بالتفاصيل والتحليل عند الحاجة.",
+    c11Prompt: "«ابدأ بجواب مباشر في ثلاثة أسطر، ثم انتقل إلى التفصيل والمبرّرات.»",
+
+    c12Title: "الشرح مزدوج المستوى",
+    c12Desc: "استيعاب المفهوم من زاوية بديهية بسيطة، ثم من زاوية تخصصية معمقة.",
+    c12Prompt: "«اشرح هذا المفهوم على مستويين: أولاً بأسلوب مبسط لطفل في سن العاشرة، وثانياً بأسلوب تقني لمهندس خبير.»",
+
+    c13Title: "اختبار الفهم الحقيقي",
+    c13Desc: "تحويل الأداة إلى ممتحن يختبر مدى رسوخ الأفكار في ذهنك.",
+    c13Prompt: "«بعد الشرح، اطرح عليّ ثلاثة أسئلة تكشف إن كنت قد فهمت فعلًا.»",
+
+    c14Title: "الإيجاز الصارم",
+    c14Desc: "قطع دابر الإطناب والمقدمات الإنشائية الطويلة التي لا فائدة منها.",
+    c14Prompt: "«كن موجزًا بلا حشو.»",
+
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 03 - Leçon 05 : Métacognition et Pilotage Comportemental des LLM",
+    backToLessons: "Retour à la liste des leçons",
+    headerBadge: "Chapitre 03 • Leçon 05",
+    headerTitle: "Instructions Méta : Régulez la Posture Cognitive de l'IA",
+    headerSubtitle: "Directives stratégiques à greffer en fin de consigne pour réorienter la méthode de raisonnement de l'outil et neutraliser son biais inné de complaisance (sycophance).",
+
+    goldenBadge: "Règle d'or",
+    whyCalibrateTitle: "Pourquoi calibrer la posture du modèle ?",
+    whyCalibrateDesc: "L'IA tend naturellement vers l'acquiescement systématique et la flagornerie (Sycophancy). Réguler son attitude transforme un simple exécutant crédule en un sparring-partner intellectuel capable de prévenir les angles morts.",
+    tipBox: `<i class="fa-solid fa-lightbulb" style="color: var(--accent); margin-inline-end: 8px;"></i>
+      <strong>Conseil pratique :</strong> Insérez systématiquement l'une de ces méta-consignes en dernière ligne de votre invite ; vous constaterez un saut qualitatif immédiat en rigueur et objectivité.`,
+
+    sec1Title: "I. Sincérité Épistémique, Critique et Anti-Hallucination",
+    sec1Lead: "Injonctions forçant le système à une honnêteté intellectuelle intransigeante, neutralisant la complaisance et reconnaissant les incertitudes factuelles :",
+    c1Title: "La Vérité avant la Complaisance",
+    c1Desc: "Bannit la flagornerie flatteuse et focalise l'effort sur la valeur ajoutée réelle.",
+    c1Prompt: "« Sois honnête et direct. Ton rôle est de m'aider à atteindre mon objectif, non de flatter mon ego. »",
+
+    c2Title: "Tolérance Zéro Hallucination",
+    c2Desc: "Interdit l'invention de sources ou de faits fallacieux en situation de doute.",
+    c2Prompt: "« Si tu n'es pas absolument certain, dis : 'Je ne sais pas' et précise ce qu'il faut vérifier dans la littérature. »",
+
+    c3Title: "Auto-Évaluation Impitoyable",
+    c3Desc: "Active une boucle réflexive d'auto-critique avant restitution du résultat final.",
+    c3Prompt: "« Évalue ta réponse précédente comme un relecteur externe impitoyable, puis propose une version bonifiée. »",
+
+    c4Title: "Épreuve des Limites (Stress-Test)",
+    c4Desc: "Révèle d'emblée les failles opérationnelles des dispositifs pédagogiques proposés.",
+    c4Prompt: "« Dans quels cas ce dispositif échouera-t-il ? Quelles conditions rendent cette méthode inopérante ? »",
+
+    sec2Title: "II. Alignement de la Compréhension et Résorption des Lacunes",
+    sec2Lead: "Ces directives valident que le modèle a parfaitement intériorisé votre contexte avant d'entamer la production :",
+    c5Title: "Questionnement Préalable",
+    c5Desc: "Évite les réponses génériques construites sur des extrapolations erronées.",
+    c5Prompt: "« Pose-moi toutes les questions nécessaires avant de commencer. »",
+
+    c6Title: "Reformulation de Contrôle",
+    c6Desc: "Identifie instantanément tout contresens avant de perdre du temps sur un livrable hors-sujet.",
+    c6Prompt: "« Résume ta compréhension de ma consigne avant de la mettre en œuvre. »",
+
+    c7Title: "Détection des Angles Morts",
+    c7Desc: "Met en lumière des éléments décisifs omis involontairement lors du cadrage.",
+    c7Prompt: "« Vérifie s'il existe une variable fondamentale que j'aurais négligée ou oubliée. »",
+
+    c8Title: "Identification des Risques Invisibles",
+    c8Desc: "Précieux avant de valider une évaluation sommative, un projet de classe ou une séquence didactique.",
+    c8Prompt: "« Identifie les risques et les biais que je ne discerne pas encore. »",
+
+    sec3Title: "III. Rythme Raisonné et Structuration du Discours",
+    sec3Lead: "Gabarits méthodologiques pour séquencer la réflexion pas à pas, calibrer la densité et forcer l'hétérogénéité des pistes :",
+    c9Title: "Raisonnement Étape par Étape",
+    c9Desc: "Ralentit l'inférence et permet un arbitrage interactif à chaque palier logique.",
+    c9Prompt: "« Explicite ta démarche avant de conclure, et marque une pause après chaque étape pour validation. »",
+
+    c10Title: "Divergence Réelle des Options",
+    c10Desc: "Empêche l'IA de proposer des faux choix n'offrant que des variations cosmétiques.",
+    c10Prompt: "« Propose trois options fondamentalement divergentes dans leur approche. »",
+
+    c11Title: "Progression Hiérarchique (L'Essentiel d'Abord)",
+    c11Desc: "Fournit la synthèse exécutive immédiate, puis développe l'appareil justificatif.",
+    c11Prompt: "« Débute par une réponse directe en trois lignes, puis développe les arguments et justifications. »",
+
+    c12Title: "Vulgarisation Multi-Niveaux",
+    c12Desc: "Appréhender le concept sous son intuition première, puis sous son formalisme expert.",
+    c12Prompt: "« Explique ce concept sur deux niveaux : d'abord pour un enfant de 10 ans, puis avec la rigueur d'un expert du domaine. »",
+
+    c13Title: "Sondage Épistémique Actif",
+    c13Desc: "Mute le système en tuteur exigeant pour sonder votre réelle assimilation.",
+    c13Prompt: "« Après ton exposé, pose-moi trois questions discriminantes vérifiant si j'ai réellement compris. »",
+
+    c14Title: "Concision Radicale",
+    c14Desc: "Supprime les préliminaires de politesse et les redondances verbeuses inutiles.",
+    c14Prompt: "« Sois strictement concis, sans remplissage ni préambule. »",
+
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 03 - Lesson 05: Meta-Prompts: Steering Behavior, Not Just Content",
+    backToLessons: "Back to Lessons List",
+    headerBadge: "Chapter 03 • Lesson 05",
+    headerTitle: "Meta-Directives: Calibrate Model Behavior, Not Just Content",
+    headerSubtitle: "High-leverage steering directives appended at prompt termination to reshape the model's reasoning stance and suppress conversational sycophancy.",
+
+    goldenBadge: "Golden Rule",
+    whyCalibrateTitle: "Why Steer Cognitive Behavior?",
+    whyCalibrateDesc: "Generative AI is prone to sycophancy—the instinct to validate assumptions uncritically. Behavioral calibration converts a polite assistant into a rigorous intellectual partner that stress-tests logic and prevents errors.",
+    tipBox: `<i class="fa-solid fa-lightbulb" style="color: var(--accent); margin-inline-end: 8px;"></i>
+      <strong>Pro-Tip:</strong> Append one of these meta-directives as the final line of your query; you will immediately observe a profound jump in intellectual rigor and answer depth.`,
+
+    sec1Title: "I. Epistemic Candor, Critique & Anti-Hallucination",
+    sec1Lead: "Directives enforcing radical honesty, overriding conversational flattery, and mandating transparency regarding knowledge boundaries:",
+    c1Title: "Truth Over Flattery",
+    c1Desc: "Eliminates empty praise and focuses the model entirely on genuine iteration.",
+    c1Prompt: "\"Be honest and candid. Your job is to help me achieve my goal, not flatter my ego.\"",
+
+    c2Title: "Hallucination Defense (No Fabrication)",
+    c2Desc: "Suppresses fabricated citations or ungrounded claims when facing uncertainty.",
+    c2Prompt: "\"If you are unsure, say 'I don't know' and specify what needs literature verification.\"",
+
+    c3Title: "Adversarial Self-Critique",
+    c3Desc: "Triggers internal chain-of-thought refinement before finalizing the response.",
+    c3Prompt: "\"Critique your prior draft as a ruthless external reviewer, then generate an improved iteration.\"",
+
+    c4Title: "Failure-Mode Stress-Testing",
+    c4Desc: "Pre-emptively identifies edge-case failures in instructional designs and plans.",
+    c4Prompt: "\"Under what conditions will this proposal fail? Where does this approach break down entirely?\"",
+
+    sec2Title: "II. Cognitive Alignment & Blind-Spot Detection",
+    sec2Lead: "These prompts guarantee that the system has thoroughly grounded itself in your scope before executing the task:",
+    c5Title: "Proactive Clarification",
+    c5Desc: "Prevents broad, generic outputs built on unverified situational assumptions.",
+    c5Prompt: "\"Ask me any clarifying questions you need before proceeding.\"",
+
+    c6Title: "Verification Restatement",
+    c6Desc: "Exposes latent misinterpretations before investing time in misaligned artifacts.",
+    c6Prompt: "\"Summarize your understanding of my request before executing it.\"",
+
+    c7Title: "Blind-Spot Discovery",
+    c7Desc: "Surfaces critical variables unintentionally neglected in initial prompt framing.",
+    c7Prompt: "\"Check if there is an essential parameter I have overlooked or forgotten.\"",
+
+    c8Title: "Latent Risk Identification",
+    c8Desc: "Invaluable prior to launching exams, classroom interventions, or curriculum units.",
+    c8Prompt: "\"Identify the hidden risks and downstream consequences I cannot see yet.\"",
+
+    sec3Title: "III. Cadence Control & Response Architecture",
+    sec3Lead: "Directives engineered to sequence inference step-by-step, balance depth, and guarantee genuinely distinct alternatives:",
+    c9Title: "Iterative Phased Reasoning",
+    c9Desc: "Slows token generation, allowing user check-ins at every logical juncture.",
+    c9Prompt: "\"Explain your reasoning before stating the outcome, and pause after each phase for my sign-off.\"",
+
+    c10Title: "Genuinely Divergent Options",
+    c10Desc: "Prevents superficial variations that differ only in surface-level wording.",
+    c10Prompt: "\"Propose three fundamentally divergent approaches to solving this.\"",
+
+    c11Title: "Top-Down Synthesis (TL;DR First)",
+    c11Desc: "Provides executive clarity upfront, followed by detailed analytical support.",
+    c11Prompt: "\"Start with a direct 3-line synthesis, followed by in-depth technical rationale.\"",
+
+    c12Title: "Dual-Tiered Demystification",
+    c12Desc: "Grasps the intuitive core first, followed by domain-level technical depth.",
+    c12Prompt: "\"Explain this concept at two levels: first for a 10-year-old child, then for a senior domain specialist.\"",
+
+    c13Title: "Active Comprehension Audit",
+    c13Desc: "Turns the AI into a diagnostic examiner probing your genuine understanding.",
+    c13Prompt: "\"After explaining, ask me three diagnostic questions to verify if I truly grasped the core mechanics.\"",
+
+    c14Title: "Radical Brevity",
+    c14Desc: "Cuts pleasantries, repetitive framing, and superfluous introductory filler.",
+    c14Prompt: "\"Be strictly concise. Zero fluff, zero filler.\"",
+
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML root attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic translatable nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      const htmlKeys = ['tipBox', 'sec1Lead', 'sec2Lead', 'sec3Lead'];
+      if (htmlKeys.includes(key)) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state on language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Persist language selection
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initial load check
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

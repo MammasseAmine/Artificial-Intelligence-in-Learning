@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>قدرات النماذج اللغوية الكبيرة وإمكاناتها التعليمية</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">قدرات النماذج اللغوية الكبيرة وإمكاناتها التعليمية</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -36,11 +36,59 @@
     color: var(--text);
     line-height: 1.85;
     padding: 30px 15px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 950px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -58,7 +106,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -70,11 +118,13 @@
     padding: 6px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -126,6 +176,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.15rem;
+    flex-shrink: 0;
   }
 
   p {
@@ -137,7 +188,7 @@
   /* Callout Boxes */
   .callout {
     background: var(--bg);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     border-radius: 8px;
     padding: 16px 20px;
     margin: 20px 0;
@@ -145,12 +196,12 @@
   }
 
   .callout.accent {
-    border-right-color: var(--accent);
+    border-inline-start-color: var(--accent);
     background: #fffaf0;
   }
 
   .callout.success {
-    border-right-color: var(--success);
+    border-inline-start-color: var(--success);
     background: #f0fff4;
   }
 
@@ -179,7 +230,6 @@
 
   .math-box {
     background: #edf2f7;
-    font-family: 'Tajawal', sans-serif;
     text-align: center;
     padding: 14px;
     border-radius: 10px;
@@ -201,7 +251,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    text-align: right;
+    text-align: start;
   }
 
   th {
@@ -236,14 +286,14 @@
 
   .styled-list li {
     position: relative;
-    padding-right: 28px;
+    padding-inline-start: 28px;
     margin-bottom: 12px;
     font-size: 1rem;
   }
 
   .styled-list li i {
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     top: 5px;
     color: var(--secondary);
   }
@@ -293,72 +343,80 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • الدرس الثالث</span>
-    <h1>قدرات النماذج اللغوية الكبيرة (LLMs)</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • الدرس الثالث</span>
+    <h1 data-i18n="headerTitle">قدرات النماذج اللغوية الكبيرة (LLMs)</h1>
   </div>
 
-  <!-- 2. فهم اللغة الطبيعية -->
+  <!-- 1. Natural Language Understanding -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-comments"></i></div>
-      2. فهم اللغة الطبيعية
+      <span data-i18n="sec1Title">1. فهم اللغة الطبيعية</span>
     </div>
-    <p>
+    <p data-i18n="sec1P">
       تستطيع النماذج اللغوية الكبيرة (LLMs) فهم النصوص البشرية وتحليل معناها العام، واستيعاب السياق والمقصد الكامن وراء العبارات.
     </p>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-quote-right"></i> مثال تطبيقي:</div>
-      <strong>النص:</strong> "الطقس جميل اليوم لذلك سأذهب إلى الحديقة."<br>
-      <span style="color: var(--secondary); font-weight: 600;">التحليل:</span> يستطيع النموذج استنتاج وفهم أن المتحدث يرغب بالخروج والتنزه بسبب اعتدال الطقس وجودته.
+      <div class="callout-title"><i class="fa-solid fa-quote-right"></i> <span data-i18n="sec1CalloutTitle">مثال تطبيقي:</span></div>
+      <span data-i18n="sec1Example"><strong>النص:</strong> "الطقس جميل اليوم لذلك سأذهب إلى الحديقة."<br><span style="color: var(--secondary); font-weight: 600;">التحليل:</span> يستطيع النموذج استنتاج وفهم أن المتحدث يرغب بالخروج والتنزه بسبب اعتدال الطقس وجودته.</span>
     </div>
   </div>
 
-  <!-- 3. توليد النصوص -->
+  <!-- 2. Text Generation -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-pen-nib"></i></div>
-      3. توليد النصوص
+      <span data-i18n="sec2Title">2. توليد النصوص</span>
     </div>
-    <p>
+    <p data-i18n="sec2P">
       يُعد إنشاء نصوص جديدة تشبه النصوص البشرية بدقة عالية من أهم قدرات النماذج اللغوية الكبيرة على الإطلاق.
     </p>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-terminal"></i> مدخلات ومخرجات النموذج:</div>
-      <strong>Prompt:</strong> اكتب فقرة عن الذكاء الاصطناعي.<br>
-      <strong>Output:</strong> الذكاء الاصطناعي هو فرع من علوم الحاسوب يهدف إلى تطوير أنظمة قادرة على محاكاة الذكاء البشري...
+      <div class="callout-title"><i class="fa-solid fa-terminal"></i> <span data-i18n="sec2CalloutTitle">مدخلات ومخرجات النموذج:</span></div>
+      <span data-i18n="sec2Example"><strong>Prompt:</strong> اكتب فقرة عن الذكاء الاصطناعي.<br><strong>Output:</strong> الذكاء الاصطناعي هو فرع من علوم الحاسوب يهدف إلى تطوير أنظمة قادرة على محاكاة الذكاء البشري...</span>
     </div>
   </div>
 
-  <!-- 4. التلخيص -->
+  <!-- 3. Summarization -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-compress"></i></div>
-      4. التلخيص (Summarization)
+      <span data-i18n="sec3Title">3. التلخيص (Summarization)</span>
     </div>
-    <p>
+    <p data-i18n="sec3P">
       يمكن للنموذج استخلاص أهم الأفكار وتلخيص المقالات الطويلة والمستندات والكتب في نقاط موجزة ومفيدة دون الإخلال بالمضمون.
     </p>
 
     <div class="math-box">
-      <i class="fa-regular fa-file-lines"></i> مقال من 5 صفحات &nbsp; ⟵ &nbsp; <i class="fa-solid fa-list-check"></i> ملخص مركز من 5 أسطر
+      <i class="fa-regular fa-file-lines"></i> <span data-i18n="sumSource">مقال من 5 صفحات</span> &nbsp; ⟵ &nbsp; <i class="fa-solid fa-list-check"></i> <span data-i18n="sumTarget">ملخص مركز من 5 أسطر</span>
     </div>
   </div>
 
-  <!-- 5. الترجمة الآلية -->
+  <!-- 4. Machine Translation -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-language"></i></div>
-      5. الترجمة الآلية
+      <span data-i18n="sec4Title">4. الترجمة الآلية</span>
     </div>
-    <p>
+    <p data-i18n="sec4P">
       تمتلك النماذج كفاءة عالية في الترجمة السياقية الدقيقة بين عدد ضخم من اللغات الحية دون الاعتماد على الترجمة الحرفية.
     </p>
 
@@ -366,35 +424,35 @@
       <p style="margin-bottom: 6px; direction: ltr; text-align: left; font-family: monospace;">
         <strong>English:</strong> Artificial Intelligence is transforming the world.
       </p>
-      <p style="margin-bottom: 0;">
+      <p style="margin-bottom: 0;" data-i18n="transOutput">
         <strong>العربية:</strong> الذكاء الاصطناعي يغير العالم.
       </p>
     </div>
   </div>
 
-  <!-- 6. الإجابة عن الأسئلة -->
+  <!-- 5. Question Answering -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-circle-question"></i></div>
-      6. الإجابة عن الأسئلة
+      <span data-i18n="sec5Title">5. الإجابة عن الأسئلة</span>
     </div>
-    <p>
+    <p data-i18n="sec5P">
       تستطيع النماذج تقديم إجابات فورية وشاملة عن الأسئلة المعرفية، العلمية، والتثقيفية بالاعتماد على مخزونها المعرفي الهائل.
     </p>
 
-    <div class="callout accent">
+    <div class="callout accent" data-i18n="qaExample">
       <strong>السؤال:</strong> ما هي عاصمة الجزائر؟<br>
       <strong>الإجابة:</strong> الجزائر العاصمة.
     </div>
   </div>
 
-  <!-- 7. التصنيف -->
+  <!-- 6. Classification -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-tags"></i></div>
-      7. التصنيف (Classification)
+      <span data-i18n="sec6Title">6. التصنيف (Classification)</span>
     </div>
-    <p>
+    <p data-i18n="sec6P">
       يمكن للنموذج تصنيف النصوص إلى فئات مختلفة (مثل تصنيف المشاعر، تصنيف الأخبار، وفرز الرسائل):
     </p>
 
@@ -402,57 +460,57 @@
       <table>
         <thead>
           <tr>
-            <th>النص</th>
-            <th>الفئة (Classification)</th>
+            <th data-i18n="thText">النص</th>
+            <th data-i18n="thClass">الفئة (Classification)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>أحب هذا المنتج</td>
-            <td><span class="tag" style="background: #e6fffa; color: #234e52; border-color: #b2f5ea;"><i class="fa-solid fa-smile"></i> إيجابي</span></td>
+            <td data-i18n="rowPositiveText">أحب هذا المنتج</td>
+            <td><span class="tag" style="background: #e6fffa; color: #234e52; border-color: #b2f5ea;"><i class="fa-solid fa-smile"></i> <span data-i18n="tagPositive">إيجابي</span></span></td>
           </tr>
           <tr>
-            <td>الخدمة سيئة جداً</td>
-            <td><span class="tag" style="background: #fff5f5; color: #742a2a; border-color: #feb2b2;"><i class="fa-solid fa-frown"></i> سلبي</span></td>
+            <td data-i18n="rowNegativeText">الخدمة سيئة جداً</td>
+            <td><span class="tag" style="background: #fff5f5; color: #742a2a; border-color: #feb2b2;"><i class="fa-solid fa-frown"></i> <span data-i18n="tagNegative">سلبي</span></span></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 8. استخراج المعلومات -->
+  <!-- 7. Information Extraction -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-      8. استخراج المعلومات
+      <span data-i18n="sec7Title">7. استخراج المعلومات</span>
     </div>
-    <p>
+    <p data-i18n="sec7P">
       يمتلك النموذج القدرة على استخراج الكيانات المسماة (Named Entities) والبيانات الأساسية بدقة من داخل النصوص غير المنظمة.
     </p>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-book"></i> النص المدخل:</div>
-      <em>"ولد ابن سينا في بخارى"</em>
+      <div class="callout-title"><i class="fa-solid fa-book"></i> <span data-i18n="sec7InputTitle">النص المدخل:</span></div>
+      <em data-i18n="sec7InputText">"ولد ابن سينا في بخارى"</em>
     </div>
 
-    <p><strong>الكيانات المستخرجة:</strong></p>
+    <p><strong data-i18n="sec7EntitiesTitle">الكيانات المستخرجة:</strong></p>
     <ul class="styled-list">
-      <li><i class="fa-solid fa-user-check"></i> <strong>ابن سينا:</strong> شخص</li>
-      <li><i class="fa-solid fa-location-dot"></i> <strong>بخارى:</strong> مكان</li>
+      <li><i class="fa-solid fa-user-check"></i> <strong data-i18n="entity1Key">ابن سينا:</strong> <span data-i18n="entity1Val">شخص</span></li>
+      <li><i class="fa-solid fa-location-dot"></i> <strong data-i18n="entity2Key">بخارى:</strong> <span data-i18n="entity2Val">مكان</span></li>
     </ul>
   </div>
 
-  <!-- 9. البرمجة وتوليد الأكواد -->
+  <!-- 8. Code Generation -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-code"></i></div>
-      9. البرمجة وتوليد الأكواد
+      <span data-i18n="sec8Title">8. البرمجة وتوليد الأكواد</span>
     </div>
-    <p>
+    <p data-i18n="sec8P">
       تستطيع النماذج اللغوية كتابة الأكواد بمختلف اللغات البرمجية، وتصحيح الأخطاء (Debugging)، وشرح التعليمات البرمجية.
     </p>
 
-    <div class="callout accent">
+    <div class="callout accent" data-i18n="sec8Prompt">
       <strong>Prompt:</strong> اكتب دالة Python لحساب المتوسط.
     </div>
 
@@ -462,121 +520,403 @@ def average(numbers):
     </div>
   </div>
 
-  <!-- 10. الاستدلال وحل المشكلات -->
+  <!-- 9. Reasoning & Problem Solving -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
-      10. الاستدلال وحل المشكلات
+      <span data-i18n="sec9Title">9. الاستدلال وحل المشكلات</span>
     </div>
-    <p>
+    <p data-i18n="sec9P">
       يمكن للنموذج إجراء أنواع معينة من التفكير والاستدلال المنطقي متعدد الخطوات للوصول إلى استنتاجات صحيحة.
     </p>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-diagram-project"></i> مثال الاستدلال:</div>
-      <strong>المعطيات:</strong>
+      <div class="callout-title"><i class="fa-solid fa-diagram-project"></i> <span data-i18n="sec9ReasonTitle">مثال الاستدلال:</span></div>
+      <strong data-i18n="sec9PremiseTitle">المعطيات:</strong>
       <ul class="styled-list" style="margin: 8px 0;">
-        <li><i class="fa-solid fa-check"></i> كل الطيور لها أجنحة.</li>
-        <li><i class="fa-solid fa-check"></i> العصفور طائر.</li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="sec9P1">كل الطيور لها أجنحة.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="sec9P2">العصفور طائر.</span></li>
       </ul>
-      <strong style="color: var(--secondary);">النتيجة المنطقية:</strong> العصفور له أجنحة.
+      <strong style="color: var(--secondary);"><span data-i18n="sec9Conclusion">النتيجة المنطقية: العصفور له أجنحة.</span></strong>
     </div>
   </div>
 
-  <!-- 11. التعلم متعدد المهام -->
+  <!-- 10. Multi-task Learning -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
-      11. التعلم متعدد المهام
+      <span data-i18n="sec10Title">10. التعلم متعدد المهام</span>
     </div>
-    <p>
+    <p data-i18n="sec10P">
       بدلاً من تدريب نموذج منفصل ومخصص لكل مهمة فردية، أصبح نموذج لغوي واحد قادراً على تنفيذ العديد من المهام المتنوعة بمجرد تغيير الطلب:
     </p>
 
     <ul class="styled-list">
-      <li><i class="fa-solid fa-check-double"></i> الترجمة الفورية بين اللغات.</li>
-      <li><i class="fa-solid fa-check-double"></i> تلخيص المقالات والكتب.</li>
-      <li><i class="fa-solid fa-check-double"></i> الإجابة على الأسئلة التخصصية.</li>
-      <li><i class="fa-solid fa-check-double"></i> التصنيف والفرز الآلي.</li>
-      <li><i class="fa-solid fa-check-double"></i> توليد وصياغة النصوص.</li>
+      <li><i class="fa-solid fa-check-double"></i> <span data-i18n="task1">الترجمة الفورية بين اللغات.</span></li>
+      <li><i class="fa-solid fa-check-double"></i> <span data-i18n="task2">تلخيص المقالات والكتب.</span></li>
+      <li><i class="fa-solid fa-check-double"></i> <span data-i18n="task3">الإجابة على الأسئلة التخصصية.</span></li>
+      <li><i class="fa-solid fa-check-double"></i> <span data-i18n="task4">التصنيف والفرز الآلي.</span></li>
+      <li><i class="fa-solid fa-check-double"></i> <span data-i18n="task5">توليد وصياغة النصوص.</span></li>
     </ul>
   </div>
 
-  <!-- 12. التعلم في السياق -->
+  <!-- 11. In-Context Learning -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-chalkboard-user"></i></div>
-      12. التعلم في السياق (In-Context Learning)
+      <span data-i18n="sec11Title">11. التعلم في السياق (In-Context Learning)</span>
     </div>
-    <p>
+    <p data-i18n="sec11P">
       يستطيع النموذج فهم المطلوب منه وتنفيذ المهام الجديدة بمجرد إعطائه أمثلة توضيحية داخل المطالبة (Prompt) دون الحاجة لإعادة تدريبه مسبقاً.
     </p>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-list-ol"></i> الأمثلة داخل الـ Prompt:</div>
-      قط ⟵ حيوان<br>
-      حصان ⟵ حيوان<br>
-      تفاحة ⟵ ؟<br><br>
-      <strong style="color: var(--success);"><i class="fa-solid fa-circle-check"></i> الإجابة المتوقعة:</strong> فاكهة
+      <div class="callout-title"><i class="fa-solid fa-list-ol"></i> <span data-i18n="sec11ExampleTitle">الأمثلة داخل الـ Prompt:</span></div>
+      <span data-i18n="sec11Body">قط ⟵ حيوان<br>حصان ⟵ حيوان<br>تفاحة ⟵ ؟<br><br><strong style="color: var(--success);"><i class="fa-solid fa-circle-check"></i> الإجابة المتوقعة:</strong> فاكهة</span>
     </div>
   </div>
 
-  <!-- 13. دعم اللغات المتعددة -->
+  <!-- 12. Multilingual Support -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-globe"></i></div>
-      13. دعم اللغات المتعددة
+      <span data-i18n="sec12Title">12. دعم اللغات المتعددة</span>
     </div>
-    <p>
+    <p data-i18n="sec12P">
       تم تدريب العديد من النماذج الحديثة على بيانات غنية بعشرات اللغات العالمية، مما يمنحها مرونة فائقة في التواصل المتعدد، ومن أبرزها:
     </p>
 
     <div class="tags-container">
-      <span class="tag"><i class="fa-solid fa-check"></i> العربية</span>
-      <span class="tag"><i class="fa-solid fa-check"></i> الإنجليزية</span>
-      <span class="tag"><i class="fa-solid fa-check"></i> الفرنسية</span>
-      <span class="tag"><i class="fa-solid fa-check"></i> الإسبانية</span>
-      <span class="tag"><i class="fa-solid fa-check"></i> الصينية</span>
+      <span class="tag"><i class="fa-solid fa-check"></i> <span data-i18n="langAr">العربية</span></span>
+      <span class="tag"><i class="fa-solid fa-check"></i> <span data-i18n="langEn">الإنجليزية</span></span>
+      <span class="tag"><i class="fa-solid fa-check"></i> <span data-i18n="langFr">الفرنسية</span></span>
+      <span class="tag"><i class="fa-solid fa-check"></i> <span data-i18n="langEs">الإسبانية</span></span>
+      <span class="tag"><i class="fa-solid fa-check"></i> <span data-i18n="langZh">الصينية</span></span>
     </div>
   </div>
 
-  <!-- الإمكانات في مجال التعليم -->
+  <!-- Educational Potential Section -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-      الإمكانات في مجال التعليم
+      <span data-i18n="secEduTitle">الإمكانات في مجال التعليم</span>
     </div>
-    <p>
+    <p data-i18n="secEduP">
       بما أن هذه الدورة جزء من وحدة <strong>"الذكاء الاصطناعي في التعلّم"</strong>، فمن الأهمية بمكان ربط هذه القدرات التقنية بسياق الممارسة التعليمية وتطبيقاتها المباشرة:
     </p>
 
     <div class="callout success">
-      <div class="callout-title"><i class="fa-solid fa-user-graduate"></i> 1. مساعد تعلّم شخصي:</div>
-      يمكن للمتعلّم طرح أسئلته في أي وقت، والحصول على شرح فوري للمفهوم بعدة طرق مختلفة (أمثلة واقعية، تشبيهات مبسطة، رسوم توضيحية) حتى يجد الطريقة التي تناسبه. كما يمكن تكييف مستوى الشرح حسب مستوى كل متعلم؛ مما يفتح المجال واسعاً أمام <strong>تعلّم أكثر تمايزاً</strong> يلبي الفروق الفردية.
+      <div class="callout-title"><i class="fa-solid fa-user-graduate"></i> <span data-i18n="edu1Title">1. مساعد تعلّم شخصي:</span></div>
+      <span data-i18n="edu1Body">يمكن للمتعلّم طرح أسئلته في أي وقت، والحصول على شرح فوري للمفهوم بعدة طرق مختلفة (أمثلة واقعية، تشبيهات مبسطة، رسوم توضيحية) حتى يجد الطريقة التي تناسبه. كما يمكن تكييف مستوى الشرح حسب مستوى كل متعلم؛ مما يفتح المجال واسعاً أمام <strong>تعلّم أكثر تمايزاً</strong> يلبي الفروق الفردية.</span>
     </div>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-chalkboard-teacher"></i> 2. مساعدة الأستاذ:</div>
-      تسريع المهام الروتينية والتحضيرية مثل إعداد الدروس، وصياغة نماذج الاختبارات والأنشطة، وتلخيص المراجع الأكاديمية بسرعة وكفاءة.
+      <div class="callout-title"><i class="fa-solid fa-chalkboard-teacher"></i> <span data-i18n="edu2Title">2. مساعدة الأستاذ:</span></div>
+      <span data-i18n="edu2Body">تسريع المهام الروتينية والتحضيرية مثل إعداد الدروس، وصياغة نماذج الاختبارات والأنشطة، وتلخيص المراجع الأكاديمية بسرعة وكفاءة.</span>
     </div>
 
     <div class="callout accent">
-      <div class="callout-title"><i class="fa-solid fa-language"></i> 3. كسر حاجز اللغة:</div>
-      ترجمة المحتوى التعليمي العالمي وتبسيطه وتقديمه بلغة المتعلّم الأم لتسهيل استيعاب المعارف الحديثة.
+      <div class="callout-title"><i class="fa-solid fa-language"></i> <span data-i18n="edu3Title">3. كسر حاجز اللغة:</span></div>
+      <span data-i18n="edu3Body">ترجمة المحتوى التعليمي العالمي وتبسيطه وتقديمه بلغة المتعلّم الأم لتسهيل استيعاب المعارف الحديثة.</span>
     </div>
 
     <div class="callout">
-      <div class="callout-title"><i class="fa-solid fa-universal-access"></i> 4. إتاحة التعلّم:</div>
-      دعم ذوي الاحتياجات الخاصة عبر إتاحة أشكال وشروحات متعددة تتناسب مع احتياجات كل فئة بدقة.
+      <div class="callout-title"><i class="fa-solid fa-universal-access"></i> <span data-i18n="edu4Title">4. إتاحة التعلّم:</span></div>
+      <span data-i18n="edu4Body">دعم ذوي الاحتياجات الخاصة عبر إتاحة أشكال وشروحات متعددة تتناسب مع احتياجات كل فئة بدقة.</span>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي التوليدي 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "قدرات النماذج اللغوية الكبيرة وإمكاناتها التعليمية",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 01 • الدرس الثالث",
+    headerTitle: "قدرات النماذج اللغوية الكبيرة (LLMs)",
+    sec1Title: "1. فهم اللغة الطبيعية",
+    sec1P: "تستطيع النماذج اللغوية الكبيرة (LLMs) فهم النصوص البشرية وتحليل معناها العام، واستيعاب السياق والمقصد الكامن وراء العبارات.",
+    sec1CalloutTitle: "مثال تطبيقي:",
+    sec1Example: "<strong>النص:</strong> \"الطقس جميل اليوم لذلك سأذهب إلى الحديقة.\"<br><span style=\"color: var(--secondary); font-weight: 600;\">التحليل:</span> يستطيع النموذج استنتاج وفهم أن المتحدث يرغب بالخروج والتنزه بسبب اعتدال الطقس وجودته.",
+    sec2Title: "2. توليد النصوص",
+    sec2P: "يُعد إنشاء نصوص جديدة تشبه النصوص البشرية بدقة عالية من أهم قدرات النماذج اللغوية الكبيرة على الإطلاق.",
+    sec2CalloutTitle: "مدخلات ومخرجات النموذج:",
+    sec2Example: "<strong>Prompt:</strong> اكتب فقرة عن الذكاء الاصطناعي.<br><strong>Output:</strong> الذكاء الاصطناعي هو فرع من علوم الحاسوب يهدف إلى تطوير أنظمة قادرة على محاكاة الذكاء البشري...",
+    sec3Title: "3. التلخيص (Summarization)",
+    sec3P: "يمكن للنموذج استخلاص أهم الأفكار وتلخيص المقالات الطويلة والمستندات والكتب في نقاط موجزة ومفيدة دون الإخلال بالمضمون.",
+    sumSource: "مقال من 5 صفحات",
+    sumTarget: "ملخص مركز من 5 أسطر",
+    sec4Title: "4. الترجمة الآلية",
+    sec4P: "تمتلك النماذج كفاءة عالية في الترجمة السياقية الدقيقة بين عدد ضخم من اللغات الحية دون الاعتماد على الترجمة الحرفية.",
+    transOutput: "<strong>العربية:</strong> الذكاء الاصطناعي يغير العالم.",
+    sec5Title: "5. الإجابة عن الأسئلة",
+    sec5P: "تستطيع النماذج تقديم إجابات فورية وشاملة عن الأسئلة المعرفية، العلمية، والتثقيفية بالاعتماد على مخزونها المعرفي الهائل.",
+    qaExample: "<strong>السؤال:</strong> ما هي عاصمة الجزائر؟<br><strong>الإجابة:</strong> الجزائر العاصمة.",
+    sec6Title: "6. التصنيف (Classification)",
+    sec6P: "يمكن للنموذج تصنيف النصوص إلى فئات مختلفة (مثل تصنيف المشاعر، تصنيف الأخبار، وفرز الرسائل):",
+    thText: "النص",
+    thClass: "الفئة (Classification)",
+    rowPositiveText: "أحب هذا المنتج",
+    tagPositive: "إيجابي",
+    rowNegativeText: "الخدمة سيئة جداً",
+    tagNegative: "سلبي",
+    sec7Title: "7. استخراج المعلومات",
+    sec7P: "يمتلك النموذج القدرة على استخراج الكيانات المسماة (Named Entities) والبيانات الأساسية بدقة من داخل النصوص غير المنظمة.",
+    sec7InputTitle: "النص المدخل:",
+    sec7InputText: "\"ولد ابن سينا في بخارى\"",
+    sec7EntitiesTitle: "الكيانات المستخرجة:",
+    entity1Key: "ابن سينا:",
+    entity1Val: "شخص",
+    entity2Key: "بخارى:",
+    entity2Val: "مكان",
+    sec8Title: "8. البرمجة وتوليد الأكواد",
+    sec8P: "تستطيع النماذج اللغوية كتابة الأكواد بمختلف اللغات البرمجية، وتصحيح الأخطاء (Debugging)، وشرح التعليمات البرمجية.",
+    sec8Prompt: "<strong>Prompt:</strong> اكتب دالة Python لحساب المتوسط.",
+    sec9Title: "9. الاستدلال وحل المشكلات",
+    sec9P: "يمكن للنموذج إجراء أنواع معينة من التفكير والاستدلال المنطقي متعدد الخطوات للوصول إلى استنتاجات صحيحة.",
+    sec9ReasonTitle: "مثال الاستدلال:",
+    sec9PremiseTitle: "المعطيات:",
+    sec9P1: "كل الطيور لها أجنحة.",
+    sec9P2: "العصفور طائر.",
+    sec9Conclusion: "النتيجة المنطقية: العصفور له أجنحة.",
+    sec10Title: "10. التعلم متعدد المهام",
+    sec10P: "بدلاً من تدريب نموذج منفصل ومخصص لكل مهمة فردية، أصبح نموذج لغوي واحد قادراً على تنفيذ العديد من المهام المتنوعة بمجرد تغيير الطلب:",
+    task1: "الترجمة الفورية بين اللغات.",
+    task2: "تلخيص المقالات والكتب.",
+    task3: "الإجابة على الأسئلة التخصصية.",
+    task4: "التصنيف والفرز الآلي.",
+    task5: "توليد وصياغة النصوص.",
+    sec11Title: "11. التعلم في السياق (In-Context Learning)",
+    sec11P: "يستطيع النموذج فهم المطلوب منه وتنفيذ المهام الجديدة بمجرد إعطائه أمثلة توضيحية داخل المطالبة (Prompt) دون الحاجة لإعادة تدريبه مسبقاً.",
+    sec11ExampleTitle: "الأمثلة داخل الـ Prompt:",
+    sec11Body: "قط ⟵ حيوان<br>حصان ⟵ حيوان<br>تفاحة ⟵ ؟<br><br><strong style=\"color: var(--success);\"><i class=\"fa-solid fa-circle-check\"></i> الإجابة المتوقعة:</strong> فاكهة",
+    sec12Title: "12. دعم اللغات المتعددة",
+    sec12P: "تم تدريب العديد من النماذج الحديثة على بيانات غنية بعشرات اللغات العالمية، مما يمنحها مرونة فائقة في التواصل المتعدد، ومن أبرزها:",
+    langAr: "العربية",
+    langEn: "الإنجليزية",
+    langFr: "الفرنسية",
+    langEs: "الإسبانية",
+    langZh: "الصينية",
+    secEduTitle: "الإمكانات في مجال التعليم",
+    secEduP: "بما أن هذه الدورة جزء من وحدة <strong>\"الذكاء الاصطناعي في التعلّم\"</strong>، فمن الأهمية بمكان ربط هذه القدرات التقنية بسياق الممارسة التعليمية وتطبيقاتها المباشرة:",
+    edu1Title: "1. مساعد تعلّم شخصي:",
+    edu1Body: "يمكن للمتعلّم طرح أسئلته في أي وقت، والحصول على شرح فوري للمفهوم بعدة طرق مختلفة (أمثلة واقعية، تشبيهات مبسطة، رسوم توضيحية) حتى يجد الطريقة التي تناسبه. كما يمكن تكييف مستوى الشرح حسب مستوى كل متعلم؛ مما يفتح المجال واسعاً أمام <strong>تعلّم أكثر تمايزاً</strong> يلبي الفروق الفردية.",
+    edu2Title: "2. مساعدة الأستاذ:",
+    edu2Body: "تسريع المهام الروتينية والتحضيرية مثل إعداد الدروس، وصياغة نماذج الاختبارات والأنشطة، وتلخيص المراجع الأكاديمية بسرعة وكفاءة.",
+    edu3Title: "3. كسر حاجز اللغة:",
+    edu3Body: "ترجمة المحتوى التعليمي العالمي وتبسيطه وتقديمه بلغة المتعلّم الأم لتسهيل استيعاب المعارف الحديثة.",
+    edu4Title: "4. إتاحة التعلّم:",
+    edu4Body: "دعم ذوي الاحتياجات الخاصة عبر إتاحة أشكال وشروحات متعددة تتناسب مع احتياجات كل فئة بدقة.",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي التوليدي 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Capacités des LLM et Potentiel Éducatif",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Leçon 03",
+    headerTitle: "Capacités des Grands Modèles de Langage (LLM)",
+    sec1Title: "1. Compréhension du Langage Naturel",
+    sec1P: "Les LLM analysent le sens profond des textes humains, appréhendent le contexte global et saisissent les nuances de l'intention de l'utilisateur.",
+    sec1CalloutTitle: "Exemple d'application :",
+    sec1Example: "<strong>Texte :</strong> « Il fait un temps magnifique aujourd'hui, je vais aller au parc. »<br><span style=\"color: var(--secondary); font-weight: 600;\">Analyse :</span> Le modèle déduit sans ambiguïté que l'émetteur souhaite sortir et se promener en raison des conditions météorologiques favorables.",
+    sec2Title: "2. Génération de Texte",
+    sec2P: "La composition de textes originaux, fluides et cohérents d'un niveau proche de la rédaction humaine constitue la prouesse centrale des LLM.",
+    sec2CalloutTitle: "Exemple d'échange :",
+    sec2Example: "<strong>Prompt :</strong> Rédige un paragraphe synthétique sur l'IA.<br><strong>Sortie :</strong> L'intelligence artificielle est une discipline informatique visant à développer des systèmes automatisés capables de simuler l'intelligence humaine...",
+    sec3Title: "3. Synthèse et Résumé (Summarization)",
+    sec3P: "Le modèle extrait les thèses fondamentales d'articles longs, d'ouvrages et de rapports pour en produire des synthèses structurées sans déformer les faits.",
+    sumSource: "Article de 5 pages",
+    sumTarget: "Synthèse ciblée en 5 lignes",
+    sec4Title: "4. Traduction Automatique",
+    sec4P: "Les LLM excellent dans la traduction contextuelle et idiomatique entre des dizaines de langues, évitant les écueils de la traduction mot à mot.",
+    transOutput: "<strong>Français :</strong> L'intelligence artificielle transforme le monde.",
+    sec5Title: "5. Question-Réponse (Q&A)",
+    sec5P: "Ils fournissent des explications immédiates sur des questions scientifiques, techniques ou encyclopédiques en mobilisant leurs connaissances intégrées.",
+    qaExample: "<strong>Question :</strong> Quelle est la capitale de l'Algérie ?<br><strong>Réponse :</strong> Alger.",
+    sec6Title: "6. Classification Textuelle",
+    sec6P: "Les LLM segmentent et catégorisent des corpus textuels (analyse de sentiments, détection de tonalité, tri thématique) :",
+    thText: "Texte",
+    thClass: "Catégorisation",
+    rowPositiveText: "J'adore ce produit",
+    tagPositive: "Positif",
+    rowNegativeText: "Le service client est catastrophique",
+    tagNegative: "Négatif",
+    sec7Title: "7. Extraction d'Informations (NER)",
+    sec7P: "Le modèle identifie avec précision des entités nommées et des données structurées au sein de paragraphes non formatés.",
+    sec7InputTitle: "Extrait analysé :",
+    sec7InputText: "« Ibn Sina est né à Boukhara »",
+    sec7EntitiesTitle: "Entités extraites :",
+    entity1Key: "Ibn Sina :",
+    entity1Val: "Personne (Savant)",
+    entity2Key: "Boukhara :",
+    entity2Val: "Lieu géographique",
+    sec8Title: "8. Génération de Code Informatique",
+    sec8P: "Les modèles conçoivent des scripts dans divers langages (Python, JavaScript, SQL), déverminent les anomalies (debugging) et documentent le code.",
+    sec8Prompt: "<strong>Prompt :</strong> Écris une fonction Python pour calculer une moyenne.",
+    sec9Title: "9. Raisonnement et Résolution de Problèmes",
+    sec9P: "Les LLM effectuent des déductions logiques étape par étape à partir de prémisses fournies pour aboutir à une conclusion valide.",
+    sec9ReasonTitle: "Exemple de syllogisme :",
+    sec9PremiseTitle: "Prémisses :",
+    sec9P1: "Tous les oiseaux ont des ailes.",
+    sec9P2: "Le moineau est un oiseau.",
+    sec9Conclusion: "Déduction logique : Le moineau a des ailes.",
+    sec10Title: "10. Apprentissage Multitâche",
+    sec10P: "Au lieu d'utiliser un modèle spécifique pour chaque tâche, un seul modèle généraliste exécute une multitude de travaux sur simple instruction :",
+    task1: "Traduction instantanée multilingue.",
+    task2: "Synthèse de thèses et d'ouvrages volumineux.",
+    task3: "Réponses spécialisées et didactiques.",
+    task4: "Classification et étiquetage automatique.",
+    task5: "Rédaction stylistique et reformulation.",
+    sec11Title: "11. Apprentissage en Contexte (In-Context Learning)",
+    sec11P: "Le système assimile une tâche inédite immédiatement dès lors qu'on lui fournit deux ou trois exemples démonstratifs dans le prompt (Few-shot prompting).",
+    sec11ExampleTitle: "Exemples dans le Prompt :",
+    sec11Body: "Chat ⟵ Animal<br>Cheval ⟵ Animal<br>Pomme ⟵ ?<br><br><strong style=\"color: var(--success);\"><i class=\"fa-solid fa-circle-check\"></i> Réponse attendue :</strong> Fruit",
+    sec12Title: "12. Support Multilingue",
+    sec12P: "Entraînés sur des corpus multiculturels, les modèles contemporains conversent couramment dans une diversité de langues :",
+    langAr: "Arabe",
+    langEn: "Anglais",
+    langFr: "Français",
+    langEs: "Espagnol",
+    langZh: "Chinois",
+    secEduTitle: "Potentiel Pédagogique et Éducatif",
+    secEduP: "Dans le cadre du cours <strong>« L'IA dans l'Apprentissage »</strong>, il convient d'associer ces prouesses techniques à des pratiques pédagogiques concrètes :",
+    edu1Title: "1. Tuteur d'apprentissage personnalisé :",
+    edu1Body: "L'étudiant peut questionner l'outil à tout instant et recevoir des explications adaptées (métaphores simples, exemples concrets, analogies) jusqu'à assimilation. L'IA facilite ainsi une <strong>pédagogie différenciée</strong> tenant compte du rythme de chacun.",
+    edu2Title: "2. Assistant de l'enseignant :",
+    edu2Body: "Accélération des tâches de conception : préparation de cours, génération de grilles d'évaluation, exercices variés et fiches de révision.",
+    edu3Title: "3. Démocratisation linguistique :",
+    edu3Body: "Traduction et vulgarisation d'articles scientifiques récents dans la langue maternelle de l'apprenant pour faciliter l'accès au savoir.",
+    edu4Title: "4. Accessibilité et inclusion :",
+    edu4Body: "Soutien aux apprenants à besoins spécifiques par l'adaptation des formats, simplification syntaxique et reformulation auditive/textuelle.",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa — Module IA Générative 2026 / 2027"
+  },
+  en: {
+    pageTitle: "LLM Capabilities and Educational Potential",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Lesson 03",
+    headerTitle: "Capabilities of Large Language Models (LLMs)",
+    sec1Title: "1. Natural Language Understanding (NLU)",
+    sec1P: "Large Language Models parse unstructured human text, decode underlying semantic relationships, and interpret subtle communicative intent.",
+    sec1CalloutTitle: "Practical Example:",
+    sec1Example: "<strong>Text:</strong> 'The weather is delightful today, so I will head to the park.'<br><span style=\"color: var(--secondary); font-weight: 600;\">Analysis:</span> The model infers that the speaker wishes to take an outdoor stroll motivated by favorable meteorological conditions.",
+    sec2Title: "2. Text Generation",
+    sec2P: "Drafting coherent, context-rich, and grammatically impeccable text at human-level speed and fluency represents the crown jewel of LLM architecture.",
+    sec2CalloutTitle: "Input vs Output Sample:",
+    sec2Example: "<strong>Prompt:</strong> Write a concise overview of artificial intelligence.<br><strong>Output:</strong> Artificial intelligence is a field of computer science dedicated to engineering software systems capable of performing cognitive tasks that mirror human intelligence...",
+    sec3Title: "3. Summarization",
+    sec3P: "Models condense lengthy research reports, books, and transcripts into precise bullet points or syntheses without losing essential context.",
+    sumSource: "5-page scholarly paper",
+    sumTarget: "5-line focused executive summary",
+    sec4Title: "4. Machine Translation",
+    sec4P: "LLMs provide fluent, idiomatically grounded translation across dozens of languages without stumbling into verbatim literal pitfalls.",
+    transOutput: "<strong>English:</strong> Artificial Intelligence is transforming the world.",
+    sec5Title: "5. Question Answering (QA)",
+    sec5P: "They provide immediate and context-aware explanations across scientific, historical, and procedural inquiries drawing on pre-trained corpora.",
+    qaExample: "<strong>Question:</strong> What is the capital of Algeria?<br><strong>Answer:</strong> Algiers.",
+    sec6Title: "6. Text Classification",
+    sec6P: "Models label and organize text into discrete taxonomic categories (sentiment analysis, intent detection, topic classification):",
+    thText: "Text Sample",
+    thClass: "Assigned Classification",
+    rowPositiveText: "I really love this product",
+    tagPositive: "Positive",
+    rowNegativeText: "Customer support was terrible",
+    tagNegative: "Negative",
+    sec7Title: "7. Information Extraction (NER)",
+    sec7P: "The system reliably extracts Named Entities (persons, locations, dates, equations) from raw unformatted documents.",
+    sec7InputTitle: "Input Snippet:",
+    sec7InputText: "'Ibn Sina was born in Bukhara'",
+    sec7EntitiesTitle: "Identified Entities:",
+    entity1Key: "Ibn Sina:",
+    entity1Val: "Person (Scholar)",
+    entity2Key: "Bukhara:",
+    entity2Val: "Geographic Location",
+    sec8Title: "8. Code Generation & Debugging",
+    sec8P: "LLMs draft code in diverse programming languages (Python, JavaScript, C++, SQL), trace bugs, and generate technical documentation.",
+    sec8Prompt: "<strong>Prompt:</strong> Write a Python function to compute the mean of a list.",
+    sec9Title: "9. Reasoning & Step-by-Step Logic",
+    sec9P: "Modern models carry out multistep chain-of-thought deductions to solve formal logic and analytical dilemmas.",
+    sec9ReasonTitle: "Syllogism Example:",
+    sec9PremiseTitle: "Premises:",
+    sec9P1: "All birds have wings.",
+    sec9P2: "A sparrow is a bird.",
+    sec9Conclusion: "Logical Conclusion: A sparrow has wings.",
+    sec10Title: "10. Multi-Task Learning",
+    sec10P: "Instead of building separate specialized pipelines for every single use case, a single foundation model handles numerous distinct tasks via prompting:",
+    task1: "Cross-lingual translation.",
+    task2: "Document condensation and abstracts.",
+    task3: "Domain-specific questioning.",
+    task4: "Automated tagging and sorting.",
+    task5: "Creative and technical copywriting.",
+    sec11Title: "11. In-Context Learning (Few-Shot)",
+    sec11P: "The engine masters novel tasks instantly when shown 2 or 3 illustrative exemplars directly inside the prompt without retraining weights.",
+    sec11ExampleTitle: "Few-shot Prompt Structure:",
+    sec11Body: "Cat ⟵ Animal<br>Horse ⟵ Animal<br>Apple ⟵ ?<br><br><strong style=\"color: var(--success);\"><i class=\"fa-solid fa-circle-check\"></i> Expected Output:</strong> Fruit",
+    sec12Title: "12. Multilingual Support",
+    sec12P: "Trained on multilingual web datasets, current foundation models converse smoothly across widespread languages, including:",
+    langAr: "Arabic",
+    langEn: "English",
+    langFr: "French",
+    langEs: "Spanish",
+    langZh: "Chinese",
+    secEduTitle: "Transformative Potential in Education",
+    secEduP: "As part of the <strong>'AI in Learning'</strong> curriculum, these technological strengths directly map to modern pedagogical applications:",
+    edu1Title: "1. 24/7 Personalized Learning Tutor:",
+    edu1Body: "Learners can prompt queries anytime and receive alternative conceptual explanations (real-world analogies, step-by-step breakdowns) calibrated to their comprehension level, enabling true <strong>differentiated instruction</strong>.",
+    edu2Title: "2. Instructional Design Assistant:",
+    edu2Body: "Drastically accelerates prep work: generating formative quizzes, drafting rubric criteria, formulating varied discussion prompts, and synthesizing reference papers.",
+    edu3Title: "3. Overcoming Language Barriers:",
+    edu3Body: "Translating and breaking down dense global research into the student's mother tongue to lower cognitive load and democratize access.",
+    edu4Title: "4. Universal Design & Inclusive Learning:",
+    edu4Body: "Assisting students with diverse learning needs through customized text simplification, multi-format delivery, and accessibility adaptations.",
+    footerText: "Higher Normal School - Bejaia Annex — Generative AI Course 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selection across the course
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

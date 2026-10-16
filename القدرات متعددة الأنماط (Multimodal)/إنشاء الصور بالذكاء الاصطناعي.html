@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدرس 02: إنشاء الصور بالذكاء الاصطناعي</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --accent-hover: #dd6b20;
+    --light: #ebf8ff;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --code-bg: #0f172a;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1150px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.15);
+    padding: 7px 18px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+    transform: translateX(-3px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+  }
+  
+  .header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.15rem;
+    opacity: 0.95;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 45px 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* Overview Cards */
+  .use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .use-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .use-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  .use-card .icon-box {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 14px;
+    background: var(--light);
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.4rem;
+  }
+
+  .use-card h4 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .use-card p {
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  /* Tools Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .tool-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  }
+
+  .tool-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--light);
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .tool-info h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+
+  .tool-info p {
+    font-size: 0.93rem;
+    color: var(--muted);
+  }
+
+  /* Prompt Elements Guide */
+  .elements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .element-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  }
+
+  .element-card h3 {
+    font-size: 1.15rem;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .tag {
+    background: var(--light);
+    color: var(--secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(43, 108, 176, 0.15);
+  }
+
+  .compare-box {
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .compare-weak {
+    color: #e53e3e;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .compare-strong {
+    color: #2f855a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+
+  /* Aspect Ratio Section */
+  .aspect-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .aspect-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .aspect-ratio-box {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 12px;
+    border: 2px dashed var(--secondary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: var(--secondary);
+    background: #f0f7ff;
+  }
+
+  .aspect-box-1-1 { width: 55px; height: 55px; }
+  .aspect-box-16-9 { width: 75px; height: 44px; }
+  .aspect-box-9-16 { width: 44px; height: 75px; }
+  .aspect-box-4-3 { width: 65px; height: 50px; }
+
+  /* Golden Rule Notice */
+  .golden-rule-box {
+    background: linear-gradient(to left, #fffaf0, #feebc8);
+    border-right: 5px solid var(--accent);
+    padding: 22px 26px;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 15px rgba(237, 137, 54, 0.1);
+  }
+
+  .golden-rule-box h4 {
+    color: #9c4221;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .golden-rule-box p {
+    color: #7b341e;
+    font-size: 0.95rem;
+  }
+
+  /* Subject Example Cards */
+  .subject-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  }
+
+  .subject-header {
+    background: #f8fafc;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .subject-header .title-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .subject-badge {
+    background: var(--primary);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 50px;
+  }
+
+  .subject-body {
+    padding: 22px;
+  }
+
+  .prompt-display {
+    background: var(--code-bg);
+    color: #e2e8f0;
+    padding: 18px;
+    border-radius: 10px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    direction: ltr;
+    text-align: left;
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .prompt-display .btn-copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .prompt-display .btn-copy:hover {
+    background: var(--accent);
+  }
+
+  .teacher-tip {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #166534;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* 22 Prompts Gallery */
+  .prompts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .prompt-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .prompt-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  }
+
+  .prompt-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .prompt-num {
+    width: 32px;
+    height: 32px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+
+  .prompt-topic-tag {
+    background: #edf2f7;
+    color: var(--muted);
+    font-size: 0.78rem;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-weight: 600;
+  }
+
+  .prompt-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+
+  .prompt-ar-desc {
+    font-size: 0.9rem;
+    color: #4a5568;
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    border-right: 3px solid var(--secondary);
+  }
+
+  .prompt-en-code {
+    background: #0f172a;
+    color: #e2e8f0;
+    direction: ltr;
+    text-align: left;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.85rem;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 120px;
+  }
+
+  .prompt-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+  }
+
+  .btn-action {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .btn-copy-en {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-copy-en:hover {
+    background: var(--secondary);
+  }
+
+  .btn-copy-ar {
+    background: #edf2f7;
+    color: var(--text);
+  }
+
+  .btn-copy-ar:hover {
+    background: #e2e8f0;
+  }
+
+  /* Content Types Checklist */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .type-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .type-item i {
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1e293b;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 9999;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  .toast i {
+    color: #4ade80;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 50px;
+  }
+  
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.8rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+    .prompts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 06.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الفصل
+    </a>
+    <span class="header-badge">الفصل 06 • الدرس 02</span>
+    <h1>إنشاء الصور بالذكاء الاصطناعي (AI Image Generation)</h1>
+    <div class="subtitle">
+      أصبحت نماذج الذكاء الاصطناعي قادرة على تحويل النصوص إلى صور عالية الجودة. يكفي أن تصف ما تريد بالكلمات ليقوم النموذج بإنشاء صورة مطابقة تماماً للمطلوب وبطرق تعليمية مبتكرة.
+    </div>
+  </div>
+
+  <!-- مجالات واستخدامات التوليد البصري -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+    أشهر استخدامات إنشاء الصور بالذكاء الاصطناعي
+  </div>
+
+  <div class="use-cases-grid">
+    <div class="use-card">
+      <div class="icon-box"><i class="fa-solid fa-paintbrush"></i></div>
+      <h4>الرسومات الفنية</h4>
+      <p>إنشاء لوحات، رسومات رقمية، ومحاكاة لمختلف المدارس التشكيلية بإبداع فائق.</p>
+    </div>
+    <div class="use-card">
+      <div class="icon-box"><i class="fa-solid fa-chart-pie"></i></div>
+      <h4>الإنفوجرافيك</h4>
+      <p>إنشاء مخططات بصرية، خرائط معرفية، ورسوم تفسيرية تسلسلية توضح المفاهيم.</p>
+    </div>
+    <div class="use-card">
+      <div class="icon-box"><i class="fa-solid fa-share-nodes"></i></div>
+      <h4>المحتوى الرقمي</h4>
+      <p>تصميم بوسترات ترويجية، هويات بصرية، وخلفيات ملهمة لمنصات التواصل.</p>
+    </div>
+    <div class="use-card">
+      <div class="icon-box"><i class="fa-solid fa-graduation-cap"></i></div>
+      <h4>التعليم والتدريس</h4>
+      <p>إنشاء صور توضيحية للدروس، بطاقات تعليمية، وقصص مصورة تشد انتباه الطلاب.</p>
+    </div>
+  </div>
+
+  <!-- أشهر الأدوات والمنصات -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+    أشهر أدوات إنشاء الصور وتوليدها
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-icon"><i class="fa-solid fa-robot"></i></div>
+      <div class="tool-info">
+        <h4>ChatGPT (DALL·E 3)</h4>
+        <p>إنشاء وتعديل الصور مباشرة عبر المحادثة النصية وفهم سياقي دقيق للوصف العربي والإنجليزي.</p>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><i class="fa-solid fa-compass-drafting"></i></div>
+      <div class="tool-info">
+        <h4>Midjourney</h4>
+        <p>الرائد في إخراج صور فنية وإبداعية بجودة سينمائية فائقة وتفاصيل بصرية مذهلة.</p>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><i class="fa-solid fa-code-branch"></i></div>
+      <div class="tool-info">
+        <h4>Stable Diffusion</h4>
+        <p>نموذج مفتوح المصدر بالكامل، قابل للتشغيل محلياً والتخصيص التام عبر لوحات تحكم متقدمة.</p>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><i class="fa-solid fa-bolt"></i></div>
+      <div class="tool-info">
+        <h4>NanoBanana (Gemini)</h4>
+        <p>توليد وتحرير الصور التفاعلية بسرعة استجابة عالية بالاعتماد على قدرات نماذج Google Gemini المتقدمة متعددة الوسائط.</p>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><i class="fa-solid fa-cubes-stacked"></i></div>
+      <div class="tool-info">
+        <h4>Canva AI</h4>
+        <p>إنشاء وتعديل التصاميم والإنفوجرافيك والملصقات التعليمية بسهولة وسرعة فائقة.</p>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><i class="fa-solid fa-font"></i></div>
+      <div class="tool-info">
+        <h4>Ideogram</h4>
+        <p>متخصص ومتميز للغاية في كتابة النصوص والخطوط بوضوح داخل الصور المولدة بدقة عالية.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- مكونات الـ Prompt الاحترافي -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-sliders"></i></span>
+    مكونات الأوامر النصية الاحترافية (Prompt Engineering)
+  </div>
+
+  <div class="elements-grid">
+    <!-- الموضوع -->
+    <div class="element-card">
+      <h3><i class="fa-solid fa-bullseye text-accent"></i> 1. الموضوع (Subject)</h3>
+      <p class="text-muted" style="font-size: 0.9rem;">ماذا تريد بالتحديد في الصورة؟ كن وصفياً ومحدداً بدقة بدلاً من الكلمات العامة.</p>
+      <div class="compare-box">
+        <div class="compare-weak"><i class="fa-solid fa-circle-xmark"></i> ضعيف: "قطة"</div>
+        <div class="compare-strong"><i class="fa-solid fa-circle-check"></i> قوي: "قط سمين برتقالي يجلس على نافذة مطلة على مدينة"</div>
+      </div>
+    </div>
+
+    <!-- الأسلوب الفني -->
+    <div class="element-card">
+      <h3><i class="fa-solid fa-palette text-accent"></i> 2. الأسلوب الفني (Style)</h3>
+      <p class="text-muted" style="font-size: 0.9rem;">يحدد الهوية البصرية للرسم أو الصورة:</p>
+      <div class="tags-list">
+        <span class="tag">Photorealistic (واقعي)</span>
+        <span class="tag">Digital art (رقمي)</span>
+        <span class="tag">Watercolor (ألوان مائية)</span>
+        <span class="tag">Anime style (أنمي)</span>
+        <span class="tag">3D render (ثلاثي الأبعاد)</span>
+        <span class="tag">Oil painting (زيتي)</span>
+        <span class="tag">Pixel art (بكسل)</span>
+        <span class="tag">Infographic (إنفوجرافيك)</span>
+      </div>
+    </div>
+
+    <!-- الإضاءة -->
+    <div class="element-card">
+      <h3><i class="fa-solid fa-lightbulb text-accent"></i> 3. الإضاءة (Lighting)</h3>
+      <p class="text-muted" style="font-size: 0.9rem;">تخلق العمق والشعور العام بالمشهد:</p>
+      <div class="tags-list">
+        <span class="tag">Golden hour (إضاءة ذهبية)</span>
+        <span class="tag">Cinematic lighting (سينمائية)</span>
+        <span class="tag">Soft studio light (استوديو ناعمة)</span>
+        <span class="tag">Neon glow (توهج نيون)</span>
+        <span class="tag">Natural daylight (ضوء طبيعي)</span>
+      </div>
+    </div>
+
+    <!-- الألوان -->
+    <div class="element-card">
+      <h3><i class="fa-solid fa-eye-dropper text-accent"></i> 4. لوحة الألوان (Colors)</h3>
+      <p class="text-muted" style="font-size: 0.9rem;">تحدد التناغم والجو النفسي للمحتوى البصري:</p>
+      <div class="tags-list">
+        <span class="tag">Pastel palette (ألوان باستيل هادئة)</span>
+        <span class="tag">Vibrant colors (ألوان حيوية فاقعة)</span>
+        <span class="tag">Monochrome (أحادي اللون)</span>
+        <span class="tag">Warm tones (درجات دافئة)</span>
+        <span class="tag">Soft blue palette (أزرق ناعم)</span>
+      </div>
+    </div>
+
+    <!-- التركيب والزاوية -->
+    <div class="element-card">
+      <h3><i class="fa-solid fa-camera text-accent"></i> 5. التركيب والزاوية (Composition)</h3>
+      <p class="text-muted" style="font-size: 0.9rem;">تحديد موضع الكاميرا والمنظور الهندسي:</p>
+      <div class="tags-list">
+        <span class="tag">Close-up (لقطة قريبة)</span>
+        <span class="tag">Wide angle (زاوية واسعة)</span>
+        <span class="tag">Top view / Bird's eye (رؤية علوية)</span>
+        <span class="tag">Rule of thirds (قاعدة الأثلاث)</span>
+        <span class="tag">Isometric (منظور متساوي القياس)</span>
+      </div>
+    </div>
+
+    <!-- محسنات الجودة -->
+    <div class="element-card">
+      <h3><i class="fa-solid fa-gem text-accent"></i> 6. محسنات الجودة والقيود</h3>
+      <p class="text-muted" style="font-size: 0.9rem;">كلمات ترفع دقة النموذج وتستبعد العناصر غير المرغوبة:</p>
+      <div class="tags-list">
+        <span class="tag">8K, Ultra HD</span>
+        <span class="tag">Highly detailed</span>
+        <span class="tag">Masterpiece</span>
+        <span class="tag">Sharp focus</span>
+        <span class="tag">no text, no labels (القيود)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- نسب الأبعاد Aspect Ratio -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-crop-simple"></i></span>
+    اختيار أبعاد الصورة حسب الاستخدام (Aspect Ratio)
+  </div>
+
+  <div class="aspect-grid">
+    <div class="aspect-card">
+      <div class="aspect-ratio-box aspect-box-1-1">1:1</div>
+      <h4 style="color: var(--primary); margin-bottom: 6px;">1:1 مربع</h4>
+      <p style="font-size: 0.88rem; color: var(--muted);">منشورات إنستغرام، الأيقونات، الشعارات، بطاقات المفردات والتعريف.</p>
+    </div>
+    <div class="aspect-card">
+      <div class="aspect-ratio-box aspect-box-16-9">16:9</div>
+      <h4 style="color: var(--primary); margin-bottom: 6px;">16:9 عريض</h4>
+      <p style="font-size: 0.88rem; color: var(--muted);">شرائح العروض التقديمية (PowerPoint)، شاشات الفيديو، أغلفة الدروس.</p>
+    </div>
+    <div class="aspect-card">
+      <div class="aspect-ratio-box aspect-box-9-16">9:16</div>
+      <h4 style="color: var(--primary); margin-bottom: 6px;">9:16 عمودي</h4>
+      <p style="font-size: 0.88rem; color: var(--muted);">قصص إنستغرام والواتساب (Stories/Reels)، والملصقات الجدارية الطولية.</p>
+    </div>
+    <div class="aspect-card">
+      <div class="aspect-ratio-box aspect-box-4-3">4:3</div>
+      <h4 style="color: var(--primary); margin-bottom: 6px;">4:3 كلاسيكي</h4>
+      <p style="font-size: 0.88rem; color: var(--muted);">أوراق العمل المطبوعة، صفحات الكتب والكتيبات، والمراجع التعليمية الميدانية.</p>
+    </div>
+  </div>
+
+  <!-- القاعدة الذهبية للمعلمين -->
+  <div class="golden-rule-box">
+    <h4><i class="fa-solid fa-award"></i> ملاحظة هامة: القاعدة الذهبية لتوليد الصور التعليمية</h4>
+    <p>
+      <strong>النماذج ما تزال تواجه صعوبة في كتابة النصوص العربية بدقة داخل الصور.</strong><br>
+      لذلك، صمم المخطط البصري دائماً بخلفية نظيفة ومساحات فارغة عبر إضافة: 
+      <code>"no text, no watermark, empty spaces for labels"</code> أو <code>"labels to be filled by teacher"</code> في نهاية البرومبت، ثم افتح الصورة داخل برنامج <strong>Canva</strong> أو <strong>PowerPoint</strong> وأضف البيانات والتسميات العربية بنفسك بدقة لضمان نتيجة نظيفة واحترافية.
+    </p>
+  </div>
+
+  <!-- أمثلة تطبيقية حسب المواد الدراسية -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-chalkboard-user"></i></span>
+    أمثلة ونماذج تطبيقية حسب التخصص الدراسي
+  </div>
+
+  <!-- مادة العلوم -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">العلوم الطبيعية</span>
+        <strong>علوم: الخلية النباتية</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">مخطط تفصيلي دقيق</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        Educational diagram of a plant cell with nucleus, chloroplasts, cell wall and vacuole, on a plain white background, flat vector style, cross-section, centered, top-down view, bright clear colors, each organelle a different color, no text, no labels, no watermark
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> أضف التسميات العربية لاحقاً في Canva أو PowerPoint، وراجع مواضع العضيات مع المنهج المدرسي.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- الجغرافيا -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">الجغرافيا</span>
+        <strong>جغرافيا: دورة الماء في الطبيعة</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">إنفوجرافيك 16:9</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        The water cycle: sea, evaporation, clouds, rain and a river returning to the sea, in one landscape with mountains and a small village, clean infographic-style illustration, wide horizontal 16:9 layout, arrows showing the direction of flow, soft blue and green palette, morning light, no text, no watermark
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> المخطط يوفر مسارات واضحة بالأسهم؛ أضف المصطلحات (تبخر، تكاثف، تساقط) يدوياً.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- التاريخ -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">التاريخ</span>
+        <strong>تاريخ: ميناء تجاري في العصور الوسطى</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">مشهد توضيحي قصصي</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        A busy trading port in a Mediterranean city in the 12th century, merchants unloading wooden boats, detailed storybook illustration, wide shot, warm sunset light, no text, no modern objects, no watermark
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> يُعرض دائماً بوصفه رسماً تمثيلياً مولداً وليس وثيقة أثرية قطعية. راجع الهندسة المعمارية واللباس مع المراجع التاريخية.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- اللغات -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">اللغات الأجنبية</span>
+        <strong>لغات: بطاقة مفردات مصورة (Flashcard)</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">نسبة 1:1 للأطفال</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        A simple illustration of a red apple, on a plain light-blue background, flat vector, thick outlines, child-friendly, single object centered, square 1:1, bright colors, no text, no shadow, no other objects
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> لإنشاء سلسلة بطاقات متجانسة للقسم، ثبّت كلمات الأسلوب الفني في البرومبت وغيّر اسم الكائن فقط (مثلاً: an orange, a book...).</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- الرياضيات -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">الرياضيات</span>
+        <strong>رياضيات: سياق واقعي لمسألة هندسية</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">حساب المحيط والمساحة</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        Two children measuring the sides of a rectangular school yard with a measuring tape, in a sunny school playground, clean flat illustration, top-down view, the whole rectangle visible, bright colors, no numbers, no text, no watermark
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> استعمل برامج مثل GeoGebra لرسم المخططات البيانية الدقيقة؛ مولدات الصور تُستخدم لتجسيد وضعية المشكلة في سياق حياتي مشوق.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- تسيير القسم -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">تسيير القسم</span>
+        <strong>ملصق إداري: ميثاق وقواعد القسم</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">قالب ملصق A3 عمودي</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        Empty poster background for classroom rules, with a decorative border of books, pencils and stars, flat vector illustration, vertical A3 poster layout, large empty space in the center for text, soft pastel palette, no text, no watermark
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> اترك وسط التصميم فارغاً لكتابة بنود ميثاق القسم وقواعد السلوك بخطك أو رقمياً مع تلاميذك.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- قصة مصورة -->
+  <div class="subject-card">
+    <div class="subject-header">
+      <div class="title-badge">
+        <span class="subject-badge">العلوم واللغات</span>
+        <strong>قصة مصورة: ذبول نبتة وتعافيها (4 إطارات)</strong>
+      </div>
+      <span style="font-size: 0.85rem; color: var(--muted);">Comic Strip 2x2</span>
+    </div>
+    <div class="subject-body">
+      <div class="prompt-display">
+        <button class="btn-copy" onclick="copyText(this)">
+          <i class="fa-solid fa-copy"></i> نسخ Prompt
+        </button>
+        Four-panel comic strip: a student with short black hair and a blue jacket notices a wilting plant, waters it, and sees it recover, simple comic style with consistent character design, four equal panels in a 2x2 grid, bright colors, no speech bubbles, no text, no watermark
+      </div>
+      <div class="teacher-tip">
+        <i class="fa-solid fa-circle-info"></i>
+        <span><strong>توجيه للمعلم:</strong> ممتاز لأنشطة التعبير الشفهي والكتابي؛ يُطلب من المتعلمين كتابة الحوارات المناسبة داخل الفقاعات.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- معرض البرومبتات الـ 22 -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-images"></i></span>
+    معرض البرومبتات الجاهزة — 22 برومبت احترافي مجرّب
+  </div>
+  <p style="color: var(--muted); margin-bottom: 20px;">
+    مجموعة من الأوامر الجاهزة المنقحة التي تعطي نتائج تعليمية واضحة ومباشرة. انسخ الأمر الإنجليزي للمولد مباشرة، أو عدّل على الصياغة العربية.
+  </p>
+
+  <div class="prompts-grid">
+
+    <!-- 01 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">01</span>
+        <span class="prompt-topic-tag">علوم • إنفوجرافيك</span>
+      </div>
+      <h4 class="prompt-title">دورة حياة النبات</h4>
+      <div class="prompt-ar-desc">رسم توضيحي لدورة حياة نبات عباد الشمس من البذرة إلى الزهرة، 4 مراحل مرقمة، خلفية بيضاء.</div>
+      <div class="prompt-en-code">Flat infographic of sunflower life cycle from seed to flower, 4 numbered stages, clean white background, educational, icons</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Flat infographic of sunflower life cycle from seed to flower, 4 numbered stages, clean white background, educational, icons')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'رسم توضيحي لدورة حياة نبات عباد الشمس من البذرة إلى الزهرة، 4 مراحل مرقمة، خلفية بيضاء')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">02</span>
+        <span class="prompt-topic-tag">فلك • أطفال</span>
+      </div>
+      <h4 class="prompt-title">النظام الشمسي للأطفال</h4>
+      <div class="prompt-ar-desc">النظام الشمسي كشخصيات كرتونية لطيفة تبتسم، كل كوكب له وجه، خلفية فضاء بنفسجي.</div>
+      <div class="prompt-en-code">Solar system planets as cute cartoon characters with smiling faces, purple space background, kawaii, educational poster</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Solar system planets as cute cartoon characters with smiling faces, purple space background, kawaii, educational poster')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'النظام الشمسي كشخصيات كرتونية لطيفة تبتسم، كل كوكب له وجه، خلفية فضاء بنفسجي')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">03</span>
+        <span class="prompt-topic-tag">أحياء • مخطط</span>
+      </div>
+      <h4 class="prompt-title">خريطة ذهنية للخلية</h4>
+      <div class="prompt-ar-desc">خريطة ذهنية منظمة للخلية الحيوانية، مركزها نواة، فروع ملونة للعضيات، خلفية بيضاء.</div>
+      <div class="prompt-en-code">Organized mind map of animal cell, central nucleus, colorful branches for organelles, infographic style, white background</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Organized mind map of animal cell, central nucleus, colorful branches for organelles, infographic style, white background')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'خريطة ذهنية منظمة للخلية الحيوانية، مركزها نواة، فروع ملونة للعضيات، خلفية بيضاء')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">04</span>
+        <span class="prompt-topic-tag">علوم التربية • هرم</span>
+      </div>
+      <h4 class="prompt-title">مثلث مستويات التعلم</h4>
+      <div class="prompt-ar-desc">هرم إنفوجرافيك يوضح مستويات التعلم (بلوم)، تدرج ألوان بنفسجي إلى أزرق، أيقونات بسيطة.</div>
+      <div class="prompt-en-code">Infographic pyramid showing Bloom's taxonomy levels, gradient purple to blue, minimal icons, modern</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Infographic pyramid showing Bloom\'s taxonomy levels, gradient purple to blue, minimal icons, modern')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'هرم إنفوجرافيك يوضح مستويات التعلم (بلوم)، تدرج ألوان بنفسجي إلى أزرق، أيقونات بسيطة')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">05</span>
+        <span class="prompt-topic-tag">تقنية • فصل دراسي</span>
+      </div>
+      <h4 class="prompt-title">فصل المستقبل الذكي</h4>
+      <div class="prompt-ar-desc">فصل دراسي مستقبلي مع شاشات هولوجرام وطلاب يستخدمون نظارات VR، إضاءة نيون.</div>
+      <div class="prompt-en-code">Futuristic classroom with hologram screens and students wearing VR headsets, neon lighting, ultra detailed, 8k</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Futuristic classroom with hologram screens and students wearing VR headsets, neon lighting, ultra detailed, 8k')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'فصل دراسي مستقبلي مع شاشات هولوجرام وطلاب يستخدمون نظارات VR، إضاءة نيون')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">06</span>
+        <span class="prompt-topic-tag">كيمياء • فيزياء</span>
+      </div>
+      <h4 class="prompt-title">الذرة ثلاثية الأبعاد</h4>
+      <div class="prompt-ar-desc">نموذج ذرة ثلاثي الأبعاد يوضح الإلكترونات تدور حول النواة، ألوان متوهجة، خلفية داكنة.</div>
+      <div class="prompt-en-code">3D atom model with electrons orbiting nucleus, glowing colors, dark background, scientific visualization</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, '3D atom model with electrons orbiting nucleus, glowing colors, dark background, scientific visualization')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'نموذج ذرة ثلاثي الأبعاد يوضح الإلكترونات تدور حول النواة، ألوان متوهجة، خلفية داكنة')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">07</span>
+        <span class="prompt-topic-tag">قصص • إلهام</span>
+      </div>
+      <h4 class="prompt-title">مختبر العلوم السحري</h4>
+      <div class="prompt-ar-desc">مختبر سحري لطفلة عالمة صغيرة، قوارير تتوهج، رسم بأسلوب استوديو غيبلي، إضاءة دافئة.</div>
+      <div class="prompt-en-code">Magical laboratory of a little girl scientist, glowing potion bottles, Studio Ghibli style, warm lighting</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Magical laboratory of a little girl scientist, glowing potion bottles, Studio Ghibli style, warm lighting')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'مختبر سحري لطفلة عالمة صغيرة، قوارير تتوهج، رسم بأسلوب استوديو غيبلي، إضاءة دافئة')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 08 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">08</span>
+        <span class="prompt-topic-tag">جغرافيا • مخطط</span>
+      </div>
+      <h4 class="prompt-title">دورة الماء (ألوان مائية)</h4>
+      <div class="prompt-ar-desc">مخطط دورة الماء بأسلوب ألوان مائية، أسهم توضح التبخر والتكاثف، درجات الأزرق الهادئة.</div>
+      <div class="prompt-en-code">Water cycle diagram in watercolor style, arrows showing evaporation and condensation, soft blue tones</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Water cycle diagram in watercolor style, arrows showing evaporation and condensation, soft blue tones')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'مخطط دورة الماء بأسلوب ألوان مائية، أسهم توضح التبخر والتكاثف، درجات الأزرق الهادئة')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 09 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">09</span>
+        <span class="prompt-topic-tag">لغات • إنفوجرافيك</span>
+      </div>
+      <h4 class="prompt-title">فوائد القراءة</h4>
+      <div class="prompt-ar-desc">إنفوجرافيك مربع عن 5 فوائد للقراءة، أيقونات مسطحة، ألوان دافئة، تصميم عصري بسيط.</div>
+      <div class="prompt-en-code">Square infographic about 5 benefits of reading, flat icons, warm colors, modern minimal</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Square infographic about 5 benefits of reading, flat icons, warm colors, modern minimal')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'إنفوجرافيك مربع عن 5 فوائد للقراءة، أيقونات مسطحة، ألوان دافئة، تصميم عصري بسيط')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">10</span>
+        <span class="prompt-topic-tag">أحياء • تشريح</span>
+      </div>
+      <h4 class="prompt-title">تشريح جسم الإنسان</h4>
+      <div class="prompt-ar-desc">تشريح مبسط لجسم الإنسان يظهر الأعضاء الرئيسية بألوان مختلفة، خلفية فاتحة تعليمية.</div>
+      <div class="prompt-en-code">Simplified human body anatomy showing main organs in different colors, light background, educational illustration</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Simplified human body anatomy showing main organs in different colors, light background, educational illustration')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'تشريح مبسط لجسم الإنسان يظهر الأعضاء الرئيسية بألوان مختلفة، خلفية فاتحة تعليمية')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">11</span>
+        <span class="prompt-topic-tag">خيال • أدب</span>
+      </div>
+      <h4 class="prompt-title">مكتبة الأحلام اللانهائية</h4>
+      <div class="prompt-ar-desc">مكتبة ضخمة لا نهائية مع سلالم متحركة وكتب طائرة، إضاءة سينمائية، واقعية فائقة 8k.</div>
+      <div class="prompt-en-code">Endless dream library with floating stairs and flying books, cinematic lighting, photorealistic, 8k</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Endless dream library with floating stairs and flying books, cinematic lighting, photorealistic, 8k')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'مكتبة ضخمة لا نهائية مع سلالم متحركة وكتب طائرة، إضاءة سينمائية، واقعية فائقة 8k')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">12</span>
+        <span class="prompt-topic-tag">بيئة • علوم</span>
+      </div>
+      <h4 class="prompt-title">الشبكة الغذائية في الغابة</h4>
+      <div class="prompt-ar-desc">شبكة غذائية في غابة بأسلوب آيزومترك، أسهم تربط الحيوانات، أسلوب تعليمي، خلفية بيضاء.</div>
+      <div class="prompt-en-code">Forest food web in isometric style, arrows connecting animals, cute, educational, white background</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Forest food web in isometric style, arrows connecting animals, cute, educational, white background')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'شبكة غذائية في غابة بأسلوب آيزومترك، أسهم تربط الحيوانات، أسلوب تعليمي، خلفية بيضاء')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">13</span>
+        <span class="prompt-topic-tag">منهجية • صلصال 3D</span>
+      </div>
+      <h4 class="prompt-title">خطوات البحث العلمي</h4>
+      <div class="prompt-ar-desc">6 خطوات للبحث العلمي بتخطيط دائري، أيقونات ثلاثية الأبعاد من الصلصال وألوان باستيل.</div>
+      <div class="prompt-en-code">6 steps of scientific method in circular layout, 3D clay icons, pastel colors</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, '6 steps of scientific method in circular layout, 3D clay icons, pastel colors')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, '6 خطوات للبحث العلمي بتخطيط دائري، أيقونات ثلاثية الأبعاد من الصلصال وألوان باستيل')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">14</span>
+        <span class="prompt-topic-tag">جيولوجيا • مقطع عرضي</span>
+      </div>
+      <h4 class="prompt-title">البركان من الداخل</h4>
+      <div class="prompt-ar-desc">مقطع عرضي لبركان يوضح طبقات الحمم، بأسلوب واقعي تعليمي مفصل وواضح.</div>
+      <div class="prompt-en-code">Cross-section of volcano showing lava layers, realistic educational cutaway, detailed, labeled</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Cross-section of volcano showing lava layers, realistic educational cutaway, detailed, labeled')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'مقطع عرضي لبركان يوضح طبقات الحمم، بأسلوب واقعي تعليمي مفصل وواضح')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">15</span>
+        <span class="prompt-topic-tag">مستقبل • أطفال</span>
+      </div>
+      <h4 class="prompt-title">الروبوت المعلم</h4>
+      <div class="prompt-ar-desc">روبوت لطيف صغير يعلم الأطفال في حديقة، عيون كبيرة مضيئة، أسلوب صلصال مرح ثلاثي الأبعاد.</div>
+      <div class="prompt-en-code">Cute small robot teacher teaching kids in a garden, big glowing eyes, clay 3D style, joyful</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Cute small robot teacher teaching kids in a garden, big glowing eyes, clay 3D style, joyful')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'روبوت لطيف صغير يعلم الأطفال في حديقة، عيون كبيرة مضيئة، أسلوب صلصال مرح ثلاثي الأبعاد')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">16</span>
+        <span class="prompt-topic-tag">رياضيات • كرتون</span>
+      </div>
+      <h4 class="prompt-title">جدول الضرب المرح</h4>
+      <div class="prompt-ar-desc">جدول ضرب ملون وممتع للأطفال، كل رقم له شخصية كرتونية، خلفية صفراء فاتحة مسطحة.</div>
+      <div class="prompt-en-code">Colorful fun multiplication table for kids, each number has a character, light yellow background, flat</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Colorful fun multiplication table for kids, each number has a character, light yellow background, flat')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'جدول ضرب ملون وممتع للأطفال، كل رقم له شخصية كرتونية، خلفية صفراء فاتحة مسطحة')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 17 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">17</span>
+        <span class="prompt-topic-tag">فيزياء • مقارنة</span>
+      </div>
+      <h4 class="prompt-title">أنواع الطاقة</h4>
+      <div class="prompt-ar-desc">إنفوجرافيك يقارن الطاقة المتجددة وغير المتجددة، مقسوم لنصفين، أيقونات حديثة بنمط آيزومترك.</div>
+      <div class="prompt-en-code">Infographic comparing renewable vs non-renewable energy, split layout, modern icons, isometric</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Infographic comparing renewable vs non-renewable energy, split layout, modern icons, isometric')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'إنفوجرافيك يقارن الطاقة المتجددة وغير المتجددة، مقسوم لنصفين، أيقونات حديثة بنمط آيزومترك')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 18 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">18</span>
+        <span class="prompt-topic-tag">أحياء • مائي</span>
+      </div>
+      <h4 class="prompt-title">الخلية النباتية بالألوان المائية</h4>
+      <div class="prompt-ar-desc">خلية نباتية مفصلة بأسلوب ألوان مائية جميلة، عضيات مرسومة بدقة، لوحة ألوان خضراء هادئة.</div>
+      <div class="prompt-en-code">Detailed plant cell in beautiful watercolor style, organelles precisely drawn, soft green palette</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Detailed plant cell in beautiful watercolor style, organelles precisely drawn, soft green palette')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'خلية نباتية مفصلة بأسلوب ألوان مائية جميلة، عضيات مرسومة بدقة، لوحة ألوان خضراء هادئة')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">19</span>
+        <span class="prompt-topic-tag">كيمياء • واقعي</span>
+      </div>
+      <h4 class="prompt-title">مختبر الكيمياء المدرسي الآمن</h4>
+      <div class="prompt-ar-desc">مختبر كيمياء مدرسي نظيف وآمن، أدوات مرتبة، إضاءة طبيعية دافئة من نافذة، فوتوريلستك.</div>
+      <div class="prompt-en-code">Clean safe school chemistry lab, organized tools, natural window light, photorealistic, bright</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Clean safe school chemistry lab, organized tools, natural window light, photorealistic, bright')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'مختبر كيمياء مدرسي نظيف وآمن، أدوات مرتبة، إضاءة طبيعية دافئة من نافذة، فوتوريلستك')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 20 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">20</span>
+        <span class="prompt-topic-tag">فضاء • أنمي</span>
+      </div>
+      <h4 class="prompt-title">رحلة في الفضاء</h4>
+      <div class="prompt-ar-desc">طفلان عربيان يرتديان بدلة فضاء ينظران للأرض من القمر، أسلوب أنمي سينمائي مبهر.</div>
+      <div class="prompt-en-code">Two Arab kids in spacesuits looking at Earth from the moon, cinematic anime style, awe inspiring</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Two Arab kids in spacesuits looking at Earth from the moon, cinematic anime style, awe inspiring')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'طفلان عربيان يرتديان بدلة فضاء ينظران للأرض من القمر، أسلوب أنمي سينمائي مبهر')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 21 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">21</span>
+        <span class="prompt-topic-tag">صحة • هرم غذائي</span>
+      </div>
+      <h4 class="prompt-title">الهرم الغذائي الصحي</h4>
+      <div class="prompt-ar-desc">هرم غذائي متوازن بأطعمة ثلاثية الأبعاد من الصلصال، تدرج لوني صحي، تعليمي ولطيف.</div>
+      <div class="prompt-en-code">Balanced food pyramid with 3D clay foods, healthy gradient, cute, educational</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Balanced food pyramid with 3D clay foods, healthy gradient, cute, educational')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'هرم غذائي متوازن بأطعمة ثلاثية الأبعاد من الصلصال، تدرج لوني صحي، تعليمي ولطيف')">نسخ العربي</button>
+      </div>
+    </div>
+
+    <!-- 22 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <span class="prompt-num">22</span>
+        <span class="prompt-topic-tag">علوم • تسلسل</span>
+      </div>
+      <h4 class="prompt-title">دورة حياة الفراشة</h4>
+      <div class="prompt-ar-desc">دورة حياة الفراشة 4 مراحل بأسلوب مسطح جميل، خلفية حديقة ناعمة ضبابية، تعليمية.</div>
+      <div class="prompt-en-code">Butterfly life cycle 4 stages, beautiful flat style, blurred garden background, educational</div>
+      <div class="prompt-actions">
+        <button class="btn-action btn-copy-en" onclick="copyTextContent(this, 'Butterfly life cycle 4 stages, beautiful flat style, blurred garden background, educational')">
+          <i class="fa-solid fa-copy"></i> نسخ الإنجليزي
+        </button>
+        <button class="btn-action btn-copy-ar" onclick="copyTextContent(this, 'دورة حياة الفراشة 4 مراحل بأسلوب مسطح جميل، خلفية حديقة ناعمة ضبابية، تعليمية')">نسخ العربي</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- أنواع المحتوى التعليمي القابل للإنشاء -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-list-check"></i></span>
+    أنواع المخرجات التعليمية التي يمكنك إنشاؤها
+  </div>
+
+  <div class="types-grid">
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> الإنفوجرافيك التعليمي (Infographics)</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> الخرائط الذهنية والمعرفية (Mind maps)</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> الرسوم التوضيحية العلمية</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> الشخصيات الكرتونية التعليمية</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> الرسوم البيانية والمخططات الهيكلية</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> أغلفة الدروس والعروض التقديمية</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> البوسترات والملصقات الحائطية الصفية</div>
+    <div class="type-item"><i class="fa-solid fa-circle-check"></i> بطاقات الكلمات المفتاحية (Flashcards)</div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toast" class="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-msg">تم نسخ النص بنجاح!</span>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية • ماستر التربية والذكاء الاصطناعي • 2026 / 2027
+  </div>
+
+</div>
+
+<!-- تفاعلية النسخ والإشعار -->
+<script>
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-msg');
+    toastMsg.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2400);
+  }
+
+  function copyText(button) {
+    const promptContainer = button.parentElement;
+    const clone = promptContainer.cloneNode(true);
+    const btnInClone = clone.querySelector('button');
+    if (btnInClone) btnInClone.remove();
+    const textToCopy = clone.textContent.trim();
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      showToast('تم نسخ الـ Prompt بنجاح إلى الحافظة!');
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ!';
+      button.style.background = '#27ae60';
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.style.background = '';
+      }, 2000);
+    });
+  }
+
+  function copyTextContent(button, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('تم نسخ النص بنجاح!');
+      const originalHTML = button.innerHTML;
+      button.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ!';
+      setTimeout(() => {
+        button.innerHTML = originalHTML;
+      }, 1800);
+    });
+  }
+</script>
+</body>
+</html>

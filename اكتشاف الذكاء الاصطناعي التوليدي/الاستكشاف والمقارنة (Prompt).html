@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الاستكشاف والمقارنة (Prompt)</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">الاستكشاف والمقارنة (Prompt)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -37,11 +37,59 @@
     color: var(--text);
     line-height: 1.85;
     padding: 30px 15px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 980px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -59,7 +107,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     padding: 6px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -147,7 +197,7 @@
   .step-box {
     background: #f8fafc;
     border: 1px solid var(--border);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     border-radius: 10px;
     padding: 18px;
     position: relative;
@@ -223,7 +273,7 @@
   }
 
   .tool-card:hover .arrow-icon {
-    transform: translateX(-4px);
+    transform: scale(1.15);
     color: var(--secondary);
   }
 
@@ -241,7 +291,7 @@
     border-radius: 12px;
     padding: 18px;
     transition: all 0.25s ease;
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -250,7 +300,7 @@
   .criteria-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.06);
-    border-right-color: var(--accent);
+    border-inline-start-color: var(--accent);
   }
 
   .criteria-header {
@@ -345,63 +395,73 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للمقرر
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للمقرر</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • النشاط 01</span>
-    <h1>الاستكشاف والمقارنة (Prompt)</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • النشاط 01</span>
+    <h1 data-i18n="headerTitle">الاستكشاف والمقارنة (Prompt)</h1>
   </div>
 
-  <!-- خطوات إعداد النشاط -->
+  <!-- Steps Section -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-list-check"></i></div>
-      خطوات إعداد وتنفيذ النشاط
+      <span data-i18n="sec1Title">خطوات إعداد وتنفيذ النشاط</span>
     </div>
-    <p>
+    <p data-i18n="sec1P">
       اتّبع الخطوات المنهجية التالية لاختبار وتقييم مخرجات نماذج الذكاء الاصطناعي التوليدي عبر صياغة أمر قياسي موحّد ومقارنة الإجابات:
     </p>
 
     <div class="steps-grid">
-      <!-- الخطوة 1 -->
+      <!-- Step 1 -->
       <div class="step-box">
         <span class="step-num">01</span>
-        <div class="step-title">اختر موضوعاً أكاديمياً عاماً</div>
-        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;">
+        <div class="step-title" data-i18n="step1Title">اختر موضوعاً أكاديمياً عاماً</div>
+        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;" data-i18n="step1Desc">
           (مثل: الذكاء الاصطناعي، الأمن السيبراني، معالجة اللغة الطبيعية، البيانات الضخمة، الحوسبة السحابية...).
         </p>
       </div>
 
-      <!-- الخطوة 2 -->
+      <!-- Step 2 -->
       <div class="step-box">
         <span class="step-num">02</span>
-        <div class="step-title">صياغة Prompt موحد</div>
-        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;">
+        <div class="step-title" data-i18n="step2Title">صياغة Prompt موحد</div>
+        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;" data-i18n="step2Desc">
           قم بصياغة أمر قياسي موحد لتجريبه واختباره عبر منصات ونماذج الذكاء الاصطناعي المختلفة.
         </p>
       </div>
 
-      <!-- الخطوة 3 -->
+      <!-- Step 3 -->
       <div class="step-box">
         <span class="step-num">03</span>
-        <div class="step-title">طلب خلاصة معرفية</div>
-        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;">
+        <div class="step-title" data-i18n="step3Title">طلب خلاصة معرفية</div>
+        <p style="font-size: 0.92rem; color: #4a5568; margin-bottom: 0;" data-i18n="step3Desc">
           اطلب من الأدوات إنشاء خلاصة معرفية شاملة ومركّزة حول الموضوع المختار لمقارنة المخرجات.
         </p>
       </div>
     </div>
   </div>
 
-  <!-- منصات وأدوات الذكاء الاصطناعي المقترحة للتجربة -->
+  <!-- AI Tools Grid -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-robot"></i></div>
-      المنصات والأدوات المقترحة للتجربة (Try These AI Tools)
+      <span data-i18n="sec2Title">المنصات والأدوات المقترحة للتجربة (Try These AI Tools)</span>
     </div>
-    <p>
+    <p data-i18n="sec2P">
       يمكنك استخدام نفس الـ Prompt القياسي واختباره على أي من أدوات ونماذج الذكاء الاصطناعي التوليدي التالية للمقارنة بينها:
     </p>
 
@@ -506,13 +566,13 @@
       </a>
     </div>
 
-    <!-- الاستنتاج النهائي والمقارنة -->
+    <!-- Final synthesis box -->
     <div class="conclusion-box">
       <div class="conclusion-header">
         <i class="fa-solid fa-award" style="color: var(--accent);"></i>
-        الاستنتاج النهائي والمفاضلة
+        <span data-i18n="concTitle">الاستنتاج النهائي والمفاضلة</span>
       </div>
-      <p style="margin-bottom: 6px;">
+      <p style="margin-bottom: 6px;" data-i18n="concDesc">
         قارن بين الأدوات التي قمت بتجربتها، وحدد نقطة تميز كل أداة والمجال الذي تفوقت فيه:
       </p>
       <div class="prompt-badge">
@@ -521,106 +581,268 @@
     </div>
   </div>
 
-  <!-- تفصيل معايير التقييم والمقارنة المعتمدة -->
+  <!-- Comparison Criteria -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-sliders"></i></div>
-      معايير التقييم والمقارنة
+      <span data-i18n="sec3Title">معايير التقييم والمقارنة</span>
     </div>
-    <p>
+    <p data-i18n="sec3P">
       اعتمد هذه المعايير الدقيقة لفحص وتقييم الفروقات بين مخرجات كل أداة قمت باختبارها:
     </p>
 
     <div class="criteria-grid">
-      <!-- 1. الهيكلة -->
+      <!-- 1. Structure -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-sitemap"></i></div>
-          <div class="criteria-title">الهيكلة</div>
+          <div class="criteria-title" data-i18n="crit1Title">الهيكلة</div>
         </div>
-        <p class="criteria-desc">طريقة تنظيم المعلومات، وتقسيم الفقرات والعناوين، ووجود مقدمة وخاتمة متناسقة.</p>
+        <p class="criteria-desc" data-i18n="crit1Desc">طريقة تنظيم المعلومات، وتقسيم الفقرات والعناوين، ووجود مقدمة وخاتمة متناسقة.</p>
       </div>
 
-      <!-- 2. الأسلوب -->
+      <!-- 2. Style -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-pen-nib"></i></div>
-          <div class="criteria-title">الأسلوب</div>
+          <div class="criteria-title" data-i18n="crit2Title">الأسلوب</div>
         </div>
-        <p class="criteria-desc">اللغة المستخدمة: أكاديمية، مبسطة، مباشرة، أو سردية، ومدى ملاءمتها للجمهور المستهدف.</p>
+        <p class="criteria-desc" data-i18n="crit2Desc">اللغة المستخدمة: أكاديمية، مبسطة، مباشرة، أو سردية، ومدى ملاءمتها للجمهور المستهدف.</p>
       </div>
 
-      <!-- 3. العمق -->
+      <!-- 3. Depth -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-          <div class="criteria-title">العمق</div>
+          <div class="criteria-title" data-i18n="crit3Title">العمق</div>
         </div>
-        <p class="criteria-desc">مدى دقة المعلومات وتفصيلها الشامل للموضوع، وتقديم أمثلة وشواهد دالة على الاستيعاب العميق.</p>
+        <p class="criteria-desc" data-i18n="crit3Desc">مدى دقة المعلومات وتفصيلها الشامل للموضوع، وتقديم أمثلة وشواهد دالة على الاستيعاب العميق.</p>
       </div>
 
-      <!-- 4. الدقة والموثوقية -->
+      <!-- 4. Accuracy & Reliability -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-square-check"></i></div>
-          <div class="criteria-title">الدقة والموثوقية</div>
+          <div class="criteria-title" data-i18n="crit4Title">الدقة والموثوقية</div>
         </div>
-        <p class="criteria-desc">صحة المعلومات، وغياب الأخطاء أو المعلومات المضللة، ومدى إمكانية التحقق منها علمياً.</p>
+        <p class="criteria-desc" data-i18n="crit4Desc">صحة المعلومات، وغياب الأخطاء أو المعلومات المضللة، ومدى إمكانية التحقق منها علمياً.</p>
       </div>
 
-      <!-- 5. الحياد والتوازن -->
+      <!-- 5. Neutrality & Balance -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-          <div class="criteria-title">الحياد والتوازن</div>
+          <div class="criteria-title" data-i18n="crit5Title">الحياد والتوازن</div>
         </div>
-        <p class="criteria-desc">عرض وجهات النظر المختلفة دون تحيّز، وتجنّب الأحكام المطلقة والقطعية غير المبررة.</p>
+        <p class="criteria-desc" data-i18n="crit5Desc">عرض وجهات النظر المختلفة دون تحيّز، وتجنّب الأحكام المطلقة والقطعية غير المبررة.</p>
       </div>
 
-      <!-- 6. المصادر والإحالات -->
+      <!-- 6. Citations & References -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-link"></i></div>
-          <div class="criteria-title">المصادر والإحالات</div>
+          <div class="criteria-title" data-i18n="crit6Title">المصادر والإحالات</div>
         </div>
-        <p class="criteria-desc">هل أشارت الأداة إلى مصادر؟ وهل المعلومات قابلة للتحقق والرجوع إلى مراجع موثوقة؟</p>
+        <p class="criteria-desc" data-i18n="crit6Desc">هل أشارت الأداة إلى مصادر؟ وهل المعلومات قابلة للتحقق والرجوع إلى مراجع موثوقة؟</p>
       </div>
 
-      <!-- 7. الطول والإيجاز -->
+      <!-- 7. Conciseness & Length -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-ruler-combined"></i></div>
-          <div class="criteria-title">الطول والإيجاز</div>
+          <div class="criteria-title" data-i18n="crit7Title">الطول والإيجاز</div>
         </div>
-        <p class="criteria-desc">حجم المخرجات مقارنة بالمطلوب، ومدى الالتزام بحدود الأمر (عدد الكلمات والفقرات المحددة).</p>
+        <p class="criteria-desc" data-i18n="crit7Desc">حجم المخرجات مقارنة بالمطلوب، ومدى الالتزام بحدود الأمر (عدد الكلمات والفقرات المحددة).</p>
       </div>
 
-      <!-- 8. الالتزام بالأمر -->
+      <!-- 8. Prompt Adherence -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-bullseye"></i></div>
-          <div class="criteria-title">الالتزام بالأمر</div>
+          <div class="criteria-title" data-i18n="crit8Title">الالتزام بالأمر</div>
         </div>
-        <p class="criteria-desc">مدى استجابة الأداة لجميع التعليمات والشروط الواردة في الأمر دون زيادة مشتتة أو نقصان.</p>
+        <p class="criteria-desc" data-i18n="crit8Desc">مدى استجابة الأداة لجميع التعليمات والشروط الواردة في الأمر دون زيادة مشتتة أو نقصان.</p>
       </div>
 
-      <!-- 9. الإبداع والإضافة -->
+      <!-- 9. Creativity & Added Value -->
       <div class="criteria-card">
         <div class="criteria-header">
           <div class="criteria-icon"><i class="fa-solid fa-lightbulb"></i></div>
-          <div class="criteria-title">الإبداع والإضافة</div>
+          <div class="criteria-title" data-i18n="crit9Title">الإبداع والإضافة</div>
         </div>
-        <p class="criteria-desc">تقديم لمسات ذكية، اقتراح أفكار وزوايا غير تقليدية، أو تقديم إضافات معرفية قيّمة تثري النتيجة.</p>
+        <p class="criteria-desc" data-i18n="crit9Desc">تقديم لمسات ذكية، اقتراح أفكار وزوايا غير تقليدية، أو تقديم إضافات معرفية قيّمة تثري النتيجة.</p>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الاستكشاف والمقارنة (Prompt)",
+    backToSyllabus: "العودة للمقرر",
+    headerBadge: "الفصل 01 • النشاط 01",
+    headerTitle: "الاستكشاف والمقارنة (Prompt)",
+    sec1Title: "خطوات إعداد وتنفيذ النشاط",
+    sec1P: "اتّبع الخطوات المنهجية التالية لاختبار وتقييم مخرجات نماذج الذكاء الاصطناعي التوليدي عبر صياغة أمر قياسي موحّد ومقارنة الإجابات:",
+    step1Title: "اختر موضوعاً أكاديمياً عاماً",
+    step1Desc: "(مثل: الذكاء الاصطناعي، الأمن السيبراني، معالجة اللغة الطبيعية، البيانات الضخمة، الحوسبة السحابية...).",
+    step2Title: "صياغة Prompt موحد",
+    step2Desc: "قم بصياغة أمر قياسي موحد لتجريبه واختباره عبر منصات ونماذج الذكاء الاصطناعي المختلفة.",
+    step3Title: "طلب خلاصة معرفية",
+    step3Desc: "اطلب من الأدوات إنشاء خلاصة معرفية شاملة ومركّزة حول الموضوع المختار لمقارنة المخرجات.",
+    sec2Title: "المنصات والأدوات المقترحة للتجربة (Try These AI Tools)",
+    sec2P: "يمكنك استخدام نفس الـ Prompt القياسي واختباره على أي من أدوات ونماذج الذكاء الاصطناعي التوليدي التالية للمقارنة بينها:",
+    concTitle: "الاستنتاج النهائي والمفاضلة",
+    concDesc: "قارن بين الأدوات التي قمت بتجربتها، وحدد نقطة تميز كل أداة والمجال الذي تفوقت فيه:",
+    sec3Title: "معايير التقييم والمقارنة",
+    sec3P: "اعتمد هذه المعايير الدقيقة لفحص وتقييم الفروقات بين مخرجات كل أداة قمت باختبارها:",
+    crit1Title: "الهيكلة",
+    crit1Desc: "طريقة تنظيم المعلومات، وتقسيم الفقرات والعناوين، ووجود مقدمة وخاتمة متناسقة.",
+    crit2Title: "الأسلوب",
+    crit2Desc: "اللغة المستخدمة: أكاديمية، مبسطة، مباشرة، أو سردية، ومدى ملاءمتها للجمهور المستهدف.",
+    crit3Title: "العمق",
+    crit3Desc: "مدى دقة المعلومات وتفصيلها الشامل للموضوع، وتقديم أمثلة وشواهد دالة على الاستيعاب العميق.",
+    crit4Title: "الدقة والموثوقية",
+    crit4Desc: "صحة المعلومات، وغياب الأخطاء أو المعلومات المضللة، ومدى إمكانية التحقق منها علمياً.",
+    crit5Title: "الحياد والتوازن",
+    crit5Desc: "عرض وجهات النظر المختلفة دون تحيّز، وتجنّب الأحكام المطلقة والقطعية غير المبررة.",
+    crit6Title: "المصادر والإحالات",
+    crit6Desc: "هل أشارت الأداة إلى مصادر؟ وهل المعلومات قابلة للتحقق والرجوع إلى مراجع موثوقة؟",
+    crit7Title: "الطول والإيجاز",
+    crit7Desc: "حجم المخرجات مقارنة بالمطلوب، ومدى الالتزام بحدود الأمر (عدد الكلمات والفقرات المحددة).",
+    crit8Title: "الالتزام بالأمر",
+    crit8Desc: "مدى استجابة الأداة لجميع التعليمات والشروط الواردة في الأمر دون زيادة مشتتة أو نقصان.",
+    crit9Title: "الإبداع والإضافة",
+    crit9Desc: "تقديم لمسات ذكية، اقتراح أفكار وزوايا غير تقليدية، أو تقديم إضافات معرفية قيّمة تثري النتيجة.",
+    footerText: "المدرسة العليا للأساتذة — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Exploration et Comparaison de Prompts",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Activité 01",
+    headerTitle: "Exploration & Comparaison (Prompt)",
+    sec1Title: "Protocole et Démarche de l'Activité",
+    sec1P: "Suivez ce protocole pour tester et évaluer les réponses de divers modèles d'IA générative à l'aide d'un prompt standardisé :",
+    step1Title: "1. Sélectionner un thème académique",
+    step1Desc: "(ex. Intelligence Artificielle, Cybersécurité, NLP, Big Data, Cloud Computing...).",
+    step2Title: "2. Élaborer un Prompt uniforme",
+    step2Desc: "Rédigez une consigne calibrée et identique à soumettre sur l'ensemble des plateformes testées.",
+    step3Title: "3. Solliciter une synthèse notionnelle",
+    step3Desc: "Demandez une note synthétique et structurée sur le thème retenu afin de mettre en regard les résultats.",
+    sec2Title: "Plateformes d'IA Recommandées (Try These AI Tools)",
+    sec2P: "Appliquez votre prompt standardisé sur ces différents environnements pour comparer leurs comportements :",
+    concTitle: "Bilan Comparatif et Spécialisation",
+    concDesc: "Confrontez vos observations empiriques et déterminez le point fort distinctif de chaque modèle :",
+    sec3Title: "Grille de Critères d'Évaluation",
+    sec3P: "Mobilisez ces 9 critères analytiques pour auditer et départager les réponses générées :",
+    crit1Title: "Structure & Architecture",
+    crit1Desc: "Agencement textuel, hiérarchisation des titres, découpage des paragraphes et présence d'une conclusion.",
+    crit2Title: "Style & Registre",
+    crit2Desc: "Qualité de la langue : académique, didactique, technique ou descriptive, et pertinence envers la cible.",
+    crit3Title: "Profondeur d'Analyse",
+    crit3Desc: "Richesse conceptuelle, granularité des explications et présence d'exemples éclairants.",
+    crit4Title: "Exactitude & Fiabilité",
+    crit4Desc: "Conformité scientifique des affirmations, absence d'hallucinations et vérifiabilité factuelle.",
+    crit5Title: "Neutralité & Nuance",
+    crit5Desc: "Exposition équilibrée des thèses sans parti-pris flagrant ni jugements péremptoires infondés.",
+    crit6Title: "Sources & Références",
+    crit6Desc: "Capacité à référencer des sources vérifiables, des études d'autorité ou des citations tangibles.",
+    crit7Title: "Concision & Calibrage",
+    crit7Desc: "Respect du volume textuel demandé et capacité à formuler l'essentiel sans verbiage superflu.",
+    crit8Title: "Respect de la Consigne",
+    crit8Desc: "Adhérence scrupuleuse aux contraintes imposées par le prompt sans digression hors-sujet.",
+    crit9Title: "Valeur Ajoutée & Créativité",
+    crit9Desc: "Apport d'angles d'analyse originaux, synthèse percutante ou analogies pédagogiques remarquables.",
+    footerText: "École Normale Supérieure — Cours : L'IA dans l'Apprentissage 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Prompt Exploration and Model Comparison",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Activity 01",
+    headerTitle: "Exploration & Comparison (Prompt)",
+    sec1Title: "Activity Protocol & Methodology",
+    sec1P: "Follow these systematic steps to evaluate and benchmark outputs across diverse generative AI models using a uniform prompt:",
+    step1Title: "1. Select a General Academic Theme",
+    step1Desc: "(e.g., Artificial Intelligence, Cybersecurity, NLP, Big Data, Cloud Computing...).",
+    step2Title: "2. Formulate a Standardized Prompt",
+    step2Desc: "Craft an identical, calibrated instructional prompt to run systematically across all target models.",
+    step3Title: "3. Solicit an Analytical Summary",
+    step3Desc: "Instruct the tools to produce a comprehensive summary on the chosen theme to benchmark outputs.",
+    sec2Title: "Recommended AI Test Platforms (Try These AI Tools)",
+    sec2P: "Deploy your standardized prompt across these frontier models to evaluate differences:",
+    concTitle: "Comparative Synthesis & Specialization",
+    concDesc: "Cross-examine empirical findings and characterize each platform's unique competitive advantage:",
+    sec3Title: "Evaluation & Benchmarking Criteria",
+    sec3P: "Apply these 9 rigorous criteria to assess and differentiate the outputs generated by each agent:",
+    crit1Title: "Structural Layout",
+    crit1Desc: "Organization of concepts, sub-headings, paragraph flow, and coherent opening/concluding remarks.",
+    crit2Title: "Tone & Register",
+    crit2Desc: "Linguistic posture: scholarly, pedagogical, conversational, or technical, suited to audience level.",
+    crit3Title: "Analytical Depth",
+    crit3Desc: "Rigor of exposition, conceptual detail, and inclusion of illustrative case examples.",
+    crit4Title: "Factual Accuracy",
+    crit4Desc: "Verifiable correctness of claims, absence of fabricated details, and scientific validity.",
+    crit5Title: "Objectivity & Balance",
+    crit5Desc: "Equitable presentation of diverse viewpoints avoiding ungrounded dogmatism or overt bias.",
+    crit6Title: "Citations & Attribution",
+    crit6Desc: "Inclusion of verifiable scholarly references, authors, and traceable external literature.",
+    crit7Title: "Brevity & Scale",
+    crit7Desc: "Compliance with specified length boundaries, delivering dense signal-to-noise ratio.",
+    crit8Title: "Prompt Compliance",
+    crit8Desc: "Faithful adherence to all positive and negative constraints outlined in the prompt.",
+    crit9Title: "Originality & Insight",
+    crit9Desc: "Novel analogies, thought-provoking perspectives, and creative conceptual synthesis.",
+    footerText: "Higher Normal School — AI in Learning Course 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

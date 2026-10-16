@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النشاط التطبيقي: دليلك الشامل لإتقان NotebookLM</title>
+<!-- استدعاء خط تجوال -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --accent-light: #feebc8;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --purple: #805ad5;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 1150px;
+    margin: 0 auto;
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.12);
+    padding: 8px 18px;
+    border-radius: 8px;
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.15rem;
+    opacity: 0.92;
+    font-weight: 400;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 45px 0 25px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 40px;
+    height: 40px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--secondary);
+  }
+
+  /* Grid Layouts */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 22px;
+    margin-bottom: 30px;
+  }
+
+  .card-full {
+    grid-column: 1 / -1;
+  }
+
+  /* Card */
+  .lesson-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .lesson-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(26, 54, 93, 0.1);
+    border-color: #cbd5e1;
+  }
+
+  .lesson-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .lesson-badge {
+    background-color: var(--bg);
+    color: var(--secondary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 50px;
+    align-self: flex-start;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .badge-accent {
+    background-color: var(--accent-light);
+    color: #c05621;
+    border-color: #fbd38d;
+  }
+
+  .badge-purple {
+    background-color: #faf5ff;
+    color: var(--purple);
+    border-color: #e9d8fd;
+  }
+
+  .lesson-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+
+  .lesson-desc {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 15px;
+    flex-grow: 1;
+  }
+
+  /* Prompts & Snippets */
+  .prompt-box {
+    background: #f8fafc;
+    border-right: 4px solid var(--secondary);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    color: #334155;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+  }
+
+  .step-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+  }
+
+  .step-number {
+    background: var(--secondary);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Action Box inside Chat section */
+  .chat-action-card {
+    background: linear-gradient(to left, #ffffff, #f0f7ff);
+    border: 1.5px dashed var(--secondary);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .chat-action-header {
+    font-weight: 800;
+    color: var(--primary);
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chat-action-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .chat-action-item {
+    background: white;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+
+  .chat-action-item i {
+    font-size: 1.2rem;
+    color: var(--secondary);
+  }
+
+  /* Studio Customization Banner */
+  .studio-tip-card {
+    background: linear-gradient(to left, #fffaf0, #ffffff);
+    border: 1.5px dashed var(--accent);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .studio-tip-card i {
+    font-size: 1.6rem;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  /* Table Style */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid var(--border);
+  }
+
+  .custom-table th, .custom-table td {
+    padding: 14px 18px;
+    text-align: right;
+  }
+
+  .custom-table th {
+    background: var(--light);
+    color: var(--primary);
+    font-weight: 700;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .custom-table tr:not(:last-child) td {
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Callout & Tips */
+  .alert-box {
+    background: #fffaf0;
+    border-right: 5px solid var(--accent);
+    padding: 18px 22px;
+    border-radius: 10px;
+    margin: 25px 0;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .alert-box i {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  .alert-content h4 {
+    font-weight: 800;
+    color: #7b341e;
+    margin-bottom: 5px;
+  }
+
+  .alert-content p {
+    color: #744210;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Reflection Box */
+  .reflection-box {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin: 35px 0;
+    border: 1px solid #4a5568;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .reflection-box h3 {
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .reflection-box p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  
+  @media (max-width: 768px) {
+    .header { padding: 40px 20px; }
+    .header h1 { font-size: 1.8rem; }
+    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+    .custom-table th, .custom-table td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- الهيدر الرئيسي -->
+  <div class="header">
+    <a href="الفصل 06.html" class="back-link">
+      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+    </a>
+    <span class="header-badge">الفصل 06 • النشاط 01</span>
+    <h1>القدرات الأساسية وإتقان منصة NotebookLM</h1>
+    <div class="subtitle">تعرف على الإمكانيات الكبرى للأداة وإعدادات ضبطها، تليها الخطوات العملية لإنشاء أول دفتر أكاديمي، استنطاق المصادر، واستخدام أدوات الإنشاء المتقدمة.</div>
+  </div>
+
+  <!-- 1. الميزات والقدرات الرئيسية لمنظومة NotebookLM -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-star"></i></span>
+    الميزات والقدرات الرئيسية لمنظومة NotebookLM
+  </div>
+
+  <div class="lessons-grid">
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-comments"></i></div>
+      <h3 class="lesson-title">محادثة ذكية وموثقة</h3>
+      <p class="lesson-desc">اسأل أي سؤال حول مصادرك واحصل على إجابات موثقة بالمراجع وأرقام الشواهد والاقتباسات مباشرة.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+      <h3 class="lesson-title">ملخصات صوتية (بودكاست)</h3>
+      <p class="lesson-desc">حوّل مستنداتك إلى حوار صوتي ممتع بين مذيعين افتراضيين يقدمان شرحاً معمقاً للنقاط المحورية.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-clapperboard"></i></div>
+      <h3 class="lesson-title">ملخصات فيديو تعليمية</h3>
+      <p class="lesson-desc">فيديوهات تعليمية مع رسوم متحركة وشرح مرئي للمحتوى تمنحك نظرة بصرية شاملة وسريعة للمفاهيم.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-diagram-project"></i></div>
+      <h3 class="lesson-title">خرائط ذهنية شجرية</h3>
+      <p class="lesson-desc">مخططات شجرية تفاعلية تظهر العلاقات المعقدة بين المفاهيم في مصادرك وتبسط هيكل الموضوع.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
+      <h3 class="lesson-title">اختبارات وبطاقات تعليمية</h3>
+      <p class="lesson-desc">اختبارات تفاعلية وبطاقات استذكار رقمية لمراجعة المعلومات واختبار الفهم الذاتي بدقة.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-file-powerpoint"></i></div>
+      <h3 class="lesson-title">عروض تقديمية جاهزة</h3>
+      <p class="lesson-desc">شرائح عرض احترافية ومنظمة ومستخرجة مباشرة من صلب مصادرك دون الحاجة لإعادة كتابتها.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-chart-pie"></i></div>
+      <h3 class="lesson-title">إنفوجرافيك وتلخيص بصري</h3>
+      <p class="lesson-desc">ملخصات بصرية مصممة بعشرة أنماط مختلفة قابلة للتخصيص الكامل لتناسب العرض الأكاديمي.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-table"></i></div>
+      <h3 class="lesson-title">جداول بيانات منظمة</h3>
+      <p class="lesson-desc">استخراج وتجميع وتنظيم البيانات المنظمة من مصادر متعددة تلقائياً في جداول واضحة.</p>
+    </div>
+  </div>
+
+  <!-- 2. إعدادات اللغة والسعة -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-sliders"></i></span>
+    إعدادات اللغة وسعة المصادر
+  </div>
+
+  <div class="lessons-grid">
+    <!-- دعم اللغة العربية -->
+    <div class="lesson-card">
+      <div class="lesson-badge">اللغات المدعومة</div>
+      <h3 class="lesson-title">دعم اللغة العربية وتغيير الإخراج</h3>
+      <p class="lesson-desc">يدعم أكثر من 80 لغة بما فيها الفصحى الحديثة والمصرية العامية في كافة المخرجات (الفيديو، البودكاست، البطاقات).</p>
+      
+      <h4 style="font-size:0.9rem; font-weight:700; color:var(--primary); margin-bottom:5px;">كيف تغيّر لغة الإخراج؟</h4>
+      <ul class="step-list">
+        <li><span class="step-number">1</span> افتح NotebookLM على جهاز الكمبيوتر.</li>
+        <li><span class="step-number">2</span> في الزاوية العلوية اليمنى، اختر "الإعدادات" ← "لغة الإخراج".</li>
+        <li><span class="step-number">3</span> اختر اللغة العربية من القائمة المدعومة.</li>
+      </ul>
+    </div>
+
+    <!-- تعدد المصادر -->
+    <div class="lesson-card">
+      <div class="lesson-badge">تعدد المصادر</div>
+      <h3 class="lesson-title">سعة الاستيعاب والحدود القصوى</h3>
+      <p class="lesson-desc">
+        يوفر NotebookLM مرونة استيعابية عالية لملفاتك ومراجعك الأكاديمية:
+        <br>• حتى <strong>50 مصدراً</strong> للدفتر الواحد مجاناً.
+        <br>• حتى <strong>600 مصدر</strong> في الخطة القصوى المتقدمة للأطروحات ومشاريع التخرج الضخمة.
+      </p>
+    </div>
+  </div>
+
+  <!-- التنبيه الذهبي -->
+  <div class="alert-box">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div class="alert-content">
+      <h4>قاعدة ذهبية: لا تخلط مصادر لمشاريع متعددة في دفتر واحد</h4>
+      <p>كل دفتر ملاحظات يجب أن يكون مخصصاً لموضوع واحد فقط. لا تخلط مصادر الفيزياء مع مصادر التاريخ في نفس الدفتر؛ أنشئ دفتراً منفصلاً لكل مشروع أكاديمي لضمان أعلى دقة علمية ومنع التداخل.</p>
+    </div>
+  </div>
+
+  <!-- 3. النشاط 1 — إنشاء أول دفتر واستكشاف الواجهة -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-compass"></i></span>
+    النشاط 1 — إنشاء أول Notebook واستكشاف الواجهة
+  </div>
+
+  <div class="lessons-grid">
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-brands fa-google"></i></div>
+      <div class="lesson-badge">الخطوة 01</div>
+      <h3 class="lesson-title">تسجيل الدخول والبدء</h3>
+      <p class="lesson-desc">افتح NotebookLM / Gemini Notebook وسجل الدخول بحساب Google الأكاديمي أو الشخصي.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-folder-plus"></i></div>
+      <div class="lesson-badge">الخطوة 02</div>
+      <h3 class="lesson-title">إنشاء الدفتر وتسميته</h3>
+      <p class="lesson-desc">أنشئ Notebook جديداً، اختر موضوعاً أكاديمياً واضحاً ومحدداً، وسمّ الـ Notebook باسم دقيق ومعبر.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-layer-group"></i></div>
+      <div class="lesson-badge">الخطوة 03</div>
+      <h3 class="lesson-title">مناطق الواجهة الأساسية</h3>
+      <p class="lesson-desc">
+        اكتب في تقريرك أسماء المناطق الرئيسية ووظيفة كل منها في سطر واحد:
+        <br>• <strong>Sources (المصادر):</strong> إدارة وتحميل الوثائق.
+        <br>• <strong>Chat (المحادثة):</strong> طرح الأسئلة واستنطاق المحتوى.
+        <br>• <strong>Studio:</strong> توليد الملخصات والمخرجات التعليمية.
+      </p>
+    </div>
+  </div>
+
+  <!-- 4. إضافة المصادر وفحص جودتها -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-filter-circle-check"></i></span>
+    إضافة المصادر ومعايير الجودة الأكاديمية
+  </div>
+
+  <div class="lessons-grid">
+    <div class="lesson-card card-full">
+      <h3 class="lesson-title"><i class="fa-solid fa-file-circle-plus" style="color:var(--secondary);"></i> تنويع المصادر (3 مصادر على الأقل)</h3>
+      <p class="lesson-desc">استخدم موضوعاً واحداً وأضف 3 مصادر على الأقل، ويفضل أن تكون متنوعة:
+        <strong>مقال أكاديمي أو ملف PDF</strong>، 
+        <strong>ملاحظات محاضرة أو مستند نصي</strong>، 
+        و<strong>صفحة ويب موثوقة أو فيديو YouTube عام ذي صلة</strong>.
+      </p>
+
+      <h4 style="color: var(--primary); margin: 15px 0 10px 0; font-weight: 700;">قبل الإضافة: افحص جودة المصدر</h4>
+      <div style="overflow-x: auto;">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th style="width: 28%;">السؤال</th>
+              <th style="width: 72%;">ما الذي تبحث عنه؟</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>من المؤلف؟</strong></td>
+              <td>باحث، جامعة، جهة رسمية، أو مصدر ذو خبرة واضحة ومثبتة.</td>
+            </tr>
+            <tr>
+              <td><strong>متى نُشر؟</strong></td>
+              <td>تاريخ مناسب لمجال البحث، خاصة في المجالات السريعة مثل الذكاء الاصطناعي.</td>
+            </tr>
+            <tr>
+              <td><strong>هل يحتوي أدلة؟</strong></td>
+              <td>مراجع، بيانات، منهجية، أو روابط واضحة تدعم الادعاءات.</td>
+            </tr>
+            <tr>
+              <td><strong>هل يتطابق مع الموضوع؟</strong></td>
+              <td>يجيب عن سؤال البحث وليس مجرد ذكر عابر لكلمات متشابهة.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. المحادثة مع المصادر: التدرج من السهل إلى المركب -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-comments"></i></span>
+    المحادثة مع المصادر (من السهل إلى المركّب)
+  </div>
+
+  <div class="lessons-grid">
+    <div class="lesson-card">
+      <div class="lesson-badge">A. الفهم</div>
+      <h3 class="lesson-title">مستوى الاستيعاب العام</h3>
+      <p class="lesson-desc">الهدف ليس فقط الحصول على إجابة سريعة، بل تدريب الأداة على ربط الأفكار ومصطلحاتها الرئيسية.</p>
+      <div class="prompt-box">
+        • "لخص الأفكار الأساسية في جميع المصادر في 7 نقاط، واستخدم لغة بسيطة."<br>
+        • "ما أهم 5 مصطلحات يجب أن أفهمها؟ عرّف كل مصطلح بالاعتماد على المصادر."
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-badge">B. المقارنة</div>
+      <h3 class="lesson-title">مستوى المقارنة والمطابقة</h3>
+      <p class="lesson-desc">فحص التقاطعات والاختلافات بين المراجع المختلفة في التعريفات والنتائج.</p>
+      <div class="prompt-box">
+        "قارن بين المصدر 1 والمصدر 2 من حيث التعريف، المنهج، والنتائج. اذكر أين يتفقان وأين يختلفان."
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-badge">C. التحليل</div>
+      <h3 class="lesson-title">مستوى التحليل النقدي</h3>
+      <p class="lesson-desc">تحديد القوة العلمية للادعاءات بحسب درجة تكرارها ودعمها عبر المصادر.</p>
+      <div class="prompt-box">
+        "ما الادعاءات أو الاستنتاجات التي تظهر في أكثر من مصدر؟ وما الادعاءات التي تظهر في مصدر واحد فقط؟"
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-badge badge-accent">D. التعلم الموجه</div>
+      <h3 class="lesson-title">التدريس التفاعلي المتدرج</h3>
+      <p class="lesson-desc">توجيه الأداة لتقمص دور مرشد أكاديمي يختبرك بعد كل مرحلة تعليمية.</p>
+      <div class="prompt-box">
+        "تصرف كمدرس جامعي. اشرح لي هذا الموضوع تدريجياً من مبتدئ إلى متوسط. بعد كل جزء، اسألني سؤال تحقق قصير."
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-badge badge-accent">E. كشف الفجوات</div>
+      <h3 class="lesson-title">رصد الثغرات المعرفية</h3>
+      <p class="lesson-desc">إلزام النموذج بالبقاء داخل حدود المواد المرفوعة دون تخمين أو اختلاق معلومات.</p>
+      <div class="prompt-box">
+        "استناداً إلى المصادر الحالية فقط، ما الأسئلة المهمة التي لا توجد لها إجابة كافية في المواد المرفوعة؟ لا تخمن الإجابة."
+      </div>
+    </div>
+
+    <!-- بطاقة إجراءات الحفظ والمشاركة أثناء المحادثة -->
+    <div class="lesson-card card-full">
+      <div class="chat-action-card">
+        <div class="chat-action-header">
+          <i class="fa-solid fa-thumbtack" style="color:var(--accent);"></i>
+          إجراءات ومهام مطلوبة أثناء وبعد المحادثة:
+        </div>
+        <div class="chat-action-items">
+          <div class="chat-action-item">
+            <i class="fa-regular fa-bookmark"></i>
+            <div>
+              <strong>1. حفظ الأفكار:</strong> احفظ إحدى الإجابات المفيدة بالضغط على أيقونة <strong>"Save to note"</strong>.
+            </div>
+          </div>
+          <div class="chat-action-item">
+            <i class="fa-solid fa-share-nodes"></i>
+            <div>
+              <strong>2. مشاركة Notebook:</strong> شارك دفترك مع زميلك في المشروع بصلاحية <strong>العرض فقط (View)</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. النشاط 4 — استخدام أدوات Studio (تم نقل تخصيص النقاش هنا) -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+    النشاط 4 — استخدام أدوات Studio وتحويل المصادر
+  </div>
+
+  <div class="lessons-grid">
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-sitemap"></i></div>
+      <div class="lesson-badge badge-purple">A. Mind Map</div>
+      <h3 class="lesson-title">الخريطة الذهنية</h3>
+      <p class="lesson-desc">1. أنشئ خريطة ذهنية من المصادر.<br>2. حدد 3 فروع رئيسية.<br>3. اختر فرعاً واحداً وفسر علاقته ببقية المفاهيم.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+      <div class="lesson-badge badge-purple">B. Report / Study Guide</div>
+      <h3 class="lesson-title">دليل الدراسة والتقرير</h3>
+      <p class="lesson-desc">1. أنشئ دليل دراسة.<br>2. راجع العناوين والمصطلحات.<br>3. أضف ملاحظة يدوية: ما أهم نقطة تريد تذكرها؟</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-headphones"></i></div>
+      <div class="lesson-badge badge-purple">C. Audio Overview</div>
+      <h3 class="lesson-title">الملخص الصوتي (بودكاست)</h3>
+      <p class="lesson-desc">1. أنشئ ملخصاً صوتياً.<br>2. إن وُجد خيار Customize، حدد ما تريد التركيز عليه.<br>3. استمع إلى جزء منه وسجل معلومتين تعلمتهما.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-clone"></i></div>
+      <div class="lesson-badge badge-purple">D. Flashcards</div>
+      <h3 class="lesson-title">بطاقات المراجعة</h3>
+      <p class="lesson-desc">1. ولّد مجموعة بطاقات مراجعة.<br>2. اختبر نفسك قبل كشف الإجابة.<br>3. اختر أصعب 3 بطاقات واكتب سبب صعوبتها.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-spell-check"></i></div>
+      <div class="lesson-badge badge-purple">E. Quiz</div>
+      <h3 class="lesson-title">الاختبار المعرفي</h3>
+      <p class="lesson-desc">1. أنشئ اختباراً من الموضوع.<br>2. أجب دون الرجوع للمصادر أولاً.<br>3. راجع الشرح والتفسير بعد كل خطأ.</p>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-icon"><i class="fa-solid fa-video"></i></div>
+      <div class="lesson-badge badge-purple">F. Video Overview</div>
+      <h3 class="lesson-title">النظرة المرئية والفيديو</h3>
+      <p class="lesson-desc">1. إذا كانت متاحة، أنشئ نظرة مرئية.<br>2. قارنها بالخريطة الذهنية.<br>3. أي صيغة ساعدتك أكثر على الفهم؟ ولماذا؟</p>
+    </div>
+
+    <!-- البطاقة المضافة: نصائح للاستخدام الأمثل وتخصيص موضوع النقاش قبل توليد الصوت -->
+    <div class="lesson-card card-full">
+      <div class="studio-tip-card">
+        <i class="fa-solid fa-sliders"></i>
+        <div>
+          <h4 style="font-weight: 800; color: #7b341e; margin-bottom: 6px; font-size: 1.05rem;">
+            نصائح للاستخدام الأمثل: تخصيص موضوع النقاش الصوتي
+          </h4>
+          <p style="color: #744210; font-size: 0.95rem; margin-bottom: 6px;">
+            اطلب من الأداة تخصيص النقاش قبل توليد الصوت: 
+            <strong>«ركّز على النقاط العملية»</strong> أو <strong>«اشرح للمبتدئين»</strong>.
+          </p>
+          <small style="color: var(--muted); font-size: 0.88rem;">
+            (ملاحظة: الصوت بالإنجليزية غالباً حالياً، لكن يمكنك تخصيص وتوجيه موضوع النقاش بدقة حسب حاجتك الدراسية).
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. سؤال التأمل -->
+  <div class="reflection-box">
+    <h3><i class="fa-solid fa-lightbulb"></i> سؤال تأمل (مطلوب في التقرير)</h3>
+    <p><strong>ما الفرق الجوهري بين دفتر NotebookLM ومحادثة مع روبوت دردشة عام؟</strong></p>
+    <p style="margin-top: 10px; font-size: 0.95rem; color: #cbd5e1;">(أجب في تقريرك الأكاديمي في ثلاثة أسطر).</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    المدرسة العليا للأساتذة ملحقة بجاية — 2026 / 2027
+  </div>
+
+</div>
+</body>
+</html>

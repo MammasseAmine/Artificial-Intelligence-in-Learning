@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --danger: #e53e3e;
+    --danger-bg: #fff5f5;
+    --success: #38a169;
+    --success-bg: #f0fff4;
+    --warning: #d69e2e;
+    --warning-bg: #fffaf0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 18px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.92;
+    font-weight: 400;
+    max-width: 780px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--secondary);
+    flex-shrink: 0;
+  }
+
+  /* Grid Layouts */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 22px;
+    margin-bottom: 45px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 24px;
+    margin-bottom: 45px;
+  }
+
+  /* Base Cards */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(26, 54, 93, 0.08);
+    border-color: #cbd5e1;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .card-badge {
+    background-color: var(--bg);
+    color: var(--secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 50px;
+    align-self: flex-start;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Notice Boxes / Callouts */
+  .notice-box {
+    background: var(--card);
+    border-inline-start: 5px solid var(--secondary);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border-top: 1px solid var(--border);
+    border-inline-end: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .notice-box.warning-notice {
+    border-inline-start-color: var(--accent);
+    background: #fffdfa;
+  }
+
+  .notice-box.primary-notice {
+    border-inline-start-color: var(--primary);
+    background: #f8fafc;
+  }
+
+  .notice-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .notice-desc {
+    color: #4a5568;
+    font-size: 0.98rem;
+    line-height: 1.8;
+  }
+
+  /* Case Studies Cards */
+  .case-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .case-card .card-desc {
+    flex-grow: 1;
+  }
+
+  .case-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 50px;
+    margin-top: 15px;
+    align-self: flex-start;
+  }
+
+  .status-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #fed7d7;
+  }
+
+  .status-success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid #c6f6d5;
+  }
+
+  .status-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border: 1px solid #feebc8;
+  }
+
+  /* Checklist Items */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  .check-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    transition: all 0.2s ease;
+  }
+
+  .check-item:hover {
+    border-color: var(--secondary);
+    background: #fcfdfe;
+  }
+
+  .check-number {
+    background: var(--light);
+    color: var(--secondary);
+    font-weight: 800;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .check-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 50px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.75rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 04.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToList">العودة لقائمة الدروس</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 04 &bull; الدرس 01</span>
+    <h1 data-i18n="headerTitle">النزاهة الأكاديمية وأخلاقيات الذكاء الاصطناعي</h1>
+    <div class="subtitle" data-i18n-html="headerSubtitle">
+      لم يعد السؤال اليوم: «هل يستخدم الطالب الذكاء الاصطناعي؟»، بل صار السؤال: 
+      <strong>«كيف يستخدمه، وهل يستخدمه بأمانة ومسؤولية؟»</strong>
+    </div>
+  </div>
+
+  <!-- Section 1: Core Concepts -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-lightbulb"></i></span>
+    <span data-i18n="secCoreTitle">مفاهيم وقواعد تأسيسية</span>
+  </div>
+
+  <div class="notice-box primary-notice">
+    <div class="notice-title">
+      <i class="fa-solid fa-scale-balanced"></i>
+      <span data-i18n="defTitle">مفهوم النزاهة الأكاديمية والأمانة العلمية</span>
+    </div>
+    <div class="notice-desc" data-i18n-html="defDesc">
+      <strong>النزاهة الأكاديمية:</strong> هي الالتزام بالصدق والأمانة والمسؤولية في كل ما يتصل بالتعلم والبحث؛ أن يكون العمل المنسوب إليك عملك فعلاً، وتُنسب الأفكار والبيانات لأصحابها، وأن تكون نتائجك حقيقية، وتتنافس بعدل.<br>
+      <strong>الأمانة العلمية:</strong> هي الوجه الأخلاقي لهذه النزاهة في البحث العلمي، وتتمثل في تقرير ما وجدته كما هو، والاعتراف بفضل من سبقك، والإقرار بحدود عملك.
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="notice-box warning-notice" style="margin-bottom:0;">
+      <div class="notice-title">
+        <i class="fa-solid fa-handshake"></i>
+        <span data-i18n="trustTitle">فكرة محورية: النزاهة ثقة متبادلة</span>
+      </div>
+      <div class="notice-desc" data-i18n="trustDesc">
+        النزاهة ليست «قائمة محظورات» تُحفظ خوفاً من العقوبة، بل هي عقد ثقة متبادل: يثق الأستاذ بأن عملك من إنجازك الفعلي، ويثق المجتمع بأن شهادتك الأكاديمية تُعبّر عن كفاءة وجدارة حقيقية.
+      </div>
+    </div>
+
+    <div class="notice-box warning-notice" style="margin-bottom:0;">
+      <div class="notice-title">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span data-i18n="excuseTitle">عذر «لم أقصد» لا يكفي!</span>
+      </div>
+      <div class="notice-desc" data-i18n="excuseDesc">
+        كثير من حالات الانتحال تحدث بسبب الجهل بقواعد التوثيق السليم أو بسبب ضيق الوقت، لا بسبب نية مبيتة. ومع ذلك فإن المسؤولية الأكاديمية تبقى قائمة؛ لذا يجب تعلم قواعد التوثيق مبكراً.
+      </div>
+    </div>
+  </div>
+
+  <div class="notice-box warning-notice" style="margin-top: 24px; margin-bottom: 45px; border-inline-start-color: #dd6b20;">
+    <div class="notice-title" style="color: #c05621;">
+      <i class="fa-solid fa-gem"></i>
+      <span data-i18n="patchTitle">قاعدة ذهبية: احذر الترقيع اللغوي</span>
+    </div>
+    <div class="notice-desc" data-i18n-html="patchDesc">
+      تغيير بعض الكلمات بمرادفاتها مع الإبقاء على البنية والتركيب نفسه <strong>ليس إعادة صياغة</strong>، بل هو «ترقيع» يُعدّ انتحالاً علمياً. وإذا كانت الفكرة مأخوذة من غيرك فالمرجع واجب التوثيق حتى ولو كانت الكلمات مصوغة بالكامل من إنشائك.
+    </div>
+  </div>
+
+  <!-- Section 2: Core Principles -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+    <span data-i18n="secPrinciplesTitle">المبادئ الأساسية للنزاهة الأكاديمية</span>
+  </div>
+
+  <div class="grid-3">
+    <!-- P1 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-check-double"></i></div>
+      <div class="card-badge" data-i18n="p1Badge">المبدأ 01</div>
+      <h3 class="card-title" data-i18n="p1Title">الصدق</h3>
+      <p class="card-desc" data-i18n="p1Desc">تقديم الأعمال والنتائج والبيانات كما هي تماماً في الواقع، دون أي تزوير أو تزييف أو تحريف للمخرجات.</p>
+    </div>
+
+    <!-- P2 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-fingerprint"></i></div>
+      <div class="card-badge" data-i18n="p2Badge">المبدأ 02</div>
+      <h3 class="card-title" data-i18n="p2Title">الأمانة</h3>
+      <p class="card-desc" data-i18n="p2Desc">نسب كل فكرة أو معلومة أو فقرة مقتبسة بدقة إلى أصحابها الأصليين ومصادرها الحقيقية دون إغفال.</p>
+    </div>
+
+    <!-- P3 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-user-shield"></i></div>
+      <div class="card-badge" data-i18n="p3Badge">المبدأ 03</div>
+      <h3 class="card-title" data-i18n="p3Title">المسؤولية</h3>
+      <p class="card-desc" data-i18n="p3Desc">الاستعداد الكامل لتحمل نتائج وتبعات الأعمال الأكاديمية والبحثية وما يُنشر أو يُسلّم باسمك.</p>
+    </div>
+
+    <!-- P4 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+      <div class="card-badge" data-i18n="p4Badge">المبدأ 04</div>
+      <h3 class="card-title" data-i18n="p4Title">العدالة</h3>
+      <p class="card-desc" data-i18n="p4Desc">التعامل بإنصاف كامل، واحترام حقوق الآخرين ومنافسة الزملاء بأسلوب نزيه وشريف.</p>
+    </div>
+
+    <!-- P5 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-eye"></i></div>
+      <div class="card-badge" data-i18n="p5Badge">المبدأ 05</div>
+      <h3 class="card-title" data-i18n="p5Title">الشفافية</h3>
+      <p class="card-desc" data-i18n="p5Desc">الإفصاح والتوضيح الصريح لجميع مصادر البيانات، المراجع، والأدوات التكنولوجية المستخدمة في العمل.</p>
+    </div>
+
+    <!-- P6 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-award"></i></div>
+      <div class="card-badge" data-i18n="p6Badge">المبدأ 06</div>
+      <h3 class="card-title" data-i18n="p6Title">الاحترام</h3>
+      <p class="card-desc" data-i18n="p6Desc">الاعتراف بجهود الباحثين والعلماء وتقدير إسهاماتهم وحفظ كافة حقوق الملكية الفكرية لهم.</p>
+    </div>
+  </div>
+
+  <!-- Section 3: Academic Violations -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+    <span data-i18n="secViolationsTitle">المخالفات الأكاديمية الشائعة</span>
+  </div>
+
+  <div class="grid-3">
+    <!-- V1 -->
+    <div class="card">
+      <div class="card-icon" style="color: var(--danger);"><i class="fa-solid fa-copy"></i></div>
+      <div class="card-badge" data-i18n="v1Badge">المخالفة 01</div>
+      <h3 class="card-title" data-i18n="v1Title">الانتحال العلمي (Plagiarism)</h3>
+      <p class="card-desc" data-i18n-html="v1Desc">استخدام كلمات أو أفكار أو نتائج الآخرين دون الإشارة للمصدر.<br><strong>مثال:</strong> نسخ فقرة من مقال أو كتاب وإدراجها في التقرير دون توثيق صريح.</p>
+    </div>
+
+    <!-- V2 -->
+    <div class="card">
+      <div class="card-icon" style="color: var(--danger);"><i class="fa-solid fa-chart-line"></i></div>
+      <div class="card-badge" data-i18n="v2Badge">المخالفة 02</div>
+      <h3 class="card-title" data-i18n="v2Title">تزوير واختلاق البيانات</h3>
+      <p class="card-desc" data-i18n="v2Desc">فبركة نتائج التجارب أو التلاعب بالبيانات وتعديل أرقامها عمداً لإظهار استنتاجات محددة ومرغوبة مسبقاً.</p>
+    </div>
+
+    <!-- V3 -->
+    <div class="card">
+      <div class="card-icon" style="color: var(--danger);"><i class="fa-solid fa-rotate-right"></i></div>
+      <div class="card-badge" data-i18n="v3Badge">المخالفة 03</div>
+      <h3 class="card-title" data-i18n="v3Title">الانتحال الذاتي (Self-Plagiarism)</h3>
+      <p class="card-desc" data-i18n="v3Desc">إعادة تقديم أو نشر عملك السابق (أو أجزاء منه) في مساق أو سياق جديد دون إذن أو إشارة صريحة، مما يضخم إنتاجيتك بوهم زائف (Duplicate Publication).</p>
+      <div style="margin-top: 10px; font-size: 0.85rem; color: var(--secondary);" data-i18n-html="v3Fix">
+        <strong>الحل العملي:</strong> الشفافية الدائمة: «يعتمد هذا الفصل على عمل سابق للباحث نُشر في...»
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: AI Risks -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+    <span data-i18n="secAiRisksTitle">مخاطر الاستخدام غير الأخلاقي للذكاء الاصطناعي</span>
+  </div>
+
+  <div class="grid-3">
+    <!-- Risk 1 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-user-xmark"></i></div>
+      <div class="card-badge" data-i18n="r1Badge">خطر 01</div>
+      <h3 class="card-title" data-i18n="r1Title">الغش الأكاديمي المباشر</h3>
+      <p class="card-desc" data-i18n="r1Desc">تسليم محتوى أو بحث مولد كلياً بواسطة الذكاء الاصطناعي وتقديمه للمؤسسة التعليمية على أنه عمل شخصي للطالب.</p>
+    </div>
+
+    <!-- Risk 2 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+      <div class="card-badge" data-i18n="r2Badge">خطر 02</div>
+      <h3 class="card-title" data-i18n="r2Title">ضعف وتراجع مهارات التعلم</h3>
+      <p class="card-desc" data-i18n="r2Desc">الاعتماد المفرط والأعمى على التقنية يُعطّل تنمية التفكير النقدي، مهارات التحليل والاستنتاج، وقدرات الصياغة الذاتية.</p>
+    </div>
+
+    <!-- Risk 3 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-bug"></i></div>
+      <div class="card-badge" data-i18n="r3Badge">خطر 03</div>
+      <h3 class="card-title" data-i18n="r3Title">المعلومات الخاطئة والهلوسة</h3>
+      <p class="card-desc" data-i18n="r3Desc">توليد معلومات مغلوطة أو اختلاق مصادر واستشهادات ومراجع وهمية لا أساس لها في الواقع العلمي.</p>
+    </div>
+
+    <!-- Risk 4 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-copyright"></i></div>
+      <div class="card-badge" data-i18n="r4Badge">خطر 04</div>
+      <h3 class="card-title" data-i18n="r4Title">انتهاك الملكية الفكرية</h3>
+      <p class="card-desc" data-i18n="r4Desc">إعادة توظيف مخرجات ونصوص استمدتها النماذج من أعمال محمية لحقوق مؤلفين دون مراعاة شروط الاستخدام.</p>
+    </div>
+
+    <!-- Risk 5 -->
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-lock-open"></i></div>
+      <div class="card-badge" data-i18n="r5Badge">خطر 05</div>
+      <h3 class="card-title" data-i18n="r5Title">تسريب البيانات والخصوصية</h3>
+      <p class="card-desc" data-i18n="r5Desc">مشاركة وإدخال بيانات بحثية سرية أو معلومات شخصية حساسة داخل منصات الذكاء الاصطناعي السحابية.</p>
+    </div>
+  </div>
+
+  <!-- Section 5: Case Studies -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-clipboard-check"></i></span>
+    <span data-i18n="secCasesTitle">دراسات حالة: تقييم سيناريوهات واقعية</span>
+  </div>
+
+  <div class="grid-3">
+    <!-- Case 1 -->
+    <div class="case-card">
+      <span class="card-badge" data-i18n="c1Badge">الحالة 01</span>
+      <h3 class="card-title" data-i18n="c1Title">التوليد الكامل للمقال</h3>
+      <p class="card-desc" data-i18n="c1Desc">قام طالب باستخدام ChatGPT لتوليد مقال أكاديمي كامل، ثم قام بنسخه وتسليمه للمعلم كما هو دون أي تدخل شخصي.</p>
+      <div class="case-status status-danger">
+        <i class="fa-solid fa-circle-xmark"></i>
+        <span data-i18n="c1Status">التقييم: مخالفة أكاديمية جسيمة</span>
+      </div>
+    </div>
+
+    <!-- Case 2 -->
+    <div class="case-card">
+      <span class="card-badge" data-i18n="c2Badge">الحالة 02</span>
+      <h3 class="card-title" data-i18n="c2Title">العصف الذهني والتحقق</h3>
+      <p class="card-desc" data-i18n="c2Desc">استخدم طالب الذكاء الاصطناعي للحصول على أفكار وهيكلة أولية، ثم كتب المقال بنفسه وتحقق من صحة كافة المراجع بدقة.</p>
+      <div class="case-status status-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <span data-i18n="c2Status">التقييم: استخدام أخلاقي ومقبول</span>
+      </div>
+    </div>
+
+    <!-- Case 3 -->
+    <div class="case-card">
+      <span class="card-badge" data-i18n="c3Badge">الحالة 03</span>
+      <h3 class="card-title" data-i18n="c3Title">تحسين الصياغة والتدقيق</h3>
+      <p class="card-desc" data-i18n="c3Desc">استعان باحث بأداة ذكاء اصطناعي للمساعدة في تنقيح الصياغة اللغوية والأسلوبية لبحثه العلمي المكتوب بالكامل بجهده.</p>
+      <div class="case-status status-warning">
+        <i class="fa-solid fa-circle-info"></i>
+        <span data-i18n="c3Status">التقييم: مقبول (إذا سمحت سياسة النشر/المؤسسة)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Checklist -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-compass"></i></span>
+    <span data-i18n="secChecklistTitle">معايير القرار: هل استخدامي مشروع؟ (قائمة الفحص الخماسية)</span>
+  </div>
+
+  <div class="notice-box" style="border-inline-start-color: var(--secondary);">
+    <p style="margin-bottom: 15px; color: var(--muted); font-size: 0.95rem;" data-i18n="checklistIntro">
+      قبل استخدام أي أداة ذكاء اصطناعي في مشروعك أو واجبك الأكاديمي، وجّه لنفسك الأسئلة الخمسة التالية:
+    </p>
+    <ul class="checklist">
+      <li class="check-item">
+        <div class="check-number">1</div>
+        <div class="check-text" data-i18n="q1">هل سأتعلم شيئاً حقيقياً وملموساً من هذه الخطوة، أم أنني أحاول تخطي عملية التعلم؟</div>
+      </li>
+      <li class="check-item">
+        <div class="check-number">2</div>
+        <div class="check-text" data-i18n="q2">هل الناتج النهائي يعكس حقاً فهمي، أسلوبي وصوتي الخاص، أم صوت الأداة الرقمية فقط؟</div>
+      </li>
+      <li class="check-item">
+        <div class="check-number">3</div>
+        <div class="check-text" data-i18n="q3">هل راجعت وتحققت شخصياً من صحة كل معلومة وردت من مصادر أصلية موثوقة وموثقة؟</div>
+      </li>
+      <li class="check-item">
+        <div class="check-number">4</div>
+        <div class="check-text" data-i18n="q4">هل سأكون مرتاحاً وفخوراً لو سألني أستاذي: "كيف أنجزت هذا؟" وطلَب مني شرح كل خطوة بالتفصيل؟</div>
+      </li>
+      <li class="check-item">
+        <div class="check-number">5</div>
+        <div class="check-text" data-i18n="q5">هل قمت بالإفصاح الكامل والشفاف عن نوع الأداة والدور الذي لعبته في هذا العمل؟</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    النزاهة الأكاديمية مسؤولية مشتركة &bull; نحو استخدام مسؤول وأخلاقي للذكاء الاصطناعي
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي",
+    backToList: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 04 • الدرس 01",
+    headerTitle: "النزاهة الأكاديمية وأخلاقيات الذكاء الاصطناعي",
+    headerSubtitle: "لم يعد السؤال اليوم: «هل يستخدم الطالب الذكاء الاصطناعي؟»، بل صار السؤال: <strong>«كيف يستخدمه، وهل يستخدمه بأمانة ومسؤولية؟»</strong>",
+    
+    secCoreTitle: "مفاهيم وقواعد تأسيسية",
+    defTitle: "مفهوم النزاهة الأكاديمية والأمانة العلمية",
+    defDesc: "<strong>النزاهة الأكاديمية:</strong> هي الالتزام بالصدق والأمانة والمسؤولية في كل ما يتصل بالتعلم والبحث؛ أن يكون العمل المنسوب إليك عملك فعلاً، وتُنسب الأفكار والبيانات لأصحابها، وأن تكون نتائجك حقيقية، وتتنافس بعدل.<br><strong>الأمانة العلمية:</strong> هي الوجه الأخلاقي لهذه النزاهة في البحث العلمي، وتتمثل في تقرير ما وجدته كما هو، والاعتراف بفضل من سبقك، والإقرار بحدود عملك.",
+    trustTitle: "فكرة محورية: النزاهة ثقة متبادلة",
+    trustDesc: "النزاهة ليست «قائمة محظورات» تُحفظ خوفاً من العقوبة، بل هي عقد ثقة متبادل: يثق الأستاذ بأن عملك من إنجازك الفعلي، ويثق المجتمع بأن شهادتك الأكاديمية تُعبّر عن كفاءة وجدارة حقيقية.",
+    excuseTitle: "عذر «لم أقصد» لا يكفي!",
+    excuseDesc: "كثير من حالات الانتحال تحدث بسبب الجهل بقواعد التوثيق السليم أو بسبب ضيق الوقت، لا بسبب نية مبيتة. ومع ذلك فإن المسؤولية الأكاديمية تبقى قائمة؛ لذا يجب تعلم قواعد التوثيق مبكراً.",
+    patchTitle: "قاعدة ذهبية: احذر الترقيع اللغوي",
+    patchDesc: "تغيير بعض الكلمات بمرادفاتها مع الإبقاء على البنية والتركيب نفسه <strong>ليس إعادة صياغة</strong>، بل هو «ترقيع» يُعدّ انتحالاً علمياً. وإذا كانت الفكرة مأخوذة من غيرك فالمرجع واجب التوثيق حتى ولو كانت الكلمات مصوغة بالكامل من إنشائك.",
+
+    secPrinciplesTitle: "المبادئ الأساسية للنزاهة الأكاديمية",
+    p1Badge: "المبدأ 01",
+    p1Title: "الصدق",
+    p1Desc: "تقديم الأعمال والنتائج والبيانات كما هي تماماً في الواقع، دون أي تزوير أو تزييف أو تحريف للمخرجات.",
+    p2Badge: "المبدأ 02",
+    p2Title: "الأمانة",
+    p2Desc: "نسب كل فكرة أو معلومة أو فقرة مقتبسة بدقة إلى أصحابها الأصليين ومصادرها الحقيقية دون إغفال.",
+    p3Badge: "المبدأ 03",
+    p3Title: "المسؤولية",
+    p3Desc: "الاستعداد الكامل لتحمل نتائج وتبعات الأعمال الأكاديمية والبحثية وما يُنشر أو يُسلّم باسمك.",
+    p4Badge: "المبدأ 04",
+    p4Title: "العدالة",
+    p4Desc: "التعامل بإنصاف كامل، واحترام حقوق الآخرين ومنافسة الزملاء بأسلوب نزيه وشريف.",
+    p5Badge: "المبدأ 05",
+    p5Title: "الشفافية",
+    p5Desc: "الإفصاح والتوضيح الصريح لجميع مصادر البيانات، المراجع، والأدوات التكنولوجية المستخدمة في العمل.",
+    p6Badge: "المبدأ 06",
+    p6Title: "الاحترام",
+    p6Desc: "الاعتراف بجهود الباحثين والعلماء وتقدير إسهاماتهم وحفظ كافة حقوق الملكية الفكرية لهم.",
+
+    secViolationsTitle: "المخالفات الأكاديمية الشائعة",
+    v1Badge: "المخالفة 01",
+    v1Title: "الانتحال العلمي (Plagiarism)",
+    v1Desc: "استخدام كلمات أو أفكار أو نتائج الآخرين دون الإشارة للمصدر.<br><strong>مثال:</strong> نسخ فقرة من مقال أو كتاب وإدراجها في التقرير دون توثيق صريح.",
+    v2Badge: "المخالفة 02",
+    v2Title: "تزوير واختلاق البيانات",
+    v2Desc: "فبركة نتائج التجارب أو التلاعب بالبيانات وتعديل أرقامها عمداً لإظهار استنتاجات محددة ومرغوبة مسبقاً.",
+    v3Badge: "المخالفة 03",
+    v3Title: "الانتحال الذاتي (Self-Plagiarism)",
+    v3Desc: "إعادة تقديم أو نشر عملك السابق (أو أجزاء منه) في مساق أو سياق جديد دون إذن أو إشارة صريحة، مما يضخم إنتاجيتك بوهم زائف (Duplicate Publication).",
+    v3Fix: "<strong>الحل العملي:</strong> الشفافية الدائمة: «يعتمد هذا الفصل على عمل سابق للباحث نُشر في...»",
+
+    secAiRisksTitle: "مخاطر الاستخدام غير الأخلاقي للذكاء الاصطناعي",
+    r1Badge: "خطر 01",
+    r1Title: "الغش الأكاديمي المباشر",
+    r1Desc: "تسليم محتوى أو بحث مولد كلياً بواسطة الذكاء الاصطناعي وتقديمه للمؤسسة التعليمية على أنه عمل شخصي للطالب.",
+    r2Badge: "خطر 02",
+    r2Title: "ضعف وتراجع مهارات التعلم",
+    r2Desc: "الاعتماد المفرط والأعمى على التقنية يُعطّل تنمية التفكير النقدي، مهارات التحليل والاستنتاج، وقدرات الصياغة الذاتية.",
+    r3Badge: "خطر 03",
+    r3Title: "المعلومات الخاطئة والهلوسة",
+    r3Desc: "توليد معلومات مغلوطة أو اختلاق مصادر واستشهادات ومراجع وهمية لا أساس لها في الواقع العلمي.",
+    r4Badge: "خطر 04",
+    r4Title: "انتهاك الملكية الفكرية",
+    r4Desc: "إعادة توظيف مخرجات ونصوص استمدتها النماذج من أعمال محمية لحقوق مؤلفين دون مراعاة شروط الاستخدام.",
+    r5Badge: "خطر 05",
+    r5Title: "تسريب البيانات والخصوصية",
+    r5Desc: "مشاركة وإدخال بيانات بحثية سرية أو معلومات شخصية حساسة داخل منصات الذكاء الاصطناعي السحابية.",
+
+    secCasesTitle: "دراسات حالة: تقييم سيناريوهات واقعية",
+    c1Badge: "الحالة 01",
+    c1Title: "التوليد الكامل للمقال",
+    c1Desc: "قام طالب باستخدام ChatGPT لتوليد مقال أكاديمي كامل، ثم قام بنسخه وتسليمه للمعلم كما هو دون أي تدخل شخصي.",
+    c1Status: "التقييم: مخالفة أكاديمية جسيمة",
+    c2Badge: "الحالة 02",
+    c2Title: "العصف الذهني والتحقق",
+    c2Desc: "استخدم طالب الذكاء الاصطناعي للحصول على أفكار وهيكلة أولية، ثم كتب المقال بنفسه وتحقق من صحة كافة المراجع بدقة.",
+    c2Status: "التقييم: استخدام أخلاقي ومقبول",
+    c3Badge: "الحالة 03",
+    c3Title: "تحسين الصياغة والتدقيق",
+    c3Desc: "استعان باحث بأداة ذكاء اصطناعي للمساعدة في تنقيح الصياغة اللغوية والأسلوبية لبحثه العلمي المكتوب بالكامل بجهده.",
+    c3Status: "التقييم: مقبول (إذا سمحت سياسة النشر/المؤسسة)",
+
+    secChecklistTitle: "معايير القرار: هل استخدامي مشروع؟ (قائمة الفحص الخماسية)",
+    checklistIntro: "قبل استخدام أي أداة ذكاء اصطناعي في مشروعك أو واجبك الأكاديمي، وجّه لنفسك الأسئلة الخمسة التالية:",
+    q1: "هل سأتعلم شيئاً حقيقياً وملموساً من هذه الخطوة، أم أنني أحاول تخطي عملية التعلم؟",
+    q2: "هل الناتج النهائي يعكس حقاً فهمي، أسلوبي وصوتي الخاص، أم صوت الأداة الرقمية فقط؟",
+    q3: "هل راجعت وتحققت شخصياً من صحة كل معلومة وردت من مصادر أصلية موثوقة وموثقة؟",
+    q4: "هل سأكون مرتاحاً وفخوراً لو سألني أستاذي: \"كيف أنجزت هذا؟\" وطلَب مني شرح كل خطوة بالتفصيل؟",
+    q5: "هل قمت بالإفصاح الكامل والشفاف عن نوع الأداة والدور الذي لعبته في هذا العمل؟",
+    footerText: "النزاهة الأكاديمية مسؤولية مشتركة • نحو استخدام مسؤول وأخلاقي للذكاء الاصطناعي"
+  },
+  fr: {
+    pageTitle: "Intégrité Académique et Éthique de l'IA",
+    backToList: "Retour à la liste des cours",
+    headerBadge: "Chapitre 04 • Leçon 01",
+    headerTitle: "Intégrité Académique et Éthique de l'IA",
+    headerSubtitle: "Aujourd'hui, la question n'est plus : « L'étudiant utilise-t-il l'IA ? », mais bien : <strong>« Comment l'utilise-t-il, et avec quelle probité et responsabilité ? »</strong>",
+    
+    secCoreTitle: "Notions et Principes Fondateurs",
+    defTitle: "Définition de l'Intégrité et de la Probité Scientifique",
+    defDesc: "<strong>L'intégrité académique :</strong> C'est l'engagement indéfectible envers l'honnêteté, la rigueur et la responsabilité dans la recherche et l'apprentissage ; garantir que l'œuvre soumise est bien la vôtre, attribuer fidèlement idées et données à leurs auteurs, et concourir loyalement.<br><strong>La probité scientifique :</strong> C'est la déclinaison éthique de l'intégrité en recherche : rendre compte scrupuleusement de ses observations, reconnaître la contribution des pairs et expliciter les limites méthodologiques.",
+    trustTitle: "Idée Clé : L'intégrité est un pacte de confiance",
+    trustDesc: "L'intégrité n'est pas un catalogue d'interdictions mémorisé par crainte des sanctions ; c'est un contrat de confiance : l'enseignant présume que le travail est authentique, et la société compte sur le diplôme comme gage d'une réelle compétence.",
+    excuseTitle: "L'excuse de l'inadvertance ne suffit pas !",
+    excuseDesc: "De nombreux cas de plagiat découlent d'une mauvaise maîtrise des normes bibliographiques ou de la précipitation, sans intention frauduleuse avérée. La responsabilité académique demeure pourtant pleine et entière ; d'où l'impératif de maîtriser le référencement tôt.",
+    patchTitle: "Règle d'or : Gare au « rapiéçage » textuel (Patchwriting)",
+    patchDesc: "Substituer des mots par des synonymes tout en conservant la structure morphologique et syntaxique <strong>n'est pas une paraphrase</strong>, mais un « rapiéçage » assimilé à du plagiat. Même rédigée entièrement avec vos mots, une idée empruntée exige impérativement une citation formelle.",
+
+    secPrinciplesTitle: "Principes Fondamentaux de l'Intégrité",
+    p1Badge: "Principe 01",
+    p1Title: "Honnêteté",
+    p1Desc: "Restituer fidèlement données, démarches et résultats réels sans falsification, manipulation ni altération délibérée des conclusions.",
+    p2Badge: "Principe 02",
+    p2Title: "Probité",
+    p2Desc: "Attribuer systématiquement et rigoureusement chaque idée, concept, extrait ou donnée empruntée à sa source originale.",
+    p3Badge: "Principe 03",
+    p3Title: "Responsabilité",
+    p3Desc: "Assumer pleinement la paternité intellectuelle, les conséquences méthodologiques et les conclusions des travaux publiés ou soumis.",
+    p4Badge: "Principe 04",
+    p4Title: "Équité",
+    p4Desc: "Agir avec impartialité et justice, respecter les droits de propriété d'autrui et préserver une concurrence universitaire saine et transparente.",
+    p5Badge: "Principe 05",
+    p5Title: "Transparence",
+    p5Desc: "Divulguer avec clarté méthodologique l'ensemble des sources, données primaires, protocoles et outils technologiques mobilisés.",
+    p6Badge: "Principe 06",
+    p6Title: "Respect",
+    p6Desc: "Reconnaître la valeur des contributions scientifiques antérieures, honorer le travail des chercheurs et préserver leurs droits moraux.",
+
+    secViolationsTitle: "Infractions Académiques Majeures",
+    v1Badge: "Infraction 01",
+    v1Title: "Plagiat Scientifique",
+    v1Desc: "S'approprier des formulations, concepts ou résultats d'autrui sans mentionner la source d'origine.<br><strong>Exemple :</strong> Copier-coller un paragraphe d'un article ou livre dans un mémoire sans guillemets ni citation.",
+    v2Badge: "Infraction 02",
+    v2Title: "Falsification et Fabrication de Données",
+    v2Desc: "Inventer de toutes pièces des mesures d'expérience ou altérer des jeux de données pour forcer des corrélations désirées.",
+    v3Badge: "Infraction 03",
+    v3Title: "Auto-plagiat (Publication Redondante)",
+    v3Desc: "Recycler ou resoumettre un travail antérieur sans autorisation préalable ni mention explicite, créant ainsi une illusion artificielle de productivité.",
+    v3Fix: "<strong>Solution concrète :</strong> Transparence totale : « Ce chapitre s'appuie sur une étude antérieure publiée par l'auteur dans... »",
+
+    secAiRisksTitle: "Risques Éthiques Liés à l'Usage de l'IA",
+    r1Badge: "Risque 01",
+    r1Title: "Fraude Académique Directe",
+    r1Desc: "Soumettre une dissertation, un devoir ou un article entièrement généré par un LLM en prétendant faussement en être le concepteur exclusif.",
+    r2Badge: "Risque 02",
+    r2Title: "Atrophie des Compétences Cognitives",
+    r2Desc: "La dépendance aveugle aux agents génératifs étouffe la maturation de l'esprit critique, la dialectique et la maîtrise rédactionnelle autonome.",
+    r3Badge: "Risque 03",
+    r3Title: "Hallucinations et Désinformation",
+    r3Desc: "Propagation d'affirmations infondées et invention fallacieuse de références bibliographiques plausibles mais inexistantes.",
+    r4Badge: "Risque 04",
+    r4Title: "Atteinte à la Propriété Intellectuelle",
+    r4Desc: "Exploitation non régulée de contenus et d'œuvres protégés synthétisés par des modèles sans respect des droits d'auteur sous-jacents.",
+    r5Badge: "Risque 05",
+    r5Title: "Fuite de Données et Confidentialité",
+    r5Desc: "Injection imprudente de corpus confidentiels, de données médicales ou d'informations personnelles privées dans des serveurs cloud tiers.",
+
+    secCasesTitle: "Études de Cas : Évaluation de Scénarios Réels",
+    c1Badge: "Cas 01",
+    c1Title: "Génération Intégrale de Devoir",
+    c1Desc: "Un étudiant confie la rédaction intégrale de son essai à ChatGPT et le soumet tel quel sans lecture critique ni modification.",
+    c1Status: "Verdict : Faute académique grave (Sanction disciplinaire)",
+    c2Badge: "Cas 02",
+    c2Title: "Brainstorming et Vérification",
+    c2Desc: "Un étudiant sollicite un modèle pour structurer un plan et explorer des pistes, rédige ensuite lui-même le texte et contrôle chaque référence.",
+    c2Status: "Verdict : Usage éthique et constructif",
+    c3Badge: "Cas 03",
+    c3Title: "Révision Linguistique et Stylistique",
+    c3Desc: "Un chercheur emploie un outil pour peaufiner la syntaxe et la fluidité d'un manuscrit scientifique dont il a intégralement conçu le contenu.",
+    c3Status: "Verdict : Toléré (sous réserve de conformité aux règles institutionnelles)",
+
+    secChecklistTitle: "Grille d'Arbitrage : Mon usage est-il légitime ? (Check-list en 5 points)",
+    checklistIntro: "Avant d'engager un outil d'IA dans un travail académique, posez-vous ces 5 questions d'auto-évaluation :",
+    q1: "Vais-je tirer un apprentissage réel de cette démarche, ou cherché-je simplement à contourner l'effort cognitif ?",
+    q2: "Le rendu final reflète-t-il authentiquement ma pensée, mon style et mon analyse, ou la seule empreinte de l'outil ?",
+    q3: "Ai-je personnellement examiné et contre-vérifié l'exactitude des sources citées auprès des références d'origine ?",
+    q4: "Serais-je à l'aise et fier d'expliquer minutieusement ma démarche intellectuelle et mes prompts devant mon professeur ?",
+    q5: "Ai-je explicité de manière claire et transparente la nature de l'outil utilisé et l'étendue de son intervention ?",
+    footerText: "L'intégrité académique est une responsabilité collective • Pour un usage réfléchi et éthique de l'IA"
+  },
+  en: {
+    pageTitle: "Academic Integrity and AI Ethics",
+    backToList: "Back to Lessons List",
+    headerBadge: "Chapter 04 • Lesson 01",
+    headerTitle: "Academic Integrity and AI Ethics",
+    headerSubtitle: "Today's critical question is no longer: 'Is the student using AI?', but rather: <strong>'How are they using it, and are they acting with honesty and accountability?'</strong>",
+    
+    secCoreTitle: "Foundational Concepts & Principles",
+    defTitle: "Concept of Academic Integrity & Scientific Honesty",
+    defDesc: "<strong>Academic Integrity:</strong> The moral commitment to honesty, trust, fairness, and personal responsibility across all learning and research pursuits; ensuring work attributed to you is genuinely yours, honoring the origins of ideas, and competing fairly.<br><strong>Scientific Honesty:</strong> The operational ethos of integrity in scholarship: reporting findings faithfully as observed, recognizing predecessors' milestones, and being candid about research limitations.",
+    trustTitle: "Core Insight: Integrity is a Covenant of Trust",
+    trustDesc: "Integrity is not a punitive list of prohibitions memorized out of fear; it is a reciprocal pact of trust: professors trust that your submission reflects your actual learning, and society trusts that academic credentials denote proven competence.",
+    excuseTitle: "The 'I Didn't Mean To' Excuse Fails!",
+    excuseDesc: "Much plagiarism stems from ignorance of citation protocols or poor time management rather than malicious intent. Nevertheless, scholarly liability remains strictly binding; learn proper citation early.",
+    patchTitle: "Golden Rule: Beware of 'Patchwriting'",
+    patchDesc: "Swapping select words for synonyms while retaining original syntactic architecture <strong>is not paraphrasing</strong>—it is 'patchwriting' and constitutes plagiarism. If the underlying proposition belongs to another author, formal citation is mandatory even if phrased in your own vocabulary.",
+
+    secPrinciplesTitle: "Core Pillars of Academic Integrity",
+    p1Badge: "Principle 01",
+    p1Title: "Honesty",
+    p1Desc: "Presenting empirical findings, facts, and conclusions exactly as they are, rejecting fabrication, distortion, or willful data manipulation.",
+    p2Badge: "Principle 02",
+    p2Title: "Faithfulness",
+    p2Desc: "Accurately attributing every concept, quote, dataset, or borrowed thesis to its authentic original authors and venues without omission.",
+    p3Badge: "Principle 03",
+    p3Title: "Accountability",
+    p3Desc: "Accepting complete personal ownership of the substance, methodology, and consequences of works submitted or published under your name.",
+    p4Badge: "Principle 04",
+    p4Title: "Fairness",
+    p4Desc: "Upholding equal standards, respecting peers' intellectual property, and fostering honest, equitable scholastic competition.",
+    p5Badge: "Principle 05",
+    p5Title: "Transparency",
+    p5Desc: "Explicitly declaring all sources, empirical datasets, methodological caveats, and computational or generative technologies employed.",
+    p6Badge: "Principle 06",
+    p6Title: "Respect",
+    p6Desc: "Honoring prior scholarly legacies, recognizing intellectual heritage, and safeguarding moral and intellectual property rights.",
+
+    secViolationsTitle: "Common Academic Violations",
+    v1Badge: "Violation 01",
+    v1Title: "Academic Plagiarism",
+    v1Desc: "Appropriating another's words, concepts, or discoveries without proper citation.<br><strong>Example:</strong> Lifting paragraphs from an article or book into an assignment without quotation marks or reference.",
+    v2Badge: "Violation 02",
+    v2Title: "Data Fabrication & Falsification",
+    v2Desc: "Inventing empirical readings, tampering with experimental data, or cherry-picking values to force desired hypotheses.",
+    v3Badge: "Violation 03",
+    v3Title: "Self-Plagiarism (Duplicate Submission)",
+    v3Desc: "Resubmitting previously assessed coursework (or sections thereof) without prior authorization, generating an inflated, illusory record of productivity.",
+    v3Fix: "<strong>Practical Fix:</strong> Full proactive disclosure: 'This chapter builds directly upon earlier research published by the author in...'",
+
+    secAiRisksTitle: "Risks of Unethical Artificial Intelligence Usage",
+    r1Badge: "Risk 01",
+    r1Title: "Direct Academic Deception",
+    r1Desc: "Submitting essays, research papers, or computer code generated entirely by LLMs while falsely claiming solo authorship.",
+    r2Badge: "Risk 02",
+    r2Title: "Atrophy of Critical Cognitive Skills",
+    r2Desc: "Over-reliance on automated tools paralyzes independent dialectical reasoning, deep synthesis, and intrinsic expressive voice.",
+    r3Badge: "Risk 03",
+    r3Title: "Hallucinations & Academic Disinformation",
+    r3Desc: "The generation of factually fabricated claims, pseudo-scientific premises, and fictitious bibliographies presented with authoritative confidence.",
+    r4Badge: "Risk 04",
+    r4Title: "Intellectual Property Infringement",
+    r4Desc: "Re-using proprietary outputs synthesized from protected training works without compliance with copyright licenses.",
+    r5Badge: "Risk 05",
+    r5Title: "Data Leakage & Privacy Compromise",
+    r5Desc: "Inadvertently uploading confidential raw datasets, proprietary codebases, or sensitive personal data into cloud AI inference engines.",
+
+    secCasesTitle: "Case Studies: Evaluating Authentic Scenarios",
+    c1Badge: "Case 01",
+    c1Title: "Full Essay Autonomous Generation",
+    c1Desc: "A student prompts ChatGPT to draft an entire term paper and turns it in verbatim without personal critique or validation.",
+    c1Status: "Verdict: Severe Academic Misconduct (Subject to discipline)",
+    c2Badge: "Case 02",
+    c2Title: "Brainstorming and Source Verification",
+    c2Desc: "A student consults AI for conceptual brainstorming, personally crafts the analysis, and verifies each cited claim against primary sources.",
+    c2Status: "Verdict: Ethical and Productive Augmentation",
+    c3Badge: "Case 03",
+    c3Title: "Stylistic Polish and Syntax Refinement",
+    c3Desc: "A researcher uses an LLM to enhance fluency and grammatical precision on a paper whose hypotheses and prose are entirely their own.",
+    c3Status: "Verdict: Acceptable (Subject to institutional/publisher guidelines)",
+
+    secChecklistTitle: "Decision Framework: Is My Usage Ethical? (5-Point Checklist)",
+    checklistIntro: "Before leveraging an AI assistant in your academic work, ask yourself the following five critical questions:",
+    q1: "Will I genuinely learn and master new concepts through this action, or am I merely attempting to bypass cognitive effort?",
+    q2: "Does the final output authentically express my personal insight, intellectual voice, and understanding?",
+    q3: "Have I personally verified the empirical accuracy and existence of every cited claim against primary sources?",
+    q4: "Would I feel confident and proud explaining my iterative prompting and research process step-by-step to my advisor?",
+    q5: "Have I fully and transparently acknowledged the tooling used and the precise scope of its assistance?",
+    footerText: "Academic Integrity is a Shared Covenant • Toward Responsible and Principled AI Adoption"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Update HTML nodes (with <strong>, <br>, etc.)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selection in localStorage
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الفصل 04 النشاط 01: ممارسات الذكاء الاصطناعي الأخلاقية والمسؤولة</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --danger: #e53e3e;
+    --success: #38a169;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 45px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  
+  .header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.05rem;
+    opacity: 0.95;
+    font-weight: 400;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Instruction Banner */
+  .instruction-box {
+    background: #fffaf0;
+    border-inline-start: 5px solid var(--accent);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    border-top: 1px solid var(--border);
+    border-inline-end: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .instruction-icon {
+    font-size: 1.6rem;
+    color: var(--accent);
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .instruction-text h4 {
+    color: var(--primary);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .instruction-text p {
+    color: #4a5568;
+    font-size: 0.98rem;
+    margin: 0;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    color: var(--secondary);
+    flex-shrink: 0;
+  }
+
+  /* Interactive Table Card */
+  .table-card {
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: inherit;
+  }
+
+  .activity-table thead th {
+    background: #2b6cb0;
+    color: white;
+    padding: 16px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-bottom: 2px solid #234e52;
+  }
+
+  .activity-table tbody td {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    font-size: 0.95rem;
+  }
+
+  .activity-table tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  .table-input {
+    width: 100%;
+    min-height: 85px;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    background: #fafafa;
+    transition: all 0.2s;
+  }
+
+  .table-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+  }
+
+  .badge-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .badge-danger {
+    background: #fed7d7;
+    color: var(--danger);
+  }
+
+  .badge-warning {
+    background: #feebc8;
+    color: #c05621;
+  }
+
+  .badge-success {
+    background: #c6f6d5;
+    color: var(--success);
+  }
+
+  /* Practical Mission Card */
+  .mission-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    margin-bottom: 40px;
+    border-top: 5px solid var(--secondary);
+  }
+
+  .mission-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .mission-header h3 {
+    font-size: 1.25rem;
+    color: var(--primary);
+    font-weight: 800;
+  }
+
+  .mission-desc {
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--light);
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    line-height: 1.7;
+    border: 1px solid #bee3f8;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary);
+  }
+
+  .form-control {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border 0.3s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--secondary);
+  }
+
+  .btn-submit {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  .btn-submit:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 35px 20px; }
+    .header h1 { font-size: 1.6rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 15px;}
+    .activity-table thead { display: none; }
+    .activity-table, .activity-table tbody, .activity-table tr, .activity-table td {
+      display: block;
+      width: 100%;
+    }
+    .activity-table tr {
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .activity-table td {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 04.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToChapter">العودة للبرنامج</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 04 النشاط 01</span>
+    <h1 data-i18n="headerTitle">تحويل الممارسات غير الأخلاقية إلى ممارسات مسؤولة</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">ورشة جماعية لتحليل السلوكيات الأكاديمية السلبية المتعلقة بالذكاء الاصطناعي وصياغة بدائل نزيهة وموثقة.</div>
+  </div>
+
+  <!-- Instruction Banner -->
+  <div class="instruction-box">
+    <i class="fa-solid fa-circle-question instruction-icon"></i>
+    <div class="instruction-text">
+      <h4 data-i18n="instHeading">تعليمة النشاط الجماعي:</h4>
+      <p data-i18n="instText">اختر ممارسات صنّفتها مجموعتك على أنها غير أخلاقية، ثم اقترح طريقة واضحة وعملية لتحويلها إلى ممارسات أخلاقية ومسؤولة تدعم النزاهة الأكاديمية.</p>
+    </div>
+  </div>
+
+  <!-- Section 1: Analysis Table -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-scale-balanced"></i></span>
+    <span data-i18n="secTableTitle">جدول رصد وتحويل الممارسات</span>
+  </div>
+
+  <div class="table-card">
+    <table class="activity-table">
+      <thead>
+        <tr>
+          <th style="width: 32%;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span data-i18n="thBad">الممارسة غير الأخلاقية</span>
+          </th>
+          <th style="width: 33%;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span data-i18n="thWhy">لماذا هي مشكلة؟</span>
+          </th>
+          <th style="width: 35%;">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span data-i18n="thFix">كيف نجعلها ممارسة أخلاقية؟</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Illustrative Example Row -->
+        <tr>
+          <td>
+            <span class="badge-tag badge-danger" data-i18n="badgeEx">مثال توضيحي</span>
+            <p data-i18n-html="exBad"><strong>توليد بحث كامل وتقديمه:</strong> نسخ مخرجات أداة التوليد مباشرة دون مراجعة وتقديمها كعمل شخصي.</p>
+          </td>
+          <td>
+            <span class="badge-tag badge-warning" data-i18n="badgeProblem">تحليل المشكلة</span>
+            <p data-i18n="exWhy">انتحال علمي، تضليل للمدرس، إلغاء لدور الطالب في التفكير الناقد، واحتمال وجود معلومات وهلوسات خاطئة.</p>
+          </td>
+          <td>
+            <span class="badge-tag badge-success" data-i18n="badgeSolution">الحل المسؤول</span>
+            <p data-i18n="exFix">استخدام الذكاء الاصطناعي للعصف الذهني فقط، كتابة المحتوى بأسلوب الطالب، والإفصاح عن الأداة في الهامش بدقة.</p>
+          </td>
+        </tr>
+
+        <!-- Student Input Row 1 -->
+        <tr>
+          <td>
+            <span class="badge-tag badge-danger" data-i18n="badgeP1">ممارسة 01</span>
+            <textarea class="table-input" id="input-bad-1" data-i18n-placeholder="phBad1" placeholder="اكتب هنا الممارسة الأولى التي رصدتها مجموعتكم..."></textarea>
+          </td>
+          <td>
+            <span class="badge-tag badge-warning" data-i18n="badgeImpact1">الأثر والأضرار</span>
+            <textarea class="table-input" id="input-why-1" data-i18n-placeholder="phWhy1" placeholder="اشرح لماذا يعد هذا السلوك مخالفاً للنزاهة العلمية؟"></textarea>
+          </td>
+          <td>
+            <span class="badge-tag badge-success" data-i18n="badgeFix1">البديل الأخلاقي</span>
+            <textarea class="table-input" id="input-fix-1" data-i18n-placeholder="phFix1" placeholder="كيف نحول هذه الممارسة لسلوك أكاديمي مسؤول ومعتمد؟"></textarea>
+          </td>
+        </tr>
+
+        <!-- Student Input Row 2 -->
+        <tr>
+          <td>
+            <span class="badge-tag badge-danger" data-i18n="badgeP2">ممارسة 02</span>
+            <textarea class="table-input" id="input-bad-2" data-i18n-placeholder="phBad2" placeholder="اكتب هنا الممارسة الثانية..."></textarea>
+          </td>
+          <td>
+            <span class="badge-tag badge-warning" data-i18n="badgeImpact2">الأثر والأضرار</span>
+            <textarea class="table-input" id="input-why-2" data-i18n-placeholder="phWhy2" placeholder="ما الأضرار التعليمية والأخلاقية المترتبة عليها؟"></textarea>
+          </td>
+          <td>
+            <span class="badge-tag badge-success" data-i18n="badgeFix2">البديل الأخلاقي</span>
+            <textarea class="table-input" id="input-fix-2" data-i18n-placeholder="phFix2" placeholder="ما هي الخطوات الإجرائية لإصلاح هذا الاستخدام؟"></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 2: Applied Practical Mission -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-laptop-file"></i></span>
+    <span data-i18n="secMissionTitle">المهمة التطبيقية المباشرة</span>
+  </div>
+
+  <div class="mission-card">
+    <div class="mission-header">
+      <i class="fa-solid fa-clipboard-check" style="font-size: 1.5rem; color: var(--accent);"></i>
+      <h3 data-i18n="missionCardTitle">استمارة توثيق استخدام الذكاء الاصطناعي في مهمة دراسية</h3>
+    </div>
+    
+    <div class="mission-desc">
+      <i class="fa-solid fa-quote-right" style="color: var(--secondary); margin-inline-end: 8px;"></i>
+      <span data-i18n-html="missionDesc"><strong>المطلوب:</strong> استخدام أداة ذكاء اصطناعي في مهمة دراسية حقيقية مع توثيق خطوات الاستخدام والإفصاح الكامل عن مدى الاعتماد عليه وفق المعايير الأكاديمية.</span>
+    </div>
+
+    <form onsubmit="handleFormSubmit(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-robot"></i>
+            <span data-i18n="lblTool">اسم الأداة والنسخة المستخدمة</span>
+          </label>
+          <input type="text" class="form-control" id="f-tool" data-i18n-placeholder="phTool" placeholder="مثال: ChatGPT (GPT-4o) أو Claude 3.5 Sonnet">
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-book"></i>
+            <span data-i18n="lblTask">عنوان المهمة أو المادة الدراسية</span>
+          </label>
+          <input type="text" class="form-control" id="f-task" data-i18n-placeholder="phTask" placeholder="مثال: تلخيص ورقة بحثية في مقياس تعليمية المادة">
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-chart-pie"></i>
+            <span data-i18n="lblRatio">نسبة الاعتماد التقريبية على الأداة</span>
+          </label>
+          <select class="form-control" id="f-ratio">
+            <option value="" data-i18n="optDefault">اختر نسبة الاعتماد...</option>
+            <option value="1" data-i18n="opt1">مساعدة طفيفة (10% - 25%): عصف ذهني وتوليد أفكار</option>
+            <option value="2" data-i18n="opt2">مساعدة متوسطة (25% - 50%): تدقيق لغوي وإعادة صياغة جزئية</option>
+            <option value="3" data-i18n="opt3">مساعدة رئيسية (أكثر من 50%): هيكلة موسعة مع توثيق تفصيلي</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label>
+          <i class="fa-solid fa-list-ol"></i>
+          <span data-i18n="lblSteps">توثيق خطوات الاستخدام (الأوامر والمدخلات Prompts والنتائج):</span>
+        </label>
+        <textarea class="form-control" rows="4" id="f-steps" data-i18n-placeholder="phSteps" placeholder="وضّح الأوامر (Prompts) التي أدخلتها، وكيف قمت بمراجعة المخرجات، وتنقيحها، والتحقق من صحتها ومراجعها..."></textarea>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 25px;">
+        <label>
+          <i class="fa-solid fa-signature"></i>
+          <span data-i18n="lblStatement">نص إقرار الشفافية (Disclosure Statement):</span>
+        </label>
+        <textarea class="form-control" rows="2" id="f-statement" data-i18n-placeholder="phStatement" placeholder="اكتب الصيغة الختامية التي ستدرجها في عملك الدراسي للإفصاح عن دور الذكاء الاصطناعي..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <i class="fa-solid fa-floppy-disk"></i>
+        <span data-i18n="btnSubmit">اعتماد وحفظ التقرير الأكاديمي</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 04 النشاط 01: ممارسات الذكاء الاصطناعي الأخلاقية والمسؤولة",
+    backToChapter: "العودة للبرنامج",
+    headerBadge: "الفصل 04 النشاط 01",
+    headerTitle: "تحويل الممارسات غير الأخلاقية إلى ممارسات مسؤولة",
+    headerSubtitle: "ورشة جماعية لتحليل السلوكيات الأكاديمية السلبية المتعلقة بالذكاء الاصطناعي وصياغة بدائل نزيهة وموثقة.",
+    
+    instHeading: "تعليمة النشاط الجماعي:",
+    instText: "اختر ممارسات صنّفتها مجموعتك على أنها غير أخلاقية، ثم اقترح طريقة واضحة وعملية لتحويلها إلى ممارسات أخلاقية ومسؤولة تدعم النزاهة الأكاديمية.",
+
+    secTableTitle: "جدول رصد وتحويل الممارسات",
+    thBad: "الممارسة غير الأخلاقية",
+    thWhy: "لماذا هي مشكلة؟",
+    thFix: "كيف نجعلها ممارسة أخلاقية؟",
+    
+    badgeEx: "مثال توضيحي",
+    exBad: "<strong>توليد بحث كامل وتقديمه:</strong> نسخ مخرجات أداة التوليد مباشرة دون مراجعة وتقديمها كعمل شخصي.",
+    badgeProblem: "تحليل المشكلة",
+    exWhy: "انتحال علمي، تضليل للمدرس، إلغاء لدور الطالب في التفكير الناقد، واحتمال وجود معلومات وهلوسات خاطئة.",
+    badgeSolution: "الحل المسؤول",
+    exFix: "استخدام الذكاء الاصطناعي للعصف الذهني فقط، كتابة المحتوى بأسلوب الطالب، والإفصاح عن الأداة في الهامش بدقة.",
+
+    badgeP1: "ممارسة 01",
+    phBad1: "اكتب هنا الممارسة الأولى التي رصدتها مجموعتكم...",
+    badgeImpact1: "الأثر والأضرار",
+    phWhy1: "اشرح لماذا يعد هذا السلوك مخالفاً للنزاهة العلمية؟",
+    badgeFix1: "البديل الأخلاقي",
+    phFix1: "كيف نحول هذه الممارسة لسلوك أكاديمي مسؤول ومعتمد؟",
+
+    badgeP2: "ممارسة 02",
+    phBad2: "اكتب هنا الممارسة الثانية...",
+    badgeImpact2: "الأثر والأضرار",
+    phWhy2: "ما الأضرار التعليمية والأخلاقية المترتبة عليها؟",
+    badgeFix2: "البديل الأخلاقي",
+    phFix2: "ما هي الخطوات الإجرائية لإصلاح هذا الاستخدام؟",
+
+    secMissionTitle: "المهمة التطبيقية المباشرة",
+    missionCardTitle: "استمارة توثيق استخدام الذكاء الاصطناعي في مهمة دراسية",
+    missionDesc: "<strong>المطلوب:</strong> استخدام أداة ذكاء اصطناعي في مهمة دراسية حقيقية مع توثيق خطوات الاستخدام والإفصاح الكامل عن مدى الاعتماد عليه وفق المعايير الأكاديمية.",
+    lblTool: "اسم الأداة والنسخة المستخدمة",
+    phTool: "مثال: ChatGPT (GPT-4o) أو Claude 3.5 Sonnet",
+    lblTask: "عنوان المهمة أو المادة الدراسية",
+    phTask: "مثال: تلخيص ورقة بحثية في مقياس تعليمية المادة",
+    lblRatio: "نسبة الاعتماد التقريبية على الأداة",
+    optDefault: "اختر نسبة الاعتماد...",
+    opt1: "مساعدة طفيفة (10% - 25%): عصف ذهني وتوليد أفكار",
+    opt2: "مساعدة متوسطة (25% - 50%): تدقيق لغوي وإعادة صياغة جزئية",
+    opt3: "مساعدة رئيسية (أكثر من 50%): هيكلة موسعة مع توثيق تفصيلي",
+    lblSteps: "توثيق خطوات الاستخدام (الأوامر والمدخلات Prompts والنتائج):",
+    phSteps: "وضّح الأوامر (Prompts) التي أدخلتها، وكيف قمت بمراجعة المخرجات، وتنقيحها، والتحقق من صحتها ومراجعها...",
+    lblStatement: "نص إقرار الشفافية (Disclosure Statement):",
+    phStatement: "اكتب الصيغة الختامية التي ستدرجها في عملك الدراسي للإفصاح عن دور الذكاء الاصطناعي...",
+    btnSubmit: "اعتماد وحفظ التقرير الأكاديمي",
+    alertSaved: "تم حفظ توثيق المهمة الدراسية بنجاح!",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 04 TP 01 : Pratiques Éthiques et Responsables de l'IA",
+    backToChapter: "Retour au programme",
+    headerBadge: "Chapitre 04 • Activité 01",
+    headerTitle: "Transformer les Pratiques Déviantes en Usages Responsables",
+    headerSubtitle: "Atelier collaboratif pour analyser les dérives académiques liées à l'IA et co-construire des alternatives intègres et documentées.",
+    
+    instHeading: "Consigne du travail en équipe :",
+    instText: "Identifiez les pratiques qualifiées de contraires à l'éthique par votre groupe, puis formulez des solutions concrètes pour les convertir en usages académiques vertueux.",
+
+    secTableTitle: "Tableau de Diagnostic et de Remédiation Éthique",
+    thBad: "Pratique Déviante / Non Éthique",
+    thWhy: "Pourquoi est-ce problématique ?",
+    thFix: "Comment la convertir en pratique responsable ?",
+    
+    badgeEx: "Exemple Typique",
+    exBad: "<strong>Génération intégrale d'un devoir :</strong> Soumission brute du texte produit par le modèle sans révision critique ni réappropriation.",
+    badgeProblem: "Diagnostic de la faute",
+    exWhy: "Plagiat caractérisé, tromperie de l'évaluateur, neutralisation du travail intellectuel et risque d'hallucinations factuelles.",
+    badgeSolution: "Alternative vertueuse",
+    exFix: "Consigner l'IA au brainstorming exploratoire, rédiger soi-même la copie et consigner l'intervention de l'outil en note de bas de page.",
+
+    badgeP1: "Cas 01",
+    phBad1: "Décrivez la première pratique problématique observée par votre groupe...",
+    badgeImpact1: "Impacts & Risques",
+    phWhy1: "En quoi ce comportement enfreint-il la probité et la déontologie scientifique ?",
+    badgeFix1: "Solution Responsable",
+    phFix1: "Quelles mesures méthodologiques concrètes permettent de réhabiliter cet usage ?",
+
+    badgeP2: "Cas 02",
+    phBad2: "Décrivez la seconde pratique déviante...",
+    badgeImpact2: "Impacts & Risques",
+    phWhy2: "Quelles sont les répercussions cognitives et institutionnelles induites ?",
+    badgeFix2: "Solution Responsable",
+    phFix2: "Quel protocole de travail adopter pour garantir un cadre d'intégrité ?",
+
+    secMissionTitle: "Mission Pratique : Documentation Contextualisée",
+    missionCardTitle: "Formulaire de Déclaration et de Traçabilité de l'Usage de l'IA",
+    missionDesc: "<strong>Consigne :</strong> Mobilisez un agent conversationnel pour une tâche universitaire authentique, documentez votre cheminement et déclarez ouvertement votre protocole.",
+    lblTool: "Modèle et version logicielle exploités",
+    phTool: "Ex. : ChatGPT (GPT-4o), Claude 3.5 Sonnet, Mistral Large...",
+    lblTask: "Intitulé de la mission ou de l'unité d'enseignement",
+    phTask: "Ex. : Synthèse critique d'un article en Didactique des Disciplines",
+    lblRatio: "Degré estimé de dépendance envers l'outil",
+    optDefault: "Sélectionnez le niveau d'intervention...",
+    opt1: "Assistance marginale (10% - 25%) : Idéation et remue-méninges",
+    opt2: "Assistance modérée (25% - 50%) : Correction syntaxique et polissage",
+    opt3: "Assistance substantielle (> 50%) : Co-structuration avec divulgation détaillée",
+    lblSteps: "Journalisation de la démarche (Prompts, itérations et vérifications) :",
+    phSteps: "Détaillez les invites formulées, le protocole d'évaluation des réponses et les vérifications des références...",
+    lblStatement: "Déclaration d'intégrité (Disclosure Statement) :",
+    phStatement: "Rédigez la formule conclusive d'attribution à intégrer dans votre rapport de recherche...",
+    btnSubmit: "Enregistrer et Valider la Déclaration Académique",
+    alertSaved: "Déclaration d'usage enregistrée avec succès !",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 04 Lab 01: Ethical & Responsible AI Practices",
+    backToChapter: "Back to Syllabus",
+    headerBadge: "Chapter 04 • Activity 01",
+    headerTitle: "Converting Unethical Habits into Responsible Practices",
+    headerSubtitle: "A collaborative workshop dissecting academic malpractice involving generative models and formulating sound, verified workflows.",
+    
+    instHeading: "Team Activity Brief:",
+    instText: "Identify academic practices categorized by your team as ethically compromised, then devise concrete, accountable measures to restore scholarly integrity.",
+
+    secTableTitle: "Malpractice Audit and Remediation Matrix",
+    thBad: "Unethical Practice",
+    thWhy: "Why is it problematic?",
+    thFix: "How to reform it responsibly?",
+    
+    badgeEx: "Benchmark Example",
+    exBad: "<strong>Unedited Essay Generation:</strong> Submitting raw LLM outputs verbatim without editorial scrutiny, claiming personal authorship.",
+    badgeProblem: "Fault Analysis",
+    exWhy: "Flagrant plagiarism, academic deception, abdication of critical cognition, and exposure to hallucinated sources.",
+    badgeSolution: "Principled Solution",
+    exFix: "Restrict LLM interaction to pre-writing ideation, author prose independently, and cite model involvement transparently in footnotes.",
+
+    badgeP1: "Case 01",
+    phBad1: "Enter the first unethical behavior flagged by your group...",
+    badgeImpact1: "Harm & Impact",
+    phWhy1: "Explain how this action compromises scientific probity and ethical evaluation...",
+    badgeFix1: "Principled Alternative",
+    phFix1: "What actionable protocol can transform this habit into a legitimate scholastic process?",
+
+    badgeP2: "Case 02",
+    phBad2: "Enter the second unethical practice...",
+    badgeImpact2: "Harm & Impact",
+    phWhy2: "What pedagogical risks and institutional damages result from this?",
+    badgeFix2: "Principled Alternative",
+    phFix2: "Detail step-by-step remediation procedures to ensure ethical compliance...",
+
+    secMissionTitle: "Hands-on Mission: Academic Audit",
+    missionCardTitle: "Academic AI Transparency & Disclosure Log",
+    missionDesc: "<strong>Objective:</strong> Deploy an AI tool in an actual academic task, document your exact chain of interaction, and draft a formal disclosure statement.",
+    lblTool: "Tool designation & model checkpoint",
+    phTool: "e.g., ChatGPT (GPT-4o), Claude 3.5 Sonnet, Gemini Advanced...",
+    lblTask: "Task title or course module",
+    phTask: "e.g., Literature review synthesis in Didactic Pedagogy",
+    lblRatio: "Estimated level of tool dependence",
+    optDefault: "Select reliance level...",
+    opt1: "Minor assistance (10% - 25%): Brainstorming and outline exploration",
+    opt2: "Moderate assistance (25% - 50%): Grammar polishing and partial copyediting",
+    opt3: "Substantive assistance (> 50%): Structural synthesis with detailed disclosure",
+    lblSteps: "Interaction Traceability (Prompts, refinement, and ground-truth validation):",
+    phSteps: "Explain prompt chains, output critiques, domain validations, and how primary citations were audited...",
+    lblStatement: "Formal Disclosure Statement:",
+    phStatement: "Draft the precise declaration paragraph to be appended to your assignment...",
+    btnSubmit: "Submit & Archive Academic Disclosure Log",
+    alertSaved: "Academic disclosure log submitted successfully!",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+let currentLang = 'ar';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Update HTML nodes
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Update input and textarea placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) {
+      el.setAttribute('placeholder', translations[lang][key]);
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  alert(translations[currentLang].alertSaved);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

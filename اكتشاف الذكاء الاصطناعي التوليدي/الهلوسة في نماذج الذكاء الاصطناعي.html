@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -37,11 +37,59 @@
     color: var(--text);
     line-height: 1.85;
     padding: 30px 15px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 950px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -59,7 +107,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     padding: 6px 16px;
     border-radius: 8px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -139,7 +189,7 @@
   /* Callout Boxes */
   .callout {
     background: var(--bg);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
     border-radius: 8px;
     padding: 16px 20px;
     margin: 20px 0;
@@ -147,17 +197,17 @@
   }
 
   .callout.accent {
-    border-right-color: var(--accent);
+    border-inline-start-color: var(--accent);
     background: #fffaf0;
   }
 
   .callout.danger {
-    border-right-color: var(--danger);
+    border-inline-start-color: var(--danger);
     background: #fff5f5;
   }
 
   .callout.success {
-    border-right-color: var(--success);
+    border-inline-start-color: var(--success);
     background: #f0fff4;
   }
 
@@ -195,7 +245,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    text-align: right;
+    text-align: start;
   }
 
   th {
@@ -230,14 +280,14 @@
 
   .styled-list li {
     position: relative;
-    padding-right: 28px;
+    padding-inline-start: 28px;
     margin-bottom: 12px;
     font-size: 1rem;
   }
 
   .styled-list li i {
     position: absolute;
-    right: 0;
+    inset-inline-start: 0;
     top: 5px;
     color: var(--secondary);
   }
@@ -310,7 +360,8 @@
     border-radius: 50%;
     font-size: 0.85rem;
     font-weight: 700;
-    margin-left: 8px;
+    margin-inline-end: 8px;
+    flex-shrink: 0;
   }
 
   .practice-title {
@@ -324,7 +375,7 @@
 
   .prompt-example {
     background: #fff;
-    border-right: 3px solid var(--accent);
+    border-inline-start: 3px solid var(--accent);
     padding: 8px 12px;
     border-radius: 4px;
     font-family: inherit;
@@ -369,182 +420,192 @@
 
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
     <br>
-    <span class="header-badge">الفصل 01 • الدرس الخامس</span>
-    <h1>الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)</h1>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • الدرس الخامس</span>
+    <h1 data-i18n="headerTitle">الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)</h1>
   </div>
 
-  <!-- 1. ما هي الهلوسة؟ -->
+  <!-- 1. What is hallucination? -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-ghost"></i></div>
-      1. ما هي الهلوسة؟
+      <span data-i18n="sec1Title">1. ما هي الهلوسة؟</span>
     </div>
-    <p>
+    <p data-i18n="sec1P1">
       <strong>الهلوسة (Hallucination)</strong> هي قيام نموذج الذكاء الاصطناعي بإنتاج وتوليد معلومات غير صحيحة، مغلوطة، أو مختلقة كلياً، مع <strong>تقديمها بثقة عالية ونبرة حاسمة وكأنها حقيقة مؤكدة</strong>.
     </p>
 
     <div class="callout danger">
-      <div class="callout-title"><i class="fa-solid fa-circle-exclamation"></i> مثال توضيحي واقعي:</div>
-      إذا سألت النموذج: <em>"من هو مخترع الإنترنت؟"</em> فقد يجيب بذكر اسم شخص غير صحيح إطلاقاً مع سرد شرح مفصل ومقنع ظاهرياً يدعم هذه المعلومة الزائفة.
+      <div class="callout-title"><i class="fa-solid fa-circle-exclamation"></i> <span data-i18n="hallExTitle">مثال توضيحي واقعي:</span></div>
+      <span data-i18n="hallExDesc">إذا سألت النموذج: <em>"من هو مخترع الإنترنت؟"</em> فقد يجيب بذكر اسم شخص غير صحيح إطلاقاً مع سرد شرح مفصل ومقنع ظاهرياً يدعم هذه المعلومة الزائفة.</span>
     </div>
   </div>
 
-  <!-- 2. لماذا تحدث الهلوسة؟ -->
+  <!-- 2. Why does hallucination occur? -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-circle-question"></i></div>
-      2. لماذا تحدث الهلوسة؟
+      <span data-i18n="sec2Title">2. لماذا تحدث الهلوسة؟</span>
     </div>
-    <p>
+    <p data-i18n="sec2P1">
       لا يتعمّد النموذج الكذب، بل تحدث الهلوسة نتيجة طبيعة عمله التقنية وقيود عملية التدريب:
     </p>
 
     <ul class="styled-list danger">
-      <li><i class="fa-solid fa-xmark"></i> <strong>التنبؤ بالكلمات دون التحقق من الحقائق:</strong> النموذج يتنبأ إحصائياً بالكلمة التالية الأكثر احتمالاً ولا يتحقق من صحة ومطابقة الحقيقة.</li>
-      <li><i class="fa-solid fa-database"></i> <strong>نقص المعلومات في بيانات التدريب:</strong> فجوات المعرفة تؤدي بالنموذج إلى محاولة ملء الفراغات بنفسه.</li>
-      <li><i class="fa-solid fa-arrows-split-up-and-left"></i> <strong>وجود معلومات متناقضة:</strong> تعرض النموذج لمصادر متضاربة ومتعارضة أثناء عملية التدريب.</li>
-      <li><i class="fa-solid fa-comment-slash"></i> <strong>غموض السؤال أو نقص السياق:</strong> عدم وضوح المدخلات يدفع النموذج للتخمين والاستنتاج الحر.</li>
-      <li><i class="fa-solid fa-hourglass-end"></i> <strong>طلب معلومات نادرة أو حديثة جداً:</strong> الاستفسار عن تفاصيل خارج نطاق معرفته أو وقعت بعد تاريخ التدريب.</li>
+      <li><i class="fa-solid fa-xmark"></i> <span data-i18n="cause1"><strong>التنبؤ بالكلمات دون التحقق من الحقائق:</strong> النموذج يتنبأ إحصائياً بالكلمة التالية الأكثر احتمالاً ولا يتحقق من صحة ومطابقة الحقيقة.</span></li>
+      <li><i class="fa-solid fa-database"></i> <span data-i18n="cause2"><strong>نقص المعلومات في بيانات التدريب:</strong> فجوات المعرفة تؤدي بالنموذج إلى محاولة ملء الفراغات بنفسه.</span></li>
+      <li><i class="fa-solid fa-arrows-split-up-and-left"></i> <span data-i18n="cause3"><strong>وجود معلومات متناقضة:</strong> تعرض النموذج لمصادر متضاربة ومتعارضة أثناء عملية التدريب.</span></li>
+      <li><i class="fa-solid fa-comment-slash"></i> <span data-i18n="cause4"><strong>غموض السؤال أو نقص السياق:</strong> عدم وضوح المدخلات يدفع النموذج للتخمين والاستنتاج الحر.</span></li>
+      <li><i class="fa-solid fa-hourglass-end"></i> <span data-i18n="cause5"><strong>طلب معلومات نادرة أو حديثة جداً:</strong> الاستفسار عن تفاصيل خارج نطاق معرفته أو وقعت بعد تاريخ التدريب.</span></li>
     </ul>
   </div>
 
-  <!-- 3. أنواع الهلوسة -->
+  <!-- 3. Types of Hallucinations -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
-      3. أنواع الهلوسة
+      <span data-i18n="sec3Title">3. أنواع الهلوسة</span>
     </div>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th style="width: 25%;">نوع الهلوسة</th>
-            <th style="width: 45%;">الوصف والتعريف</th>
-            <th>مثال توضيحي</th>
+            <th style="width: 25%;" data-i18n="thType">نوع الهلوسة</th>
+            <th style="width: 45%;" data-i18n="thDesc">الوصف والتعريف</th>
+            <th data-i18n="thEx">مثال توضيحي</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>هلوسة واقعية<br><small style="color: var(--muted);">(Factual Hallucination)</small></strong></td>
-            <td>إعطاء وتوليد حقائق أو أرقام أو تواريخ أو أسماء أشخاص غير صحيحة.</td>
-            <td>اختراع مرجع علمي أو اسم مؤلف غير موجود على أرض الواقع.</td>
+            <td><strong data-i18n="factHallTitle">هلوسة واقعية</strong><br><small style="color: var(--muted);">(Factual Hallucination)</small></td>
+            <td data-i18n="factHallDesc">إعطاء وتوليد حقائق أو أرقام أو تواريخ أو أسماء أشخاص غير صحيحة.</td>
+            <td data-i18n="factHallEx">اختراع مرجع علمي أو اسم مؤلف غير موجود على أرض الواقع.</td>
           </tr>
           <tr>
-            <td><strong>هلوسة مرجعية<br><small style="color: var(--muted);">(Reference Hallucination)</small></strong></td>
-            <td>إنشاء ونسب مقالات أو أوراق بحثية أو كتب أو مراجع أكاديمية وهمية تماماً.</td>
-            <td>ذكر معرف كائن رقمي (DOI) وهمي أو ورقة علمية لم يتم نشرها أبداً.</td>
+            <td><strong data-i18n="refHallTitle">هلوسة مرجعية</strong><br><small style="color: var(--muted);">(Reference Hallucination)</small></td>
+            <td data-i18n="refHallDesc">إنشاء ونسب مقالات أو أوراق بحثية أو كتب أو مراجع أكاديمية وهمية تماماً.</td>
+            <td data-i18n="refHallEx">ذكر معرف كائن رقمي (DOI) وهمي أو ورقة علمية لم يتم نشرها أبداً.</td>
           </tr>
           <tr>
-            <td><strong>هلوسة منطقية<br><small style="color: var(--muted);">(Logical Hallucination)</small></strong></td>
-            <td>الاستنتاج وحل المسائل بطريقة تسلسلية تبدو منطقية شكلياً لكنها خاطئة مضموناً.</td>
-            <td>بناء نتائج وتحليلات رياضية أو سببية غير متطابقة مع المعطيات السابقة.</td>
+            <td><strong data-i18n="logicHallTitle">هلوسة منطقية</strong><br><small style="color: var(--muted);">(Logical Hallucination)</small></td>
+            <td data-i18n="logicHallDesc">الاستنتاج وحل المسائل بطريقة تسلسلية تبدو منطقية شكلياً لكنها خاطئة مضموناً.</td>
+            <td data-i18n="logicHallEx">بناء نتائج وتحليلات رياضية أو سببية غير متطابقة مع المعطيات السابقة.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- مقارنة عملية -->
+    <!-- Comparative Case Studies -->
     <div style="margin-top: 25px;">
-      <h4 style="color: var(--primary); margin-bottom: 12px; font-weight: 700;">أمثلة عملية مقارنة:</h4>
+      <h4 style="color: var(--primary); margin-bottom: 12px; font-weight: 700;" data-i18n="compHeading">أمثلة عملية مقارنة:</h4>
       
       <div style="background: var(--bg); padding: 12px 18px; border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border);">
-        <strong>السؤال الأول:</strong> ما عدد سكان كوكب المريخ؟
+        <strong data-i18n="q1Label">السؤال الأول:</strong> <span data-i18n="q1Text">ما عدد سكان كوكب المريخ؟</span>
       </div>
 
       <div class="comparison-grid">
         <div class="callout success" style="margin: 0;">
-          <div class="callout-title"><i class="fa-solid fa-check"></i> إجابة صحيحة:</div>
-          لا يوجد سكان دائمون على كوكب المريخ.
+          <div class="callout-title"><i class="fa-solid fa-check"></i> <span data-i18n="correctAnswerTitle">إجابة صحيحة:</span></div>
+          <span data-i18n="correctAnswerDesc">لا يوجد سكان دائمون على كوكب المريخ.</span>
         </div>
         <div class="callout danger" style="margin: 0;">
-          <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> إجابة هلوسية:</div>
-          يبلغ عدد سكان المريخ 25000 نسمة.
+          <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="hallAnswerTitle">إجابة هلوسية:</span></div>
+          <span data-i18n="hallAnswerDesc">يبلغ عدد سكان المريخ 25000 نسمة.</span>
         </div>
       </div>
 
       <div style="background: var(--bg); padding: 12px 18px; border-radius: 8px; margin-top: 15px; margin-bottom: 12px; border: 1px solid var(--border);">
-        <strong>السؤال الثاني:</strong> أعطني مرجعاً علمياً حول موضوع تخصصي معين.
+        <strong data-i18n="q2Label">السؤال الثاني:</strong> <span data-i18n="q2Text">أعطني مرجعاً علمياً حول موضوع تخصصي معين.</span>
       </div>
 
       <div class="callout danger" style="margin: 0;">
-        <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> سلوك الهلوسة المحتمل:</div>
-        قد ينشئ النموذج عنواناً رناناً ومؤلفين بارزين ومجلة علمية محكمة غير موجودين على الإطلاق في الواقع الأكاديمي.
+        <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="hallBehaviorTitle">سلوك الهلوسة المحتمل:</span></div>
+        <span data-i18n="hallBehaviorDesc">قد ينشئ النموذج عنواناً رناناً ومؤلفين بارزين ومجلة علمية محكمة غير موجودين على الإطلاق في الواقع الأكاديمي.</span>
       </div>
     </div>
   </div>
 
-  <!-- 4. كيف نكتشف الهلوسة؟ -->
+  <!-- 4. How to detect hallucination? -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-      4. كيف نكتشف الهلوسة؟
+      <span data-i18n="sec4Title">4. كيف نكتشف الهلوسة؟</span>
     </div>
-    <p>يتطلب كشف التضليل فحصاً نقدياً مستمراً للمخرجات باتباع خطوات التدقيق الآتية:</p>
+    <p data-i18n="sec4P1">يتطلب كشف التضليل فحصاً نقدياً مستمراً للمخرجات باتباع خطوات التدقيق الآتية:</p>
 
     <ul class="styled-list">
-      <li><i class="fa-solid fa-check-double"></i> <strong>التحقق من المصادر:</strong> مراجعة الاقتباسات والمصادر المذكورة والتأكد من أصلها.</li>
-      <li><i class="fa-solid fa-book-open"></i> <strong>مقارنة الإجابة بمراجع موثوقة:</strong> مقاطعة النص بالكتب والوثائق المعتمدة.</li>
-      <li><i class="fa-solid fa-globe"></i> <strong>البحث عن المعلومة في الإنترنت:</strong> البحث المباشر للتحقق من وجود الحدث أو الدراسة.</li>
-      <li><i class="fa-solid fa-file-circle-check"></i> <strong>التأكد من وجود المرجع العلمي فعلاً:</strong> البحث عن أسماء المؤلفين والمجلات وأرقام DOI.</li>
-      <li><i class="fa-solid fa-calendar-days"></i> <strong>مراجعة الأرقام والتواريخ والأسماء:</strong> فحص أدق التفاصيل الحسابية والتاريخية.</li>
+      <li><i class="fa-solid fa-check-double"></i> <span data-i18n="detect1"><strong>التحقق من المصادر:</strong> مراجعة الاقتباسات والمصادر المذكورة والتأكد من أصلها.</span></li>
+      <li><i class="fa-solid fa-book-open"></i> <span data-i18n="detect2"><strong>مقارنة الإجابة بمراجع موثوقة:</strong> مقاطعة النص بالكتب والوثائق المعتمدة.</span></li>
+      <li><i class="fa-solid fa-globe"></i> <span data-i18n="detect3"><strong>البحث عن المعلومة في الإنترنت:</strong> البحث المباشر للتحقق من وجود الحدث أو الدراسة.</span></li>
+      <li><i class="fa-solid fa-file-circle-check"></i> <span data-i18n="detect4"><strong>التأكد من وجود المرجع العلمي فعلاً:</strong> البحث عن أسماء المؤلفين والمجلات وأرقام DOI.</span></li>
+      <li><i class="fa-solid fa-calendar-days"></i> <span data-i18n="detect5"><strong>مراجعة الأرقام والتواريخ والأسماء:</strong> فحص أدق التفاصيل الحسابية والتاريخية.</span></li>
     </ul>
 
     <div class="callout danger">
-      <div class="callout-title"><i class="fa-solid fa-shield-halved"></i> قاعدة ذهبية:</div>
-      <strong>لا يجب اعتبار أي مخرجات من الذكاء الاصطناعي حقيقة مطلقة دون التحقق منها بدقة متناهية.</strong>
+      <div class="callout-title"><i class="fa-solid fa-shield-halved"></i> <span data-i18n="goldRuleTitle">قاعدة ذهبية:</span></div>
+      <strong data-i18n="goldRuleDesc">لا يجب اعتبار أي مخرجات من الذكاء الاصطناعي حقيقة مطلقة دون التحقق منها بدقة متناهية.</strong>
     </div>
   </div>
 
-  <!-- 5. كيف نقلل من الهلوسة وعلاقتها بـ RAG؟ -->
+  <!-- 5. Mitigating Hallucination & RAG -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-sliders"></i></div>
-      5. كيف نقلل من الهلوسة؟
+      <span data-i18n="sec5Title">5. كيف نقلل من الهلوسة؟</span>
     </div>
-    <p>يمكن خفض معدلات الهلوسة بصورة ملحوظة عبر اتباع التدابير التالية:</p>
+    <p data-i18n="sec5P1">يمكن خفض معدلات الهلوسة بصورة ملحوظة عبر اتباع التدابير التالية:</p>
 
     <ul class="styled-list">
-      <li><i class="fa-solid fa-bullseye"></i> صياغة أسئلة واضحة ومحددة ودقيقة للغاية.</li>
-      <li><i class="fa-solid fa-circle-info"></i> تزويد النموذج بسياق إضافي وشامل يوجه مسار الإجابة.</li>
-      <li><i class="fa-solid fa-link"></i> الاعتماد على مصادر خارجية موثوقة ومثبتة.</li>
-      <li><i class="fa-solid fa-diagram-project"></i> استخدام تقنية توليد الاسترجاع المعزز <strong>(RAG - Retrieval-Augmented Generation)</strong>.</li>
-      <li><i class="fa-solid fa-quote-right"></i> إلزام النموذج بإظهار وتوثيق المصادر والمراجع المستخدمة.</li>
-      <li><i class="fa-solid fa-user-check"></i> المراجعة البشرية المستمرة للمخرجات (Human-in-the-loop).</li>
+      <li><i class="fa-solid fa-bullseye"></i> <span data-i18n="mitig1">صياغة أسئلة واضحة ومحددة ودقيقة للغاية.</span></li>
+      <li><i class="fa-solid fa-circle-info"></i> <span data-i18n="mitig2">تزويد النموذج بسياق إضافي وشامل يوجه مسار الإجابة.</span></li>
+      <li><i class="fa-solid fa-link"></i> <span data-i18n="mitig3">الاعتماد على مصادر خارجية موثوقة ومثبتة.</span></li>
+      <li><i class="fa-solid fa-diagram-project"></i> <span data-i18n="mitig4">استخدام تقنية توليد الاسترجاع المعزز <strong>(RAG - Retrieval-Augmented Generation)</strong>.</span></li>
+      <li><i class="fa-solid fa-quote-right"></i> <span data-i18n="mitig5">إلزام النموذج بإظهار وتوثيق المصادر والمراجع المستخدمة.</span></li>
+      <li><i class="fa-solid fa-user-check"></i> <span data-i18n="mitig6">المراجعة البشرية المستمرة للمخرجات (Human-in-the-loop).</span></li>
     </ul>
 
     <!-- RAG Section -->
-    <div class="callout" style="border-right-color: var(--secondary); margin-top: 25px;">
-      <div class="callout-title"><i class="fa-solid fa-network-wired"></i> علاقة الهلوسة بتقنية RAG:</div>
-      <p style="margin-bottom: 10px;">
+    <div class="callout" style="border-inline-start-color: var(--secondary); margin-top: 25px;">
+      <div class="callout-title"><i class="fa-solid fa-network-wired"></i> <span data-i18n="ragTitle">علاقة الهلوسة بتقنية RAG:</span></div>
+      <p style="margin-bottom: 10px;" data-i18n="ragDesc">
         تعتمد تقنية <strong>RAG</strong> على جلب معلومات وبيانات موثوقة من مصادر وقواعد بيانات خارجية <em>قبل</em> قيام النموذج بتوليد الإجابة. لذلك تساعد تقنية RAG في تقليل الهلوسة بشكل هائل؛ لأن النموذج يستند إلى <strong>معلومات حقيقية حاضرة أمامه</strong> بدلاً من الاعتماد الحصري على ما حفظه أثناء التدريب الاحتمالي الأولي.
       </p>
 
       <div class="workflow-container">
-        <div class="workflow-step"><i class="fa-solid fa-database"></i> قاعدة بيانات</div>
-        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
-        <div class="workflow-step"><i class="fa-solid fa-file-import"></i> استرجاع الوثائق</div>
-        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
-        <div class="workflow-step"><i class="fa-solid fa-microchip"></i> النموذج (LLM)</div>
-        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left"></i></div>
-        <div class="workflow-step"><i class="fa-solid fa-circle-check"></i> الإجابة النهائية الموثقة</div>
+        <div class="workflow-step"><i class="fa-solid fa-database"></i> <span data-i18n="ragStep1">قاعدة بيانات</span></div>
+        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+        <div class="workflow-step"><i class="fa-solid fa-file-import"></i> <span data-i18n="ragStep2">استرجاع الوثائق</span></div>
+        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+        <div class="workflow-step"><i class="fa-solid fa-microchip"></i> <span data-i18n="ragStep3">النموذج (LLM)</span></div>
+        <div class="workflow-arrow"><i class="fa-solid fa-arrow-left arrow-flow"></i></div>
+        <div class="workflow-step"><i class="fa-solid fa-circle-check"></i> <span data-i18n="ragStep4">الإجابة الموثقة</span></div>
       </div>
     </div>
   </div>
 
-  <!-- 6. تقليل الهلوسة عبر كتابة الطلب (Prompting) -->
+  <!-- 6. Prompt Engineering strategies -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-      6. تقليل الهلوسة عبر كتابة الطلب (الموجّه)
+      <span data-i18n="sec6Title">6. تقليل الهلوسة عبر كتابة الطلب (الموجّه)</span>
     </div>
-    <p>
+    <p data-i18n="sec6P1">
       <strong>لا يمكن إلغاء الهلوسة تماماً</strong>، لكن طريقة هندسة وكتابة الطلب (Prompt Engineering) تقللها بنسبة كبيرة جداً باتباع هذه الاستراتيجيات الخمس:
     </p>
 
@@ -552,10 +613,10 @@
       <!-- 1 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">1</span> أعطه النص المصدر
+          <span class="practice-num">1</span> <span data-i18n="strat1Title">أعطه النص المصدر</span>
         </div>
-        <p style="font-size: 0.92rem; margin-bottom: 6px;">حصر نطاق المعالجة في محتوى مرفق محدد ومنعه من جلب أي شيء خارجه.</p>
-        <div class="prompt-example">
+        <p style="font-size: 0.92rem; margin-bottom: 6px;" data-i18n="strat1Desc">حصر نطاق المعالجة في محتوى مرفق محدد ومنعه من جلب أي شيء خارجه.</p>
+        <div class="prompt-example" data-i18n="strat1Ex">
           «اعتمد فقط على النص التالي للإجابة، إذا لم تجد المعلومة فيه، قل غير موجود في النص.»
         </div>
       </div>
@@ -563,10 +624,10 @@
       <!-- 2 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">2</span> اسمح له بقول «لا أعرف»
+          <span class="practice-num">2</span> <span data-i18n="strat2Title">اسمح له بقول «لا أعرف»</span>
         </div>
-        <p style="font-size: 0.92rem; margin-bottom: 6px;">منح النموذج رخصة صريحة للاعتراف بنقص المعلومة وتجنب التخمين الإجباري.</p>
-        <div class="prompt-example">
+        <p style="font-size: 0.92rem; margin-bottom: 6px;" data-i18n="strat2Desc">منح النموذج رخصة صريحة للاعتراف بنقص المعلومة وتجنب التخمين الإجباري.</p>
+        <div class="prompt-example" data-i18n="strat2Ex">
           «إذا لم تكن متأكداً من معلومة، صرّح بذلك بدل التخمين.»
         </div>
       </div>
@@ -574,10 +635,10 @@
       <!-- 3 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">3</span> اطلب الدليل
+          <span class="practice-num">3</span> <span data-i18n="strat3Title">اطلب الدليل</span>
         </div>
-        <p style="font-size: 0.92rem; margin-bottom: 6px;">إلزام النموذج بالاستشهاد بالنصوص الحرفية لمنع اختلاق استنتاجات واهية.</p>
-        <div class="prompt-example">
+        <p style="font-size: 0.92rem; margin-bottom: 6px;" data-i18n="strat3Desc">إلزام النموذج بالاستشهاد بالنصوص الحرفية لمنع اختلاق استنتاجات واهية.</p>
+        <div class="prompt-example" data-i18n="strat3Ex">
           «لكل فكرة، اذكر الجملة من النص التي تدعمها.»
         </div>
       </div>
@@ -585,10 +646,10 @@
       <!-- 4 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">4</span> كن دقيقاً وح ّدد السياق
+          <span class="practice-num">4</span> <span data-i18n="strat4Title">كن دقيقاً وح ّدد السياق</span>
         </div>
-        <p style="font-size: 0.92rem; margin-bottom: 6px;">تحديد الدور والمجال والجمهور بدقة لتقليص مساحة الاحتمالات العشوائية.</p>
-        <div class="prompt-example">
+        <p style="font-size: 0.92rem; margin-bottom: 6px;" data-i18n="strat4Desc">تحديد الدور والمجال والجمهور بدقة لتقليص مساحة الاحتمالات العشوائية.</p>
+        <div class="prompt-example" data-i18n="strat4Ex">
           «أنا أستاذ رياضيات في السنة الرابعة متوسط، حسب المنهاج الجزائري، اقترح...»
         </div>
       </div>
@@ -596,85 +657,438 @@
       <!-- 5 -->
       <div class="practice-card">
         <div class="practice-title">
-          <span class="practice-num">5</span> ق ّسم المهمة الكبيرة
+          <span class="practice-num">5</span> <span data-i18n="strat5Title">ق ّسم المهمة الكبيرة</span>
         </div>
-        <p style="font-size: 0.92rem; margin-bottom: 6px;">تجزئة التوليد لخطوات متتابعة بدلاً من طلب كمية معلومات ضخمة في مطالبة واحدة.</p>
-        <div class="prompt-example">
+        <p style="font-size: 0.92rem; margin-bottom: 6px;" data-i18n="strat5Desc">تجزئة التوليد لخطوات متتابعة بدلاً من طلب كمية معلومات ضخمة في مطالبة واحدة.</p>
+        <div class="prompt-example" data-i18n="strat5Ex">
           «بدل طلب درس كامل دفعة واحدة، اطلب الخطة أولاً، ثم كل جزء على حدة، وراجع كل جزء.»
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 7. عوامل وأنماط متقدمة للهلوسة -->
+  <!-- 7. Advanced Factors -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-gears"></i></div>
-      7. عوامل وأنماط متقدمة للهلوسة
+      <span data-i18n="sec7Title">7. عوامل وأنماط متقدمة للهلوسة</span>
     </div>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th style="width: 30%;">العامل / النمط</th>
-            <th>كيف يسبب الهلوسة والخطأ؟</th>
+            <th style="width: 30%;" data-i18n="thFactor">العامل / النمط</th>
+            <th data-i18n="thFactorMechanism">كيف يسبب الهلوسة والخطأ؟</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>هلوسة الالتزام بالتعليمات</strong></td>
-            <td>قد يدّعي النموذج أنه نفّذ أمراً لم يفعله برمجياً، مثل قوله: <em>"لقد بحثت في الإنترنت ووجدت التالي..."</em> في حين أنه لم يتصل بالشبكة أساساً.</td>
+            <td><strong data-i18n="f1Name">هلوسة الالتزام بالتعليمات</strong></td>
+            <td data-i18n="f1Desc">قد يدّعي النموذج أنه نفّذ أمراً لم يفعله برمجياً، مثل قوله: <em>"لقد بحثت في الإنترنت ووجدت التالي..."</em> في حين أنه لم يتصل بالشبكة أساساً.</td>
           </tr>
           <tr>
-            <td><strong>الإلحاح والضغط النفسي</strong></td>
-            <td>إذا ضغطت عليه بسؤال مثل: <em>"أنت متأكد؟ أعطني المصدر فوراً"</em>، قد يختلق مصدراً خيالياً لإرضائك كاستجابة فورية بدلاً من الاعتراف بعدم معرفته.</td>
+            <td><strong data-i18n="f2Name">الإلحاح والضغط النفسي</strong></td>
+            <td data-i18n="f2Desc">إذا ضغطت عليه بسؤال مثل: <em>"أنت متأكد؟ أعطني المصدر فوراً"</em>، قد يختلق مصدراً خيالياً لإرضائك كاستجابة فورية بدلاً من الاعتراف بعدم معرفته.</td>
           </tr>
           <tr>
-            <td><strong>حدود نافذة السياق</strong></td>
-            <td>تجاوز طول النص المسموح &lArr; فقدان تدريجي للمعلومات السابقة &lArr; الوقوع في تناقضات مباشرة وهلوسة واضحة في الردود اللاحقة.</td>
+            <td><strong data-i18n="f3Name">حدود نافذة السياق</strong></td>
+            <td data-i18n="f3Desc">تجاوز طول النص المسموح &lArr; فقدان تدريجي للمعلومات السابقة &lArr; الوقوع في تناقضات مباشرة وهلوسة واضحة في الردود اللاحقة.</td>
           </tr>
           <tr>
-            <td><strong>درجة الحرارة (Temperature)</strong></td>
-            <td>إعداد يتحكم في العشوائية والإبداع؛ <strong>كلما زادت قيمة درجة الحرارة، زادت نسبة الاختلاق وتوليد معلومات وهمية</strong>، بينما تقليلها يجعل النموذج أكثر التزاماً بالحقائق.</td>
+            <td><strong data-i18n="f4Name">درجة الحرارة (Temperature)</strong></td>
+            <td data-i18n="f4Desc">إعداد يتحكم في العشوائية والإبداع؛ <strong>كلما زادت قيمة درجة الحرارة، زادت نسبة الاختلاق وتوليد معلومات وهمية</strong>، بينما تقليلها يجعل النموذج أكثر التزاماً بالحقائق.</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 8. هل ستختفي الهلوسة؟ ولماذا سميت بهذا الاسم؟ -->
+  <!-- 8. Will Hallucinations Disappear? -->
   <div class="content-card">
     <div class="section-title">
       <div class="icon"><i class="fa-solid fa-crystal-ball"></i></div>
-      8. هل ستختفي الهلوسة مستقبلاً؟
+      <span data-i18n="sec8Title">8. هل ستختفي الهلوسة مستقبلاً؟</span>
     </div>
-    <p>
+    <p data-i18n="sec8P1">
       <strong>الرأي السائد بين خبراء الذكاء الاصطناعي أنها لن تختفي تماماً؛</strong> لأنها ناتجة عن الطبيعة الجوهرية للأنظمة اللغوية القائمة على الاحتمالات الإحصائية والتنبؤ وليس الفهم الفعلي. ولكن يمكن <strong>تقليلها بنسب هائلة جداً</strong> من خلال:
     </p>
 
     <ul class="styled-list">
-      <li><i class="fa-solid fa-chart-line"></i> <strong>تحسين نماذج التقييم (Benchmarks):</strong> لتطوير مقاييس دقيقة تفحص وتقيس الاختلاق الآلي.</li>
-      <li><i class="fa-solid fa-shield-virus"></i> <strong>دمج الاسترجاع والتحقق في صميم النموذج:</strong> ربط النموذج آلياً بمحركات فحص وتدقيق للحقائق أثناء التوليد.</li>
-      <li><i class="fa-solid fa-gauge-high"></i> <strong>تطوير "معايرة الثقة" (Confidence Calibration):</strong> تدريب النموذج ليعرف حدوده المعرفية بدقة فيمتنع عن الإجابة إذا كانت درجة ثقته منخفضة.</li>
-      <li><i class="fa-solid fa-users-gear"></i> <strong>أنظمة متعددة الوكلاء (Multi-Agent Systems):</strong> استخدام وكلاء ذكاء اصطناعي متعددين يتحقق ويراجع بعضهم مخرجات بعض قبل إظهار الرد للمستخدم.</li>
+      <li><i class="fa-solid fa-chart-line"></i> <span data-i18n="fut1"><strong>تحسين نماذج التقييم (Benchmarks):</strong> لتطوير مقاييس دقيقة تفحص وتقيس الاختلاق الآلي.</span></li>
+      <li><i class="fa-solid fa-shield-virus"></i> <span data-i18n="fut2"><strong>دمج الاسترجاع والتحقق في صميم النموذج:</strong> ربط النموذج آلياً بمحركات فحص وتدقيق للحقائق أثناء التوليد.</span></li>
+      <li><i class="fa-solid fa-gauge-high"></i> <span data-i18n="fut3"><strong>تطوير "معايرة الثقة" (Confidence Calibration):</strong> تدريب النموذج ليعرف حدوده المعرفية بدقة فيمتنع عن الإجابة إذا كانت درجة ثقته منخفضة.</span></li>
+      <li><i class="fa-solid fa-users-gear"></i> <span data-i18n="fut4"><strong>أنظمة متعددة الوكلاء (Multi-Agent Systems):</strong> استخدام وكلاء ذكاء اصطناعي متعددين يتحقق ويراجع بعضهم مخرجات بعض قبل إظهار الرد للمستخدم.</span></li>
     </ul>
 
     <!-- Why called hallucination -->
     <div class="highlight-quote">
       <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 8px;">
-        <i class="fa-solid fa-question-circle" style="margin-left: 6px;"></i> لماذا سُمّيت "هلوسة"؟
+        <i class="fa-solid fa-question-circle" style="margin-inline-end: 6px;"></i> <span data-i18n="whyNameTitle">لماذا سُمّيت "هلوسة"؟</span>
       </div>
-      سُميت بهذا الاسم تشبيهاً بظاهرة <strong>الهلوسة عند البشر</strong>، حيث يرى الشخص أشياء لا وجود لها ويكون مقتنعاً بها تماماً؛ فالنموذج "يتخيل" معلومات غير حقيقية ويصدقها هو نفسه ويطرحها بثقة مطلقة!
+      <span data-i18n="whyNameDesc">سُميت بهذا الاسم تشبيهاً بظاهرة <strong>الهلوسة عند البشر</strong>، حيث يرى الشخص أشياء لا وجود لها ويكون مقتنعاً بها تماماً؛ فالنموذج "يتخيل" معلومات غير حقيقية ويصدقها هو نفسه ويطرحها بثقة مطلقة!</span>
     </div>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 01 • الدرس الخامس",
+    headerTitle: "الهلوسة في نماذج الذكاء الاصطناعي (AI Hallucination)",
+    sec1Title: "1. ما هي الهلوسة؟",
+    sec1P1: "<strong>الهلوسة (Hallucination)</strong> هي قيام نموذج الذكاء الاصطناعي بإنتاج وتوليد معلومات غير صحيحة، مغلوطة، أو مختلقة كلياً، مع <strong>تقديمها بثقة عالية ونبرة حاسمة وكأنها حقيقة مؤكدة</strong>.",
+    hallExTitle: "مثال توضيحي واقعي:",
+    hallExDesc: "إذا سألت النموذج: <em>\"من هو مخترع الإنترنت؟\"</em> فقد يجيب بذكر اسم شخص غير صحيح إطلاقاً مع سرد شرح مفصل ومقنع ظاهرياً يدعم هذه المعلومة الزائفة.",
+    sec2Title: "2. لماذا تحدث الهلوسة؟",
+    sec2P1: "لا يتعمّد النموذج الكذب، بل تحدث الهلوسة نتيجة طبيعة عمله التقنية وقيود عملية التدريب:",
+    cause1: "<strong>التنبؤ بالكلمات دون التحقق من الحقائق:</strong> النموذج يتنبأ إحصائياً بالكلمة التالية الأكثر احتمالاً ولا يتحقق من صحة ومطابقة الحقيقة.",
+    cause2: "<strong>نقص المعلومات في بيانات التدريب:</strong> فجوات المعرفة تؤدي بالنموذج إلى محاولة ملء الفراغات بنفسه.",
+    cause3: "<strong>وجود معلومات متناقضة:</strong> تعرض النموذج لمصادر متضاربة ومتعارضة أثناء عملية التدريب.",
+    cause4: "<strong>غموض السؤال أو نقص السياق:</strong> عدم وضوح المدخلات يدفع النموذج للتخمين والاستنتاج الحر.",
+    cause5: "<strong>طلب معلومات نادرة أو حديثة جداً:</strong> الاستفسار عن تفاصيل خارج نطاق معرفته أو وقعت بعد تاريخ التدريب.",
+    sec3Title: "3. أنواع الهلوسة",
+    thType: "نوع الهلوسة",
+    thDesc: "الوصف والتعريف",
+    thEx: "مثال توضيحي",
+    factHallTitle: "هلوسة واقعية",
+    factHallDesc: "إعطاء وتوليد حقائق أو أرقام أو تواريخ أو أسماء أشخاص غير صحيحة.",
+    factHallEx: "اختراع مرجع علمي أو اسم مؤلف غير موجود على أرض الواقع.",
+    refHallTitle: "هلوسة مرجعية",
+    refHallDesc: "إنشاء ونسب مقالات أو أوراق بحثية أو كتب أو مراجع أكاديمية وهمية تماماً.",
+    refHallEx: "ذكر معرف كائن رقمي (DOI) وهمي أو ورقة علمية لم يتم نشرها أبداً.",
+    logicHallTitle: "هلوسة منطقية",
+    logicHallDesc: "الاستنتاج وحل المسائل بطريقة تسلسلية تبدو منطقية شكلياً لكنها خاطئة مضموناً.",
+    logicHallEx: "بناء نتائج وتحليلات رياضية أو سببية غير متطابقة مع المعطيات السابقة.",
+    compHeading: "أمثلة عملية مقارنة:",
+    q1Label: "السؤال الأول:",
+    q1Text: "ما عدد سكان كوكب المريخ؟",
+    correctAnswerTitle: "إجابة صحيحة:",
+    correctAnswerDesc: "لا يوجد سكان دائمون على كوكب المريخ.",
+    hallAnswerTitle: "إجابة هلوسية:",
+    hallAnswerDesc: "يبلغ عدد سكان المريخ 25000 نسمة.",
+    q2Label: "السؤال الثاني:",
+    q2Text: "أعطني مرجعاً علمياً حول موضوع تخصصي معين.",
+    hallBehaviorTitle: "سلوك الهلوسة المحتمل:",
+    hallBehaviorDesc: "قد ينشئ النموذج عنواناً رناناً ومؤلفين بارزين ومجلة علمية محكمة غير موجودين على الإطلاق في الواقع الأكاديمي.",
+    sec4Title: "4. كيف نكتشف الهلوسة؟",
+    sec4P1: "يتطلب كشف التضليل فحصاً نقدياً مستمراً للمخرجات باتباع خطوات التدقيق الآتية:",
+    detect1: "<strong>التحقق من المصادر:</strong> مراجعة الاقتباسات والمصادر المذكورة والتأكد من أصلها.",
+    detect2: "<strong>مقارنة الإجابة بمراجع موثوقة:</strong> مقاطعة النص بالكتب والوثائق المعتمدة.",
+    detect3: "<strong>البحث عن المعلومة في الإنترنت:</strong> البحث المباشر للتحقق من وجود الحدث أو الدراسة.",
+    detect4: "<strong>التأكد من وجود المرجع العلمي فعلاً:</strong> البحث عن أسماء المؤلفين والمجلات وأرقام DOI.",
+    detect5: "<strong>مراجعة الأرقام والتواريخ والأسماء:</strong> فحص أدق التفاصيل الحسابية والتاريخية.",
+    goldRuleTitle: "قاعدة ذهبية:",
+    goldRuleDesc: "لا يجب اعتبار أي مخرجات من الذكاء الاصطناعي حقيقة مطلقة دون التحقق منها بدقة متناهية.",
+    sec5Title: "5. كيف نقلل من الهلوسة؟",
+    sec5P1: "يمكن خفض معدلات الهلوسة بصورة ملحوظة عبر اتباع التدابير التالية:",
+    mitig1: "صياغة أسئلة واضحة ومحددة ودقيقة للغاية.",
+    mitig2: "تزويد النموذج بسياق إضافي وشامل يوجه مسار الإجابة.",
+    mitig3: "الاعتماد على مصادر خارجية موثوقة ومثبتة.",
+    mitig4: "استخدام تقنية توليد الاسترجاع المعزز <strong>(RAG - Retrieval-Augmented Generation)</strong>.",
+    mitig5: "إلزام النموذج بإظهار وتوثيق المصادر والمراجع المستخدمة.",
+    mitig6: "المراجعة البشرية المستمرة للمخرجات (Human-in-the-loop).",
+    ragTitle: "علاقة الهلوسة بتقنية RAG:",
+    ragDesc: "تعتمد تقنية <strong>RAG</strong> على جلب معلومات وبيانات موثوقة من مصادر وقواعد بيانات خارجية <em>قبل</em> قيام النموذج بتوليد الإجابة. لذلك تساعد تقنية RAG في تقليل الهلوسة بشكل هائل؛ لأن النموذج يستند إلى <strong>معلومات حقيقية حاضرة أمامه</strong> بدلاً من الاعتماد الحصري على ما حفظه أثناء التدريب الاحتمالي الأولي.",
+    ragStep1: "قاعدة بيانات",
+    ragStep2: "استرجاع الوثائق",
+    ragStep3: "النموذج (LLM)",
+    ragStep4: "الإجابة الموثقة",
+    sec6Title: "6. تقليل الهلوسة عبر كتابة الطلب (الموجّه)",
+    sec6P1: "<strong>لا يمكن إلغاء الهلوسة تماماً</strong>، لكن طريقة هندسة وكتابة الطلب (Prompt Engineering) تقللها بنسبة كبيرة جداً باتباع هذه الاستراتيجيات الخمس:",
+    strat1Title: "أعطه النص المصدر",
+    strat1Desc: "حصر نطاق المعالجة في محتوى مرفق محدد ومنعه من جلب أي شيء خارجه.",
+    strat1Ex: "«اعتمد فقط على النص التالي للإجابة، إذا لم تجد المعلومة فيه، قل غير موجود في النص.»",
+    strat2Title: "اسمح له بقول «لا أعرف»",
+    strat2Desc: "منح النموذج رخصة صريحة للاعتراف بنقص المعلومة وتجنب التخمين الإجباري.",
+    strat2Ex: "«إذا لم تكن متأكداً من معلومة، صرّح بذلك بدل التخمين.»",
+    strat3Title: "اطلب الدليل",
+    strat3Desc: "إلزام النموذج بالاستشهاد بالنصوص الحرفية لمنع اختلاق استنتاجات واهية.",
+    strat3Ex: "«لكل فكرة، اذكر الجملة من النص التي تدعمها.»",
+    strat4Title: "كن دقيقاً وح ّدد السياق",
+    strat4Desc: "تحديد الدور والمجال والجمهور بدقة لتقليص مساحة الاحتمالات العشوائية.",
+    strat4Ex: "«أنا أستاذ رياضيات في السنة الرابعة متوسط، حسب المنهاج الجزائري، اقترح...»",
+    strat5Title: "ق ّسم المهمة الكبيرة",
+    strat5Desc: "تجزئة التوليد لخطوات متتابعة بدلاً من طلب كمية معلومات ضخمة في مطالبة واحدة.",
+    strat5Ex: "«بدل طلب درس كامل دفعة واحدة، اطلب الخطة أولاً، ثم كل جزء على حدة، وراجع كل جزء.»",
+    sec7Title: "7. عوامل وأنماط متقدمة للهلوسة",
+    thFactor: "العامل / النمط",
+    thFactorMechanism: "كيف يسبب الهلوسة والخطأ؟",
+    f1Name: "هلوسة الالتزام بالتعليمات",
+    f1Desc: "قد يدّعي النموذج أنه نفّذ أمراً لم يفعله برمجياً، مثل قوله: <em>\"لقد بحثت في الإنترنت ووجدت التالي...\"</em> في حين أنه لم يتصل بالشبكة أساساً.",
+    f2Name: "الإلحاح والضغط النفسي",
+    f2Desc: "إذا ضغطت عليه بسؤال مثل: <em>\"أنت متأكد؟ أعطني المصدر فوراً\"</em>، قد يختلق مصدراً خيالياً لإرضائك كاستجابة فورية بدلاً من الاعتراف بعدم معرفته.",
+    f3Name: "حدود نافذة السياق",
+    f3Desc: "تجاوز طول النص المسموح &lArr; فقدان تدريجي للمعلومات السابقة &lArr; الوقوع في تناقضات مباشرة وهلوسة واضحة في الردود اللاحقة.",
+    f4Name: "درجة الحرارة (Temperature)",
+    f4Desc: "إعداد يتحكم في العشوائية والإبداع؛ <strong>كلما زادت قيمة درجة الحرارة، زادت نسبة الاختلاق وتوليد معلومات وهمية</strong>، بينما تقليلها يجعل النموذج أكثر التزاماً بالحقائق.",
+    sec8Title: "8. هل ستختفي الهلوسة مستقبلاً؟",
+    sec8P1: "<strong>الرأي السائد بين خبراء الذكاء الاصطناعي أنها لن تختفي تماماً؛</strong> لأنها ناتجة عن الطبيعة الجوهرية للأنظمة اللغوية القائمة على الاحتمالات الإحصائية والتنبؤ وليس الفهم الفعلي. ولكن يمكن <strong>تقليلها بنسب هائلة جداً</strong> من خلال:",
+    fut1: "<strong>تحسين نماذج التقييم (Benchmarks):</strong> لتطوير مقاييس دقيقة تفحص وتقيس الاختلاق الآلي.",
+    fut2: "<strong>دمج الاسترجاع والتحقق في صميم النموذج:</strong> ربط النموذج آلياً بمحركات فحص وتدقيق للحقائق أثناء التوليد.",
+    fut3: "<strong>تطوير \"معايرة الثقة\" (Confidence Calibration):</strong> تدريب النموذج ليعرف حدوده المعرفية بدقة فيمتنع عن الإجابة إذا كانت درجة ثقته منخفضة.",
+    fut4: "<strong>أنظمة متعددة الوكلاء (Multi-Agent Systems):</strong> استخدام وكلاء ذكاء اصطناعي متعددين يتحقق ويراجع بعضهم مخرجات بعض قبل إظهار الرد للمستخدم.",
+    whyNameTitle: "لماذا سُمّيت \"هلوسة\"؟",
+    whyNameDesc: "سُميت بهذا الاسم تشبيهاً بظاهرة <strong>الهلوسة عند البشر</strong>، حيث يرى الشخص أشياء لا وجود لها ويكون مقتنعاً بها تماماً؛ فالنموذج \"يتخيل\" معلومات غير حقيقية ويصدقها هو نفسه ويطرحها بثقة مطلقة!",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية — مادة الذكاء الاصطناعي في التعلّم 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "L'Hallucination dans les Modèles d'IA (AI Hallucination)",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Leçon 05",
+    headerTitle: "L'Hallucination dans les Modèles d'IA",
+    sec1Title: "1. Qu'est-ce que l'Hallucination ?",
+    sec1P1: "L'<strong>Hallucination</strong> désigne la propension d'un modèle d'IA à produire des informations factuellement erronées, trompeuses ou totalement inventées, tout en les <strong>énonçant avec un aplomb et une assurance stylistique remarquables</strong>.",
+    hallExTitle: "Illustration empirique :",
+    hallExDesc: "À la question : <em>« Qui a inventé Internet ? »</em>, le système peut citer un nom totalement fictif assorti d'une biographie détaillée et captivante corroborant son invention.",
+    sec2Title: "2. Pourquoi l'Hallucination survient-elle ?",
+    sec2P1: "Le modèle ne ment pas intentionnellement ; ce phénomène découle directement de son architecture probabiliste et de son corpus d'entraînement :",
+    cause1: "<strong>Prédiction lexicale aveugle aux faits :</strong> Le réseau sélectionne la suite de tokens la plus probable sans vérifier la matérialité de l'énoncé.",
+    cause2: "<strong>Lacunes du corpus d'apprentissage :</strong> Les zones d'ombre incitent l'algorithme à combler les blancs de façon créative.",
+    cause3: "<strong>Données sources contradictoires :</strong> Des thèses incompatibles ingérées durant la phase de pré-entraînement.",
+    cause4: "<strong>Consignes vagues ou décontextualisées :</strong> Une ambiguïté invite l'agent à extrapoler librement.",
+    cause5: "<strong>Requêtes rares ou ultra-récentes :</strong> Solliciter des événements postérieurs au gel des connaissances du modèle.",
+    sec3Title: "3. Typologie des Hallucinations",
+    thType: "Catégorie",
+    thDesc: "Définition",
+    thEx: "Exemple type",
+    factHallTitle: "Hallucination Factuelle",
+    factHallDesc: "Émission de dates, d'événements historiques ou de métriques numériques inexacts.",
+    factHallEx: "Attribuer la découverte d'un vaccin au mauvais chercheur ou inventer un traité historique.",
+    refHallTitle: "Hallucination Bibliographique",
+    refHallDesc: "Fabrication de références académiques, articles de revues ou identifiants DOI fictifs.",
+    refHallEx: "Citer une thèse universitaire inexistante signée par des chercheurs réputés.",
+    logicHallTitle: "Hallucination Logique",
+    logicHallDesc: "Enchaînement déductif apparemment rigoureux menant à une conclusion formellement invalide.",
+    logicHallEx: "Calculs mathématiques faussés malgré la récitation exacte de la formule adéquate.",
+    compHeading: "Cas pratiques comparés :",
+    q1Label: "Question 1 :",
+    q1Text: "Quelle est la population permanente de Mars ?",
+    correctAnswerTitle: "Réponse valide :",
+    correctAnswerDesc: "Il n'y a aucun habitant permanent sur la planète Mars.",
+    hallAnswerTitle: "Réponse hallucinatoire :",
+    hallAnswerDesc: "La planète Mars compte environ 25 000 résidents permanents.",
+    q2Label: "Question 2 :",
+    q2Text: "Fournis-moi un article indexé sur ce sous-domaine d'astrophysique.",
+    hallBehaviorTitle: "Dérive hallucinatoire courante :",
+    hallBehaviorDesc: "Le modèle peut générer un titre percutant, un résumé crédible et un nom de revue prestigieuse... le tout étant pure fiction.",
+    sec4Title: "4. Comment détecter l'Hallucination ?",
+    sec4P1: "L'identification des faussetés requiert une vigilance méthodologique et des réflexes de vérification factuelle systématiques :",
+    detect1: "<strong>Traçabilité des citations :</strong> Valider l'authenticité de chaque référence mentionnée.",
+    detect2: "<strong>Recoupement documentaire :</strong> Confronter la réponse avec des manuels et bases institutionnelles reconnues.",
+    detect3: "<strong>Recherche web contradictoire :</strong> S'assurer de l'existence tangible des déclarations émises.",
+    detect4: "<strong>Vérification bibliographique :</strong> Contrôler l'existence réelle des auteurs et des numéros DOI.",
+    detect5: "<strong>Audit des constantes numériques :</strong> Examiner scrupuleusement les chronologies et calculs.",
+    goldRuleTitle: "Axiome fondamental :",
+    goldRuleDesc: "Aucune assertion issue d'un modèle d'IA ne doit être adoptée comme vérité sans corroboration rigoureuse préalable.",
+    sec5Title: "5. Comment atténuer l'Hallucination ?",
+    sec5P1: "On peut restreindre considérablement le risque d'erreur au moyen des dispositions suivantes :",
+    mitig1: "Rédiger des prompts nets, précis et exempts d'ambiguïté.",
+    mitig2: "Fournir un contexte riche et documenté balisant le périmètre réflexif.",
+    mitig3: "Ancrer la génération sur des documents certifiés en annexe.",
+    mitig4: "Implémenter la Génération Augmentée par Récupération <strong>(RAG - Retrieval-Augmented Generation)</strong>.",
+    mitig5: "Contraindre le système à surligner et sourcer textuellement ses affirmations.",
+    mitig6: "Maintenir impérativement la supervision humaine experte (Human-in-the-loop).",
+    ragTitle: "Le RAG comme bouclier contre l'hallucination :",
+    ragDesc: "L'architecture <strong>RAG</strong> extrait des segments documentaires vérifiés au sein d'une base de données externe <em>avant</em> de solliciter la génération du LLM. L'algorithme raisonne ainsi sur des <strong>faits réels sous ses yeux</strong> plutôt que d'extrapoler sur sa mémoire statistique intrinsèque.",
+    ragStep1: "Base de données",
+    ragStep2: "Extraction documentaire",
+    ragStep3: "Modèle (LLM)",
+    ragStep4: "Réponse factuelle",
+    sec6Title: "6. Maîtrise du Prompting Anti-Hallucination",
+    sec6P1: "<strong>L'hallucination ne peut être entièrement éliminée</strong>, mais l'ingénierie de prompt en réduit l'occurrence de façon drastique grâce à ces 5 directives :",
+    strat1Title: "Fournissez le texte source",
+    strat1Desc: "Verrouiller le champ d'analyse au document injecté sans apport externe.",
+    strat1Ex: "« Réponds en t'appuyant EXCLUSIVEMENT sur le texte fourni. Si l'information y est absente, écris simplement : non mentionné dans le document. »",
+    strat2Title: "Autorisez l'aveu d'ignorance",
+    strat2Desc: "Libérer le modèle de l'obligation de répondre coûte que coûte pour éviter les inventions.",
+    strat2Ex: "« Si tu n'es pas absolument certain d'un fait, indique expressément que tu l'ignores au lieu de formuler des conjectures. »",
+    strat3Title: "Exigez des preuves textuelles",
+    strat3Desc: "Imposer des citations brutes en regard de chaque conclusion énoncée.",
+    strat3Ex: "« Pour chaque affirmation formulée, cite le passage textuel exact qui l'étaye. »",
+    strat4Title: "Précisez le cadre professionnel",
+    strat4Desc: "Définir la fonction, le niveau d'expertise et le public cible pour resserrer le vocabulaire.",
+    strat4Ex: "« En tant qu'enseignant de physique au lycée selon le programme officiel, conçois... »",
+    strat5Title: "Décomposez la tâche",
+    strat5Desc: "Fragmenter la requête en étapes logiques pour désaturer la mémoire de travail.",
+    strat5Ex: "« Ne rédige pas tout le cours d'un bloc : propose d'abord le sommaire, puis nous développerons chaque sous-partie après validation. »",
+    sec7Title: "7. Facteurs Déclencheurs Avancés",
+    thFactor: "Facteur / Profil",
+    thFactorMechanism: "Mécanisme déclencheur d'erreur",
+    f1Name: "Hallucination de complaisance",
+    f1Desc: "Le système peut prétendre faussement avoir exécuté une action technique : <em>« J'ai consulté le Web en temps réel... »</em> alors qu'aucun appel API réseau n'a été émis.",
+    f2Name: "Pression psychologique",
+    f2Desc: "Face à une relance inquisitrice (<em>« Es-tu absolument certain ? Donne ta source ! »</em>), le LLM a tendance à inventer une référence fictive pour clore l'injonction.",
+    f3Name: "Dépassement du contexte",
+    f3Desc: "La saturation de la fenêtre de contexte purge l'historique initial, provoquant des contradictions directes et des affabulations au fil des échanges.",
+    f4Name: "Hyperparamètre Température",
+    f4Desc: "Plus la valeur de température est élevée, <strong>plus le système diversifie ses choix de tokens et hallucine</strong>. Une température basse (0.0 - 0.2) favorise la fidélité factuelle.",
+    sec8Title: "8. Les Hallucinations Disparaîtront-elles ?",
+    sec8P1: "<strong>Le consensus scientifique estime qu'elles ne disparaîtront jamais totalement</strong>, car elles sont le tribut inhérent à une architecture prédictive probabiliste. En revanche, on peut <strong>les juguler massivement</strong> par :",
+    fut1: "<strong>L'amélioration des bancs d'essai (Benchmarks) :</strong> Pour quantifier et cartographier les dérivés affabulatrices.",
+    fut2: "<strong>L'intégration native d'outils de vérification :</strong> Greffer des modules de fact-checking dans la boucle de décodage des tokens.",
+    fut3: "<strong>L'étalonnage de la confiance (Confidence Calibration) :</strong> Habituer le modèle à estimer sa propre incertitude et à s'abstenir sous un seuil critique.",
+    fut4: "<strong>Les architectures multi-agents :</strong> Faire dialoguer des instances spécialisées chargées d'auditer et de critiquer le texte avant publication.",
+    whyNameTitle: "Pourquoi le terme « Hallucination » ?",
+    whyNameDesc: "Par analogie avec la <strong>psychiatrie humaine</strong> : un état de perception lucide d'objets ou de faits inexistants avec une intime conviction de réalité. L'IA articule des chimères logiques avec une sérénité déconcertante !",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa — Module : L'IA dans l'Apprentissage 2026 / 2027"
+  },
+  en: {
+    pageTitle: "AI Hallucination in Language Models",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Lesson 05",
+    headerTitle: "AI Hallucination in Language Models",
+    sec1Title: "1. What is AI Hallucination?",
+    sec1P1: "<strong>Hallucination</strong> refers to an AI model producing factually incorrect, distorted, or wholly fabricated statements, while <strong>delivering them with complete confidence and persuasive authority</strong>.",
+    hallExTitle: "Concrete Everyday Example:",
+    hallExDesc: "If asked: <em>'Who invented the Internet?'</em>, the model might present a plausible yet non-existent historical figure accompanied by an elaborate, eloquent narrative corroborating the falsehood.",
+    sec2Title: "2. Why Do Hallucinations Occur?",
+    sec2P1: "Foundation models do not deliberately intend to deceive; hallucinations stem from their underlying probabilistic design and training limits:",
+    cause1: "<strong>Next-Token Prediction without Ground Truth Verification:</strong> The model optimizes for lexical plausibility, not objective truth.",
+    cause2: "<strong>Corpus Knowledge Gaps:</strong> Missing training data forces the network to bridge gaps via ungrounded interpolation.",
+    cause3: "<strong>Conflicting Source Data:</strong> Contradictory information digested during unsupervised pre-training.",
+    cause4: "<strong>Ambiguous Context & Queries:</strong> Underspecified prompts force the system to guess wildly.",
+    cause5: "<strong>Niche or Post-Cutoff Inquiries:</strong> Demanding hyper-specific details that lie beyond the trained parametric memory.",
+    sec3Title: "3. Classification of Hallucinations",
+    thType: "Taxonomy",
+    thDesc: "Definition & Nature",
+    thEx: "Typical Manifestation",
+    factHallTitle: "Factual Hallucination",
+    factHallDesc: "Generating inaccurate dates, historical records, or technical specifications.",
+    factHallEx: "Inventing an author's name or misattributing a scientific discovery.",
+    refHallTitle: "Reference Hallucination",
+    refHallDesc: "Manufacturing fake scholarly papers, book chapters, and invalid DOI identifiers.",
+    refHallEx: "Citing non-existent journal articles complete with fabricated page numbers.",
+    logicHallTitle: "Logical Hallucination",
+    logicHallDesc: "Producing step-by-step reasoning that appears coherent but violates logic.",
+    logicHallEx: "Flawed calculations despite correctly stating the underlying mathematical theorem.",
+    compHeading: "Comparative Case Studies:",
+    q1Label: "Scenario 1:",
+    q1Text: "What is the permanent population of planet Mars?",
+    correctAnswerTitle: "Factual Response:",
+    correctAnswerDesc: "There are no permanent human residents on Mars.",
+    hallAnswerTitle: "Hallucinated Response:",
+    hallAnswerDesc: "Planet Mars has an estimated colony of 25,000 permanent residents.",
+    q2Label: "Scenario 2:",
+    q2Text: "Provide a peer-reviewed citation regarding this niche domain.",
+    hallBehaviorTitle: "Latent Hallucination Risk:",
+    hallBehaviorDesc: "The engine may fabricate an authentic-sounding title, respected scholars, and an academic volume that exist nowhere in print.",
+    sec4Title: "4. How Can We Detect Hallucinations?",
+    sec4P1: "Detecting misinformation demands constant critical scrutiny through methodical audit steps:",
+    detect1: "<strong>Source Verification:</strong> Independently trace all cited references and literature.",
+    detect2: "<strong>Corroboration:</strong> Cross-examine model outputs against established textbooks and official databases.",
+    detect3: "<strong>Search Engine Queries:</strong> Verify whether referenced studies and empirical trials exist online.",
+    detect4: "<strong>DOI and Publication Checks:</strong> Verify that ISSNs, DOIs, and journal indices are genuine.",
+    detect5: "<strong>Numerical Scrutiny:</strong> Carefully inspect calculations, statistical figures, and dates.",
+    goldRuleTitle: "Golden Axiom:",
+    goldRuleDesc: "Never accept unverified generative AI outputs as self-evident factual truth.",
+    sec5Title: "5. How Can We Mitigate Hallucinations?",
+    sec5P1: "Error rates can be dramatically mitigated by applying these disciplined interventions:",
+    mitig1: "Engineer precise, unambiguous, and clear instructional prompts.",
+    mitig2: "Furnish comprehensive domain context to bound the answer space.",
+    mitig3: "Rely directly on vetted external documentation.",
+    mitig4: "Implement Retrieval-Augmented Generation <strong>(RAG)</strong> architectures.",
+    mitig5: "Instruct the model to substantiate assertions with direct citations.",
+    mitig6: "Enforce persistent human verification (Human-in-the-loop).",
+    ragTitle: "The Antidote: RAG (Retrieval-Augmented Generation):",
+    ragDesc: "<strong>RAG</strong> fetches authoritative information from external verified stores <em>prior</em> to generating the final response. The model grounds its synthesis on <strong>real-time source documents before its eyes</strong> rather than relying solely on frozen neural weights.",
+    ragStep1: "Document Store",
+    ragStep2: "Context Retrieval",
+    ragStep3: "Foundation LLM",
+    ragStep4: "Verified Response",
+    sec6Title: "6. Mitigating Hallucinations via Prompt Engineering",
+    sec6P1: "<strong>While hallucinations cannot be eradicated 100%</strong>, rigorous prompt craft significantly limits their frequency using these 5 strategies:",
+    strat1Title: "Ground with Source Text",
+    strat1Desc: "Restrict synthesis to attached materials and forbid out-of-bounds speculation.",
+    strat1Ex: "'Answer using ONLY the provided text. If the fact is missing, state: not found in source.'",
+    strat2Title: "Permit Honest Ignorance",
+    strat2Desc: "Grant the agent permission to decline answering rather than hallucinating.",
+    strat2Ex: "'If you are not entirely sure, explicitly state you do not know instead of guessing.'",
+    strat3Title: "Demand Verbatim Citations",
+    strat3Desc: "Force the model to quote source excerpts to support each derived insight.",
+    strat3Ex: "'For every claim made, quote the exact sentence from the text supporting it.'",
+    strat4Title: "Specify Precise Persona & Scope",
+    strat4Desc: "Narrow the probabilistic domain by clarifying target audience and role.",
+    strat4Ex: "'As an experienced secondary mathematics teacher adhering to the official syllabus, propose...'",
+    strat5Title: "Decompose Complex Workflows",
+    strat5Desc: "Partition ambitious tasks into modular stages rather than expecting an encyclopedia in one turn.",
+    strat5Ex: "'Do not draft the full curriculum at once. Generate the outline first, then we will refine each module.'",
+    sec7Title: "7. Advanced Patterns and Triggers",
+    thFactor: "Trigger / Pattern",
+    thFactorMechanism: "Causal Failure Mode",
+    f1Name: "Instruction Compliance Hallucination",
+    f1Desc: "The agent may falsely claim to have performed a system task: <em>'I searched the web...'</em> when no network socket was ever queried.",
+    f2Name: "Conversational Coercion",
+    f2Desc: "Pressuring the model aggressively (<em>'Are you positive? Provide your citation!'</em>) tempts it into inventing citations to fulfill the prompt.",
+    f3Name: "Context Window Overflow",
+    f3Desc: "Surpassing working token bounds causes memory amnesia, prompting contradictory hallucinations as older chat turns vanish.",
+    f4Name: "Temperature Settings",
+    f4Desc: "Higher temperature scales stochastic sampling; <strong>as temperature increases, hallucination likelihood spikes</strong>. Set temperature near 0.0 for factual accuracy.",
+    sec8Title: "8. Will Hallucinations Ever Disappear Completely?",
+    sec8P1: "<strong>The consensus among researchers is that they will never vanish entirely</strong>, as they represent the mathematical price paid for probabilistic language synthesis. However, they can be <strong>exponentially minimized</strong> through:",
+    fut1: "<strong>Improved Benchmarks:</strong> Creating rigorous, objective evaluation datasets that expose confabulation.",
+    fut2: "<strong>Integrated Fact Verification:</strong> Embedding automated truth-verifiers directly into decoding token pipelines.",
+    fut3: "<strong>Confidence Calibration:</strong> Training models to know their own ignorance and refuse low-confidence prompts.",
+    fut4: "<strong>Multi-Agent Architectures:</strong> Setting up specialized AI agents that cross-audit each other's claims before final display.",
+    whyNameTitle: "Why Is It Called 'Hallucination'?",
+    whyNameDesc: "Borrowed from <strong>clinical psychiatry</strong>: describing the vivid perception of non-existent stimuli held with unshakeable conviction. The model envisions facts that do not exist and proclaims them with supreme self-assurance!",
+    footerText: "Higher Normal School - Bejaia Annex — AI in Learning Course 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Adjust workflow diagram arrows
+  document.querySelectorAll('.arrow-flow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-arrow-left arrow-flow' : 'fa-solid fa-arrow-right arrow-flow';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 
 </body>
 </html>

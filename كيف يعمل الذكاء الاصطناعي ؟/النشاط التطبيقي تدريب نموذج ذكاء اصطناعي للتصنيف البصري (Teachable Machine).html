@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>النشاط التطبيقي: تدريب نموذج ذكاء اصطناعي للتصنيف البصري (Teachable Machine)</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">النشاط التطبيقي: تدريب نموذج ذكاء اصطناعي للتصنيف البصري (Teachable Machine)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -38,11 +38,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -60,7 +108,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -125,6 +175,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
   /* Grid Layouts */
@@ -161,13 +212,13 @@
   /* Workflow Steps */
   .step-card {
     position: relative;
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
   }
 
   .step-number {
     position: absolute;
     top: 15px;
-    left: 20px;
+    inset-inline-end: 20px;
     font-size: 1.8rem;
     font-weight: 800;
     color: #e2e8f0;
@@ -212,7 +263,7 @@
   /* Warning Callout Box inside Card */
   .alert-box {
     background: var(--warning-bg);
-    border-right: 4px solid var(--warning-border);
+    border-inline-start: 4px solid var(--warning-border);
     border-radius: 8px;
     padding: 12px 14px;
     margin-top: 14px;
@@ -221,6 +272,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  .alert-box i {
+    flex-shrink: 0;
   }
 
   /* Tag Badges */
@@ -283,7 +338,7 @@
   .callout-box {
     background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
     border: 1px solid #bee3f8;
-    border-right: 5px solid var(--secondary);
+    border-inline-start: 5px solid var(--secondary);
     border-radius: 16px;
     padding: 25px 30px;
     margin: 30px 0;
@@ -311,7 +366,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding-right: 10px;
+    padding-inline-start: 10px;
   }
 
   .discussion-items li {
@@ -327,6 +382,7 @@
     color: var(--secondary);
     font-size: 0.9rem;
     margin-top: 5px;
+    flex-shrink: 0;
   }
 
   /* Footer */
@@ -340,235 +396,529 @@
     margin-top: 40px;
   }
   
-  /* Responsive */
   @media (max-width: 768px) {
     .header h1 { font-size: 1.6rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 15px; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 15px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 02.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToChapter">العودة للبرنامج</span>
     </a>
-    <span class="header-badge">الفصل 02 • النشاط التطبيقي 01</span>
-    <h1>تدريب نموذج ذكاء اصطناعي للتصنيف البصري</h1>
-    <div class="subtitle">
+    <span class="header-badge" data-i18n="headerBadge">الفصل 02 • النشاط التطبيقي 01</span>
+    <h1 data-i18n="headerTitle">تدريب نموذج ذكاء اصطناعي للتصنيف البصري</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">
       تجربة عملية لتدريب نموذج رؤية حاسوبية باستخدام أداة Google Teachable Machine للتمييز بين الأجهزة الإلكترونية والأدوات المكتبية عبر الكاميرا، واستكشاف أثر جودة البيانات ومعاملات التدريب على دقة التنبؤ.
     </div>
   </div>
 
-  <!-- القسم 1: خطوات ومراحل تنفيذ النشاط -->
+  <!-- Section 1: Workflow Steps -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-bars-progress"></i></span>
-    مراحل وخطوات تنفيذ النشاط
+    <span data-i18n="sec1Title">مراحل وخطوات تنفيذ النشاط</span>
   </div>
 
   <div class="grid-3">
-    <!-- المرحلة 01 -->
+    <!-- Step 01 -->
     <div class="card step-card">
       <div class="step-number">01</div>
-      <h3 class="step-title"><i class="fa-solid fa-camera text-primary"></i> تحديد الفئتين وجمع البيانات</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-camera text-primary"></i> <span data-i18n="s1Title">تحديد الفئتين وجمع البيانات</span></h3>
+      <p class="step-desc" data-i18n="s1Desc">
         الدخول للمنصة واختيار <strong>Image Project</strong> ثم إنشاء فئتين وتسميتهما بالعربية بوضوح عبر الخطوات:
       </p>
       <ul class="checklist">
-        <li><i class="fa-solid fa-check"></i> <strong>الفئة 1:</strong> «أجهزة إلكترونية» (هاتف، فأرة، لوحة مفاتيح...).</li>
-        <li><i class="fa-solid fa-check"></i> <strong>الفئة 2:</strong> «أدوات مكتبية» (قلم، ممحاة، دفتر، مسطرة...).</li>
-        <li><i class="fa-solid fa-check"></i> التقاط ما لا يقل عن <strong>50 إلى 100 صورة</strong> لكل فئة.</li>
-        <li><i class="fa-solid fa-check"></i> تنويع الزوايا، المسافات، الإضاءة، وخلفيات التصوير.</li>
+        <li><i class="fa-solid fa-check"></i> <span><strong data-i18n="s1C1Key">الفئة 1:</strong> <span data-i18n="s1C1Val">«أجهزة إلكترونية» (هاتف، فأرة، لوحة مفاتيح...).</span></span></li>
+        <li><i class="fa-solid fa-check"></i> <span><strong data-i18n="s1C2Key">الفئة 2:</strong> <span data-i18n="s1C2Val">«أدوات مكتبية» (قلم، ممحاة، دفتر، مسطرة...).</span></span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s1C3">التقاط ما لا يقل عن <strong>50 إلى 100 صورة</strong> لكل فئة.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s1C4">تنويع الزوايا، المسافات، الإضاءة، وخلفيات التصوير.</span></li>
       </ul>
       <div class="alert-box">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <span><strong>تحذير:</strong> خلط الفئتين في إطار واحد أثناء التصوير يُنتج نموذجاً مرتبكاً! عنصر واحد فقط لكل لقطة.</span>
+        <span data-i18n="s1Warn"><strong>تحذير:</strong> خلط الفئتين في إطار واحد أثناء التصوير يُنتج نموذجاً مرتبكاً! عنصر واحد فقط لكل لقطة.</span>
       </div>
     </div>
 
-    <!-- المرحلة 02 -->
+    <!-- Step 02 -->
     <div class="card step-card">
       <div class="step-number">02</div>
-      <h3 class="step-title"><i class="fa-solid fa-gears text-primary"></i> بناء النموذج وتدريبه</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-gears text-primary"></i> <span data-i18n="s2Title">بناء النموذج وتدريبه</span></h3>
+      <p class="step-desc" data-i18n="s2Desc">
         توزيع الصور ومراجعة جودتها ثم ضبط معاملات التدريب وبدء عملية التعلم الآلي:
       </p>
       <ul class="checklist">
-        <li><i class="fa-solid fa-check"></i> التقاط الصور مباشرة عبر الكاميرا أو رفعها كملفات.</li>
-        <li><i class="fa-solid fa-check"></i> استكشاف إعدادات التدريب المتقدمة: دورات التدريب (Epochs) وحجم الدفعة (Batch Size).</li>
-        <li><i class="fa-solid fa-check"></i> الضغط على زر <strong>Train Model</strong> والانتظار دون إغلاق علامة التبويب.</li>
-        <li><i class="fa-solid fa-check"></i> مراقبة مؤشر التقدم، نسبة الدقة (Accuracy)، وتسجيل الوقت المستغرق.</li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s2C1">التقاط الصور مباشرة عبر الكاميرا أو رفعها كملفات.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s2C2">استكشاف إعدادات التدريب المتقدمة: دورات التدريب (Epochs) وحجم الدفعة (Batch Size).</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s2C3">الضغط على زر <strong>Train Model</strong> والانتظار دون إغلاق علامة التبويب.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s2C4">مراقبة مؤشر التقدم، نسبة الدقة (Accuracy)، وتسجيل الوقت المستغرق.</span></li>
       </ul>
     </div>
 
-    <!-- المرحلة 03 -->
+    <!-- Step 03 -->
     <div class="card step-card">
       <div class="step-number">03</div>
-      <h3 class="step-title"><i class="fa-solid fa-vial-circle-check text-primary"></i> المعاينة والاختبار المباشر</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-vial-circle-check text-primary"></i> <span data-i18n="s3Title">المعاينة والاختبار المباشر</span></h3>
+      <p class="step-desc" data-i18n="s3Desc">
         اختبار النموذج باستخدام لوحة المعاينة (Preview) عبر تعريضه لمدخلات حقيقية جديدة تماماً:
       </p>
       <ul class="checklist">
-        <li><i class="fa-solid fa-check"></i> اختبار عناصر جديدة كلياً لم تظهر أثناء مرحلة جمع البيانات.</li>
-        <li><i class="fa-solid fa-check"></i> رصد وملاحظة نسبة الثقة (Confidence Score) الممنوحة لكل فئة.</li>
-        <li><i class="fa-solid fa-check"></i> تدوين الحالات الصحيحة والأخطاء في ورقة الملاحظات.</li>
-        <li><i class="fa-solid fa-check"></i> اختبار استجابة النموذج عند تغيير زوايا الإضاءة أو الخلفية.</li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s3C1">اختبار عناصر جديدة كلياً لم تظهر أثناء مرحلة جمع البيانات.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s3C2">رصد وملاحظة نسبة الثقة (Confidence Score) الممنوحة لكل فئة.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s3C3">تدوين الحالات الصحيحة والأخطاء في ورقة الملاحظات.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="s3C4">اختبار استجابة النموذج عند تغيير زوايا الإضاءة أو الخلفية.</span></li>
       </ul>
     </div>
   </div>
 
-  <!-- القسم 2: توزيع البيانات وأمثلة الفئات -->
+  <!-- Section 2: Classes Breakdown -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
-    توصيف الفئات وتجهيز العينات التدريبية
+    <span data-i18n="sec2Title">توصيف الفئات وتجهيز العينات التدريبية</span>
   </div>
 
   <div class="grid-2">
-    <!-- فئة الأجهزة الإلكترونية -->
+    <!-- Class 1: Electronics -->
     <div class="card">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
         <h3 class="step-title" style="margin-bottom: 0;">
-          <i class="fa-solid fa-laptop text-primary"></i> الفئة الأولى: «أجهزة إلكترونية»
+          <i class="fa-solid fa-laptop text-primary"></i> <span data-i18n="c1Heading">الفئة الأولى: «أجهزة إلكترونية»</span>
         </h3>
-        <span class="tag">50 – 100 عينة</span>
+        <span class="tag" data-i18n="c1Badge">50 – 100 عينة</span>
       </div>
-      <p class="step-desc" style="margin-bottom: 12px;">
+      <p class="step-desc" style="margin-bottom: 12px;" data-i18n="c1Desc">
         تجميع عناصر إلكترونية ورقمية شائعة، مع مراعاة تنويع أحجامها وتغيير خلفيات الالتقاط:
       </p>
       <div class="tags-wrapper">
-        <span class="tag"><i class="fa-solid fa-mobile-screen-button"></i> هاتف ذكي</span>
-        <span class="tag"><i class="fa-solid fa-computer-mouse"></i> فأرة حاسوب</span>
-        <span class="tag"><i class="fa-solid fa-keyboard"></i> لوحة مفاتيح</span>
-        <span class="tag"><i class="fa-solid fa-headphones"></i> سماعات</span>
-        <span class="tag"><i class="fa-solid fa-bolt"></i> شاحن</span>
-        <span class="tag"><i class="fa-solid fa-hard-drive"></i> فلاش USB</span>
-        <span class="tag"><i class="fa-solid fa-tablet-screen-button"></i> حاسوب لوحي</span>
+        <span class="tag"><i class="fa-solid fa-mobile-screen-button"></i> <span data-i18n="tagPhone">هاتف ذكي</span></span>
+        <span class="tag"><i class="fa-solid fa-computer-mouse"></i> <span data-i18n="tagMouse">فأرة حاسوب</span></span>
+        <span class="tag"><i class="fa-solid fa-keyboard"></i> <span data-i18n="tagKeyboard">لوحة مفاتيح</span></span>
+        <span class="tag"><i class="fa-solid fa-headphones"></i> <span data-i18n="tagHeadphones">سماعات</span></span>
+        <span class="tag"><i class="fa-solid fa-bolt"></i> <span data-i18n="tagCharger">شاحن</span></span>
+        <span class="tag"><i class="fa-solid fa-hard-drive"></i> <span data-i18n="tagUsb">فلاش USB</span></span>
+        <span class="tag"><i class="fa-solid fa-tablet-screen-button"></i> <span data-i18n="tagTablet">حاسوب لوحي</span></span>
       </div>
     </div>
 
-    <!-- فئة الأدوات المكتبية -->
+    <!-- Class 2: Stationery -->
     <div class="card">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
         <h3 class="step-title" style="margin-bottom: 0;">
-          <i class="fa-solid fa-pencil text-primary"></i> الفئة الثانية: «أدوات مكتبية»
+          <i class="fa-solid fa-pencil text-primary"></i> <span data-i18n="c2Heading">الفئة الثانية: «أدوات مكتبية»</span>
         </h3>
-        <span class="tag">50 – 100 عينة</span>
+        <span class="tag" data-i18n="c2Badge">50 – 100 عينة</span>
       </div>
-      <p class="step-desc" style="margin-bottom: 12px;">
+      <p class="step-desc" style="margin-bottom: 12px;" data-i18n="c2Desc">
         تجميع مستلزمات مكتبية ودراسية مختلفة الخامات والأشكال لضمان بناء تمثيل بصري متوازن:
       </p>
       <div class="tags-wrapper">
-        <span class="tag"><i class="fa-solid fa-pen"></i> قلم حبر / رصاص</span>
-        <span class="tag"><i class="fa-solid fa-eraser"></i> ممحاة</span>
-        <span class="tag"><i class="fa-solid fa-book"></i> دفتر أو كراس</span>
-        <span class="tag"><i class="fa-solid fa-ruler"></i> مسطرة</span>
-        <span class="tag"><i class="fa-solid fa-scissors"></i> مقص</span>
-        <span class="tag"><i class="fa-solid fa-paperclip"></i> دباسة / مشبك</span>
+        <span class="tag"><i class="fa-solid fa-pen"></i> <span data-i18n="tagPen">قلم حبر / رصاص</span></span>
+        <span class="tag"><i class="fa-solid fa-eraser"></i> <span data-i18n="tagEraser">ممحاة</span></span>
+        <span class="tag"><i class="fa-solid fa-book"></i> <span data-i18n="tagBook">دفتر أو كراس</span></span>
+        <span class="tag"><i class="fa-solid fa-ruler"></i> <span data-i18n="tagRuler">مسطرة</span></span>
+        <span class="tag"><i class="fa-solid fa-scissors"></i> <span data-i18n="tagScissors">مقص</span></span>
+        <span class="tag"><i class="fa-solid fa-paperclip"></i> <span data-i18n="tagStapler">دباسة / مشبك</span></span>
       </div>
     </div>
   </div>
 
-  <!-- القسم 3: بروتوكول وسيناريوهات الاختبار بعناصر جديدة -->
+  <!-- Section 3: Test Scenarios -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-microscope"></i></span>
-    سيناريوهات الاختبار وتقييم سلوك النموذج (Test Scenarios)
+    <span data-i18n="sec3Title">سيناريوهات الاختبار وتقييم سلوك النموذج (Test Scenarios)</span>
   </div>
 
   <div class="grid-3">
-    <!-- السيناريو 1: عناصر معروفة -->
+    <!-- Scenario 1: Known Distribution -->
     <div class="card scenario-card">
       <div>
         <div class="scenario-title">
-          <span>عناصر معروفة الشكل</span>
+          <span data-i18n="sc1Title">عناصر معروفة الشكل</span>
           <i class="fa-solid fa-circle-check" style="color: var(--success);"></i>
         </div>
-        <p class="step-desc">
+        <p class="step-desc" data-i18n="sc1Desc">
           اختبار قدرة النموذج على التعميم (Generalization) لأغراض تنتمي بوضوح لإحدى الفئتين لكن بألوان أو تصاميم لم تُستخدم في التدريب:
         </p>
         <ul class="checklist" style="margin-top: 12px;">
-          <li><i class="fa-solid fa-angle-left"></i> هاتف جديد لم يُصوّر من قبل.</li>
-          <li><i class="fa-solid fa-angle-left"></i> قلم ذو لون، طول، أو سمك مختلف.</li>
-          <li><i class="fa-solid fa-angle-left"></i> سماعة أذن بتصميم آخر أو فأرة مغايرة.</li>
-          <li><i class="fa-solid fa-angle-left"></i> دفتر بحجم مختلف أو مسطرة معدنية/شفافة.</li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc1Item1">هاتف جديد لم يُصوّر من قبل.</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc1Item2">قلم ذو لون، طول، أو سمك مختلف.</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc1Item3">سماعة أذن بتصميم آخر أو فأرة مغايرة.</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc1Item4">دفتر بحجم مختلف أو مسطرة معدنية/شفافة.</span></li>
         </ul>
       </div>
       <div class="tags-wrapper" style="margin-top: 15px;">
-        <span class="tag">الهدف: قياس دقة التعميم</span>
+        <span class="tag" data-i18n="sc1Goal">الهدف: قياس دقة التعميم</span>
       </div>
     </div>
 
-    <!-- السيناريو 2: عناصر ملتبسة ومزدوجة -->
+    <!-- Scenario 2: Ambiguous & Borderline -->
     <div class="card scenario-card ambiguous">
       <div>
         <div class="scenario-title">
-          <span>عناصر ملتبسة ومزدوجة</span>
+          <span data-i18n="sc2Title">عناصر ملتبسة ومزدوجة</span>
           <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent);"></i>
         </div>
-        <p class="step-desc">
+        <p class="step-desc" data-i18n="sc2Desc">
           اختبار العناصر التي تمتلك سمات مشتركة من الفئتين معاً لرصد الصراع التصنيفي داخل النموذج:
         </p>
         <ul class="checklist" style="margin-top: 12px;">
-          <li><i class="fa-solid fa-angle-left"></i> <strong>آلة حاسبة إلكترونية:</strong> هل يعتبرها أداة مكتبية أم جهازاً إلكترونياً؟</li>
-          <li><i class="fa-solid fa-angle-left"></i> قلم ذكي رقمي (Stylus).</li>
-          <li><i class="fa-solid fa-angle-left"></i> قارئ كتب إلكتروني (Kindle).</li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc2Item1"><strong>آلة حاسبة إلكترونية:</strong> هل يعتبرها أداة مكتبية أم جهازاً إلكترونياً؟</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc2Item2">قلم ذكي رقمي (Stylus).</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc2Item3">قارئ كتب إلكتروني (Kindle).</span></li>
         </ul>
       </div>
       <div class="tags-wrapper" style="margin-top: 15px;">
-        <span class="tag accent">الهدف: مراقبة تشتت نسبة الثقة</span>
+        <span class="tag accent" data-i18n="sc2Goal">الهدف: مراقبة تشتت نسبة الثقة</span>
       </div>
     </div>
 
-    <!-- السيناريو 3: عناصر خارج الفئتين (OOD) -->
+    <!-- Scenario 3: Out-of-Distribution (OOD) -->
     <div class="card scenario-card ood">
       <div>
         <div class="scenario-title">
-          <span>عناصر خارج الفئتين</span>
+          <span data-i18n="sc3Title">عناصر خارج الفئتين</span>
           <i class="fa-solid fa-circle-xmark" style="color: #e53e3e;"></i>
         </div>
-        <p class="step-desc">
+        <p class="step-desc" data-i18n="sc3Desc">
           تقديم عناصر شاذة (Out-of-Distribution) لا علاقة لها بالأجهزة الإلكترونية ولا بالأدوات المكتبية:
         </p>
         <ul class="checklist" style="margin-top: 12px;">
-          <li><i class="fa-solid fa-angle-left"></i> كوب ماء أو فنجان قهوة.</li>
-          <li><i class="fa-solid fa-angle-left"></i> مفاتيح سيارة أو منزل.</li>
-          <li><i class="fa-solid fa-angle-left"></i> نظارة شمسية أو تفاحة.</li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc3Item1">كوب ماء أو فنجان قهوة.</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc3Item2">مفاتيح سيارة أو منزل.</span></li>
+          <li><i class="fa-solid fa-angle-left list-bullet"></i> <span data-i18n="sc3Item3">نظارة شمسية أو تفاحة.</span></li>
         </ul>
       </div>
       <div class="tags-wrapper" style="margin-top: 15px;">
-        <span class="tag danger">هل يرفض النموذج أم يجزم خطأً؟</span>
+        <span class="tag danger" data-i18n="sc3Goal">هل يرفض النموذج أم يجزم خطأً؟</span>
       </div>
     </div>
   </div>
 
-  <!-- القسم 4: سؤال النقاش -->
+  <!-- Section 4: Critical Discussion -->
   <div class="callout-box">
     <div class="callout-title">
-      <i class="fa-solid fa-comments"></i> أسئلة للنقاش والتفكير النقدي
+      <i class="fa-solid fa-comments"></i> <span data-i18n="discTitle">أسئلة للنقاش والتفكير النقدي</span>
     </div>
-    <div class="discussion-question">بناءً على مشاهداتك في لوحة المعاينة (Preview):</div>
+    <div class="discussion-question" data-i18n="discIntro">بناءً على مشاهداتك في لوحة المعاينة (Preview):</div>
     <ul class="discussion-items">
       <li>
         <i class="fa-solid fa-circle-dot"></i>
-        <span><strong>سلوك الأجسام الغريبة:</strong> عندما عرضت "كوب ماء" أو "مفاتيح"، لماذا لم يقل النموذج «لا أعرف»، بل صنفها بثقة ضمن إحدى الفئتين؟ وما الذي ينقص النموذج للتعامل مع هذا الموقف؟</span>
+        <span><strong data-i18n="dq1Key">سلوك الأجسام الغريبة:</strong> <span data-i18n="dq1Val">عندما عرضت "كوب ماء" أو "مفاتيح"، لماذا لم يقل النموذج «لا أعرف»، بل صنفها بثقة ضمن إحدى الفئتين؟ وما الذي ينقص النموذج للتعامل مع هذا الموقف؟</span></span>
       </li>
       <li>
         <i class="fa-solid fa-circle-dot"></i>
-        <span><strong>تأثير الخلفية والتحيز:</strong> إذا صُوّرت جميع الأدوات المكتبية فوق طاولة خشبية وجميع الأجهزة فوق طاولة بيضاء، هل سيتعلم النموذج تمييز الأشياء نفسها أم تمييز لون الطاولة والخلفية؟</span>
+        <span><strong data-i18n="dq2Key">تأثير الخلفية والتحيز:</strong> <span data-i18n="dq2Val">إذا صُوّرت جميع الأدوات المكتبية فوق طاولة خشبية وجميع الأجهزة فوق طاولة بيضاء، هل سيتعلم النموذج تمييز الأشياء نفسها أم تمييز لون الطاولة والخلفية؟</span></span>
       </li>
       <li>
         <i class="fa-solid fa-circle-dot"></i>
-        <span><strong>الحالات التنازعية (Borderline):</strong> كيف تعامل النموذج مع "الآلة الحاسبة"؟ وإلى أي حد يُعتبر تمثيل الفئات مسألة اصطلاحية تتطلب هندسة بيانات أدق؟</span>
+        <span><strong data-i18n="dq3Key">الحالات التنازعية (Borderline):</strong> <span data-i18n="dq3Val">كيف تعامل النموذج مع "الآلة الحاسبة"؟ وإلى أي حد يُعتبر تمثيل الفئات مسألة اصطلاحية تتطلب هندسة بيانات أدق؟</span></span>
       </li>
     </ul>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "النشاط التطبيقي: تدريب نموذج ذكاء اصطناعي للتصنيف البصري (Teachable Machine)",
+    backToChapter: "العودة للبرنامج",
+    headerBadge: "الفصل 02 • النشاط التطبيقي 01",
+    headerTitle: "تدريب نموذج ذكاء اصطناعي للتصنيف البصري",
+    headerSubtitle: "تجربة عملية لتدريب نموذج رؤية حاسوبية باستخدام أداة Google Teachable Machine للتمييز بين الأجهزة الإلكترونية والأدوات المكتبية عبر الكاميرا، واستكشاف أثر جودة البيانات ومعاملات التدريب على دقة التنبؤ.",
+    sec1Title: "مراحل وخطوات تنفيذ النشاط",
+    s1Title: "تحديد الفئتين وجمع البيانات",
+    s1Desc: "الدخول للمنصة واختيار <strong>Image Project</strong> ثم إنشاء فئتين وتسميتهما بالعربية بوضوح عبر الخطوات:",
+    s1C1Key: "الفئة 1:",
+    s1C1Val: "«أجهزة إلكترونية» (هاتف، فأرة، لوحة مفاتيح...).",
+    s1C2Key: "الفئة 2:",
+    s1C2Val: "«أدوات مكتبية» (قلم، ممحاة، دفتر، مسطرة...).",
+    s1C3: "التقاط ما لا يقل عن <strong>50 إلى 100 صورة</strong> لكل فئة.",
+    s1C4: "تنويع الزوايا، المسافات، الإضاءة، وخلفيات التصوير.",
+    s1Warn: "<strong>تحذير:</strong> خلط الفئتين في إطار واحد أثناء التصوير يُنتج نموذجاً مرتبكاً! عنصر واحد فقط لكل لقطة.",
+    s2Title: "بناء النموذج وتدريبه",
+    s2Desc: "توزيع الصور ومراجعة جودتها ثم ضبط معاملات التدريب وبدء عملية التعلم الآلي:",
+    s2C1: "التقاط الصور مباشرة عبر الكاميرا أو رفعها كملفات.",
+    s2C2: "استكشاف إعدادات التدريب المتقدمة: دورات التدريب (Epochs) وحجم الدفعة (Batch Size).",
+    s2C3: "الضغط على زر <strong>Train Model</strong> والانتظار دون إغلاق علامة التبويب.",
+    s2C4: "مراقبة مؤشر التقدم، نسبة الدقة (Accuracy)، وتسجيل الوقت المستغرق.",
+    s3Title: "المعاينة والاختبار المباشر",
+    s3Desc: "اختبار النموذج باستخدام لوحة المعاينة (Preview) عبر تعريضه لمدخلات حقيقية جديدة تماماً:",
+    s3C1: "اختبار عناصر جديدة كلياً لم تظهر أثناء مرحلة جمع البيانات.",
+    s3C2: "رصد وملاحظة نسبة الثقة (Confidence Score) الممنوحة لكل فئة.",
+    s3C3: "تدوين الحالات الصحيحة والأخطاء في ورقة الملاحظات.",
+    s3C4: "اختبار استجابة النموذج عند تغيير زوايا الإضاءة أو الخلفية.",
+    sec2Title: "توصيف الفئات وتجهيز العينات التدريبية",
+    c1Heading: "الفئة الأولى: «أجهزة إلكترونية»",
+    c1Badge: "50 – 100 عينة",
+    c1Desc: "تجميع عناصر إلكترونية ورقمية شائعة، مع مراعاة تنويع أحجامها وتغيير خلفيات الالتقاط:",
+    tagPhone: "هاتف ذكي",
+    tagMouse: "فأرة حاسوب",
+    tagKeyboard: "لوحة مفاتيح",
+    tagHeadphones: "سماعات",
+    tagCharger: "شاحن",
+    tagUsb: "فلاش USB",
+    tagTablet: "حاسوب لوحي",
+    c2Heading: "الفئة الثانية: «أدوات مكتبية»",
+    c2Badge: "50 – 100 عينة",
+    c2Desc: "تجميع مستلزمات مكتبية ودراسية مختلفة الخامات والأشكال لضمان بناء تمثيل بصري متوازن:",
+    tagPen: "قلم حبر / رصاص",
+    tagEraser: "ممحاة",
+    tagBook: "دفتر أو كراس",
+    tagRuler: "مسطرة",
+    tagScissors: "مقص",
+    tagStapler: "دباسة / مشبك",
+    sec3Title: "سيناريوهات الاختبار وتقييم سلوك النموذج (Test Scenarios)",
+    sc1Title: "عناصر معروفة الشكل",
+    sc1Desc: "اختبار قدرة النموذج على التعميم (Generalization) لأغراض تنتمي بوضوح لإحدى الفئتين لكن بألوان أو تصاميم لم تُستخدم في التدريب:",
+    sc1Item1: "هاتف جديد لم يُصوّر من قبل.",
+    sc1Item2: "قلم ذو لون، طول، أو سمك مختلف.",
+    sc1Item3: "سماعة أذن بتصميم آخر أو فأرة مغايرة.",
+    sc1Item4: "دفتر بحجم مختلف أو مسطرة معدنية/شفافة.",
+    sc1Goal: "الهدف: قياس دقة التعميم",
+    sc2Title: "عناصر ملتبسة ومزدوجة",
+    sc2Desc: "اختبار العناصر التي تمتلك سمات مشتركة من الفئتين معاً لرصد الصراع التصنيفي داخل النموذج:",
+    sc2Item1: "<strong>آلة حاسبة إلكترونية:</strong> هل يعتبرها أداة مكتبية أم جهازاً إلكترونياً؟",
+    sc2Item2: "قلم ذكي رقمي (Stylus).",
+    sc2Item3: "قارئ كتب إلكتروني (Kindle).",
+    sc2Goal: "الهدف: مراقبة تشتت نسبة الثقة",
+    sc3Title: "عناصر خارج الفئتين",
+    sc3Desc: "تقديم عناصر شاذة (Out-of-Distribution) لا علاقة لها بالأجهزة الإلكترونية ولا بالأدوات المكتبية:",
+    sc3Item1: "كوب ماء أو فنجان قهوة.",
+    sc3Item2: "مفاتيح سيارة أو منزل.",
+    sc3Item3: "نظارة شمسية أو تفاحة.",
+    sc3Goal: "هل يرفض النموذج أم يجزم خطأً؟",
+    discTitle: "أسئلة للنقاش والتفكير النقدي",
+    discIntro: "بناءً على مشاهداتك في لوحة المعاينة (Preview):",
+    dq1Key: "سلوك الأجسام الغريبة:",
+    dq1Val: "عندما عرضت \"كوب ماء\" أو \"مفاتيح\"، لماذا لم يقل النموذج «لا أعرف»، بل صنفها بثقة ضمن إحدى الفئتين؟ وما الذي ينقص النموذج للتعامل مع هذا الموقف؟",
+    dq2Key: "تأثير الخلفية والتحيز:",
+    dq2Val: "إذا صُوّرت جميع الأدوات المكتبية فوق طاولة خشبية وجميع الأجهزة فوق طاولة بيضاء، هل سيتعلم النموذج تمييز الأشياء نفسها أم تمييز لون الطاولة والخلفية؟",
+    dq3Key: "الحالات التنازعية (Borderline):",
+    dq3Val: "كيف تعامل النموذج مع \"الآلة الحاسبة\"؟ وإلى أي حد يُعتبر تمثيل الفئات مسألة اصطلاحية تتطلب هندسة بيانات أدق؟",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "TP : Entraînement d'un Modèle de Vision par Ordinateur (Teachable Machine)",
+    backToChapter: "Retour au programme",
+    headerBadge: "Chapitre 02 • Travaux Pratiques 01",
+    headerTitle: "Entraînement d'un Modèle de Classification Visuelle",
+    headerSubtitle: "Atelier pratique de vision par ordinateur avec Google Teachable Machine : discriminer appareils électroniques et fournitures scolaires par webcam, et étudier l'impact de la curation des données sur les scores de prédiction.",
+    sec1Title: "Protocole et Démarche Opératoire",
+    s1Title: "Définition des classes & Collecte",
+    s1Desc: "Accéder à l'interface, sélectionner <strong>Image Project</strong> et initialiser deux classes distinctes :",
+    s1C1Key: "Classe 1 :",
+    s1C1Val: "« Appareils Électroniques » (smartphone, souris, clavier...).",
+    s1C2Key: "Classe 2 :",
+    s1C2Val: "« Fournitures Scolaires » (stylo, gomme, cahier, règle...).",
+    s1C3: "Acquérir un échantillon de <strong>50 à 100 captures</strong> par classe.",
+    s1C4: "Varier les angles, distances focales, éclairages et arrière-plans.",
+    s1Warn: "<strong>Avertissement :</strong> Présenter des objets des deux classes simultanément pollue les distributions. Un seul objet par prise !",
+    s2Title: "Entraînement & Optimisation",
+    s2Desc: "Auditer les lots d'images, calibrer les hyperparamètres et lancer la descente de gradient :",
+    s2C1: "Capturer en flux continu par webcam ou téléverser des fichiers locaux.",
+    s2C2: "Explorer les hyperparamètres avancés : cycles d'époques (Epochs) et taille de lot (Batch Size).",
+    s2C3: "Cliquer sur <strong>Train Model</strong> et maintenir l'onglet actif jusqu'à convergence.",
+    s2C4: "Observer les courbes de perte, l'exactitude (Accuracy) et chronométrer le temps de calcul.",
+    s3Title: "Inférence & Test en Temps Réel",
+    s3Desc: "Évaluer la robustesse du réseau dans le panneau Preview face à des objets totalement inédits :",
+    s3C1: "Soumettre des items jamais observés lors de la phase d'apprentissage.",
+    s3C2: "Surveiller les jauges de probabilité (Confidence Score) attribuées à chaque classe.",
+    s3C3: "Consigner méticuleusement les prédictions valides et les faux positifs.",
+    s3C4: "Tester la sensibilité du modèle face aux variations brutales de lumière ou de fond.",
+    sec2Title: "Spécification des Classes & Données",
+    c1Heading: "Classe 1 : « Appareils Électroniques »",
+    c1Badge: "50 – 100 échantillons",
+    c1Desc: "Constituer un inventaire numérique diversifié sous des angles géométriques variés :",
+    tagPhone: "Smartphone",
+    tagMouse: "Souris d'ordinateur",
+    tagKeyboard: "Clavier",
+    tagHeadphones: "Écouteurs / Casque",
+    tagCharger: "Chargeur secteur",
+    tagUsb: "Clé USB",
+    tagTablet: "Tablette tactile",
+    c2Heading: "Classe 2 : « Fournitures Scolaires »",
+    c2Badge: "50 – 100 échantillons",
+    c2Desc: "Sélectionner des fournitures usuelles aux textures, couleurs et formats hétérogènes :",
+    tagPen: "Stylo / Crayon",
+    tagEraser: "Gomme",
+    tagBook: "Cahier ou manuel",
+    tagRuler: "Règle graduée",
+    tagScissors: "Ciseaux d'écolier",
+    tagStapler: "Agrafeuse / Trombone",
+    sec3Title: "Protocole de Test & Stress-Testing (Scénarios)",
+    sc1Title: "Généralisation Directe",
+    sc1Desc: "Tester l'invariance face à des objets canoniques des deux catégories mais absents de la base d'entraînement :",
+    sc1Item1: "Smartphone d'une marque ou d'une couleur non photographiée.",
+    sc1Item2: "Stylo d'épaisseur, de teinte ou de texture singulière.",
+    sc1Item3: "Casque audio ou souris ergonomique au design inédit.",
+    sc1Item4: "Règle métallique ou carnet d'un format inhabituel.",
+    sc1Goal: "Objectif : Évaluer la généralisation",
+    sc2Title: "Objets Hybrides & Ambivalents",
+    sc2Desc: "Confronter le classifieur à des objets partageant les propriétés sémantiques des deux classes :",
+    sc2Item1: "<strong>Calculatrice électronique :</strong> Sera-t-elle assignée au bureau ou à l'électronique ?",
+    sc2Item2: "Stylet numérique (Stylus) pour écran tactile.",
+    sc2Item3: "Liseuse électronique (Kindle).",
+    sc2Goal: "Objectif : Observer la fragmentation des probabilités",
+    sc3Title: "Hors-Distribution (Out-of-Distribution - OOD)",
+    sc3Desc: "Présenter des stimuli complètement étrangers au domaine de classification appris :",
+    sc3Item1: "Gobelet d'eau ou tasse de café.",
+    sc3Item2: "Trousseau de clés de maison ou de voiture.",
+    sc3Item3: "Monture de lunettes ou fruit (pomme).",
+    sc3Goal: "Le modèle s'abstient-il ou hallucine-t-il ?",
+    discTitle: "Questions de Réflexion Épistémologique",
+    discIntro: "À la lumière de vos observations dans le volet Preview :",
+    dq1Key: "Traitement des anomalies OOD :",
+    dq1Val: "Face à une tasse ou des clés, pourquoi le modèle n'a-t-il pas indiqué « Inconnu », affirmant au contraire une certitude erronée à 99 % ? Que manque-t-il à la fonction Softmax pour exprimer l'ignorance ?",
+    dq2Key: "Biais d'environnement (Correlation Spurious) :",
+    dq2Val: "Si toutes les fournitures ont été capturées sur bois et tous les appareils sur table blanche, l'algorithme a-t-il appris la forme de l'objet ou simplement la chromaticité de la table ?",
+    dq3Key: "Ambiguïté ontologique des classes :",
+    dq3Val: "Comment le classifieur a-t-il catégorisé la calculatrice ? En quoi la taxonomie des classes relève-t-elle d'un choix humain arbitraire exigeant une ingénierie de données plus fine ?",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lab: Training a Computer Vision AI Model (Teachable Machine)",
+    backToChapter: "Back to Syllabus",
+    headerBadge: "Chapter 02 • Practical Lab 01",
+    headerTitle: "Training a Visual Classifier AI Model",
+    headerSubtitle: "A hands-on computer vision lab using Google Teachable Machine: training a webcam classifier to distinguish electronic devices from classroom stationery, evaluating dataset hygiene and testing prediction boundaries.",
+    sec1Title: "Activity Protocol & Laboratory Phases",
+    s1Title: "Class Setup & Data Harvesting",
+    s1Desc: "Access the tool, launch an <strong>Image Project</strong>, and define two clear conceptual classes:",
+    s1C1Key: "Class 1:",
+    s1C1Val: "«Electronic Devices» (phone, mouse, keyboard...).",
+    s1C2Key: "Class 2:",
+    s1C2Val: "«Office & School Stationery» (pen, eraser, notebook, ruler...).",
+    s1C3: "Harvest a minimum of <strong>50 to 100 images</strong> per class.",
+    s1C4: "Diversify capture angles, focal distances, lighting, and backgrounds.",
+    s1Warn: "<strong>Warning:</strong> Framing items from both classes in the same shot pollutes feature distributions. Only one object per frame!",
+    s2Title: "Model Training & Optimization",
+    s2Desc: "Audit image datasets, adjust hyperparameters, and launch gradient descent:",
+    s2C1: "Record directly via webcam bursts or upload local image files.",
+    s2C2: "Explore advanced hyperparameter settings: Epochs and Batch Size.",
+    s2C3: "Click <strong>Train Model</strong> and keep browser tab active until convergence.",
+    s2C4: "Track loss reduction, categorical accuracy, and note total compute time.",
+    s3Title: "Live Inference & Stress-Testing",
+    s3Desc: "Benchmark real-world performance in the live Preview panel against unseen stimuli:",
+    s3C1: "Present entirely new objects never seen during dataset collection.",
+    s3C2: "Observe output confidence scores across both candidate classes.",
+    s3C3: "Log accurate classifications versus misclassification failures.",
+    s3C4: "Stress-test robustness against lighting shifts and background switches.",
+    sec2Title: "Class Descriptions & Training Samples",
+    c1Heading: "Class 1: «Electronic Devices»",
+    c1Badge: "50 – 100 samples",
+    c1Desc: "Gather common hardware accessories across multiple form factors and finishes:",
+    tagPhone: "Smartphone",
+    tagMouse: "Computer Mouse",
+    tagKeyboard: "Keyboard",
+    tagHeadphones: "Headphones",
+    tagCharger: "Power Adapter",
+    tagUsb: "USB Flash Drive",
+    tagTablet: "Tablet Screen",
+    c2Heading: "Class 2: «Stationery & Supplies»",
+    c2Badge: "50 – 100 samples",
+    c2Desc: "Gather standard academic stationery spanning diverse materials and geometries:",
+    tagPen: "Ink / Pencil",
+    tagEraser: "Eraser",
+    tagBook: "Notebook / Textbook",
+    tagRuler: "Ruler",
+    tagScissors: "Office Scissors",
+    tagStapler: "Stapler / Paperclip",
+    sec3Title: "Evaluation Protocols (Testing Scenarios)",
+    sc1Title: "In-Distribution Generalization",
+    sc1Desc: "Verifying model generalization on canonical objects belonging to either class with unseen colors or shapes:",
+    sc1Item1: "A novel smartphone brand or case color never captured.",
+    sc1Item2: "A marker or ballpoint pen with unusual diameter.",
+    sc1Item3: "Ergonomic headphones or trackball mouse with distinct contours.",
+    sc1Item4: "A metal ruler or pocket-sized notepad.",
+    sc1Goal: "Objective: Quantify Generalization Accuracy",
+    sc2Title: "Borderline & Hybrid Stimuli",
+    sc2Desc: "Testing ambiguous items carrying overlapping functional and morphological attributes:",
+    sc2Item1: "<strong>Pocket Electronic Calculator:</strong> Does it default to stationery or electronics?",
+    sc2Item2: "Active Digital Stylus.",
+    sc2Item3: "E-Ink Reader (Kindle).",
+    sc2Goal: "Objective: Monitor Probability Dispersion",
+    sc3Title: "Out-of-Distribution (OOD) Items",
+    sc3Desc: "Introducing anomalous objects possessing zero thematic connection to either trained class:",
+    sc3Item1: "Glass of water or coffee mug.",
+    sc3Item2: "Car or house keys.",
+    sc3Item3: "Sunglasses or an apple.",
+    sc3Goal: "Does it refuse or falsely assert certainty?",
+    discTitle: "Critical Thinking & Ethical Reflection",
+    discIntro: "Drawing from empirical observations in the Preview panel:",
+    dq1Key: "OOD Fallacy & Overconfidence:",
+    dq1Val: "When presented with a 'mug' or 'car keys', why did the model fail to state 'Unknown', confidently assigning it to a class at ~99%? What architectural limitation causes this overconfidence?",
+    dq2Key: "Spurious Background Correlations:",
+    dq2Val: "If all stationery was photographed on wood desks and all electronics on white laminate, did the network learn the object geometry or the background desk pigment?",
+    dq3Key: "Boundary Ambiguity (Borderline Cases):",
+    dq3Val: "How did the model classify the pocket calculator? How does this illustrate that class taxonomy is a subjective human schema demanding granular data engineering?",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Adjust bullet arrows in scenarios
+  document.querySelectorAll('.list-bullet').forEach(bullet => {
+    bullet.className = isRtl ? 'fa-solid fa-angle-left list-bullet' : 'fa-solid fa-angle-right list-bullet';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

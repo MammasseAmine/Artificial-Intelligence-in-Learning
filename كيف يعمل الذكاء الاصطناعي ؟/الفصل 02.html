@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 02: كيف يعمل الذكاء الاصطناعي ؟</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">الفصل 02: كيف يعمل الذكاء الاصطناعي ؟</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -34,11 +34,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -56,22 +104,24 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
-    color: rgba(255, 255, 255, 0.8);
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: color 0.3s;
-    background: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -94,7 +144,7 @@
     font-size: 1.1rem;
     opacity: 0.9;
     font-weight: 400;
-    max-width: 700px;
+    max-width: 780px;
     margin: 0 auto;
   }
   
@@ -184,7 +234,7 @@
     font-size: 0.95rem;
     color: var(--muted);
     margin-bottom: 24px;
-    flex-grow: 1; /* يدفع الزر للأسفل دائماً */
+    flex-grow: 1;
   }
 
   .btn-open {
@@ -219,138 +269,285 @@
   /* Responsive */
   @media (max-width: 600px) {
     .header h1 { font-size: 1.8rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="../outline.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
-    <span class="header-badge">الفصل 02</span>
-    <h1>كيف يعمل الذكاء الاصطناعي ؟</h1>
-    <div class="subtitle">فهم آلية تعلم النماذج الذكية، دور البيانات في تشكيل استجاباتها، وتفكيك مظاهر الانحياز لضمان جودة وموثوقية المخرجات.</div>
+    <span class="header-badge" data-i18n="chapterBadge">الفصل 02</span>
+    <h1 data-i18n="headerTitle">كيف يعمل الذكاء الاصطناعي ؟</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">فهم آلية تعلم النماذج الذكية، دور البيانات في تشكيل استجاباتها، وتفكيك مظاهر الانحياز لضمان جودة وموثوقية المخرجات.</div>
   </div>
 
-  <!-- عنوان القسم الأول -->
+  <!-- Section 1: Lessons -->
   <div class="section-title">
     <span class="icon">📖</span>
-    مواضيع ودروس الفصل
+    <span data-i18n="secLessonsTitle">مواضيع ودروس الفصل</span>
   </div>
 
-  <!-- شبكة الدروس (Grid) -->
+  <!-- Lessons Grid -->
   <div class="lessons-grid">
 
-    <!-- الدرس 01 -->
+    <!-- Lesson 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-database"></i></div>
-      <div class="lesson-badge">الدرس 01</div>
-      <h3 class="lesson-title">بيانات التدريب</h3>
-      <p class="lesson-desc">تعرف على دور البيانات الضخمة كأساس لتدريب النماذج الذكية، ومصادرها، وكيفية جمعها وهيكلتها للاستخدام.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l1Badge">الدرس 01</div>
+      <h3 class="lesson-title" data-i18n="l1Title">بيانات التدريب</h3>
+      <p class="lesson-desc" data-i18n="l1Desc">تعرف على دور البيانات الضخمة كأساس لتدريب النماذج الذكية، ومصادرها، وكيفية جمعها وهيكلتها للاستخدام.</p>
+      <a href="بيانات التدريب.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 02 -->
+    <!-- Lesson 02 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-brain"></i></div>
-      <div class="lesson-badge">الدرس 02</div>
-      <h3 class="lesson-title">عملية التعلم الآلي</h3>
-      <p class="lesson-desc">اكتشف الآلية الإحصائية التي تتعلم بها الآلة من البيانات، وكيف تستخرج الأنماط لبناء المعرفة وتوليد المخرجات.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l2Badge">الدرس 02</div>
+      <h3 class="lesson-title" data-i18n="l2Title">عملية التعلم الآلي</h3>
+      <p class="lesson-desc" data-i18n="l2Desc">اكتشف الآلية الإحصائية التي تتعلم بها الآلة من البيانات، وكيف تستخرج الأنماط لبناء المعرفة وتوليد المخرجات.</p>
+      <a href="عملية التعلم الآلي.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 03 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-filter"></i></div>
-      <div class="lesson-badge">الدرس 03</div>
-      <h3 class="lesson-title">جودة البيانات</h3>
-      <p class="lesson-desc">فهم تأثير تنظيف البيانات وتنقيتها على كفاءة النموذج، وكيف تساهم جودة المدخلات في تجنب الأخطاء.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 04 -->
+    <!-- Lesson 03 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-scale-unbalanced"></i></div>
-      <div class="lesson-badge">الدرس 04</div>
-      <h3 class="lesson-title">الانحياز الخوارزمي</h3>
-      <p class="lesson-desc">دراسة كيف يمكن للبيانات أن تنقل التحيزات البشرية للآلة، وتأثير ذلك على موضوعية وحيادية النتائج.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l3Badge">الدرس 03</div>
+      <h3 class="lesson-title" data-i18n="l3Title">الانحياز الخوارزمي</h3>
+      <p class="lesson-desc" data-i18n="l3Desc">دراسة كيف يمكن للبيانات أن تنقل التحيزات البشرية للآلة، وتأثير ذلك على موضوعية وحيادية النتائج.</p>
+      <a href="الانحياز الخوارزمي.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 05 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
-      <div class="lesson-badge">الدرس 05</div>
-      <h3 class="lesson-title">التمثيلية والعدالة الرقمية</h3>
-      <p class="lesson-desc">أهمية شمولية البيانات لتغطي مختلف الثقافات والفئات المجتمعية لضمان مخرجات عادلة وغير تمييزية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 06 -->
+    <!-- Lesson 04 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-      <div class="lesson-badge">الدرس 06</div>
-      <h3 class="lesson-title">تحليل موثوقية المخرجات</h3>
-      <p class="lesson-desc">تطوير حس نقدي لتقييم صحة وموثوقية المعلومات التي يولدها الذكاء الاصطناعي قبل اعتمادها أكاديمياً.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l4Badge">الدرس 04</div>
+      <h3 class="lesson-title" data-i18n="l4Title">تحليل موثوقية المخرجات</h3>
+      <p class="lesson-desc" data-i18n="l4Desc">تطوير حس نقدي لتقييم صحة وموثوقية المعلومات التي يولدها الذكاء الاصطناعي قبل اعتمادها أكاديمياً.</p>
+      <a href="تحليل موثوقية المخرجات.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
   </div>
 
-  <!-- عنوان القسم الثاني (الأعمال التطبيقية) -->
+  <!-- Section 2: Practical Labs -->
   <div class="section-title">
     <span class="icon">💻</span>
-    الأعمال التطبيقية
+    <span data-i18n="secLabsTitle">الأعمال التطبيقية</span>
   </div>
 
-  <!-- شبكة الأعمال التطبيقية -->
+  <!-- Activities Grid -->
   <div class="lessons-grid">
     
-    <!-- النشاط 01 -->
+    <!-- Activity 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-cogs"></i></div>
-      <div class="lesson-badge">النشاط 01</div>
-      <h3 class="lesson-title">النشاط التطبيقي الأول: بناء وتدريب نموذج مصغر</h3>
-      <p class="lesson-desc">تطبيق عملي يحاكي عملية إدخال البيانات وتدريب نموذج مبسط لفهم كيفية بناء المعرفة وتوليد الاستجابات.</p>
+      <div class="lesson-badge" data-i18n="act1Badge">النشاط 01</div>
+      <h3 class="lesson-title" data-i18n="act1Title">النشاط التطبيقي الأول: بناء وتدريب نموذج مصغر</h3>
+      <p class="lesson-desc" data-i18n="act1Desc">تطبيق عملي يحاكي عملية إدخال البيانات وتدريب نموذج مبسط لفهم كيفية بناء المعرفة وتوليد الاستجابات.</p>
       <a href="النشاط التطبيقي تدريب نموذج ذكاء اصطناعي للتصنيف البصري (Teachable Machine).html" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- النشاط 02 -->
+    <!-- Activity 02 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-scale-unbalanced-flip"></i></div>
-      <div class="lesson-badge">النشاط 02</div>
-      <h3 class="lesson-title">النشاط الثاني: هندسة الانحياز واختبار التحيز</h3>
-      <p class="lesson-desc">تمرين نقدي وتطبيقي لاختبار استجابات الذكاء الاصطناعي، واكتشاف الانحيازات المبطنة وكيفية تجنبها بوعي.</p>
+      <div class="lesson-badge" data-i18n="act2Badge">النشاط 02</div>
+      <h3 class="lesson-title" data-i18n="act2Title">النشاط الثاني: هندسة الانحياز واختبار التحيز</h3>
+      <p class="lesson-desc" data-i18n="act2Desc">تمرين نقدي وتطبيقي لاختبار استجابات الذكاء الاصطناعي، واكتشاف الانحيازات المبطنة وكيفية تجنبها بوعي.</p>
       <a href="النشاط التطبيقي كشف التحيز والصور النمطية في النماذج التوليدية.html" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 02: كيف يعمل الذكاء الاصطناعي ؟",
+    backToSyllabus: "العودة للبرنامج",
+    chapterBadge: "الفصل 02",
+    headerTitle: "كيف يعمل الذكاء الاصطناعي ؟",
+    headerSubtitle: "فهم آلية تعلم النماذج الذكية، دور البيانات في تشكيل استجاباتها، وتفكيك مظاهر الانحياز لضمان جودة وموثوقية المخرجات.",
+    secLessonsTitle: "مواضيع ودروس الفصل",
+    btnOpenLesson: "فتح الدرس",
+    btnOpenActivity: "فتح النشاط",
+    secLabsTitle: "الأعمال التطبيقية",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027",
+
+    l1Badge: "الدرس 01",
+    l1Title: "بيانات التدريب",
+    l1Desc: "تعرف على دور البيانات الضخمة كأساس لتدريب النماذج الذكية، ومصادرها، وكيفية جمعها وهيكلتها للاستخدام.",
+
+    l2Badge: "الدرس 02",
+    l2Title: "عملية التعلم الآلي",
+    l2Desc: "اكتشف الآلية الإحصائية التي تتعلم بها الآلة من البيانات، وكيف تستخرج الأنماط لبناء المعرفة وتوليد المخرجات.",
+
+    l3Badge: "الدرس 03",
+    l3Title: "الانحياز الخوارزمي",
+    l3Desc: "دراسة كيف يمكن للبيانات أن تنقل التحيزات البشرية للآلة، وتأثير ذلك على موضوعية وحيادية النتائج.",
+
+    l4Badge: "الدرس 04",
+    l4Title: "تحليل موثوقية المخرجات",
+    l4Desc: "تطوير حس نقدي لتقييم صحة وموثوقية المعلومات التي يولدها الذكاء الاصطناعي قبل اعتمادها أكاديمياً.",
+
+    act1Badge: "النشاط 01",
+    act1Title: "النشاط التطبيقي الأول: بناء وتدريب نموذج مصغر",
+    act1Desc: "تطبيق عملي يحاكي عملية إدخال البيانات وتدريب نموذج مبسط لفهم كيفية بناء المعرفة وتوليد الاستجابات.",
+
+    act2Badge: "النشاط 02",
+    act2Title: "النشاط الثاني: هندسة الانحياز واختبار التحيز",
+    act2Desc: "تمرين نقدي وتطبيقي لاختبار استجابات الذكاء الاصطناعي، واكتشاف الانحيازات المبطنة وكيفية تجنبها بوعي."
+  },
+  fr: {
+    pageTitle: "Chapitre 02 : Comment fonctionne l'Intelligence Artificielle ?",
+    backToSyllabus: "Retour au programme",
+    chapterBadge: "Chapitre 02",
+    headerTitle: "Comment fonctionne l'IA ?",
+    headerSubtitle: "Comprendre les mécanismes d'apprentissage des modèles, le rôle structurant des données et déconstruire les biais pour garantir des résultats fiables.",
+    secLessonsTitle: "Leçons et Cours du Chapitre",
+    btnOpenLesson: "Consulter la leçon",
+    btnOpenActivity: "Consulter l'activité",
+    secLabsTitle: "Travaux Pratiques (TP)",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027",
+
+    l1Badge: "Leçon 01",
+    l1Title: "Données d'Entraînement",
+    l1Desc: "Rôle des mégadonnées comme socle des modèles, typologie des sources, collecte et prétraitement.",
+
+    l2Badge: "Leçon 02",
+    l2Title: "Processus d'Apprentissage Automatique",
+    l2Desc: "Mécanismes statistiques par lesquels l'algorithme extrait des régularités pour structurer ses prédictions.",
+
+    l3Badge: "Leçon 03",
+    l3Title: "Biais Algorithmiques",
+    l3Desc: "Analyse de la transmission des stéréotypes humains aux modèles et répercussions sur la neutralité des résultats.",
+
+    l4Badge: "Leçon 04",
+    l4Title: "Analyse de Fiabilité des Résultats",
+    l4Desc: "Développement d'un regard critique pour auditer et valider les contenus générés avant usage académique.",
+
+    act1Badge: "Activité 01",
+    act1Title: "TP 1 : Entraînement d'un Modèle Simplifié",
+    act1Desc: "Atelier pratique d'injection de données et d'entraînement pour visualiser la classification et la génération.",
+
+    act2Badge: "Activité 02",
+    act2Title: "TP 2 : Audit et Détection des Biais",
+    act2Desc: "Exercice appliqué d'évaluation critique pour déceler les stéréotypes latents et adapter les prompts avec discernement."
+  },
+  en: {
+    pageTitle: "Chapter 02: How Does Artificial Intelligence Work?",
+    backToSyllabus: "Back to Syllabus",
+    chapterBadge: "Chapter 02",
+    headerTitle: "How Does AI Work?",
+    headerSubtitle: "Understanding learning dynamics, the foundational role of training data, and deconstructing algorithmic bias to ensure reliable, high-integrity outcomes.",
+    secLessonsTitle: "Chapter Topics & Lessons",
+    btnOpenLesson: "Open Lesson",
+    btnOpenActivity: "Open Activity",
+    secLabsTitle: "Practical Labs",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027",
+
+    l1Badge: "Lesson 01",
+    l1Title: "Training Data",
+    l1Desc: "Explore big data as the bedrock of machine learning: data provenance, collection, curation, and formatting.",
+
+    l2Badge: "Lesson 02",
+    l2Title: "Machine Learning Processes",
+    l2Desc: "Discover the statistical mechanisms algorithms use to learn patterns from data and build predictive capability.",
+
+    l3Badge: "Lesson 03",
+    l3Title: "Algorithmic Bias",
+    l3Desc: "Examine how human prejudice is codified into neural networks and its ethical impact on model neutrality.",
+
+    l4Badge: "Lesson 04",
+    l4Title: "Output Reliability Analysis",
+    l4Desc: "Cultivate rigorous critical reasoning to audit, verify, and validate AI-generated findings in academia.",
+
+    act1Badge: "Activity 01",
+    act1Title: "Lab 1: Building & Training a Micro-Model",
+    act1Desc: "A hands-on lab simulating data collection, labeling, and training to demystify pattern learning and inference.",
+
+    act2Badge: "Activity 02",
+    act2Title: "Lab 2: Bias Auditing & Stress-Testing",
+    act2Desc: "A critical workshop stress-testing foundation models to expose implicit stereotypes and learn bias-neutral prompting."
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic texts
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Flip card button arrow icons
+  document.querySelectorAll('.action-arrow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-arrow-left action-arrow' : 'fa-solid fa-arrow-right action-arrow';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

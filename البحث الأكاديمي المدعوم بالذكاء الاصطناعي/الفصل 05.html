@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 05: البحث الأكاديمي المدعوم بالذكاء الاصطناعي</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">الفصل 05: البحث الأكاديمي المدعوم بالذكاء الاصطناعي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -34,11 +34,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -56,22 +104,24 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
-    color: rgba(255, 255, 255, 0.8);
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: color 0.3s;
-    background: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -94,7 +144,7 @@
     font-size: 1.1rem;
     opacity: 0.9;
     font-weight: 400;
-    max-width: 700px;
+    max-width: 780px;
     margin: 0 auto;
   }
   
@@ -120,6 +170,8 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    color: var(--secondary);
+    flex-shrink: 0;
   }
 
   /* Grid & Cards */
@@ -219,127 +271,262 @@
   /* Responsive */
   @media (max-width: 600px) {
     .header h1 { font-size: 1.8rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="../outline.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
-    <span class="header-badge">الفصل 05</span>
-    <h1>البحث الأكاديمي المدعوم بالذكاء الاصطناعي</h1>
-    <div class="subtitle">توظيف أدوات ومحركات الذكاء الاصطناعي لتسريع وتجويد عملية البحث العلمي، من إيجاد المصادر إلى تحليلها ومقارنتها بشكل نقدي.</div>
+    <span class="header-badge" data-i18n="chapterBadge">الفصل 05</span>
+    <h1 data-i18n="headerTitle">البحث الأكاديمي المدعوم بالذكاء الاصطناعي</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">توظيف أدوات ومحركات الذكاء الاصطناعي لتسريع وتجويد عملية البحث العلمي، من إيجاد المصادر إلى تحليلها ومقارنتها بشكل نقدي.</div>
   </div>
 
-  <!-- عنوان القسم الأول (الدروس) -->
+  <!-- Section 1: Lessons -->
   <div class="section-title">
     <span class="icon">📖</span>
-    مواضيع ودروس الفصل
+    <span data-i18n="secLessonsTitle">مواضيع ودروس الفصل</span>
   </div>
 
-  <!-- شبكة الدروس (Grid) -->
+  <!-- Lessons Grid -->
   <div class="lessons-grid">
 
-    <!-- الدرس 01 -->
+    <!-- Lesson 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-book-bookmark"></i></div>
-      <div class="lesson-badge">الدرس 01</div>
-      <h3 class="lesson-title">البحث عن المصادر العلمية</h3>
-      <p class="lesson-desc">استخدام محركات البحث الذكية للوصول إلى أدبيات ومراجع علمية حقيقية وموثوقة بدقة وسرعة تفوق الطرق التقليدية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l1Badge">الدرس 01</div>
+      <h3 class="lesson-title" data-i18n="l1Title">البحث عن المصادر العلمية</h3>
+      <p class="lesson-desc" data-i18n="l1Desc">استخدام محركات البحث الذكية للوصول إلى أدبيات ومراجع علمية حقيقية وموثوقة بدقة وسرعة تفوق الطرق التقليدية.</p>
+      <a href="البحث عن المصادر العلمية والمحركات الذكية.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 02 -->
+    <!-- Lesson 02 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-file-lines"></i></div>
-      <div class="lesson-badge">الدرس 02</div>
-      <h3 class="lesson-title">تلخيص المقالات والدراسات</h3>
-      <p class="lesson-desc">توظيف الذكاء الاصطناعي لاستخراج الأفكار الرئيسية، المنهجيات، والخلاصات من الأوراق البحثية الطويلة والمعقدة.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l2Badge">الدرس 02</div>
+      <h3 class="lesson-title" data-i18n="l2Title">تلخيص المقالات والدراسات وتحليل الوثائق الأكاديمية</h3>
+      <p class="lesson-desc" data-i18n="l2Desc">توظيف الذكاء الاصطناعي لاستخراج الأفكار الرئيسية والمنهجيات والخلاصات من الأوراق البحثية، والتفاعل مع ملفات PDF لاستنطاق بياناتها وتفكيك بنيتها العلمية بعمق.</p>
+      <a href="تلخيص المقالات والدراسات وتحليل الوثائق الأكاديمية.html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 03 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-microscope"></i></div>
-      <div class="lesson-badge">الدرس 03</div>
-      <h3 class="lesson-title">تحليل الوثائق الأكاديمية</h3>
-      <p class="lesson-desc">التفاعل المباشر مع المستندات (مثل ملفات PDF) لاستنطاق البيانات وتفكيك بنية الدراسات العلمية بشكل عميق.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 04 -->
+    <!-- Lesson 03 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-code-compare"></i></div>
-      <div class="lesson-badge">الدرس 04</div>
-      <h3 class="lesson-title">المقارنة بين المصادر</h3>
-      <p class="lesson-desc">إجراء تحليلات متقاطعة (Cross-Analysis) بين عدة أبحاث لتحديد أوجه التشابه، الاختلاف، واكتشاف الفجوات البحثية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
-      </a>
-    </div>
-
-    <!-- الدرس 05 -->
-    <div class="lesson-card">
-      <div class="lesson-icon"><i class="fa-solid fa-check-double"></i></div>
-      <div class="lesson-badge">الدرس 05</div>
-      <h3 class="lesson-title">التحقق من المعلومات</h3>
-      <p class="lesson-desc">مقاطعة مخرجات الذكاء الاصطناعي مع المصادر والأدبيات الأصلية لضمان الدقة العلمية وتجنب المعلومات الوهمية.</p>
-      <a href="#" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="l3Badge">الدرس 03</div>
+      <h3 class="lesson-title" data-i18n="l3Title">المقارنة بين المصادر</h3>
+      <p class="lesson-desc" data-i18n="l3Desc">إجراء تحليلات متقاطعة (Cross-Analysis) بين عدة أبحاث لتحديد أوجه التشابه، الاختلاف، واكتشاف الفجوات البحثية.</p>
+      <a href="المقارنة بين المصادر والتحليل المتقاطع (Cross-Analysis).html" class="btn-open">
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
   </div>
 
-  <!-- عنوان القسم الثاني (الأعمال التطبيقية) -->
+  <!-- Section 2: Practical Labs -->
   <div class="section-title">
     <span class="icon">💻</span>
-    الأعمال التطبيقية
+    <span data-i18n="secLabsTitle">الأعمال التطبيقية</span>
   </div>
 
-  <!-- شبكة الأعمال التطبيقية -->
+  <!-- Activities Grid -->
   <div class="lessons-grid">
     
-    <!-- النشاط 01 -->
+    <!-- Activity 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-      <div class="lesson-badge">النشاط 01</div>
-      <h3 class="lesson-title">النشاط الأول: البحث الأكاديمي الموثق ومقارنة الأدوات</h3>
-      <p class="lesson-desc">تطبيق عملي لمقارنة أدوات ومحركات البحث الأكاديمية الذكية في استخراج أوراق بحثية حقيقية وتوثيقها بدقة.</p>
-      <a href="#" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="act1Badge">النشاط 01</div>
+      <h3 class="lesson-title" data-i18n="act1Title">النشاط الأول: البحث الأكاديمي الموثق ومقارنة الأدوات</h3>
+      <p class="lesson-desc" data-i18n="act1Desc">تطبيق عملي لمقارنة أدوات ومحركات البحث الأكاديمية الذكية في استخراج أوراق بحثية حقيقية وتوثيقها بدقة.</p>
+      <a href="البحث الأكاديمي الموثق ومقارنة الأدوات.html" class="btn-open">
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- النشاط 02 -->
+    <!-- Activity 02 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-layer-group"></i></div>
-      <div class="lesson-badge">النشاط 02</div>
-      <h3 class="lesson-title">النشاط الثاني: التلخيص المتعدد والتحليل النقدي (Cross-Analysis)</h3>
-      <p class="lesson-desc">ورشة تطبيقية لمقارنة نتائج عدة دراسات علمية واستنطاق البيانات المشتركة لتحديد الفجوات المعرفية بينها.</p>
-      <a href="#" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+      <div class="lesson-badge" data-i18n="act2Badge">النشاط 02</div>
+      <h3 class="lesson-title" data-i18n="act2Title">النشاط الثاني: التلخيص المتعدد والتحليل النقدي (Cross-Analysis)</h3>
+      <p class="lesson-desc" data-i18n="act2Desc">ورشة تطبيقية لمقارنة نتائج عدة دراسات علمية واستنطاق البيانات المشتركة لتحديد الفجوات المعرفية بينها.</p>
+      <a href="النشاط الثاني التلخيص المتعدد والتحليل النقدي (Cross-Analysis).html" class="btn-open">
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 05: البحث الأكاديمي المدعوم بالذكاء الاصطناعي",
+    backToSyllabus: "العودة للبرنامج",
+    chapterBadge: "الفصل 05",
+    headerTitle: "البحث الأكاديمي المدعوم بالذكاء الاصطناعي",
+    headerSubtitle: "توظيف أدوات ومحركات الذكاء الاصطناعي لتسريع وتجويد عملية البحث العلمي، من إيجاد المصادر إلى تحليلها ومقارنتها بشكل نقدي.",
+    secLessonsTitle: "مواضيع ودروس الفصل",
+    btnOpenLesson: "فتح الدرس",
+    btnOpenActivity: "فتح النشاط",
+    secLabsTitle: "الأعمال التطبيقية",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027",
+
+    l1Badge: "الدرس 01",
+    l1Title: "البحث عن المصادر العلمية",
+    l1Desc: "استخدام محركات البحث الذكية للوصول إلى أدبيات ومراجع علمية حقيقية وموثوقة بدقة وسرعة تفوق الطرق التقليدية.",
+
+    l2Badge: "الدرس 02",
+    l2Title: "تلخيص المقالات والدراسات وتحليل الوثائق الأكاديمية",
+    l2Desc: "توظيف الذكاء الاصطناعي لاستخراج الأفكار الرئيسية والمنهجيات والخلاصات من الأوراق البحثية، والتفاعل مع ملفات PDF لاستنطاق بياناتها وتفكيك بنيتها العلمية بعمق.",
+
+    l3Badge: "الدرس 03",
+    l3Title: "المقارنة بين المصادر والتحليل المتقاطع",
+    l3Desc: "إجراء تحليلات متقاطعة (Cross-Analysis) بين عدة أبحاث لتحديد أوجه التشابه، الاختلاف، واكتشاف الفجوات البحثية.",
+
+    act1Badge: "النشاط 01",
+    act1Title: "النشاط الأول: البحث الأكاديمي الموثق ومقارنة الأدوات",
+    act1Desc: "تطبيق عملي لمقارنة أدوات ومحركات البحث الأكاديمية الذكية في استخراج أوراق بحثية حقيقية وتوثيقها بدقة.",
+
+    act2Badge: "النشاط 02",
+    act2Title: "النشاط الثاني: التلخيص المتعدد والتحليل النقدي (Cross-Analysis)",
+    act2Desc: "ورشة تطبيقية لمقارنة نتائج عدة دراسات علمية واستنطاق البيانات المشتركة لتحديد الفجوات المعرفية بينها."
+  },
+  fr: {
+    pageTitle: "Chapitre 05 : Recherche Académique Assistée par l'IA",
+    backToSyllabus: "Retour au programme",
+    chapterBadge: "Chapitre 05",
+    headerTitle: "Recherche Académique Assistée par l'IA",
+    headerSubtitle: "Exploiter les outils et moteurs d'IA pour accélérer et affiner le processus de recherche scientifique, de la découverte documentaire à l'analyse critique comparative.",
+    secLessonsTitle: "Leçons et Cours du Chapitre",
+    btnOpenLesson: "Consulter la leçon",
+    btnOpenActivity: "Consulter l'activité",
+    secLabsTitle: "Travaux Pratiques (TP)",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027",
+
+    l1Badge: "Leçon 01",
+    l1Title: "Recherche de Sources Scientifiques",
+    l1Desc: "Exploiter les moteurs de recherche académiques intelligents pour localiser des littératures et références authentiques avec précision et rapidité.",
+
+    l2Badge: "Leçon 02",
+    l2Title: "Synthèse d'Articles et Analyse de Documents Académiques",
+    l2Desc: "Mobiliser l'IA pour extraire les thèses centrales, méthodologies et conclusions d'articles, tout en dialoguant avec des PDF scientifiques pour décortiquer leurs corpus.",
+
+    l3Badge: "Leçon 03",
+    l3Title: "Comparaison des Sources et Analyse Croisée",
+    l3Desc: "Conduire des analyses croisées (Cross-Analysis) sur plusieurs publications afin d'isoler les convergences, divergences et zones de rupture épistémique.",
+
+    act1Badge: "Activité 01",
+    act1Title: "TP 1 : Recherche Académique Documentée & Benchmark d'Outils",
+    act1Desc: "Atelier pratique d'évaluation comparative des moteurs de recherche propulsés par l'IA pour extraire des articles réels et générer des citations normées.",
+
+    act2Badge: "Activité 02",
+    act2Title: "TP 2 : Synthèse Multi-Sources & Analyse Critique Croisée",
+    act2Desc: "Séance pratique de confrontation de résultats issus de plusieurs publications pour cartographier les régularités et déceler les failles de recherche."
+  },
+  en: {
+    pageTitle: "Chapter 05: AI-Powered Academic Research",
+    backToSyllabus: "Back to Syllabus",
+    chapterBadge: "Chapter 05",
+    headerTitle: "AI-Powered Academic Research",
+    headerSubtitle: "Leveraging AI engines and platforms to accelerate and refine academic inquiry, from literature discovery to in-depth cross-source comparative analysis.",
+    secLessonsTitle: "Chapter Topics & Lessons",
+    btnOpenLesson: "Open Lesson",
+    btnOpenActivity: "Open Activity",
+    secLabsTitle: "Practical Labs",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027",
+
+    l1Badge: "Lesson 01",
+    l1Title: "Scholarly Literature & Source Discovery",
+    l1Desc: "Harness intelligent research engines to retrieve authentic peer-reviewed literature and verifiable references beyond traditional keyword searching.",
+
+    l2Badge: "Lesson 02",
+    l2Title: "Paper Summarization & Academic Document Analysis",
+    l2Desc: "Deploy AI to distill key findings, methodologies, and arguments from papers, interacting dynamically with PDFs to unpack their technical structure.",
+
+    l3Badge: "Lesson 03",
+    l3Title: "Literature Comparison & Cross-Analysis",
+    l3Desc: "Perform structured cross-analyses across diverse papers to map theoretical alignments, discrepancies, and unaddressed research gaps.",
+
+    act1Badge: "Activity 01",
+    act1Title: "Lab 1: Verified Academic Discovery & Tool Benchmarking",
+    act1Desc: "Hands-on lab evaluating smart academic engines in extracting real research papers and generating accurate bibliographic citations.",
+
+    act2Badge: "Activity 02",
+    act2Title: "Lab 2: Multi-Paper Synthesis & Critical Cross-Analysis",
+    act2Desc: "Interactive workshop juxtaposing empirical findings across disparate studies to identify shared variables and uncover knowledge gaps."
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic texts
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Flip card button arrow icons
+  document.querySelectorAll('.action-arrow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-arrow-left action-arrow' : 'fa-solid fa-arrow-right action-arrow';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

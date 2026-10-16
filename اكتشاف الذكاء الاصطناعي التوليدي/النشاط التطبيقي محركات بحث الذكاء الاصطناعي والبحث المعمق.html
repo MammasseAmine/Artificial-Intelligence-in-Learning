@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>النشاط التطبيقي: محركات بحث الذكاء الاصطناعي والبحث المعمق</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">النشاط التطبيقي: محركات بحث الذكاء الاصطناعي والبحث المعمق</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -36,11 +36,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -58,7 +106,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -69,11 +117,13 @@
     background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -123,6 +173,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
   /* Grid Layouts */
@@ -159,13 +210,13 @@
   /* Workflow Steps */
   .step-card {
     position: relative;
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
   }
 
   .step-number {
     position: absolute;
     top: 15px;
-    left: 20px;
+    inset-inline-end: 20px;
     font-size: 1.8rem;
     font-weight: 800;
     color: #e2e8f0;
@@ -188,7 +239,7 @@
 
   .prompt-box {
     background: #edf2f7;
-    border-right: 3px solid var(--accent);
+    border-inline-start: 3px solid var(--accent);
     padding: 10px 14px;
     border-radius: 8px;
     margin-top: 10px;
@@ -214,6 +265,7 @@
   .checklist li i {
     color: var(--secondary);
     font-size: 0.8rem;
+    flex-shrink: 0;
   }
 
   /* Engine Cards */
@@ -269,7 +321,7 @@
   .callout-box {
     background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
     border: 1px solid #bee3f8;
-    border-right: 5px solid var(--secondary);
+    border-inline-start: 5px solid var(--secondary);
     border-radius: 16px;
     padding: 25px 30px;
     margin: 30px 0;
@@ -297,7 +349,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding-right: 10px;
+    padding-inline-start: 10px;
   }
 
   .discussion-items li {
@@ -312,6 +364,7 @@
   .discussion-items li i {
     color: var(--secondary);
     font-size: 0.9rem;
+    flex-shrink: 0;
   }
 
   /* Benchmark Highlights */
@@ -338,6 +391,7 @@
   .benchmark-item i {
     color: var(--accent);
     font-size: 1.1rem;
+    flex-shrink: 0;
   }
 
   /* Footer */
@@ -354,84 +408,94 @@
   /* Responsive */
   @media (max-width: 768px) {
     .header h1 { font-size: 1.7rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 15px; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 15px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 01.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
-    <span class="header-badge">النشاط التطبيقي 02</span>
-    <h1>محركات بحث الذكاء الاصطناعي والبحث المعمق</h1>
-    <div class="subtitle">تجربة مقارنة عملية بين أدوات البحث المباشر عبر الويب (Web Search) وتقنيات البحث المعمق والاستقصائي (Deep Search / Deep Research) في أنظمة الذكاء الاصطناعي.</div>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 01 • النشاط 02</span>
+    <h1 data-i18n="headerTitle">محركات بحث الذكاء الاصطناعي والبحث المعمق</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">تجربة مقارنة عملية بين أدوات البحث المباشر عبر الويب (Web Search) وتقنيات البحث المعمق والاستقصائي (Deep Search / Deep Research) في أنظمة الذكاء الاصطناعي.</div>
   </div>
 
-  <!-- القسم 1: خطوات تنفيذ النشاط -->
+  <!-- Section 1: Protocol Steps -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-list-check"></i></span>
-    مراحل وخطوات تنفيذ النشاط
+    <span data-i18n="sec1Title">مراحل وخطوات تنفيذ النشاط</span>
   </div>
 
   <div class="grid-2">
-    <!-- الخطوة 1 -->
+    <!-- Step 1 -->
     <div class="card step-card">
       <div class="step-number">01</div>
-      <h3 class="step-title"><i class="fa-solid fa-bullseye text-primary"></i> اختيار الموضوع وصياغة السؤال</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-bullseye text-primary"></i> <span data-i18n="step1Title">اختيار الموضوع وصياغة السؤال</span></h3>
+      <p class="step-desc" data-i18n="step1Desc">
         اختر موضوعاً بحثياً محدداً وقم بإعداد <strong>سؤال موحد</strong> يتم طرحه على جميع المنصات لضمان معيارية المقارنة ودقة تقييم النتائج.
       </p>
     </div>
 
-    <!-- الخطوة 2 -->
+    <!-- Step 2 -->
     <div class="card step-card">
       <div class="step-number">02</div>
-      <h3 class="step-title"><i class="fa-solid fa-globe text-primary"></i> تنفيذ البحث عبر الويب (Web Search)</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-globe text-primary"></i> <span data-i18n="step2Title">تنفيذ البحث عبر الويب (Web Search)</span></h3>
+      <p class="step-desc" data-i18n="step2Desc">
         استخدم خاصية البحث المباشر في المنصات التي توفرها، مع التركيز على الملاحظات التالية:
       </p>
       <ul class="checklist">
-        <li><i class="fa-solid fa-check"></i> سرعة ظهور النتائج واستجابة النموذج.</li>
-        <li><i class="fa-solid fa-check"></i> عدد وتنوع المصادر المفهرسة.</li>
-        <li><i class="fa-solid fa-check"></i> حداثة المعلومات ومدى مواكبتها.</li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="step2Item1">سرعة ظهور النتائج واستجابة النموذج.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="step2Item2">عدد وتنوع المصادر المفهرسة.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="step2Item3">حداثة المعلومات ومدى مواكبتها.</span></li>
       </ul>
     </div>
 
-    <!-- الخطوة 3 -->
+    <!-- Step 3 -->
     <div class="card step-card">
       <div class="step-number">03</div>
-      <h3 class="step-title"><i class="fa-solid fa-brain text-primary"></i> تنفيذ البحث المعمق (Deep Search)</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-brain text-primary"></i> <span data-i18n="step3Title">تنفيذ البحث المعمق (Deep Search)</span></h3>
+      <p class="step-desc" data-i18n="step3Desc">
         إذا كانت المنصة تدعم ميزة البحث المتعمق، اطلب منها صياغة تقرير عبر الأمر (Prompt) التالي:
       </p>
-      <div class="prompt-box">
+      <div class="prompt-box" data-i18n="step3Prompt">
         "أعد تقريراً تحليلياً شاملاً حول الموضوع مع الاستشهاد بالمصادر والمراجع الحديثة."
       </div>
     </div>
 
-    <!-- الخطوة 4 -->
+    <!-- Step 4 -->
     <div class="card step-card">
       <div class="step-number">04</div>
-      <h3 class="step-title"><i class="fa-solid fa-chart-pie text-primary"></i> تحليل النتائج والمفاضلة</h3>
-      <p class="step-desc">
+      <h3 class="step-title"><i class="fa-solid fa-chart-pie text-primary"></i> <span data-i18n="step4Title">تحليل النتائج والمفاضلة</span></h3>
+      <p class="step-desc" data-i18n="step4Desc">
         قارن بين المخرجات بناءً على الجوانب النوعية والتحليلية:
       </p>
       <ul class="checklist">
-        <li><i class="fa-solid fa-check"></i> جودة ودقة الإجابات ومستوى العمق التحليلي.</li>
-        <li><i class="fa-solid fa-check"></i> وفرة المصادر الأكاديمية وسهولة التحقق منها.</li>
-        <li><i class="fa-solid fa-check"></i> كفاءة التلخيص وسلامة الاستنتاجات.</li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="step4Item1">جودة ودقة الإجابات ومستوى العمق التحليلي.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="step4Item2">وفرة المصادر الأكاديمية وسهولة التحقق منها.</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="step4Item3">كفاءة التلخيص وسلامة الاستنتاجات.</span></li>
       </ul>
     </div>
   </div>
 
-  <!-- القسم 2: المنصات والأدوات المقترحة للتجربة -->
+  <!-- Section 2: Engines -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-microchip"></i></span>
-    المنصات والأدوات المقترحة للتجربة (AI Search Engines)
+    <span data-i18n="sec2Title">المنصات والأدوات المقترحة للتجربة (AI Search Engines)</span>
   </div>
 
   <div class="grid-3">
@@ -442,7 +506,7 @@
           <h3 class="engine-name">ChatGPT</h3>
           <i class="fa-solid fa-bolt" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">البحث الفوري والبحث الأكاديمي الموسع، مع قدرة قوية على توليد تقارير مركّزة.</p>
+        <p class="engine-desc" data-i18n="chatgptDesc">البحث الفوري والبحث الأكاديمي الموسع، مع قدرة قوية على توليد تقارير مركّزة.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">Web Search</span>
@@ -457,7 +521,7 @@
           <h3 class="engine-name">Claude AI</h3>
           <i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">البحث المباشر والتحليل المنطقي للمصادر، مع أسلوب كتابة أكاديمي وصياغة رصينة.</p>
+        <p class="engine-desc" data-i18n="claudeDesc">البحث المباشر والتحليل المنطقي للمصادر، مع أسلوب كتابة أكاديمي وصياغة رصينة.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">Web Search</span>
@@ -472,7 +536,7 @@
           <h3 class="engine-name">Google Gemini</h3>
           <i class="fa-brands fa-google" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">استغلال فهرس Google المباشر واللحظي وإنتاج التقارير التحليلية المكثفة.</p>
+        <p class="engine-desc" data-i18n="geminiDesc">استغلال فهرس Google المباشر واللحظي وإنتاج التقارير التحليلية المكثفة.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">Web Search</span>
@@ -487,7 +551,7 @@
           <h3 class="engine-name">DeepSeek</h3>
           <i class="fa-solid fa-code-compare" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">التفكير المنطقي المتسلسل، وتصفح وبحث شبكي موجه لحل المسائل المعقدة.</p>
+        <p class="engine-desc" data-i18n="deepseekDesc">التفكير المنطقي المتسلسل، وتصفح وبحث شبكي موجه لحل المسائل المعقدة.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">Search</span>
@@ -502,7 +566,7 @@
           <h3 class="engine-name">Kimi AI (Moonshot)</h3>
           <i class="fa-solid fa-book-open-reader" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">مسح وتلخيص المقالات الطويلة جداً وتصفية روابط الويب بكفاءة استيعابية هائلة.</p>
+        <p class="engine-desc" data-i18n="kimiDesc">مسح وتلخيص المقالات الطويلة جداً وتصفية روابط الويب بكفاءة استيعابية هائلة.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">Web Search</span>
@@ -517,7 +581,7 @@
           <h3 class="engine-name">Qwen AI (Alibaba)</h3>
           <i class="fa-solid fa-network-wired" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">تعدد مصادر البحث وتحليل البيانات اللحظية مع خيارات استقصاء معمقة للبيانات.</p>
+        <p class="engine-desc" data-i18n="qwenDesc">تعدد مصادر البحث وتحليل البيانات اللحظية مع خيارات استقصاء معمقة للبيانات.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">Web Search</span>
@@ -532,7 +596,7 @@
           <h3 class="engine-name">Felo AI</h3>
           <i class="fa-solid fa-compass" style="color: var(--accent);"></i>
         </div>
-        <p class="engine-desc">محرك بحث مدعوم بالذكاء الاصطناعي مع إمكانية إنشاء خرائط ذهنية وعروض تفاعلية للموضوع.</p>
+        <p class="engine-desc" data-i18n="feloDesc">محرك بحث مدعوم بالذكاء الاصطناعي مع إمكانية إنشاء خرائط ذهنية وعروض تفاعلية للموضوع.</p>
       </div>
       <div class="engine-tags">
         <span class="tag">AI Web Search</span>
@@ -541,83 +605,344 @@
     </div>
   </div>
 
-  <!-- القسم 3: معايير التقييم والتحليل المطلوب -->
+  <!-- Section 3: Evaluation Criteria -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-clipboard-check"></i></span>
-    عناصر التحليل والتقييم المطلوبة لكل أداة
+    <span data-i18n="sec3Title">عناصر التحليل والتقييم المطلوبة لكل أداة</span>
   </div>
 
   <div class="grid-3">
-    <!-- تحليل المصادر والتوثيق -->
+    <!-- Sources & Verification -->
     <div class="card">
-      <h3 class="step-title"><i class="fa-solid fa-link text-primary"></i> المصادر وسهولة التحقق</h3>
+      <h3 class="step-title"><i class="fa-solid fa-link text-primary"></i> <span data-i18n="evalCard1Title">المصادر وسهولة التحقق</span></h3>
       <ul class="checklist">
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>عدد المصادر:</strong> كم مصدراً اعتمدت عليه الأداة؟</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>نوعية المصادر:</strong> أكاديمية، صحفية، أم تقنية؟</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>سهولة التحقق:</strong> هل وفّرت روابط وإحالات مباشرة وقابلة للنقر؟</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>غياب الهلوسة:</strong> هل المصادر حقيقية وموثوقة تماماً؟</li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec1Key1">عدد المصادر:</strong> <span data-i18n="ec1Val1">كم مصدراً اعتمدت عليه الأداة؟</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec1Key2">نوعية المصادر:</strong> <span data-i18n="ec1Val2">أكاديمية، صحفية، أم تقنية؟</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec1Key3">سهولة التحقق:</strong> <span data-i18n="ec1Val3">هل وفّرت روابط وإحالات مباشرة وقابلة للنقر؟</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec1Key4">غياب الهلوسة:</strong> <span data-i18n="ec1Val4">هل المصادر حقيقية وموثوقة تماماً؟</span></span></li>
       </ul>
     </div>
 
-    <!-- هيكلة وعمق التقرير -->
+    <!-- Structure & Analytical Depth -->
     <div class="card">
-      <h3 class="step-title"><i class="fa-solid fa-layer-group text-primary"></i> الهيكلة وعمق التحليل</h3>
+      <h3 class="step-title"><i class="fa-solid fa-layer-group text-primary"></i> <span data-i18n="evalCard2Title">الهيكلة وعمق التحليل</span></h3>
       <ul class="checklist">
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>هيكلة متكاملة:</strong> وجود مقدمة، محاور واضحة، وخاتمة.</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>مستوى التفاصيل:</strong> وفرة الأمثلة العملية والإحصائيات الحديثة.</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>حداثة المعلومات:</strong> الاعتماد على معطيات وسياقات حديثة.</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>الاستنتاجات:</strong> وضوح الخلاصات ودعمها بالمراجع والأرقام.</li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec2Key1">هيكلة متكاملة:</strong> <span data-i18n="ec2Val1">وجود مقدمة، محاور واضحة، وخاتمة.</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec2Key2">مستوى التفاصيل:</strong> <span data-i18n="ec2Val2">وفرة الأمثلة العملية والإحصائيات الحديثة.</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec2Key3">حداثة المعلومات:</strong> <span data-i18n="ec2Val3">الاعتماد على معطيات وسياقات حديثة.</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec2Key4">الاستنتاجات:</strong> <span data-i18n="ec2Val4">وضوح الخلاصات ودعمها بالمراجع والأرقام.</span></span></li>
       </ul>
     </div>
 
-    <!-- اللغة والجودة المضافة -->
+    <!-- Language & Added Quality -->
     <div class="card">
-      <h3 class="step-title"><i class="fa-solid fa-pen-nib text-primary"></i> الجودة واللغة والإضافة</h3>
+      <h3 class="step-title"><i class="fa-solid fa-pen-nib text-primary"></i> <span data-i18n="evalCard3Title">الجودة واللغة والإضافة</span></h3>
       <ul class="checklist">
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>جودة التلخيص:</strong> إجابات مركزة، خالية من الحشو الزائد.</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>دعم اللغة العربية:</strong> جودة الصياغة وقدرة الأداة على إيجاد مصادر عربية.</li>
-        <li><i class="fa-solid fa-arrow-left"></i> <strong>الإبداع والإضافة:</strong> تقديم لمسات ذكية، وزوايا غير تقليدية تثري النتيجة.</li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec3Key1">جودة التلخيص:</strong> <span data-i18n="ec3Val1">إجابات مركزة، خالية من الحشو الزائد.</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec3Key2">دعم اللغة العربية:</strong> <span data-i18n="ec3Val2">جودة الصياغة وقدرة الأداة على إيجاد مصادر عربية.</span></span></li>
+        <li><i class="fa-solid fa-arrow-left list-bullet"></i> <span><strong data-i18n="ec3Key3">الإبداع والإضافة:</strong> <span data-i18n="ec3Val3">تقديم لمسات ذكية، وزوايا غير تقليدية تثري النتيجة.</span></span></li>
       </ul>
     </div>
   </div>
 
-  <!-- القسم 4: المفاضلة والاستنتاج النهائي -->
+  <!-- Section 4: Benchmarking & Strengths -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-award"></i></span>
-    الاستنتاج النهائي والمفاضلة (تحديد نقاط القوة)
+    <span data-i18n="sec4Title">الاستنتاج النهائي والمفاضلة (تحديد نقاط القوة)</span>
   </div>
 
   <div class="card" style="margin-bottom: 30px;">
-    <p style="font-size: 0.95rem; color: var(--text); margin-bottom: 15px;">
+    <p style="font-size: 0.95rem; color: var(--text); margin-bottom: 15px;" data-i18n="benchP">
       بعد الانتهاء من فحص وتجربة جميع المنصات باستخدام السؤال الموحد، قم بتحديد الأداة الفائزة في كل مجال:
     </p>
     <div class="benchmark-grid">
-      <div class="benchmark-item"><i class="fa-solid fa-gauge-high"></i> الأسرع في البحث وظهور النتائج</div>
-      <div class="benchmark-item"><i class="fa-solid fa-quote-right"></i> الأفضل في جودة وتوثيق المصادر</div>
-      <div class="benchmark-item"><i class="fa-solid fa-microscope"></i> الأقوى في التحليل الاستقصائي المتعمق</div>
-      <div class="benchmark-item"><i class="fa-solid fa-compress"></i> الأفضل في التلخيص والتركيز</div>
-      <div class="benchmark-item"><i class="fa-solid fa-language"></i> الأفضل في دعم وصياغة اللغة العربية</div>
-      <div class="benchmark-item"><i class="fa-solid fa-sitemap"></i> الأفضل في تنظيم وهيكلة التقرير</div>
+      <div class="benchmark-item"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="bm1">الأسرع في البحث وظهور النتائج</span></div>
+      <div class="benchmark-item"><i class="fa-solid fa-quote-right"></i> <span data-i18n="bm2">الأفضل في جودة وتوثيق المصادر</span></div>
+      <div class="benchmark-item"><i class="fa-solid fa-microscope"></i> <span data-i18n="bm3">الأقوى في التحليل الاستقصائي المتعمق</span></div>
+      <div class="benchmark-item"><i class="fa-solid fa-compress"></i> <span data-i18n="bm4">الأفضل في التلخيص والتركيز</span></div>
+      <div class="benchmark-item"><i class="fa-solid fa-language"></i> <span data-i18n="bm5">الأفضل في دعم وصياغة اللغة العربية</span></div>
+      <div class="benchmark-item"><i class="fa-solid fa-sitemap"></i> <span data-i18n="bm6">الأفضل في تنظيم وهيكلة التقرير</span></div>
     </div>
   </div>
 
-  <!-- القسم 5: سؤال النقاش -->
+  <!-- Section 5: Discussion Question -->
   <div class="callout-box">
     <div class="callout-title">
-      <i class="fa-solid fa-comments"></i> سؤال نقاش
+      <i class="fa-solid fa-comments"></i> <span data-i18n="discTitle">سؤال نقاش</span>
     </div>
-    <div class="discussion-question">ما الفرق بين:</div>
+    <div class="discussion-question" data-i18n="discSubtitle">ما الفرق بين:</div>
     <ul class="discussion-items">
-      <li><i class="fa-solid fa-circle-dot"></i> البحث التقليدي عبر الويب (Web Search)</li>
-      <li><i class="fa-solid fa-circle-dot"></i> البحث المعمق (Deep Search)</li>
+      <li><i class="fa-solid fa-circle-dot"></i> <span data-i18n="discItem1">البحث التقليدي عبر الويب (Web Search)</span></li>
+      <li><i class="fa-solid fa-circle-dot"></i> <span data-i18n="discItem2">البحث المعمق (Deep Search)</span></li>
     </ul>
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "النشاط التطبيقي: محركات بحث الذكاء الاصطناعي والبحث المعمق",
+    backToSyllabus: "العودة للبرنامج",
+    headerBadge: "الفصل 01 • النشاط 02",
+    headerTitle: "محركات بحث الذكاء الاصطناعي والبحث المعمق",
+    headerSubtitle: "تجربة مقارنة عملية بين أدوات البحث المباشر عبر الويب (Web Search) وتقنيات البحث المعمق والاستقصائي (Deep Search / Deep Research) في أنظمة الذكاء الاصطناعي.",
+    sec1Title: "مراحل وخطوات تنفيذ النشاط",
+    step1Title: "اختيار الموضوع وصياغة السؤال",
+    step1Desc: "اختر موضوعاً بحثياً محدداً وقم بإعداد <strong>سؤال موحد</strong> يتم طرحه على جميع المنصات لضمان معيارية المقارنة ودقة تقييم النتائج.",
+    step2Title: "تنفيذ البحث عبر الويب (Web Search)",
+    step2Desc: "استخدم خاصية البحث المباشر في المنصات التي توفرها، مع التركيز على الملاحظات التالية:",
+    step2Item1: "سرعة ظهور النتائج واستجابة النموذج.",
+    step2Item2: "عدد وتنوع المصادر المفهرسة.",
+    step2Item3: "حداثة المعلومات ومدى مواكبتها.",
+    step3Title: "تنفيذ البحث المعمق (Deep Search)",
+    step3Desc: "إذا كانت المنصة تدعم ميزة البحث المتعمق، اطلب منها صياغة تقرير عبر الأمر (Prompt) التالي:",
+    step3Prompt: "\"أعد تقريراً تحليلياً شاملاً حول الموضوع مع الاستشهاد بالمصادر والمراجع الحديثة.\"",
+    step4Title: "تحليل النتائج والمفاضلة",
+    step4Desc: "قارن بين المخرجات بناءً على الجوانب النوعية والتحليلية:",
+    step4Item1: "جودة ودقة الإجابات ومستوى العمق التحليلي.",
+    step4Item2: "وفرة المصادر الأكاديمية وسهولة التحقق منها.",
+    step4Item3: "كفاءة التلخيص وسلامة الاستنتاجات.",
+    sec2Title: "المنصات والأدوات المقترحة للتجربة (AI Search Engines)",
+    chatgptDesc: "البحث الفوري والبحث الأكاديمي الموسع، مع قدرة قوية على توليد تقارير مركّزة.",
+    claudeDesc: "البحث المباشر والتحليل المنطقي للمصادر، مع أسلوب كتابة أكاديمي وصياغة رصينة.",
+    geminiDesc: "استغلال فهرس Google المباشر واللحظي وإنتاج التقارير التحليلية المكثفة.",
+    deepseekDesc: "التفكير المنطقي المتسلسل، وتصفح وبحث شبكي موجه لحل المسائل المعقدة.",
+    kimiDesc: "مسح وتلخيص المقالات الطويلة جداً وتصفية روابط الويب بكفاءة استيعابية هائلة.",
+    qwenDesc: "تعدد مصادر البحث وتحليل البيانات اللحظية مع خيارات استقصاء معمقة للبيانات.",
+    feloDesc: "محرك بحث مدعوم بالذكاء الاصطناعي مع إمكانية إنشاء خرائط ذهنية وعروض تفاعلية للموضوع.",
+    sec3Title: "عناصر التحليل والتقييم المطلوبة لكل أداة",
+    evalCard1Title: "المصادر وسهولة التحقق",
+    ec1Key1: "عدد المصادر:",
+    ec1Val1: "كم مصدراً اعتمدت عليه الأداة؟",
+    ec1Key2: "نوعية المصادر:",
+    ec1Val2: "أكاديمية، صحفية، أم تقنية؟",
+    ec1Key3: "سهولة التحقق:",
+    ec1Val3: "هل وفّرت روابط وإحالات مباشرة وقابلة للنقر؟",
+    ec1Key4: "غياب الهلوسة:",
+    ec1Val4: "هل المصادر حقيقية وموثوقة تماماً؟",
+    evalCard2Title: "الهيكلة وعمق التحليل",
+    ec2Key1: "هيكلة متكاملة:",
+    ec2Val1: "وجود مقدمة، محاور واضحة، وخاتمة.",
+    ec2Key2: "مستوى التفاصيل:",
+    ec2Val2: "وفرة الأمثلة العملية والإحصائيات الحديثة.",
+    ec2Key3: "حداثة المعلومات:",
+    ec2Val3: "الاعتماد على معطيات وسياقات حديثة.",
+    ec2Key4: "الاستنتاجات:",
+    ec2Val4: "وضوح الخلاصات ودعمها بالمراجع والأرقام.",
+    evalCard3Title: "الجودة واللغة والإضافة",
+    ec3Key1: "جودة التلخيص:",
+    ec3Val1: "إجابات مركزة، خالية من الحشو الزائد.",
+    ec3Key2: "دعم اللغة العربية:",
+    ec3Val2: "جودة الصياغة وقدرة الأداة على إيجاد مصادر عربية.",
+    ec3Key3: "الإبداع والإضافة:",
+    ec3Val3: "تقديم لمسات ذكية، وزوايا غير تقليدية تثري النتيجة.",
+    sec4Title: "الاستنتاج النهائي والمفاضلة (تحديد نقاط القوة)",
+    benchP: "بعد الانتهاء من فحص وتجربة جميع المنصات باستخدام السؤال الموحد، قم بتحديد الأداة الفائزة في كل مجال:",
+    bm1: "الأسرع في البحث وظهور النتائج",
+    bm2: "الأفضل في جودة وتوثيق المصادر",
+    bm3: "الأقوى في التحليل الاستقصائي المتعمق",
+    bm4: "الأفضل في التلخيص والتركيز",
+    bm5: "الأفضل في دعم وصياغة اللغة العربية",
+    bm6: "الأفضل في تنظيم وهيكلة التقرير",
+    discTitle: "سؤال نقاش",
+    discSubtitle: "ما الفرق بين:",
+    discItem1: "البحث التقليدي عبر الويب (Web Search)",
+    discItem2: "البحث المعمق (Deep Search)",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Activité Pratique : Moteurs de Recherche IA et Deep Research",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 01 • Activité 02",
+    headerTitle: "Moteurs de Recherche IA et Recherche Approfondie",
+    headerSubtitle: "Atelier comparatif entre la recherche Web temps réel standard (Web Search) et les mécanismes d'investigation avancés (Deep Search / Deep Research) au sein des écosystèmes d'IA.",
+    sec1Title: "Protocole et Démarche Opératoire",
+    step1Title: "Sélection du sujet et cadrage de la requête",
+    step1Desc: "Arrêtez une thématique ciblée et formulez une <strong>question calibrée unique</strong> soumise à l'identique sur chaque plateforme afin d'assurer l'équité comparative.",
+    step2Title: "Exécution de la recherche Web standard (Web Search)",
+    step2Desc: "Activez le mode navigation en temps réel et analysez particulièrement :",
+    step2Item1: "Vitesse d'indexation et latence de restitution.",
+    step2Item2: "Volume et typologie des sources moissonnées.",
+    step2Item3: "Degré d'actualité et fraîcheur de l'information.",
+    step3Title: "Exécution de la recherche approfondie (Deep Search)",
+    step3Desc: "Si l'agent intègre un mode Deep Research, sollicitez un rapport exhaustif via ce prompt :",
+    step3Prompt: "\"Rédige un rapport d'analyse critique complet sur cette problématique, étayé de références vérifiables et récentes.\"",
+    step4Title: "Audit analytique et benchmark comparatif",
+    step4Desc: "Confrontez les livrables selon ces critères qualitatifs :",
+    step4Item1: "Exactitude conceptuelle et rigueur de l'argumentation.",
+    step4Item2: "Poids des sources primaires et traçabilité des liens.",
+    step4Item3: "Qualité de la synthèse et pertinence des conclusions.",
+    sec2Title: "Moteurs et Agents d'Investigation Sélectionnés",
+    chatgptDesc: "Recherche Web instantanée et génération de synthèses documentaires denses et ciblées.",
+    claudeDesc: "Navigation analytique structurée, discernement critique élevé et style rédactionnel académique.",
+    geminiDesc: "Interfaçage natif avec l'index Google temps réel et production de dossiers documentaires fouillés.",
+    deepseekDesc: "Raisonnement logique pas-à-pas et arborescence de recherche adaptée aux domaines techniques complexes.",
+    kimiDesc: "Traitement de fenêtres contextuelles géantes, synthèse de documents longs et filtrage de liens Web.",
+    qwenDesc: "Agrégation multicritère de sources internationales et cartographie de données émergentes.",
+    feloDesc: "Moteur IA spécialisé générant des cartes heuristiques et des présentations didactiques interactives.",
+    sec3Title: "Grille d'Évaluation Multidimensionnelle",
+    evalCard1Title: "Sourçage & Vérifiabilité",
+    ec1Key1: "Volume documentaire :",
+    ec1Val1: "Combien de sources distinctes ont été mobilisées ?",
+    ec1Key2: "Nature des données :",
+    ec1Val2: "Publications scientifiques, presse d'analyse ou blogs ?",
+    ec1Key3: "Auditabilité :",
+    ec1Val3: "Les hyperliens sont-ils valides et directement consultables ?",
+    ec1Key4: "Intégrité factuelle :",
+    ec1Val4: "Absence totale d'hallucinations bibliographiques ?",
+    evalCard2Title: "Architecture & Profondeur",
+    ec2Key1: "Structure globale :",
+    ec2Val1: "Introduction contextualisée, axes problématisés et bilan.",
+    ec2Key2: "Degré de granularité :",
+    ec2Val2: "Présence de métriques précises et cas concrets illustratifs.",
+    ec2Key3: "Veille actualisée :",
+    ec2Val3: "Intégration des découvertes scientifiques les plus récentes.",
+    ec2Key4: "Portée des déductions :",
+    ec2Val4: "Clarté et robustesse logique des synthèses présentées.",
+    evalCard3Title: "Qualité Rédactionnelle & Valeur Ajoutée",
+    ec3Key1: "Qualité de concision :",
+    ec3Val1: "Style dense, limpide et sans redondances verbales.",
+    ec3Key2: "Traitement linguistique :",
+    ec3Val2: "Fidélité terminologique et capacité à sourcer en plusieurs langues.",
+    ec3Key3: "Perspective critique :",
+    ec3Val3: "Angles originaux et nuances analytiques enrichissant le propos.",
+    sec4Title: "Bilan et Élection des Champions par Discipline",
+    benchP: "À l'issue de vos expérimentations avec la requête standardisée, attribuez la palme d'excellence pour chaque catégorie :",
+    bm1: "Le plus véloce en restitution Web",
+    bm2: "Le plus rigoureux en référencement",
+    bm3: "Le plus puissant en synthèse experte",
+    bm4: "Le plus efficace en concision didactique",
+    bm5: "Le plus compétent en traitement multilingue",
+    bm6: "Le mieux architecturé en structuration",
+    discTitle: "Question de Débat Pédagogique",
+    discSubtitle: "Quelle est la frontière opératoire entre :",
+    discItem1: "La recherche Web classique (Web Search)",
+    discItem2: "La recherche investigatrice augmentée (Deep Search)",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lab Activity: AI Search Engines & Deep Research",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 01 • Activity 02",
+    headerTitle: "AI Search Engines & Deep Research",
+    headerSubtitle: "A hands-on comparative lab benchmarking real-time standard Web Search against investigative multi-step Deep Research in modern generative AI systems.",
+    sec1Title: "Activity Workflow & Methodology",
+    step1Title: "Topic Selection & Prompt Calibration",
+    step1Desc: "Pick a defined scholarly theme and craft an <strong>identical standardized query</strong> to submit across all target engines to ensure rigorous benchmarking.",
+    step2Title: "Execute Real-Time Web Search",
+    step2Desc: "Trigger the native web-augmented search mode and critically observe:",
+    step2Item1: "Execution speed and output latency.",
+    step2Item2: "Volume, diversity, and taxonomy of indexed sources.",
+    step2Item3: "Recency, freshness, and relevance of retrieved data.",
+    step3Title: "Deploy Deep Research Mode",
+    step3Desc: "If the engine provides a deep investigation agent, prompt it with this directive:",
+    step3Prompt: "\"Produce an exhaustive analytical report on this topic, citing up-to-date, peer-reviewed sources.\"",
+    step4Title: "Evaluate & Cross-Examine Outputs",
+    step4Desc: "Benchmark the resulting dossiers across qualitative dimensions:",
+    step4Item1: "Analytical depth, logical reasoning, and accuracy.",
+    step4Item2: "Citation transparency and ease of source verification.",
+    step4Item3: "Executive synthesis quality and validity of deductions.",
+    sec2Title: "Recommended AI Search Engines",
+    chatgptDesc: "Rapid live retrieval and deep investigative synthesis capable of generating dense research drafts.",
+    claudeDesc: "Structured analytical retrieval, high critical discernment, and polished academic prose.",
+    geminiDesc: "Leverages Google's real-time index to generate extensive, highly updated analytical reports.",
+    deepseekDesc: "Chain-of-thought mathematical reasoning and search workflows tailored for complex queries.",
+    kimiDesc: "Ultra-long context handling, document scanning, and massive multi-link summarization.",
+    qwenDesc: "Multisource data retrieval and deep exploration across multilingual technical domains.",
+    feloDesc: "Dedicated AI search engine generating structured topic mind-maps and visual presentations.",
+    sec3Title: "Evaluation & Benchmarking Criteria",
+    evalCard1Title: "Sources & Verifiability",
+    ec1Key1: "Source Quantity:",
+    ec1Val1: "How many independent citations were leveraged?",
+    ec1Key2: "Source Authority:",
+    ec1Val2: "Scholarly publications, investigative journalism, or blogs?",
+    ec1Key3: "Traceability:",
+    ec1Val3: "Were clickable, working hyperlinks supplied?",
+    ec1Key4: "Zero-Hallucination:",
+    ec1Val4: "Are all cited researchers and DOIs entirely factual?",
+    evalCard2Title: "Structure & Depth",
+    ec2Key1: "Layout Architecture:",
+    ec2Val1: "Introduction, thematic body sections, and cohesive conclusion.",
+    ec2Key2: "Granular Detail:",
+    ec2Val2: "Rich inclusion of empirical metrics, case studies, and charts.",
+    ec2Key3: "Information Freshness:",
+    ec2Val3: "Grounding in recent breakthroughs and current developments.",
+    ec2Key4: "Synthesis Strength:",
+    ec2Val4: "Logical clarity and empirical substantiation of findings.",
+    evalCard3Title: "Language & Added Value",
+    ec3Key1: "Executive Conciseness:",
+    ec3Val1: "Dense, fluff-free prose delivering high information density.",
+    ec3Key2: "Multilingual Competence:",
+    ec3Val2: "Fluency across non-English sources, including Arabic literature.",
+    ec3Key3: "Original Insights:",
+    ec3Val3: "Novel angles, unexpected connections, and nuanced takeaways.",
+    sec4Title: "Final Synthesis & Benchmark Winners",
+    benchP: "Upon testing every platform with the calibrated query, award the benchmark medal in each discipline:",
+    bm1: "Fastest Retrieval Latency",
+    bm2: "Highest Citation Rigor",
+    bm3: "Deepest Analytical Inquiry",
+    bm4: "Best Executive Summary",
+    bm5: "Superior Multilingual Support",
+    bm6: "Best Document Layout & Structure",
+    discTitle: "Pedagogical Discussion Question",
+    discSubtitle: "What is the structural distinction between:",
+    discItem1: "Standard Real-Time Web Search",
+    discItem2: "Autonomous Deep Research (Deep Search)",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Adjust list bullet arrows
+  document.querySelectorAll('.list-bullet').forEach(icon => {
+    icon.className = isRtl ? 'fa-solid fa-arrow-left list-bullet' : 'fa-solid fa-arrow-right list-bullet';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

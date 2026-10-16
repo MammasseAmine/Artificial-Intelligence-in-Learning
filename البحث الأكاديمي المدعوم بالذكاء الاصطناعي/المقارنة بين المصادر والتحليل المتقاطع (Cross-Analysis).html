@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الدرس 03: المقارنة بين المصادر والتحليل المتقاطع (Cross-Analysis)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --accent-light: #fbd38d;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --danger: #e53e3e;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.05rem;
+    opacity: 0.92;
+    max-width: 780px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 35px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title .icon {
+    width: 36px;
+    height: 36px;
+    background: var(--light);
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  /* General Cards */
+  .content-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+  }
+
+  /* Two Column Shift comparison */
+  .shift-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 15px;
+  }
+
+  .shift-card {
+    padding: 22px;
+    border-radius: 12px;
+    border-top: 4px solid;
+    background: #fafafa;
+  }
+
+  .shift-card.linear {
+    border-top-color: var(--danger);
+    background: #fff8f8;
+  }
+
+  .shift-card.synthesis {
+    border-top-color: var(--success);
+    background: #f6fffa;
+  }
+
+  .shift-card h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .shift-card.linear h4 { color: #9c2727; }
+  .shift-card.synthesis h4 { color: #1e7045; }
+
+  /* 6 Pillars Grid */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 18px;
+    margin-top: 15px;
+  }
+
+  .pillar-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .pillar-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--secondary);
+  }
+
+  .pillar-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 10px;
+    background: var(--light);
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .pillar-info h5 {
+    font-size: 1.05rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .pillar-info p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Applied Example Box */
+  .example-box {
+    background: linear-gradient(to right bottom, #ebf8ff, #f7fafc);
+    border: 1px solid #bee3f8;
+    border-radius: 14px;
+    padding: 24px;
+    margin-top: 10px;
+  }
+
+  .example-box h4 {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .example-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .example-item {
+    background: white;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--accent);
+  }
+
+  .example-item strong {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* Tools Section */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .tool-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(26, 54, 93, 0.08);
+  }
+
+  .tool-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 15px;
+  }
+
+  .tool-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--light);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .tool-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .tool-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #edf2f7;
+    color: var(--secondary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .tool-features {
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .tool-features li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tool-features li i {
+    color: var(--success);
+    font-size: 0.8rem;
+  }
+
+  /* Prompt Box */
+  .prompt-wrapper {
+    background: #1a202c;
+    color: #edf2f7;
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 15px;
+    position: relative;
+    border-inline-start: 5px solid var(--accent);
+  }
+
+  .prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #cbd5e0;
+    font-weight: 700;
+    border-bottom: 1px solid #2d3748;
+    padding-bottom: 8px;
+  }
+
+  .prompt-code {
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+    line-height: 1.7;
+    color: #e2e8f0;
+    font-family: inherit;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.75rem; }
+    .shift-grid { grid-template-columns: 1fr; }
+    .back-link { position: relative; inset-inline-start: 0; margin-bottom: 20px; display: inline-flex; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 05.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToChapter">العودة لقائمة الفصل</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 05 • الدرس 03</span>
+    <h1 data-i18n="headerTitle">المقارنة بين المصادر والتحليل المتقاطع (Cross-Analysis)</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">
+      الانتقال من التلخيص الخطي الفردي إلى التركيب المتقاطع (Synthesis) لكشف الاتجاهات، المتناقضات، والفجوات البحثية عبر قواعد البيانات المرجعية.
+    </div>
+  </div>
+
+  <!-- Section 1: Paradigm Shift -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-shuffle"></i></span>
+    <span data-i18n="sec1Title">1. التحول النمطي: من التلخيص الخطي إلى التركيب المتقاطع</span>
+  </div>
+
+  <div class="content-card">
+    <p data-i18n="sec1Intro">
+      يقع الكثير من الباحثين عند مراجعة الأدبيات السابقة في فخ <strong>«التلخيص الخطي المتسلسل»</strong>؛ أي استعراض دراسة كل باحث على حدة دون نسج روابط نقدية وتكاملية بينها. يمثل <strong>التحليل المتقاطع (Cross-Analysis)</strong> عملية فكرية ونقدية متقدمة تُخضع دراسات متعددة لمحاور استنطاق موحدة في آنٍ واحد.
+    </p>
+
+    <div class="shift-grid">
+      <!-- Linear Summarization -->
+      <div class="shift-card linear">
+        <h4><i class="fa-solid fa-circle-xmark"></i> <span data-i18n="linearTitle">التلخيص الخطي التقليدي (Linear Summarization)</span></h4>
+        <p style="font-size: 0.92rem; color: #4a5568;" data-i18n="linearDesc">
+          يجيب عن سؤال: <em>"ماذا قالت دراسة فلان بشكل مستقل؟"</em><br>
+          سرد متتالٍ للأبحاث (دراسة أ، ثم دراسة ب، ثم دراسة ج) دون احتكاك مفاهيمي أو ربط نقدي، مما يُفقد المراجعة الأدبية طابعها التركيبي ويجعلها مجرد فهرس تلخيصي.
+        </p>
+      </div>
+
+      <!-- Cross-Analysis Synthesis -->
+      <div class="shift-card synthesis">
+        <h4><i class="fa-solid fa-circle-check"></i> <span data-i18n="synthesisTitle">التركيب المتقاطع الذكي (Synthesis & Cross-Analysis)</span></h4>
+        <p style="font-size: 0.92rem; color: #2d3748;" data-i18n="synthesisDesc">
+          يجيب عن سؤال: <em>"كيف تتقاطع هذه الدراسات في منطلقاتها النظرية ومتغيراتها، وأين تصادمت أو تلاقت نتائجها؟"</em><br>
+          استنطاق مجموعة كاملة من الأبحاث دفعة واحدة (Corpus) وتحويل الذكاء الاصطناعي إلى <strong>محرك مقارنة متعدد الأبعاد</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Why Cross-Analysis -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-compass"></i></span>
+    <span data-i18n="sec2Title">2. لماذا نقوم بالمقارنة والتحليل المتقاطع بين المصادر؟</span>
+  </div>
+
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fa-solid fa-brain"></i></div>
+      <div class="pillar-info">
+        <h5 data-i18n="p1Title">فهم الوضع الراهن للمعرفة</h5>
+        <p data-i18n="p1Desc">استيعاب الحالة الحالية للموضوع المستهدف (State-of-the-art) وتحديد الحدود المعرفية التي وصلت إليها الأدبيات.</p>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fa-solid fa-handshake"></i></div>
+      <div class="pillar-info">
+        <h5 data-i18n="p2Title">تحديد الإجماع العلمي (Consensus)</h5>
+        <p data-i18n="p2Desc">رصد القضايا والنتائج التي اتفق عليها أغلب الباحثين وملاحظة الأنماط المنهجية الأكثر شيوعاً واعتماداً.</p>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fa-solid fa-bolt"></i></div>
+      <div class="pillar-info">
+        <h5 data-i18n="p3Title">الكشف عن النتائج المتناقضة</h5>
+        <p data-i18n="p3Desc">تسليط الضوء على التباينات والاختلافات في النتائج بين الدراسات وفهم أسبابها (تباين العينات، الأدوات، أو السياقات).</p>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fa-solid fa-binoculars"></i></div>
+      <div class="pillar-info">
+        <h5 data-i18n="p4Title">اكتشاف الفجوات البحثية (Gaps)</h5>
+        <p data-i18n="p4Desc">رصد الزوايا والمواضيع غير المدروسة كفاية أو العينات التي تم إهمالها، مما يمنح البحث قيمة أصيلة ومضافة.</p>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fa-solid fa-pen-nib"></i></div>
+      <div class="pillar-info">
+        <h5 data-i18n="p5Title">بناء مراجعة أدبية رصينة</h5>
+        <p data-i18n="p5Desc">صياغة نقدية مترابطة للأدبيات السابقة بدلاً من التعداد الساذج للدراسات، مما يعكس نضج الباحث وعمق إحاطته بالمجال.</p>
+      </div>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fa-solid fa-bullseye"></i></div>
+      <div class="pillar-info">
+        <h5 data-i18n="p6Title">صياغة إشكالية بحثية دقيقة</h5>
+        <p data-i18n="p6Desc">تأسيس مشكلة بحثية قوية ومبررة علمياً بناءً على ما توقفت عنده الدراسات السابقة وليس مجرد انطباع ذاتي.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Applied Example -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-lightbulb"></i></span>
+    <span data-i18n="sec3Title">3. مثال توضيحي: استنطاق 20 دراسة حول (ChatGPT في التعليم)</span>
+  </div>
+
+  <div class="content-card">
+    <p data-i18n="sec3Intro">
+      إذا قمت بجمع <strong>20 دراسة محكمة</strong> تتناول استخدام <em>ChatGPT في التعليم العالي</em>، فإن المعالجة الفردية ستكلفك قراءة كل دراسة على حدة وتدوين ملخصاتها في أيام، بينما يسمح التحليل المتقاطع بتغذية النماذج بتلك الدراسات معاً لتوليد استنتاجات فورية موزعة كالآتي:
+    </p>
+
+    <div class="example-box">
+      <h4><i class="fa-solid fa-chart-pie"></i> <span data-i18n="exBoxTitle">ما يظهره التحليل المتقاطع للأدبيات الـ 20:</span></h4>
+      <div class="example-list">
+        <div class="example-item">
+          <strong data-i18n="ex1Strong">1. الفوائد الأكثر تكراراً (Consensus):</strong>
+          <span data-i18n="ex1Text">إجماع 85% من الدراسات على دور الأداة الفعال في تقديم تغذية راجعة فورية، وتوليد أمثلة وشروحات مخصصة لمستويات الطلاب.</span>
+        </div>
+        <div class="example-item">
+          <strong data-i18n="ex2Strong">2. التحديات والتباينات (Contradictions):</strong>
+          <span data-i18n="ex2Text">انقسام واضح في النتائج حول تأثيره على مهارات التفكير النقدي؛ حيث ترى 9 دراسات أنه يثري التحليل بينما تحذر 7 دراسات من اتكالية الطلاب المعرفية.</span>
+        </div>
+        <div class="example-item">
+          <strong data-i18n="ex3Strong">3. الفجوات البحثية (Research Gaps):</strong>
+          <span data-i18n="ex3Text">معظم الدراسات ركزت على تخصصات اللغات والبرمجة مع إهمال تام لأثره في تقييم المهارات التطبيقية والمخبرية في العلوم الطبية والتجريبية.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: AI Tools -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-toolbox"></i></span>
+    <span data-i18n="sec4Title">4. أدوات الذكاء الاصطناعي الرائدة للتحليل المتقاطع (Tools)</span>
+  </div>
+
+  <div class="tools-grid">
+    <!-- NotebookLM -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+        <div>
+          <div class="tool-name">Google NotebookLM</div>
+          <span class="tool-tag" data-i18n="t1Tag">الأعلى دقة وموثوقية</span>
+        </div>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--muted); flex-grow: 1;" data-i18n="t1Desc">
+        الأداة النموذجية لتحليل الأوراق العلمية بصفر اختلاق (Zero Hallucination)؛ حيث تجيب فقط استناداً إلى الملفات المرفوعة مع تقديم هوامش اقتباس دقيقة بالصفحة والفقرة لكل استنتاج.
+      </p>
+      <ul class="tool-features">
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t1F1">مقارنة مباشرة حتى 50 مصدراً في آنٍ واحد</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t1F2">استخراج الاقتباسات والأرقام بدقة بالغة</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t1F3">توليد أدلة دراسية وتلخيصات مدمجة فورية</span></li>
+      </ul>
+    </div>
+
+    <!-- Claude Projects -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fa-solid fa-brain"></i></div>
+        <div>
+          <div class="tool-name">Claude Projects</div>
+          <span class="tool-tag" data-i18n="t2Tag">الأقوى في العمق التحليلي</span>
+        </div>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--muted); flex-grow: 1;" data-i18n="t2Desc">
+        يمتلك نافذة سياق ضخمة (Context Window) تمكنه من استيعاب مئات الصفحات البحثية مع قدرة بلاغية ونقدية متفوقة على مقارنة الفرضيات المعقدة وصياغة جداول متقاطعة (Artifacts).
+      </p>
+      <ul class="tool-features">
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t2F1">ذاكرة مشاريع مخصصة (Project Knowledge)</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t2F2">دقة لغوية ونقدية فائقة في تفكيك المنهجيات</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t2F3">توليد مصفوفات مقارنة بتنسيق Markdown وجداول</span></li>
+      </ul>
+    </div>
+
+    <!-- ChatGPT Projects -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fa-solid fa-robot"></i></div>
+        <div>
+          <div class="tool-name">ChatGPT Projects / GPTs</div>
+          <span class="tool-tag" data-i18n="t3Tag">تكامل مع أدوات البيانات</span>
+        </div>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--muted); flex-grow: 1;" data-i18n="t3Desc">
+        يتيح تخصيص مساحة عمل بمستندات مرجعية دائمة وتوجيهات خاصة، مع إمكانية توظيف ميزة تحليل البيانات البرمجية (Advanced Data Analysis) لاستخراج الإحصاءات ومقارنة معاملات الارتباط.
+      </p>
+      <ul class="tool-features">
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t3F1">تعليمات مخصصة ثابتة لمشروعك البحثي</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t3F2">معالجة جداول البيانات الإحصائية بين الدراسات</span></li>
+        <li><i class="fa-solid fa-check"></i> <span data-i18n="t3F3">مشاركة مساحة العمل مع فريق البحث العلمي</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 5: Prompt Template -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-terminal"></i></span>
+    <span data-i18n="sec5Title">5. موجه عملي (Prompt) لبناء مصفوفة التحليل المتقاطع</span>
+  </div>
+
+  <div class="content-card">
+    <p data-i18n="sec5Intro">
+      للحصول على أفضل نتيجة من هذه الأدوات بعد رفع مجموعة الأبحاث (PDFs)، استخدم موجه استنطاق مصمم بنمط التركيب الأكاديمي:
+    </p>
+
+    <div class="prompt-wrapper">
+      <div class="prompt-header">
+        <span><i class="fa-solid fa-code"></i> <span data-i18n="promptBoxTitle">موجه مقترح (Cross-Analysis Prompt Template)</span></span>
+        <span data-i18n="promptBoxBadge">جاهز للاستخدام مع NotebookLM أو Claude</span>
+      </div>
+      <div class="prompt-code" id="prompt-content"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية • الفصل 05: البحث الأكاديمي المدعوم بالذكاء الاصطناعي • 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس 03: المقارنة بين المصادر والتحليل المتقاطع (Cross-Analysis)",
+    backToChapter: "العودة لقائمة الفصل",
+    headerBadge: "الفصل 05 • الدرس 03",
+    headerTitle: "المقارنة بين المصادر والتحليل المتقاطع (Cross-Analysis)",
+    headerSubtitle: "الانتقال من التلخيص الخطي الفردي إلى التركيب المتقاطع (Synthesis) لكشف الاتجاهات، المتناقضات، والفجوات البحثية عبر قواعد البيانات المرجعية.",
+
+    sec1Title: "1. التحول النمطي: من التلخيص الخطي إلى التركيب المتقاطع",
+    sec1Intro: "يقع الكثير من الباحثين عند مراجعة الأدبيات السابقة في فخ «التلخيص الخطي المتسلسل»؛ أي استعراض دراسة كل باحث على حدة دون نسج روابط نقدية وتكاملية بينها. يمثل التحليل المتقاطع (Cross-Analysis) عملية فكرية ونقدية متقدمة تُخضع دراسات متعددة لمحاور استنطاق موحدة في آنٍ واحد.",
+    linearTitle: "التلخيص الخطي التقليدي (Linear Summarization)",
+    linearDesc: "يجيب عن سؤال: \"ماذا قالت دراسة فلان بشكل مستقل؟\"\nسرد متتالٍ للأبحاث (دراسة أ، ثم دراسة ب، ثم دراسة ج) دون احتكاك مفاهيمي أو ربط نقدي، مما يُفقد المراجعة الأدبية طابعها التركيبي ويجعلها مجرد فهرس تلخيصي.",
+    synthesisTitle: "التركيب المتقاطع الذكي (Synthesis & Cross-Analysis)",
+    synthesisDesc: "يجيب عن سؤال: \"كيف تتقاطع هذه الدراسات في منطلقاتها النظرية ومتغيراتها، وأين تصادمت أو تلاقت نتائجها؟\"\nاستنطاق مجموعة كاملة من الأبحاث دفعة واحدة (Corpus) وتحويل الذكاء الاصطناعي إلى محرك مقارنة متعدد الأبعاد.",
+
+    sec2Title: "2. لماذا نقوم بالمقارنة والتحليل المتقاطع بين المصادر؟",
+    p1Title: "فهم الوضع الراهن للمعرفة",
+    p1Desc: "استيعاب الحالة الحالية للموضوع المستهدف (State-of-the-art) وتحديد الحدود المعرفية التي وصلت إليها الأدبيات.",
+    p2Title: "تحديد الإجماع العلمي (Consensus)",
+    p2Desc: "رصد القضايا والنتائج التي اتفق عليها أغلب الباحثين وملاحظة الأنماط المنهجية الأكثر شيوعاً واعتماداً.",
+    p3Title: "الكشف عن النتائج المتناقضة",
+    p3Desc: "تسليط الضوء على التباينات والاختلافات في النتائج بين الدراسات وفهم أسبابها (تباين العينات، الأدوات، أو السياقات).",
+    p4Title: "اكتشاف الفجوات البحثية (Gaps)",
+    p4Desc: "رصد الزوايا والمواضيع غير المدروسة كفاية أو العينات التي تم إهمالها، مما يمنح البحث قيمة أصيلة ومضافة.",
+    p5Title: "بناء مراجعة أدبية رصينة",
+    p5Desc: "صياغة نقدية مترابطة للأدبيات السابقة بدلاً من التعداد الساذج للدراسات، مما يعكس نضج الباحث وعمق إحاطته بالمجال.",
+    p6Title: "صياغة إشكالية بحثية دقيقة",
+    p6Desc: "تأسيس مشكلة بحثية قوية ومبررة علمياً بناءً على ما توقفت عنده الدراسات السابقة وليس مجرد انطباع ذاتي.",
+
+    sec3Title: "3. مثال توضيحي: استنطاق 20 دراسة حول (ChatGPT في التعليم)",
+    sec3Intro: "إذا قمت بجمع 20 دراسة محكمة تتناول استخدام ChatGPT في التعليم العالي، فإن المعالجة الفردية ستكلفك قراءة كل دراسة على حدة وتدوين ملخصاتها في أيام، بينما يسمح التحليل المتقاطع بتغذية النماذج بتلك الدراسات معاً لتوليد استنتاجات فورية موزعة كالآتي:",
+    exBoxTitle: "ما يظهره التحليل المتقاطع للأدبيات الـ 20:",
+    ex1Strong: "1. الفوائد الأكثر تكراراً (Consensus):",
+    ex1Text: "إجماع 85% من الدراسات على دور الأداة الفعال في تقديم تغذية راجعة فورية، وتوليد أمثلة وشروحات مخصصة لمستويات الطلاب.",
+    ex2Strong: "2. التحديات والتباينات (Contradictions):",
+    ex2Text: "انقسام واضح في النتائج حول تأثيره على مهارات التفكير النقدي؛ حيث ترى 9 دراسات أنه يثري التحليل بينما تحذر 7 دراسات من اتكالية الطلاب المعرفية.",
+    ex3Strong: "3. الفجوات البحثية (Research Gaps):",
+    ex3Text: "معظم الدراسات ركزت على تخصصات اللغات والبرمجة مع إهمال تام لأثره في تقييم المهارات التطبيقية والمخبرية في العلوم الطبية والتجريبية.",
+
+    sec4Title: "4. أدوات الذكاء الاصطناعي الرائدة للتحليل المتقاطع (Tools)",
+    t1Tag: "الأعلى دقة وموثوقية",
+    t1Desc: "الأداة النموذجية لتحليل الأوراق العلمية بصفر اختلاق (Zero Hallucination)؛ حيث تجيب فقط استناداً إلى الملفات المرفوعة مع تقديم هوامش اقتباس دقيقة بالصفحة والفقرة لكل استنتاج.",
+    t1F1: "مقارنة مباشرة حتى 50 مصدراً في آنٍ واحد",
+    t1F2: "استخراج الاقتباسات والأرقام بدقة بالغة",
+    t1F3: "توليد أدلة دراسية وتلخيصات مدمجة فورية",
+
+    t2Tag: "الأقوى في العمق التحليلي",
+    t2Desc: "يمتلك نافذة سياق ضخمة (Context Window) تمكنه من استيعاب مئات الصفحات البحثية مع قدرة بلاغية ونقدية متفوقة على مقارنة الفرضيات المعقدة وصياغة جداول متقاطعة (Artifacts).",
+    t2F1: "ذاكرة مشاريع مخصصة (Project Knowledge)",
+    t2F2: "دقة لغوية ونقدية فائقة في تفكيك المنهجيات",
+    t2F3: "توليد مصفوفات مقارنة بتنسيق Markdown وجداول",
+
+    t3Tag: "تكامل مع أدوات البيانات",
+    t3Desc: "يتيح تخصيص مساحة عمل بمستندات مرجعية دائمة وتوجيهات خاصة، مع إمكانية توظيف ميزة تحليل البيانات البرمجية (Advanced Data Analysis) لاستخراج الإحصاءات ومقارنة معاملات الارتباط.",
+    t3F1: "تعليمات مخصصة ثابتة لمشروعك البحثي",
+    t3F2: "معالجة جداول البيانات الإحصائية بين الدراسات",
+    t3F3: "مشاركة مساحة العمل مع فريق البحث العلمي",
+
+    sec5Title: "5. موجه عملي (Prompt) لبناء مصفوفة التحليل المتقاطع",
+    sec5Intro: "للحصول على أفضل نتيجة من هذه الأدوات بعد رفع مجموعة الأبحاث (PDFs)، استخدم موجه استنطاق مصمم بنمط التركيب الأكاديمي:",
+    promptBoxTitle: "موجه مقترح (Cross-Analysis Prompt Template)",
+    promptBoxBadge: "جاهز للاستخدام مع NotebookLM أو Claude",
+    promptCode: `"بصفتك باحثاً أكاديمياً متخصصاً في مراجعة وتفكيك الأدبيات العلمية:
+لقد قمت برفع [عدد] أوراق بحثية حول موضوع [موضوع دراستك].
+المطلوب منك إجراء تحليل متقاطع (Cross-Analysis) عبر قاعدة الأبحاث هذه وفق المهام الآتية:
+
+1. جدول مقارنة تركيبي يتضمن: (الباحث والسنة، المنهجية وأداة القياس، حجم وخصائص العينة، أبرز النتائج الكمية/النوعية).
+2. محاور الإجماع والاتفاق: ما هي الفرضيات أو النتائج التي اتفقت عليها أغلب الدراسات؟
+3. محاور الاختلاف والتصادم: أين تباينت نتائج الباحثين؟ وما التفسيرات المنهجية أو البيئية المحتملة لهذا التباين استناداً إلى نصوص الأبحاث؟
+4. الفجوات البحثية غير المخدومة (Research Gaps): ما المتغيرات، الفئات، أو الأطر النظرية التي أغفلتها هذه الأبحاث ويمكن أن تشكل موضوعاً لبحث مستقبلي أصيل؟
+
+تنبيه: التزم فقط بالبيانات المتاحة داخل الملفات المرفوعة، واذكر التوثيق (اسم المؤلف والسنة) أمام كل فكرة أو نتيجة."`,
+
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية • الفصل 05: البحث الأكاديمي المدعوم بالذكاء الاصطناعي • 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Leçon 03 : Comparaison des Sources et Analyse Croisée (Cross-Analysis)",
+    backToChapter: "Retour au sommaire du chapitre",
+    headerBadge: "Chapitre 05 • Leçon 03",
+    headerTitle: "Comparaison des Sources et Analyse Croisée (Cross-Analysis)",
+    headerSubtitle: "Dépasser la simple synthèse linéaire individuelle pour orchestrer une véritable synthèse croisée, révélant tendances, controverses et lacunes de recherche.",
+
+    sec1Title: "1. Rupture de paradigme : Du résumé linéaire à la synthèse croisée",
+    sec1Intro: "De nombreux chercheurs tombent dans le piège de la « synthèse séquentielle linéaire », empilant les résumés d'articles sans confrontation conceptuelle. L'analyse croisée (Cross-Analysis) constitue une démarche intellectuelle avancée soumettant un corpus entier à une grille critique unifiée.",
+    linearTitle: "Synthèse linéaire classique (Linear Summarization)",
+    linearDesc: "Répond à : \"Qu'a conclu l'étude X de manière isolée ?\"\nÉnumération successive (Étude A, puis Étude B, puis Étude C) sans dialogue critique, réduisant la revue de littérature à un catalogue juxtaposé.",
+    synthesisTitle: "Synthèse croisée intelligente (Synthesis & Cross-Analysis)",
+    synthesisDesc: "Répond à : \"Comment ces publications s'articulent-elles au niveau de leurs fondements théoriques, et où convergent ou divergent leurs conclusions ?\"\nInterrogation simultanée d'un corpus complet pour faire de l'IA un moteur comparatif multidimensionnel.",
+
+    sec2Title: "2. Pourquoi mener une analyse comparative et croisée ?",
+    p1Title: "Cartographier l'état de l'art",
+    p1Desc: "Saisir la frontière actuelle des connaissances (State-of-the-art) et baliser les acquis stabilisés de la discipline.",
+    p2Title: "Identifier le consensus scientifique",
+    p2Desc: "Repérer les conclusions corroborées par la majorité des auteurs et identifier les protocoles méthodologiques prédominants.",
+    p3Title: "Déceler controverses et divergences",
+    p3Desc: "Mettre en lumière les contradictions empiriques et en identifier l'origine (biais d'échantillonnage, instruments de mesure ou contextes).",
+    p4Title: "Isoler les lacunes de recherche (Research Gaps)",
+    p4Desc: "Détecter les angles morts théoriques, variables oubliées ou populations négligées pour conférer à sa thèse une valeur originale.",
+    p5Title: "Construire une revue de littérature dense",
+    p5Desc: "Rédiger une discussion critique articulée plutôt qu'un inventaire naïf, témoignant de la maturité épistémologique du chercheur.",
+    p6Title: "Formuler une problématique affûtée",
+    p6Desc: "Établir une question de recherche scientifiquement justifiée, fondée sur les ruptures du corpus et non sur une intuition subjective.",
+
+    sec3Title: "3. Exemple d'application : Interroger un corpus de 20 articles sur (ChatGPT dans l'Éducation)",
+    sec3Intro: "Face à 20 études empiriques sur ChatGPT dans l'enseignement supérieur, une analyse isolée exigerait plusieurs semaines de dépouillement. L'analyse croisée assistée par IA extrait instantanément les schémas transversaux :",
+    exBoxTitle: "Résultats de l'analyse croisée sur les 20 publications :",
+    ex1Strong: "1. Bénéfices faisant consensus (Consensus) :",
+    ex1Text: "Accord de 85% des études sur l'impact positif d'un feedback instantané et la génération d'exemples différenciés selon le niveau de l'étudiant.",
+    ex2Strong: "2. Controverses et disparités (Contradictions) :",
+    ex2Text: "Divergence marquée sur l'esprit critique : 9 études soulignent un enrichissement de l'analyse, tandis que 7 alertent sur la dépendance cognitive et l'atrophie intellectuelle.",
+    ex3Strong: "3. Lacunes de recherche (Research Gaps) :",
+    ex3Text: "Focalisation quasi-exclusive sur les langues et le code informatique ; quasi-absence de données sur l'évaluation des compétences pratiques et cliniques en sciences médicales et expérimentales.",
+
+    sec4Title: "4. Environnements d'IA de pointe pour l'analyse croisée (Tools)",
+    t1Tag: "Rigueur documentaire absolue",
+    t1Desc: "L'outil de référence pour analyser des articles sans hallucination (Zero Hallucination) ; limite rigoureusement ses réponses aux sources téléversées avec citations directes par page et paragraphe.",
+    t1F1: "Comparaison simultanée jusqu'à 50 documents PDF",
+    t1F2: "Extraction ultra-précise de citations textuelles et données chiffrées",
+    t1F3: "Génération instantanée de fiches de lecture et synthèses croisées",
+
+    t2Tag: "Excellence analytique & conceptuelle",
+    t2Desc: "Doté d'une fenêtre de contexte massive capable d'ingérer des centaines de pages, avec une aisance discursive remarquable pour modéliser des matrices d'analyse complexes (Artifacts).",
+    t2F1: "Mémoire de projet dédiée (Project Knowledge)",
+    t2F2: "Précision syntaxique et critique supérieure pour déconstruire les méthodologies",
+    t2F3: "Génération de tableaux comparatifs et matrices de synthèse en Markdown",
+
+    t3Tag: "Analyse quantitative & intégration",
+    t3Desc: "Offre un espace de travail avec instructions sur mesure, capable d'exécuter du code Python (Advanced Data Analysis) pour croiser des tableaux de données empiriques entre études.",
+    t3F1: "Consignes système pérennes adaptées à votre cadre de recherche",
+    t3F2: "Croisement et calcul de corrélation sur des jeux de données hétérogènes",
+    t3F3: "Partage sécurisé de l'espace de travail avec l'équipe de recherche",
+
+    sec5Title: "5. Prompt méthodologique pour matrice d'analyse croisée",
+    sec5Intro: "Pour tirer le meilleur parti de ces environnements après téléversement de votre corpus documentaire, employez ce prompt structuré en mode synthèse académique :",
+    promptBoxTitle: "Modèle de prompt d'analyse croisée (Template)",
+    promptBoxBadge: "Optimisé pour NotebookLM ou Claude Projects",
+    promptCode: `"En tant que chercheur académique spécialisé dans la revue systématique de littérature scientifique :
+J'ai téléversé [nombre] articles scientifiques portant sur le sujet suivant : [votre sujet de recherche].
+Conduisez une analyse croisée (Cross-Analysis) rigoureuse sur ce corpus selon les axes suivants :
+
+1. Tableau de synthèse comparatif : (Auteur & Année, Méthodologie & Instruments de mesure, Échantillon & Caractéristiques, Principaux résultats quantitatifs/qualitatifs).
+2. Axes de consensus : Quelles sont les hypothèses ou conclusions confirmées par la majorité des études ?
+3. Zones de divergence et contradictions : Sur quels points les résultats s'opposent-ils ? Quelles explications méthodologiques, échantillonnales ou contextuelles justifient ces écarts d'après les textes sources ?
+4. Lacunes de recherche non comblées (Research Gaps) : Quelles variables, populations ou cadres théoriques ont été négligés et justifieraient une nouvelle recherche originale ?
+
+Consigne stricte : Fondez vos déductions exclusivement sur les données explicites des documents fournis et mentionnez systématiquement les références d'auteurs (Auteur, Année) pour chaque affirmation."`,
+
+    footerText: "École Normale Supérieure - Annexe de Béjaïa • Chapitre 05 : Recherche Académique Assistée par l'IA • 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lesson 03: Literature Comparison & Cross-Analysis",
+    backToChapter: "Back to Chapter Outline",
+    headerBadge: "Chapter 05 • Lesson 03",
+    headerTitle: "Literature Comparison & Cross-Analysis",
+    headerSubtitle: "Moving beyond isolated linear summaries to cross-source synthesis, uncovering paradigm shifts, empirical contradictions, and research gaps across indexed databases.",
+
+    sec1Title: "1. Paradigm Shift: From Linear Summaries to Multi-Source Synthesis",
+    sec1Intro: "Many researchers fall into the trap of \"linear sequential summarization,\" cataloging studies in isolation without weaving critical linkages. Cross-Analysis represents an advanced intellectual process that submits multiple publications to unified evaluative dimensions simultaneously.",
+    linearTitle: "Traditional Linear Summarization",
+    linearDesc: "Answers: \"What did Author X say independently?\"\nA repetitive chronological list (Study A, then Study B, then Study C) lacking conceptual friction or dialectic critique, reducing the literature review to an index.",
+    synthesisTitle: "Intelligent Cross-Analysis Synthesis",
+    synthesisDesc: "Answers: \"How do these studies intersect theoretically and methodologically, and where do their empirical outcomes converge or diverge?\"\nInterrogating a whole corpus at once, transforming AI into a multi-dimensional comparative synthesis engine.",
+
+    sec2Title: "2. Why Conduct Cross-Analysis Across Scholarly Sources?",
+    p1Title: "Map the State-of-the-Art",
+    p1Desc: "Grasp current frontier findings and delineate established domain paradigms from unresolved hypotheses.",
+    p2Title: "Identify Scientific Consensus",
+    p2Desc: "Pinpoint shared conclusions validated across independent researchers and detect dominant methodological standards.",
+    p3Title: "Uncover Empirical Contradictions",
+    p3Desc: "Highlight conflicting findings and trace their underlying causes (sample variations, instrumentation differences, or contextual nuances).",
+    p4Title: "Detect Research Gaps",
+    p4Desc: "Spot underserved theoretical perspectives, neglected demographics, or unverified conditions, establishing rationale for novel research.",
+    p5Title: "Build a Robust Literature Review",
+    p5Desc: "Compose a critical, integrated scholarly dialogue instead of a naive laundry list of summaries, illustrating academic rigor.",
+    p6Title: "Formulate a Rigorous Research Problem",
+    p6Desc: "Anchor research questions firmly in empirical gaps and boundaries identified across prior literature rather than subjective speculation.",
+
+    sec3Title: "3. Illustrative Case Study: Cross-Examining 20 Studies on (ChatGPT in Education)",
+    sec3Intro: "Evaluating 20 empirical papers on ChatGPT in higher education individually would require days of sequential note-taking. An AI-assisted cross-analysis extracts meta-patterns instantly:",
+    exBoxTitle: "What the Cross-Analysis of the 20 Studies Reveals:",
+    ex1Strong: "1. Core Consensus Findings:",
+    ex1Text: "85% consensus on the tool's effectiveness in providing immediate formative feedback and scaffolding differentiated, tailored instructional explanations.",
+    ex2Strong: "2. Tensions & Divergent Outcomes:",
+    ex2Text: "Clear bifurcation regarding critical thinking skills: 9 studies report enhanced analytical depth, while 7 warn against cognitive atrophy and overreliance.",
+    ex3Strong: "3. Unaddressed Research Gaps:",
+    ex3Text: "Heavy saturation in computer science and language learning; complete absence of empirical evaluations in clinical, physical, and laboratory-based experimental sciences.",
+
+    sec4Title: "4. Leading AI Tools for Multi-Source Cross-Analysis",
+    t1Tag: "Highest Empirical Fidelity",
+    t1Desc: "The premier zero-hallucination research platform; grounds every response strictly in uploaded documents, providing verifiable citations with page and paragraph references.",
+    t1F1: "Simultaneous cross-comparison of up to 50 sources",
+    t1F2: "Flawless citation and quantitative metric extraction",
+    t1F3: "Instant multi-document synthesis and briefing documents",
+
+    t2Tag: "Superior Analytical Nuance",
+    t2Desc: "Features an expansive context window capable of ingesting whole book chapters and dissertations, demonstrating unmatched analytical precision when mapping complex matrices (Artifacts).",
+    t2F1: "Dedicated project workspace knowledge repository",
+    t2F2: "Deep dialectical deconstruction of competing research designs",
+    t2F3: "Markdown table generation for synthesis matrices",
+
+    t3Tag: "Quantitative & Code Integration",
+    t3Desc: "Provides persistent custom system instructions paired with a sandbox code interpreter (Advanced Data Analysis) to calculate comparative statistics and cross-tabulations.",
+    t3F1: "Persistent custom system prompts for literature scoping",
+    t3F2: "Inter-study statistical dataset harmonization and correlation checks",
+    t3F3: "Shared multi-user collaborative workspace for research groups",
+
+    sec5Title: "5. Practical Academic Prompt Template for Cross-Analysis",
+    sec5Intro: "To generate high-yield comparative outcomes after uploading your research PDFs, deploy this structured prompt configured for scholarly synthesis:",
+    promptBoxTitle: "Cross-Analysis Prompt Template",
+    promptBoxBadge: "Optimized for NotebookLM or Claude Projects",
+    promptCode: `"Acting as an academic researcher specializing in systematic literature review and methodological synthesis:
+I have uploaded [Number] peer-reviewed papers on the topic: [Your Research Topic].
+Conduct a comprehensive Cross-Analysis across this corpus structured around the following tasks:
+
+1. Synthesis Comparison Matrix: (Author & Year, Methodology & Instrumentation, Sample Size & Demographics, Key Quantitative/Qualitative Findings).
+2. Thematic Consensus: What foundational claims, empirical outcomes, or paradigms are validated across the majority of these studies?
+3. Contradictions & Divergences: Where do the findings conflict? What methodological designs, sampling biases, or environmental contexts account for these discrepancies based strictly on the texts?
+4. Underserved Research Gaps: What critical variables, experimental parameters, or theoretical frameworks are neglected that warrant novel future investigation?
+
+Strict Instruction: Restrict all claims exclusively to evidence within the uploaded files and append explicit in-text citations (Author, Year) to every observation."`,
+
+    footerText: "Higher Normal School - Bejaia Annex • Chapter 05: AI-Powered Academic Research • 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Update document metadata
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update translatable texts
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Update prompt code text
+  document.getElementById('prompt-content').textContent = translations[lang].promptCode;
+
+  // Flip Back arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الدرس 03: الانحياز الخوارزمي في الذكاء الاصطناعي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --danger: #e53e3e;
+    --warning: #dd6b20;
+    --success: #38a169;
+    --light: #ebf8ff;
+    --light-accent: #feebc8;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.92;
+    font-weight: 400;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 35px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Cards & Layouts */
+  .concept-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  }
+
+  .definition-text {
+    font-size: 1.15rem;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+
+  .example-callout {
+    background: #fffaf0;
+    border-inline-start: 4px solid var(--accent);
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 0.98rem;
+    color: #7b341e;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Process Steps (Pipeline) */
+  .steps-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .step-node {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+    transition: transform 0.2s;
+  }
+
+  .step-node:hover {
+    transform: translateY(-3px);
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 auto 10px auto;
+    font-size: 0.9rem;
+  }
+
+  /* Standard Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .info-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(26, 54, 93, 0.08);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .card-top .badge-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .card-top h3 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .card-content {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Education Spotlight */
+  .education-panel {
+    background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+    border: 2px solid #cbd5e1;
+    border-radius: 18px;
+    padding: 30px;
+    margin: 30px 0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+  }
+
+  .edu-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .edu-header i {
+    font-size: 2rem;
+    color: var(--secondary);
+    flex-shrink: 0;
+  }
+
+  .edu-item {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    border-inline-start: 4px solid var(--secondary);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+
+  .edu-item.alert-item {
+    border-inline-start-color: var(--danger);
+    background: #fffafa;
+  }
+
+  .edu-item strong {
+    color: var(--primary);
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.7rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 02.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToChapter">العودة لقائمة الفصل</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 02 • الدرس 03</span>
+    <h1 data-i18n="headerTitle">الانحياز الخوارزمي في الذكاء الاصطناعي</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">فهم جذور التحيز، كيفية انتقاله من الإنسان إلى الآلة، آليات تضخمه في النماذج التوليدية، وانعكاساته الحساسة على العملية التعليمية.</div>
+  </div>
+
+  <!-- Section 1: Concept & Transmission -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-scale-unbalanced"></i></span>
+    <span data-i18n="sec1Title">ما هو الانحياز الخوارزمي؟</span>
+  </div>
+
+  <div class="concept-box">
+    <p class="definition-text" data-i18n="defText">
+      <strong>الانحياز الخوارزمي:</strong> هو ميل النظام الذكي إلى إنتاج نتائج غير عادلة أو غير متوازنة تجاه مجموعة معينة من الأشخاص، الأفكار، أو الفئات؛ نتيجة تحيزات كامنة في البيانات أو قرارات تصميم الخوارزمية ذاتها.
+    </p>
+    <div class="example-callout">
+      <i class="fa-solid fa-circle-exclamation fa-lg" style="margin-top: 3px;"></i>
+      <div>
+        <strong data-i18n="exLabel">مثال توضيحي:</strong> <span data-i18n="exBody">إذا تم تدريب نموذج على نصوص تاريخية تصف الأطباء غالباً بأنهم رجال، فإن النموذج سيميل تلقائياً لربط مهنة "طبيب" بالرجال أكثر من النساء.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-arrows-spin"></i></span>
+    <span data-i18n="sec2Title">كيف ينتقل التحيز من الإنسان إلى الآلة؟</span>
+  </div>
+
+  <div class="concept-box">
+    <p style="margin-bottom: 15px; font-weight: 500; color: var(--primary);" data-i18n="transIntro">
+      الخوارزميات لا تبتكر التحيز من تلقاء نفسها، بل تعيد إنتاج وتضخيم الأنماط البشرية من خلال المراحل التالية:
+    </p>
+
+    <div class="steps-wrapper">
+      <div class="step-node">
+        <div class="step-num">1</div>
+        <h4 data-i18n="step1Title">كتابة النصوص</h4>
+        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;" data-i18n="step1Desc">البشر ينتجون النصوص بأحكامهم وتجاربهم المسبقة.</p>
+      </div>
+      <div class="step-node">
+        <div class="step-num">2</div>
+        <h4 data-i18n="step2Title">جمع البيانات</h4>
+        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;" data-i18n="step2Desc">تجميع النصوص والوسائط في قواعد بيانات رقمية ضخمة.</p>
+      </div>
+      <div class="step-node">
+        <div class="step-num">3</div>
+        <h4 data-i18n="step3Title">تدريب النموذج</h4>
+        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;" data-i18n="step3Desc">تغذية خوارزميات التعلم الآلي بهذه البيانات الضخمة.</p>
+      </div>
+      <div class="step-node">
+        <div class="step-num">4</div>
+        <h4 data-i18n="step4Title">استخراج الأنماط</h4>
+        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;" data-i18n="step4Desc">يتعلم النموذج الارتباطات والصور النمطية بوصفها علاقات صحيحة.</p>
+      </div>
+      <div class="step-node">
+        <div class="step-num">5</div>
+        <h4 data-i18n="step5Title">إعادة الإنتاج</h4>
+        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;" data-i18n="step5Desc">إفراز نفس الأنماط وتكرارها أثناء توليد المخرجات للمستخدمين.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: 4 Sources of Bias -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-sitemap"></i></span>
+    <span data-i18n="sec3Title">مصادر الانحياز الأربعة</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-pie-chart"></i></div>
+        <h3 data-i18n="b1Title">أ) انحياز البيانات (Data Bias)</h3>
+      </div>
+      <div class="card-content" data-i18n="b1Desc">
+        يحدث عندما تكون البيانات غير ممثلة لجميع الفئات بشكل متساوٍ وعادل.
+        <br><br>
+        <em>مثال:</em> إذا كانت 90% من بيانات التدريب مأخوذة من منطقة جغرافية معينة، فسيفهم النموذج ثقافة تلك المنطقة وسيهمش الثقافات الأخرى.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-filter"></i></div>
+        <h3 data-i18n="b2Title">ب) انحياز جمع البيانات (Collection Bias)</h3>
+      </div>
+      <div class="card-content" data-i18n="b2Desc">
+        ينشأ عندما يتم اختيار واستخراج البيانات من مصادر محددة فقط (مثل منصات التواصل أو النخب)، مما يقدم عينة محرفة لا تمثل الواقع المجتمعي الفعلي.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-tags"></i></div>
+        <h3 data-i18n="b3Title">ج) انحياز التسمية (Labeling Bias)</h3>
+      </div>
+      <div class="card-content" data-i18n="b3Desc">
+        يحدث أثناء تصنيف البيانات ومراجعتها يدوياً؛ حيث يُسقط المقيمون البشريون أحكامهم القيمية والشخصية أثناء وضع الوسوم وتصنيف المحتوى.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-code"></i></div>
+        <h3 data-i18n="b4Title">د) انحياز الخوارزمية (Algorithmic Bias)</h3>
+      </div>
+      <div class="card-content" data-i18n="b4Desc">
+        ينجم عن القرارات والمعادلات الرياضية داخل هيكل النموذج؛ حيث قد تدفع بعض دوال التحسين الخوارزمية إلى ترجيح وتفضيل أنماط معينة على حساب أخرى.
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Why Bias Amplifies in GenAI -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+    <span data-i18n="sec4Title">لماذا يتضخم الانحياز في النماذج التوليدية (LLMs)؟</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-globe"></i></div>
+        <h3 data-i18n="amp1Title">1. حجم البيانات ومصدرها</h3>
+      </div>
+      <div class="card-content" data-i18n="amp1Desc">
+        الإنترنت ليس عينة عشوائية ممثلة للبشرية؛ بل هو بالأساس: إنجليزي، ذكوري، غربي، ويعكس صوت الفئات الأكثر قدرة على الوصول والنشر والتحكم بالشبكة.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3 data-i18n="amp2Title">2. طبيعة الاحتمال الرياضي</h3>
+      </div>
+      <div class="card-content" data-i18n="amp2Desc">
+        يختار النموذج الكلمة أو البكسل الأكثر احتمالاً إحصائياً. وإذا تكررت صورة نمطية تاريخية فإنها تصبح المخرج "الصحيح رياضياً" وإن كانت خاطئة وغير عادلة أخلاقياً.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-sliders"></i></div>
+        <h3 data-i18n="amp3Title">3. الوضع الافتراضي (The Default)</h3>
+      </div>
+      <div class="card-content" data-i18n="amp3Desc">
+        عندما لا يحدد المستخدم التفاصيل بدقة، يملأ النموذج الفراغ بأكثر ما شاهده في تدريبه. هذا الخيار ليس محايداً، بل هو خلاصة تراكمية للتحيزات السابقة.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-user-check"></i></div>
+        <h3 data-i18n="amp4Title">4. التعلم بالتعزيز البشري (RLHF)</h3>
+      </div>
+      <div class="card-content" data-i18n="amp4Desc">
+        يتم ضبط النماذج عبر تفضيلات مقيّمين بشريين. وإذا كانت فئة المقيمين تفتقر للتنوع الثقافي والفكري، فإن معاييرهم تنتقل مباشرة إلى سلوك النموذج واستجاباته.
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Real-World Manifestations of Bias -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+    <span data-i18n="sec5Title">أشكال ومظاهر الانحياز في الواقع</span>
+  </div>
+
+  <div class="grid-3">
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-file-lines"></i></div>
+        <h3 data-i18n="m1Title">النماذج اللغوية (نصوص)</h3>
+      </div>
+      <div class="card-content" data-i18n="m1Desc">
+        ربط المهن بالجنس (طبيب مذكر / ممرضة مؤنثة)، التمييز في الوصف بحسب الأسماء، وفرض منظور غربي أحادي في الإجابات الفلسفية والاجتماعية.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-image"></i></div>
+        <h3 data-i18n="m2Title">توليد الصور</h3>
+      </div>
+      <div class="card-content" data-i18n="m2Desc">
+        عند طلب "رئيس تنفيذي" يظهر غالباً رجل أبيض ببدلة، وعند طلب مهن خدمية تظهر فئات عرقية معينة بصورة نمطية مكرسة.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-language"></i></div>
+        <h3 data-i18n="m3Title">الترجمة وتعدد اللغات</h3>
+      </div>
+      <div class="card-content" data-i18n="m3Desc">
+        تفضيل المذكر عند ترجمة الضمائر المحايدة، إضافة إلى التفاوت الواضح في عمق وجودة الإجابات بين اللغة الإنجليزية وباقي اللغات واللهجات المحلية.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-compress-alt"></i></div>
+        <h3 data-i18n="m4Title">التلخيص والتقييم</h3>
+      </div>
+      <div class="card-content" data-i18n="m4Desc">
+        منح وزن أكبر لرأي الأغلبية في الملخصات الآلية وإخفاء أو تهميش وجهات النظر الأقل انتشاراً، مما يؤدي إلى أحادية الرأي.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-ghost"></i></div>
+        <h3 data-i18n="m5Title">الهلوسة المتحيزة</h3>
+      </div>
+      <div class="card-content" data-i18n="m5Desc">
+        ابتكار واختلاق معلومات غير دقيقة وتلفيق حقائق مغلوطة عند سؤاله عن فئات أو مناطق أو أقليات تعاني من ضعف التمثيل في بيانات التدريب.
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="card-top">
+        <div class="badge-icon"><i class="fa-solid fa-crown"></i></div>
+        <h3 data-i18n="m6Title">الهيمنة الثقافية</h3>
+      </div>
+      <div class="card-content" data-i18n="m6Desc">
+        اعتبار المعايير الجمالية، الأخلاقية، والاجتماعية الغربية كمرجع وحيد و"افتراضي عالمي" لكل المستخدمين حول العالم.
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Impact on Education -->
+  <div class="education-panel">
+    <div class="edu-header">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <div>
+        <h2 style="color: var(--primary); font-size: 1.4rem;" data-i18n="eduHeaderTitle">الأثر المباشر على البيئة التعليمية</h2>
+        <p style="color: var(--muted); font-size: 0.95rem;" data-i18n="eduHeaderSub">هذا الجانب يهم المعلّم والباحث بشكل خاص عند إدماج أدوات الذكاء الاصطناعي في التعليم والتقييم:</p>
+      </div>
+    </div>
+
+    <div class="edu-item">
+      <strong data-i18n="eduP1Key">1. المحتوى التعليمي:</strong>
+      <p style="font-size: 0.93rem; color: #4a5568;" data-i18n="eduP1Val">القصص والأمثلة والرسوم المولدة آلياً قد تعزز صوراً نمطية سلبية لدى الطلاب عن الجنسين، الأقاليم الجغرافية، والتنوع الثقافي.</p>
+    </div>
+
+    <div class="edu-item">
+      <strong data-i18n="eduP2Key">2. التصحيح والتقييم الآلي:</strong>
+      <p style="font-size: 0.93rem; color: #4a5568;" data-i18n="eduP2Val">أنظمة التقييم التلقائي قد تظلم الطلاب ذوي الأساليب اللغوية المتفردة أو اللهجات غير المركزية مقارنة بالأسلوب المعياري السائد.</p>
+    </div>
+
+    <div class="edu-item alert-item">
+      <strong style="color: var(--danger);"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="eduP3Key">3. كواشف النصوص التوليدية (دراسة ستانفورد 2023):</span></strong>
+      <p style="font-size: 0.93rem; color: #4a5568;" data-i18n="eduP3Val">أثبتت أبحاث جامعة ستانفورد أن برامج كشف الذكاء الاصطناعي تصنف نصوص الطلاب الناطقين بغير الإنجليزية كـ "نصوص مولدة آلياً" بنسبة خطأ عالية جداً، لذا <u>لا يجوز نهائياً الاعتماد عليها كدليل وحيد لاتهام أي متعلم</u>.</p>
+    </div>
+
+    <div class="edu-item">
+      <strong data-i18n="eduP4Key">4. التوجيه والتنبؤ بالنجاح:</strong>
+      <p style="font-size: 0.93rem; color: #4a5568;" data-i18n="eduP4Val">نظم التوصية الأكاديمية المبنية على البيانات التاريخية قد تعيد تكرار وتثبيت فجوات الأداء السابقة بين المدارس والفئات الاجتماعية.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس 03: الانحياز الخوارزمي في الذكاء الاصطناعي",
+    backToChapter: "العودة لقائمة الفصل",
+    headerBadge: "الفصل 02 • الدرس 03",
+    headerTitle: "الانحياز الخوارزمي في الذكاء الاصطناعي",
+    headerSubtitle: "فهم جذور التحيز، كيفية انتقاله من الإنسان إلى الآلة، آليات تضخمه في النماذج التوليدية، وانعكاساته الحساسة على العملية التعليمية.",
+    sec1Title: "ما هو الانحياز الخوارزمي؟",
+    defText: "<strong>الانحياز الخوارزمي:</strong> هو ميل النظام الذكي إلى إنتاج نتائج غير عادلة أو غير متوازنة تجاه مجموعة معينة من الأشخاص، الأفكار، أو الفئات؛ نتيجة تحيزات كامنة في البيانات أو قرارات تصميم الخوارزمية ذاتها.",
+    exLabel: "مثال توضيحي:",
+    exBody: "إذا تم تدريب نموذج على نصوص تاريخية تصف الأطباء غالباً بأنهم رجال، فإن النموذج سيميل تلقائياً لربط مهنة \"طبيب\" بالرجال أكثر من النساء.",
+    sec2Title: "كيف ينتقل التحيز من الإنسان إلى الآلة؟",
+    transIntro: "الخوارزميات لا تبتكر التحيز من تلقاء نفسها، بل تعيد إنتاج وتضخيم الأنماط البشرية من خلال المراحل التالية:",
+    step1Title: "كتابة النصوص",
+    step1Desc: "البشر ينتجون النصوص بأحكامهم وتجاربهم المسبقة.",
+    step2Title: "جمع البيانات",
+    step2Desc: "تجميع النصوص والوسائط في قواعد بيانات رقمية ضخمة.",
+    step3Title: "تدريب النموذج",
+    step3Desc: "تغذية خوارزميات التعلم الآلي بهذه البيانات الضخمة.",
+    step4Title: "استخراج الأنماط",
+    step4Desc: "يتعلم النموذج الارتباطات والصور النمطية بوصفها علاقات صحيحة.",
+    step5Title: "إعادة الإنتاج",
+    step5Desc: "إفراز نفس الأنماط وتكرارها أثناء توليد المخرجات للمستخدمين.",
+    sec3Title: "مصادر الانحياز الأربعة",
+    b1Title: "أ) انحياز البيانات (Data Bias)",
+    b1Desc: "يحدث عندما تكون البيانات غير ممثلة لجميع الفئات بشكل متساوٍ وعادل.<br><br><em>مثال:</em> إذا كانت 90% من بيانات التدريب مأخوذة من منطقة جغرافية معينة، فسيفهم النموذج ثقافة تلك المنطقة وسيهمش الثقافات الأخرى.",
+    b2Title: "ب) انحياز جمع البيانات (Collection Bias)",
+    b2Desc: "ينشأ عندما يتم اختيار واستخراج البيانات من مصادر محددة فقط (مثل منصات التواصل أو النخب)، مما يقدم عينة محرفة لا تمثل الواقع المجتمعي الفعلي.",
+    b3Title: "ج) انحياز التسمية (Labeling Bias)",
+    b3Desc: "يحدث أثناء تصنيف البيانات ومراجعتها يدوياً؛ حيث يُسقط المقيمون البشريون أحكامهم القيمية والشخصية أثناء وضع الوسوم وتصنيف المحتوى.",
+    b4Title: "د) انحياز الخوارزمية (Algorithmic Bias)",
+    b4Desc: "ينجم عن القرارات والمعادلات الرياضية داخل هيكل النموذج؛ حيث قد تدفع بعض دوال التحسين الخوارزمية إلى ترجيح وتفضيل أنماط معينة على حساب أخرى.",
+    sec4Title: "لماذا يتضخم الانحياز في النماذج التوليدية (LLMs)؟",
+    amp1Title: "1. حجم البيانات ومصدرها",
+    amp1Desc: "الإنترنت ليس عينة عشوائية ممثلة للبشرية؛ بل هو بالأساس: إنجليزي، ذكوري، غربي، ويعكس صوت الفئات الأكثر قدرة على الوصول والنشر والتحكم بالشبكة.",
+    amp2Title: "2. طبيعة الاحتمال الرياضي",
+    amp2Desc: "يختار النموذج الكلمة أو البكسل الأكثر احتمالاً إحصائياً. وإذا تكررت صورة نمطية تاريخية فإنها تصبح المخرج \"الصحيح رياضياً\" وإن كانت خاطئة وغير عادلة أخلاقياً.",
+    amp3Title: "3. الوضع الافتراضي (The Default)",
+    amp3Desc: "عندما لا يحدد المستخدم التفاصيل بدقة، يملأ النموذج الفراغ بأكثر ما شاهده في تدريبه. هذا الخيار ليس محايداً، بل هو خلاصة تراكمية للتحيزات السابقة.",
+    amp4Title: "4. التعلم بالتعزيز البشري (RLHF)",
+    amp4Desc: "يتم ضبط النماذج عبر تفضيلات مقيّمين بشريين. وإذا كانت فئة المقيمين تفتقر للتنوع الثقافي والفكري، فإن معاييرهم تنتقل مباشرة إلى سلوك النموذج واستجاباته.",
+    sec5Title: "أشكال ومظاهر الانحياز في الواقع",
+    m1Title: "النماذج اللغوية (نصوص)",
+    m1Desc: "ربط المهن بالجنس (طبيب مذكر / ممرضة مؤنثة)، التمييز في الوصف بحسب الأسماء، وفرض منظور غربي أحادي في الإجابات الفلسفية والاجتماعية.",
+    m2Title: "توليد الصور",
+    m2Desc: "عند طلب \"رئيس تنفيذي\" يظهر غالباً رجل أبيض ببدلة، وعند طلب مهن خدمية تظهر فئات عرقية معينة بصورة نمطية مكرسة.",
+    m3Title: "الترجمة وتعدد اللغات",
+    m3Desc: "تفضيل المذكر عند ترجمة الضمائر المحايدة، إضافة إلى التفاوت الواضح في عمق وجودة الإجابات بين اللغة الإنجليزية وباقي اللغات واللهجات المحلية.",
+    m4Title: "التلخيص والتقييم",
+    m4Desc: "منح وزن أكبر لرأي الأغلبية في الملخصات الآلية وإخفاء أو تهميش وجهات النظر الأقل انتشاراً، مما يؤدي إلى أحادية الرأي.",
+    m5Title: "الهلوسة المتحيزة",
+    m5Desc: "ابتكار واختلاق معلومات غير دقيقة وتلفيق حقائق مغلوطة عند سؤاله عن فئات أو مناطق أو أقليات تعاني من ضعف التمثيل في بيانات التدريب.",
+    m6Title: "الهيمنة الثقافية",
+    m6Desc: "اعتبار المعايير الجمالية، الأخلاقية، والاجتماعية الغربية كمرجع وحيد و\"افتراضي عالمي\" لكل المستخدمين حول العالم.",
+    eduHeaderTitle: "الأثر المباشر على البيئة التعليمية",
+    eduHeaderSub: "هذا الجانب يهم المعلّم والباحث بشكل خاص عند إدماج أدوات الذكاء الاصطناعي في التعليم والتقييم:",
+    eduP1Key: "1. المحتوى التعليمي:",
+    eduP1Val: "القصص والأمثلة والرسوم المولدة آلياً قد تعزز صوراً نمطية سلبية لدى الطلاب عن الجنسين، الأقاليم الجغرافية، والتنوع الثقافي.",
+    eduP2Key: "2. التصحيح والتقييم الآلي:",
+    eduP2Val: "أنظمة التقييم التلقائي قد تظلم الطلاب ذوي الأساليب اللغوية المتفردة أو اللهجات غير المركزية مقارنة بالأسلوب المعياري السائد.",
+    eduP3Key: "3. كواشف النصوص التوليدية (دراسة ستانفورد 2023):",
+    eduP3Val: "أثبتت أبحاث جامعة ستانفورد أن برامج كشف الذكاء الاصطناعي تصنف نصوص الطلاب الناطقين بغير الإنجليزية كـ \"نصوص مولدة آلياً\" بنسبة خطأ عالية جداً، لذا <u>لا يجوز نهائياً الاعتماد عليها كدليل وحيد لاتهام أي متعلم</u>.",
+    eduP4Key: "4. التوجيه والتنبؤ بالنجاح:",
+    eduP4Val: "نظم التوصية الأكاديمية المبنية على البيانات التاريخية قد تعيد تكرار وتثبيت فجوات الأداء السابقة بين المدارس والفئات الاجتماعية.",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Leçon 03 : Le Biais Algorithmique dans l'IA",
+    backToChapter: "Retour au sommaire du chapitre",
+    headerBadge: "Chapitre 02 • Leçon 03",
+    headerTitle: "Le Biais Algorithmique dans l'IA",
+    headerSubtitle: "Comprendre les racines des biais, leur transmission de l'humain à la machine, les mécanismes d'amplification dans les LLM et leurs répercussions éducatives.",
+    sec1Title: "Qu'est-ce que le Biais Algorithmique ?",
+    defText: "<strong>Biais Algorithmique :</strong> Tendance systématique d'un système intelligent à produire des résultats inéquitables ou déséquilibrés au détriment de certains groupes, idées ou populations, découlant de préjugés enfouis dans les données ou de choix architecturaux.",
+    exLabel: "Illustration concrète :",
+    exBody: "Si un modèle est entraîné sur des textes historiques associant massivement les médecins au genre masculin, il aura tendance à associer statistiquement « médecin » à un homme plutôt qu'à une femme.",
+    sec2Title: "Comment le biais passe-t-il de l'humain à la machine ?",
+    transIntro: "Les algorithmes n'inventent pas le biais ex nihilo ; ils répliquent et amplifient les représentations humaines via cette chaîne causale :",
+    step1Title: "Production textuelle",
+    step1Desc: "Les humains rédigent avec leurs stéréotypes et biais inconscients.",
+    step2Title: "Agrégation de données",
+    step2Desc: "Constitution d'immenses bases de données moissonnées sur le Web.",
+    step3Title: "Entraînement du modèle",
+    step3Desc: "Injection de ces mégadonnées dans les réseaux de neurones.",
+    step4Title: "Extraction de patterns",
+    step4Desc: "Le système intègre ces régularités comme des lois universelles.",
+    step5Title: "Génération biaisée",
+    step5Desc: "Restitution amplifiée de ces stéréotypes auprès des utilisateurs.",
+    sec3Title: "Les Quatre Sources Majeures de Biais",
+    b1Title: "A) Biais de Données (Data Bias)",
+    b1Desc: "Survient lorsque le corpus d'apprentissage est asymétrique.<br><br><em>Exemple :</em> Si 90 % des données proviennent d'une zone géographique spécifique, le modèle modélisera cette culture et marginalisera les autres.",
+    b2Title: "B) Biais de Collecte (Collection Bias)",
+    b2Desc: "Résulte du ciblage exclusif de plateformes spécifiques (ex. réseaux sociaux ou sphères d'élite), générant un échantillon non représentatif de la société.",
+    b3Title: "C) Biais d'Étiquetage (Labeling Bias)",
+    b3Desc: "Apparaît lors de l'annotation humaine : les évaluateurs projettent leurs propres prismes moraux, culturels et personnels sur les étiquettes attribuées.",
+    b4Title: "D) Biais d'Algorithme (Algorithmic Bias)",
+    b4Desc: "Provoqué par les fonctions d'optimisation mathématique qui favorisent mathématiquement les motifs majoritaires au détriment des distributions rares.",
+    sec4Title: "Pourquoi le biais s'amplifie-t-il dans les LLM ?",
+    amp1Title: "1. Asymétrie des sources Web",
+    amp1Desc: "Le Web n'est pas un échantillon fidèle de l'humanité : il est majoritairement anglophone, masculin, occidental et surreprésente les populations hyperconnectées.",
+    amp2Title: "2. Mécanique probabiliste",
+    amp2Desc: "Le LLM calcule le token le plus probable. Un stéréotype historiquement omniprésent devient la sortie « mathématiquement optimale », bien qu'éthiquement injuste.",
+    amp3Title: "3. Le profil « par défaut »",
+    amp3Desc: "Face à une consigne sous-spécifiée, le modèle comble le vide avec sa moyenne statistique, reflétant l'hégémonie de ses corpus dominants.",
+    amp4Title: "4. Alignement humain (RLHF)",
+    amp4Desc: "Le calibrage fin dépend des retours de testeurs humains. Si ce panel manque de diversité socio-culturelle, ses arbitrages sont gravés dans l'agent.",
+    sec5Title: "Manifestations Concrètes du Biais",
+    m1Title: "Modèles de Langage (Textes)",
+    m1Desc: "Assignation genrée des fonctions (médecin au masculin / infirmière au féminin), stéréotypage des prénoms et cadrage sociologique purement occidental.",
+    m2Title: "Génération Visuelle",
+    m2Desc: "La requête « PDG » génère quasi exclusivement un homme blanc en costume, tandis que les métiers manuels sont renvoyés à des minorités ciblées.",
+    m3Title: "Traduction & Multilinguisme",
+    m3Desc: "Masculinisation systématique des pronoms neutres et asymétrie qualitative criante entre l'anglais et les autres langues ou dialectes locaux.",
+    m4Title: "Synthèse & Délibération",
+    m4Desc: "Écrasement des opinions minoritaires au profit des narratifs dominants, induisant une pensée unique dans les résumés automatiques.",
+    m5Title: "Hallucinations Discriminatoires",
+    m5Desc: "Invention de faux faits historiques ou de stéréotypes dégradants lors d'interrogations sur des cultures sous-représentées dans les corpus.",
+    m6Title: "Hégémonie Culturelle",
+    m6Desc: "Imposition implicite des canons moraux, esthétiques et politiques occidentaux comme norme globale par défaut pour tous les usagers.",
+    eduHeaderTitle: "Impact Direct sur l'Écosystème Éducatif",
+    eduHeaderSub: "Enjeux critiques pour les enseignants et chercheurs mobilisant l'IA dans l'enseignement et l'évaluation :",
+    eduP1Key: "1. Supports didactiques :",
+    eduP1Val: "Les cours et visuels synthétisés par IA risquent de perpétuer des clichés insidieux sur le genre, les aires géographiques et la diversité.",
+    eduP2Key: "2. Évaluation automatisée :",
+    eduP2Val: "Les correcteurs algorithmiques pénalisent les étudiants exprimant une rhétorique non conventionnelle ou issus de dialectes régionaux.",
+    eduP3Key: "3. Détecteurs d'IA (Étude Stanford 2023) :",
+    eduP3Val: "L'Université de Stanford a prouvé que les détecteurs d'IA accusent à tort les étudiants allophones d'avoir triché avec un taux de faux positifs massif. <u>Ils ne doivent jamais constituer une preuve d'accusation d'un élève</u>.",
+    eduP4Key: "4. Orientation scolaire prédictive :",
+    eduP4Val: "Les systèmes de profilage algorithmique fondés sur des données historiques pérennisent les disparités socio-économiques antérieures.",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lesson 03: Algorithmic Bias in Artificial Intelligence",
+    backToChapter: "Back to Chapter Outline",
+    headerBadge: "Chapter 02 • Lesson 03",
+    headerTitle: "Algorithmic Bias in AI",
+    headerSubtitle: "Tracing the origins of bias, its transmission from human culture to machines, amplification dynamics in generative LLMs, and its critical educational implications.",
+    sec1Title: "What is Algorithmic Bias?",
+    defText: "<strong>Algorithmic Bias:</strong> The systematic tendency of an intelligent system to generate unfair or skewed outputs toward specific groups, concepts, or demographics, stemming from historical prejudices encoded in data or architectural design choices.",
+    exLabel: "Illustrative Example:",
+    exBody: "If a model is trained on historic literature predominantly portraying doctors as male, it will probabilistically associate the title 'physician' with men rather than women.",
+    sec2Title: "How Does Bias Transfer from Humans to Machines?",
+    transIntro: "Algorithms do not invent prejudice independently; they replicate and magnify societal distributions through this five-stage pipeline:",
+    step1Title: "Human Authorship",
+    step1Desc: "Humans author texts embedding implicit worldviews and biases.",
+    step2Title: "Data Harvesting",
+    step2Desc: "Massive corpora are collected and aggregated into digital stores.",
+    step3Title: "Model Pre-training",
+    step3Desc: "Neural networks ingest these datasets during optimization.",
+    step4Title: "Pattern Extraction",
+    step4Desc: "The system internalizes social stereotypes as valid ground truth.",
+    step5Title: "Generative Amplification",
+    step5Desc: "Outputs regurgitate and reinforce these systemic biases to users.",
+    sec3Title: "The Four Foundational Sources of Bias",
+    b1Title: "A) Data Bias",
+    b1Desc: "Occurs when training distributions fail to represent populations equitably.<br><br><em>Example:</em> If 90% of training data originates from one hemisphere, the model will align with that culture and marginalize other regions.",
+    b2Title: "B) Collection Bias",
+    b2Desc: "Arises when scraping concentrates exclusively on specific digital hubs (e.g., social media or elite academic publications), skewing demographic representation.",
+    b3Title: "C) Labeling Bias",
+    b3Desc: "Introduced during manual annotation: human labelers project their personal cultural values, ideologies, and subjective heuristics onto the data tags.",
+    b4Title: "D) Algorithmic Bias",
+    b4Desc: "Originates from mathematical loss functions and architecture choices designed to favor majority distributions at the expense of long-tail edge cases.",
+    sec4Title: "Why Does Bias Escalate in Generative Models (LLMs)?",
+    amp1Title: "1. Web Data Asymmetries",
+    amp1Desc: "The web is not an egalitarian census: it is heavily English-dominated, male-skewed, Western-centric, and controlled by hyper-connected demographics.",
+    amp2Title: "2. Probabilistic Sampling",
+    amp2Desc: "LLMs output the most probable next token. A historically dominant stereotype becomes the 'mathematically optimal' continuation despite being ethically flawed.",
+    amp3Title: "3. 'The Default' Mode",
+    amp3Desc: "When a prompt lacks explicit context, the model defaults to its statistical center of gravity, reflecting historical majoritarian bias.",
+    amp4Title: "4. Human Alignment (RLHF)",
+    amp4Desc: "Fine-tuning relies on human feedback. If review pools lack cultural, ideological, and geographic diversity, their subjective preferences become baked into the model.",
+    sec5Title: "Manifestations of Real-World Algorithmic Bias",
+    m1Title: "Language Models (Text)",
+    m1Desc: "Gendered professional stereotyping (male doctors / female nurses), demographic profiling based on names, and monolithic Western perspectives on ethics.",
+    m2Title: "Image Generation",
+    m2Desc: "Prompting 'CEO' overwhelmingly renders a white male in formal attire, while service industry roles default to marginalized ethnic groups.",
+    m3Title: "Machine Translation",
+    m3Desc: "Defaulting neutral pronouns to masculine forms, coupled with marked disparities in output nuance between English and localized dialects.",
+    m4Title: "Summarization & Consensus",
+    m4Desc: "Overweighting majority consensus in automated document synthesis while silencing or diluting valid counter-perspectives.",
+    m5Title: "Prejudiced Hallucination",
+    m5Desc: "Fabricating derogatory or ungrounded claims when questioned on low-resource cultures or historically marginalized communities.",
+    m6Title: "Cultural Hegemony",
+    m6Desc: "Imposing Western sociological, legal, and aesthetic conventions as the undisputed universal default for global audiences.",
+    eduHeaderTitle: "Direct Implications for Education",
+    eduHeaderSub: "Essential concerns for faculty and researchers integrating AI into instruction, pedagogy, and student assessment:",
+    eduP1Key: "1. Curricular Materials:",
+    eduP1Val: "Synthesized stories, exercise prompts, and imagery can perpetuate insidious stereotypes regarding gender roles, ethnic identities, and culture.",
+    eduP2Key: "2. Automated Essay Scoring:",
+    eduP2Val: "Grading algorithms penalize non-native writing styles or regional syntactical patterns when benchmarking strictly against dominant idioms.",
+    eduP3Key: "3. AI Text Detectors (Stanford 2023 Study):",
+    eduP3Val: "Stanford University researchers proved that AI detectors disproportionately flag non-native English writing as 'AI-generated' due to lower perplexity. <u>They must never serve as sole evidence to penalize students</u>.",
+    eduP4Key: "4. Predictive Academic Advising:",
+    eduP4Val: "Recommendation systems trained on historical academic data risk entrenching and reproducing historical socioeconomic achievement gaps.",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

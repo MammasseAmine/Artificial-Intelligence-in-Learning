@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الفصل 03 - الدرس 02: عناصر وهياكل بناء الأوامر الفعالة (إطار CREATE)</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات Font Awesome -->
+<title id="page-title">الفصل 03 - الدرس 02: عناصر وهياكل بناء الأوامر الفعالة (إطار CREATE)</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -38,11 +38,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -60,7 +108,7 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-start: 20px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
@@ -71,11 +119,13 @@
     background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
     background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -126,6 +176,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
   /* General Cards */
@@ -151,7 +202,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .layer-item {
@@ -177,6 +228,7 @@
     align-items: center;
     justify-content: center;
     border: 2px solid #bee3f8;
+    flex-shrink: 0;
   }
 
   .layer-content {
@@ -206,7 +258,7 @@
     font-size: 0.92rem;
     font-weight: 600;
     color: var(--secondary);
-    border-right: 4px solid var(--secondary);
+    border-inline-start: 4px solid var(--secondary);
   }
 
   /* Ready Prompts Cards */
@@ -259,6 +311,7 @@
     padding: 24px;
     margin-bottom: 24px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    overflow-x: auto;
   }
 
   .framework-header {
@@ -298,7 +351,7 @@
 
   .custom-table th, .custom-table td {
     padding: 12px 16px;
-    text-align: right;
+    text-align: start;
     border-bottom: 1px solid var(--border);
     font-size: 0.95rem;
   }
@@ -323,13 +376,13 @@
     color: white;
     border-radius: 6px;
     font-weight: bold;
-    margin-left: 6px;
+    margin-inline-end: 6px;
   }
 
   /* Golden Rule Banner */
   .golden-rule {
     background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
-    border-right: 5px solid var(--accent);
+    border-inline-start: 5px solid var(--accent);
     border-radius: 12px;
     padding: 20px 24px;
     margin: 30px 0;
@@ -343,6 +396,7 @@
   .golden-rule i {
     font-size: 2.2rem;
     color: var(--accent);
+    flex-shrink: 0;
   }
 
   /* Footer */
@@ -358,7 +412,7 @@
 
   @media (max-width: 768px) {
     .header h1 { font-size: 1.8rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
     .layer-item { flex-direction: column; gap: 12px; }
     .layer-badge { min-width: 45px; height: 45px; font-size: 1.1rem; }
   }
@@ -367,24 +421,34 @@
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="الفصل 03.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة لقائمة الدروس
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToLessons">العودة لقائمة الدروس</span>
     </a>
-    <span class="header-badge">الفصل 03 • الدرس 02</span>
-    <h1>عناصر وهياكل بناء الأوامر الفعّالة</h1>
-    <div class="subtitle">دليل منهجي شامل: من الطبقات الخمس المحكمة، إلى نماذج الأوامر التطبيقية، وأشهر الأطر العالمية (RICE, COSTAR, CRISPE, CREATE).</div>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 03 • الدرس 02</span>
+    <h1 data-i18n="headerTitle">عناصر وهياكل بناء الأوامر الفعّالة</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">دليل منهجي شامل: من الطبقات الخمس المحكمة، إلى نماذج الأوامر التطبيقية، وأشهر الأطر العالمية (RICE, COSTAR, CRISPE, CREATE).</div>
   </div>
 
   <!-- 1. الطبقات الخمس لأمر محكم البناء -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
-    الطبقات الخمس لأمر مُحكم البناء
+    <span data-i18n="sec1Title">الطبقات الخمس لأمر مُحكم البناء</span>
   </div>
 
   <div class="main-card">
-    <p class="lead-text" style="margin-bottom: 20px;">
+    <p class="lead-text" style="margin-bottom: 20px;" data-i18n="sec1Lead">
       كما يُبنى المخطط الهندسي من طبقات متراكبة؛ يُبنى الأمر الفعّال من <strong>خمسة عناصر أساسية</strong>. غياب طبقة واحدة يجعل النتيجة أقل دقة وملاءمة للهدف.
     </p>
 
@@ -394,9 +458,9 @@
       <div class="layer-item">
         <div class="layer-badge">01</div>
         <div class="layer-content">
-          <div class="layer-title"><i class="fa-solid fa-user-tie"></i> الدور</div>
-          <p class="layer-desc">حدد الهوية التي تريد من النظام أن يتبناها؛ هذا يوجه أسلوبه، لغته ومستوى خطابه.</p>
-          <div class="layer-sample">"تصرف كمرشد تربوي متخصص في صعوبات التعلم"</div>
+          <div class="layer-title"><i class="fa-solid fa-user-tie"></i> <span data-i18n="layer1Title">الدور</span></div>
+          <p class="layer-desc" data-i18n="layer1Desc">حدد الهوية التي تريد من النظام أن يتبناها؛ هذا يوجه أسلوبه، لغته ومستوى خطابه.</p>
+          <div class="layer-sample" data-i18n="layer1Sample">"تصرف كمرشد تربوي متخصص في صعوبات التعلم"</div>
         </div>
       </div>
 
@@ -404,9 +468,9 @@
       <div class="layer-item">
         <div class="layer-badge">02</div>
         <div class="layer-content">
-          <div class="layer-title"><i class="fa-solid fa-clipboard-list"></i> السياق</div>
-          <p class="layer-desc">زوّده بالمعطيات الضرورية: المستوى الدراسي، الوقت المتاح، المعارف السابقة، والظروف الخاصة بالفئة.</p>
-          <div class="layer-sample">"القسم يضم 30 تلميذاً في السنة الثالثة ابتدائي، منهم أربعة يواجهون صعوبة في القراءة"</div>
+          <div class="layer-title"><i class="fa-solid fa-clipboard-list"></i> <span data-i18n="layer2Title">السياق</span></div>
+          <p class="layer-desc" data-i18n="layer2Desc">زوّده بالمعطيات الضرورية: المستوى الدراسي، الوقت المتاح، المعارف السابقة، والظروف الخاصة بالفئة.</p>
+          <div class="layer-sample" data-i18n="layer2Sample">"القسم يضم 30 تلميذاً في السنة الثالثة ابتدائي، منهم أربعة يواجهون صعوبة في القراءة"</div>
         </div>
       </div>
 
@@ -414,9 +478,9 @@
       <div class="layer-item">
         <div class="layer-badge">03</div>
         <div class="layer-content">
-          <div class="layer-title"><i class="fa-solid fa-bullseye"></i> المهمة</div>
-          <p class="layer-desc">اذكر الفعل المطلوب بدقة: (صمّم، لخّص، قارن، صحّح، اقترح) — فعل واحد واضح أفضل من طلب مبهم.</p>
-          <div class="layer-sample">"اقترح ثلاثة أنشطة علاجية قصيرة لتقوية الطلاقة القرائية"</div>
+          <div class="layer-title"><i class="fa-solid fa-bullseye"></i> <span data-i18n="layer3Title">المهمة</span></div>
+          <p class="layer-desc" data-i18n="layer3Desc">اذكر الفعل المطلوب بدقة: (صمّم، لخّص، قارن، صحّح، اقترح) — فعل واحد واضح أفضل من طلب مبهم.</p>
+          <div class="layer-sample" data-i18n="layer3Sample">"اقترح ثلاثة أنشطة علاجية قصيرة لتقوية الطلاقة القرائية"</div>
         </div>
       </div>
 
@@ -424,9 +488,9 @@
       <div class="layer-item">
         <div class="layer-badge">04</div>
         <div class="layer-content">
-          <div class="layer-title"><i class="fa-solid fa-table-cells"></i> الشكل</div>
-          <p class="layer-desc">صف الشكل النهائي المطلوب: جدول، نقاط، خطة مرحلية، حوار، أو تحديد عدد الكلمات بدقة.</p>
-          <div class="layer-sample">"قدّم النتيجة في جدول من ثلاثة أعمدة: النشاط، الهدف، المدة"</div>
+          <div class="layer-title"><i class="fa-solid fa-table-cells"></i> <span data-i18n="layer4Title">الشكل</span></div>
+          <p class="layer-desc" data-i18n="layer4Desc">صف الشكل النهائي المطلوب: جدول، نقاط، خطة مرحلية، حوار، أو تحديد عدد الكلمات بدقة.</p>
+          <div class="layer-sample" data-i18n="layer4Sample">"قدّم النتيجة في جدول من ثلاثة أعمدة: النشاط، الهدف، المدة"</div>
         </div>
       </div>
 
@@ -434,9 +498,9 @@
       <div class="layer-item">
         <div class="layer-badge">05</div>
         <div class="layer-content">
-          <div class="layer-title"><i class="fa-solid fa-ban"></i> القيود والضوابط</div>
-          <p class="layer-desc">حدد ما يجب تجنبه أو الالتزام به بدقة: اللغة، النبرة، الطول، أو شروط بيئية خاصة بسياقك.</p>
-          <div class="layer-sample">"بالفصحى المبسطة، دون استعمال مصطلحات نفسية-تربوية معقدة"</div>
+          <div class="layer-title"><i class="fa-solid fa-ban"></i> <span data-i18n="layer5Title">القيود والضوابط</span></div>
+          <p class="layer-desc" data-i18n="layer5Desc">حدد ما يجب تجنبه أو الالتزام به بدقة: اللغة، النبرة، الطول، أو شروط بيئية خاصة بسياقك.</p>
+          <div class="layer-sample" data-i18n="layer5Sample">"بالفصحى المبسطة، دون استعمال مصطلحات نفسية-تربوية معقدة"</div>
         </div>
       </div>
 
@@ -446,41 +510,41 @@
   <!-- 2. أوامر جاهزة لمهام تربوية شائعة -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-chalkboard-user"></i></span>
-    أوامر جاهزة لمهام تربوية شائعة (مبنية بالمكونات الخمسة)
+    <span data-i18n="sec2Title">أوامر جاهزة لمهام تربوية شائعة (مبنية بالمكونات الخمسة)</span>
   </div>
 
   <div class="prompt-card">
     <div class="prompt-header">
-      <i class="fa-solid fa-book-open" style="color: var(--secondary);"></i> 1. إعداد خطة درس
+      <i class="fa-solid fa-book-open" style="color: var(--secondary);"></i> <span data-i18n="p1Title">1. إعداد خطة درس</span>
     </div>
-    <div class="prompt-box">
+    <div class="prompt-box" data-i18n="p1Box">
       "تصرف كأستاذ <span class="tag">[المادة]</span> في <span class="tag">[المستوى]</span>. صمم خطة درس مدتها <span class="tag">[المدة]</span> حول <span class="tag">[الموضوع]</span>. التلاميذ سبق أن درسوا <span class="tag">[المكتسبات القبلية]</span>. قدّم النتيجة كمراحل مرقمة مع هدف لكل مرحلة. استعمل أمثلة محلية وتجنب اللغة الأكاديمية الثقيلة."
     </div>
   </div>
 
   <div class="prompt-card">
     <div class="prompt-header">
-      <i class="fa-solid fa-spell-check" style="color: var(--secondary);"></i> 2. تصميم أسئلة تقييم
+      <i class="fa-solid fa-spell-check" style="color: var(--secondary);"></i> <span data-i18n="p2Title">2. تصميم أسئلة تقييم</span>
     </div>
-    <div class="prompt-box">
+    <div class="prompt-box" data-i18n="p2Box">
       "تصرف كخبير في القياس والتقويم التربوي. الهدف تقييم فهم التلاميذ لـ<span class="tag">[المفهوم]</span> في <span class="tag">[المستوى]</span>. اقترح 6 أسئلة بمستويات صعوبة متدرجة (سهل، متوسط، صعب). قدّمها في جدول: السؤال، المستوى، المهارة المستهدفة. تجنب الأسئلة التي تعتمد على الحفظ فقط."
     </div>
   </div>
 
   <div class="prompt-card">
     <div class="prompt-header">
-      <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--secondary);"></i> 3. تبسيط مفهوم معقد
+      <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--secondary);"></i> <span data-i18n="p3Title">3. تبسيط مفهوم معقد</span>
     </div>
-    <div class="prompt-box">
+    <div class="prompt-box" data-i18n="p3Box">
       "تصرف كمعلم يشرح لتلاميذ لم يسمعوا بالمفهوم من قبل. اشرح <span class="tag">[المفهوم]</span> لتلاميذ <span class="tag">[المستوى]</span> في فقرة واحدة. استعمل تشبيهاً واحداً من حياتهم اليومية. تجنب أي مصطلح تقني دون تعريفه فوراً."
     </div>
   </div>
 
   <div class="prompt-card">
     <div class="prompt-header">
-      <i class="fa-solid fa-comments" style="color: var(--secondary);"></i> 4. تغذية راجعة على إجابة تلميذ
+      <i class="fa-solid fa-comments" style="color: var(--secondary);"></i> <span data-i18n="p4Title">4. تغذية راجعة على إجابة تلميذ</span>
     </div>
-    <div class="prompt-box">
+    <div class="prompt-box" data-i18n="p4Box">
       "تصرف كأستاذ يقدم تغذية راجعة بنّاءة. إليك إجابة التلميذ: <span class="tag">[الإجابة]</span>. حدد نقطة قوة واحدة ونقطة تحتاج تحسيناً. اقترح خطوة عملية واحدة لتطوير الإجابة، بأسلوب مشجع لا يتجاوز أربعة أسطر."
     </div>
   </div>
@@ -488,45 +552,45 @@
   <!-- 3. أطر بناء الأوامر (Frameworks) -->
   <div class="section-title">
     <span class="icon"><i class="fa-solid fa-cubes"></i></span>
-    أطر بناء الأوامر (Frameworks) — قوالب لتنظيم التفكير
+    <span data-i18n="sec3Title">أطر بناء الأوامر (Frameworks) — قوالب لتنظيم التفكير</span>
   </div>
 
   <!-- إطار RICE -->
   <div class="framework-card">
     <div class="framework-header">
       <div class="framework-title">
-        <i class="fa-solid fa-bowl-rice"></i> إطار RICE
+        <i class="fa-solid fa-bowl-rice"></i> <span data-i18n="riceTitle">إطار RICE</span>
       </div>
-      <span class="framework-badge">يشمل 4 عناصر أساسية</span>
+      <span class="framework-badge" data-i18n="riceBadge">يشمل 4 عناصر أساسية</span>
     </div>
     <table class="custom-table">
       <thead>
         <tr>
-          <th>العنصر</th>
-          <th>الوصف والتوجيه</th>
-          <th>مثال تطبيقي</th>
+          <th data-i18n="thElement">العنصر</th>
+          <th data-i18n="thDesc">الوصف والتوجيه</th>
+          <th data-i18n="thSample">مثال تطبيقي</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span class="tag-letter">R</span> <strong>Role (الدور)</strong></td>
-          <td>من يجب أن يكون النموذج؟</td>
-          <td>"أنت خبير تغذية"</td>
+          <td><span class="tag-letter">R</span> <strong data-i18n="riceR">Role (الدور)</strong></td>
+          <td data-i18n="riceRDesc">من يجب أن يكون النموذج؟</td>
+          <td data-i18n="riceREx">"أنت خبير تغذية"</td>
         </tr>
         <tr>
-          <td><span class="tag-letter">I</span> <strong>Instructions (التعليمات)</strong></td>
-          <td>ماذا يجب أن يفعل بالتحديد؟</td>
-          <td>"أنشئ خطة وجبات أسبوعية"</td>
+          <td><span class="tag-letter">I</span> <strong data-i18n="riceI">Instructions (التعليمات)</strong></td>
+          <td data-i18n="riceIDesc">ماذا يجب أن يفعل بالتحديد؟</td>
+          <td data-i18n="riceIEx">"أنشئ خطة وجبات أسبوعية"</td>
         </tr>
         <tr>
-          <td><span class="tag-letter">C</span> <strong>Context (السياق)</strong></td>
-          <td>ما هي الخلفية والظروف المحيطة؟</td>
-          <td>"لشخص نباتي يمارس الرياضة"</td>
+          <td><span class="tag-letter">C</span> <strong data-i18n="riceC">Context (السياق)</strong></td>
+          <td data-i18n="riceCDesc">ما هي الخلفية والظروف المحيطة؟</td>
+          <td data-i18n="riceCEx">"لشخص نباتي يمارس الرياضة"</td>
         </tr>
         <tr>
-          <td><span class="tag-letter">E</span> <strong>Examples (الأمثلة)</strong></td>
-          <td>ما هو النمط والشكل المطلوب محاكاته؟</td>
-          <td>"مثال: الإفطار: شوفان بالحليب.."</td>
+          <td><span class="tag-letter">E</span> <strong data-i18n="riceE">Examples (الأمثلة)</strong></td>
+          <td data-i18n="riceEDesc">ما هو النمط والشكل المطلوب محاكاته؟</td>
+          <td data-i18n="riceEEx">"مثال: الإفطار: شوفان بالحليب.."</td>
         </tr>
       </tbody>
     </table>
@@ -536,41 +600,41 @@
   <div class="framework-card">
     <div class="framework-header">
       <div class="framework-title">
-        <i class="fa-solid fa-star"></i> إطار COSTAR
+        <i class="fa-solid fa-star"></i> <span data-i18n="costarTitle">إطار COSTAR</span>
       </div>
-      <span class="framework-badge">يشمل 6 عناصر قياسية</span>
+      <span class="framework-badge" data-i18n="costarBadge">يشمل 6 عناصر قياسية</span>
     </div>
     <table class="custom-table">
       <thead>
         <tr>
-          <th>العنصر</th>
-          <th>المعنى والوظيفة</th>
+          <th data-i18n="thElement">العنصر</th>
+          <th data-i18n="thFunction">المعنى والوظيفة</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="tag-letter">C</span> <strong>Context</strong></td>
-          <td>سياق الطلب والخلفية الضرورية للبدء.</td>
+          <td data-i18n="costarC">سياق الطلب والخلفية الضرورية للبدء.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">O</span> <strong>Objective</strong></td>
-          <td>الهدف المطلوب تحقيقه من المهمة بوضوح.</td>
+          <td data-i18n="costarO">الهدف المطلوب تحقيقه من المهمة بوضوح.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">S</span> <strong>Style</strong></td>
-          <td>أسلوب وطريقة صياغة المحتوى المكتوب.</td>
+          <td data-i18n="costarS">أسلوب وطريقة صياغة المحتوى المكتوب.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">T</span> <strong>Tone</strong></td>
-          <td>النبرة المستخدمة في الرد (رسمية، ودية، أكاديمية، تشجيعية...).</td>
+          <td data-i18n="costarT">النبرة المستخدمة في الرد (رسمية، ودية، أكاديمية، تشجيعية...).</td>
         </tr>
         <tr>
           <td><span class="tag-letter">A</span> <strong>Audience</strong></td>
-          <td>الجمهور والمستفيد النهائي المستهدف بالرسالة.</td>
+          <td data-i18n="costarA">الجمهور والمستفيد النهائي المستهدف بالرسالة.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">R</span> <strong>Response</strong></td>
-          <td>شكل وبنية المخرجات النهائية (جدول، نقاط، كود...).</td>
+          <td data-i18n="costarR">شكل وبنية المخرجات النهائية (جدول، نقاط، كود...).</td>
         </tr>
       </tbody>
     </table>
@@ -580,37 +644,37 @@
   <div class="framework-card">
     <div class="framework-header">
       <div class="framework-title">
-        <i class="fa-solid fa-compass"></i> إطار CRISPE
+        <i class="fa-solid fa-compass"></i> <span data-i18n="crispeTitle">إطار CRISPE</span>
       </div>
-      <span class="framework-badge">يشمل 5 عناصر</span>
+      <span class="framework-badge" data-i18n="crispeBadge">يشمل 5 عناصر</span>
     </div>
     <table class="custom-table">
       <thead>
         <tr>
-          <th>العنصر</th>
-          <th>الوصف</th>
+          <th data-i18n="thElement">العنصر</th>
+          <th data-i18n="thDescription">الوصف</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="tag-letter">C</span> <strong>Capacity and Role</strong></td>
-          <td>القدرة وتحديد الدور المطلوب من النموذج تبنيه بدقة.</td>
+          <td data-i18n="crispeC">القدرة وتحديد الدور المطلوب من النموذج تبنيه بدقة.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">R</span> <strong>Insight</strong></td>
-          <td>الرؤية المتعمقة أو الخلفية التأسيسية التي يحتاجها النموذج.</td>
+          <td data-i18n="crispeR">الرؤية المتعمقة أو الخلفية التأسيسية التي يحتاجها النموذج.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">I</span> <strong>Statement</strong></td>
-          <td>بيان وتحديد المهمة الأساسية المراد إنجازها.</td>
+          <td data-i18n="crispeI">بيان وتحديد المهمة الأساسية المراد إنجازها.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">S</span> <strong>Personality</strong></td>
-          <td>الشخصية، النبرة، والأسلوب المتبع في كتابة المخرج.</td>
+          <td data-i18n="crispeS">الشخصية، النبرة، والأسلوب المتبع في كتابة المخرج.</td>
         </tr>
         <tr>
           <td><span class="tag-letter">P/E</span> <strong>Experiment / Examples</strong></td>
-          <td>التجربة، توجيه الاختبار، أو تقديم أمثلة معيارية للاقتداء.</td>
+          <td data-i18n="crispePE">التجربة، توجيه الاختبار، أو تقديم أمثلة معيارية للاقتداء.</td>
         </tr>
       </tbody>
     </table>
@@ -620,14 +684,14 @@
   <div class="framework-card" style="border: 2px solid #bee3f8;">
     <div class="framework-header">
       <div class="framework-title" style="color: var(--primary);">
-        <i class="fa-solid fa-shapes" style="color: var(--accent);"></i> إطار CREATE الشامل
+        <i class="fa-solid fa-shapes" style="color: var(--accent);"></i> <span data-i18n="createTitle">إطار CREATE الشامل</span>
       </div>
-      <span class="framework-badge" style="background: var(--light); color: var(--secondary); font-weight: 700;">
+      <span class="framework-badge" style="background: var(--light); color: var(--secondary); font-weight: 700;" data-i18n="createBadge">
         النموذج المتكامل (6 أركان)
       </span>
     </div>
 
-    <p style="color: var(--muted); font-size: 0.98rem; margin-bottom: 20px;">
+    <p style="color: var(--muted); font-size: 0.98rem; margin-bottom: 20px;" data-i18n="createSub">
       إطار عملي متكامل يجمع بين تمثيل الشخصية وتحديد الطلب والأمثلة والضوابط ونوع المخرج والإضافات:
     </p>
 
@@ -635,41 +699,41 @@
     <table class="custom-table">
       <thead>
         <tr>
-          <th>العنصر</th>
-          <th>المعنى والوظيفة</th>
-          <th>تطبيق تربوي توضيحي</th>
+          <th data-i18n="thElement">العنصر</th>
+          <th data-i18n="thFunction">المعنى والوظيفة</th>
+          <th data-i18n="thPedagogicalEx">تطبيق تربوي توضيحي</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="tag-letter">C</span> <strong>Character</strong></td>
-          <td>الشخصية والدور المهني المطلوب تبنيه</td>
-          <td>"أنت مصمم مناهج تعليمية وخبير في البيداغوجيا النشطة."</td>
+          <td data-i18n="createCDesc">الشخصية والدور المهني المطلوب تبنيه</td>
+          <td data-i18n="createCEx">"أنت مصمم مناهج تعليمية وخبير في البيداغوجيا النشطة."</td>
         </tr>
         <tr>
           <td><span class="tag-letter">R</span> <strong>Request</strong></td>
-          <td>الطلب والمهمة الأساسية المراد إنجازها</td>
-          <td>"صمم سيناريو نشاط صفي تفاعلي مدته 20 دقيقة لدرس الاحتمالات."</td>
+          <td data-i18n="createRDesc">الطلب والمهمة الأساسية المراد إنجازها</td>
+          <td data-i18n="createREx">"صمم سيناريو نشاط صفي تفاعلي مدته 20 دقيقة لدرس الاحتمالات."</td>
         </tr>
         <tr>
           <td><span class="tag-letter">E</span> <strong>Examples</strong></td>
-          <td>أمثلة ونماذج محاكاة لتوجيه الأسلوب</td>
-          <td>"مثل: وضعية رمي قطعتي نقد لملاحظة الفضاء العيني بصرياً."</td>
+          <td data-i18n="createEDesc">أمثلة ونماذج محاكاة لتوجيه الأسلوب</td>
+          <td data-i18n="createEEx">"مثل: وضعية رمي قطعتي نقد لملاحظة الفضاء العيني بصرياً."</td>
         </tr>
         <tr>
           <td><span class="tag-letter">A</span> <strong>Adjustments</strong></td>
-          <td>القيود والتعديلات والضوابط الواجب مراعاتها</td>
-          <td>"بسيط، لا يتطلب أجهزة إلكترونية، وبلغة عربية فصيحة تناسب تلاميذ المتوسط."</td>
+          <td data-i18n="createADesc">القيود والتعديلات والضوابط الواجب مراعاتها</td>
+          <td data-i18n="createAEx">"بسيط، لا يتطلب أجهزة إلكترونية، وبلغة عربية فصيحة تناسب تلاميذ المتوسط."</td>
         </tr>
         <tr>
           <td><span class="tag-letter">T</span> <strong>Type</strong></td>
-          <td>نوع وهيئة المخرج النهائي</td>
-          <td>"على شكل جدول يتضمن: مرحلة النشاط، تعليمات الأستاذ، دور المتعلم، والوقت."</td>
+          <td data-i18n="createTDesc">نوع وهيئة المخرج النهائي</td>
+          <td data-i18n="createTEx">"على شكل جدول يتضمن: مرحلة النشاط، تعليمات الأستاذ، دور المتعلم، والوقت."</td>
         </tr>
         <tr>
           <td><span class="tag-letter">E</span> <strong>Extras</strong></td>
-          <td>إضافات وملاحظات مساعدة وتكميلية</td>
-          <td>"أضف في النهاية سؤالاً تقويمياً سريعاً وملاحظة لتسيير الفروق الفردية."</td>
+          <td data-i18n="createExDesc">إضافات وملاحظات مساعدة وتكميلية</td>
+          <td data-i18n="createExEx">"أضف في النهاية سؤالاً تقويمياً سريعاً وملاحظة لتسيير الفروق الفردية."</td>
         </tr>
       </tbody>
     </table>
@@ -679,8 +743,8 @@
   <div class="golden-rule">
     <i class="fa-solid fa-lightbulb"></i>
     <div>
-      <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;">ليس كل أمر يحتاج المكونات الستة جميعاً!</h3>
-      <p style="font-size: 0.96rem; line-height: 1.8; margin: 0; color: #4a2113;">
+      <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;" data-i18n="goldenTitle">ليس كل أمر يحتاج المكونات الستة جميعاً!</h3>
+      <p style="font-size: 0.96rem; line-height: 1.8; margin: 0; color: #4a2113;" data-i18n="goldenText">
         <strong>المهمة والوضوح هما الجوهر؛</strong> فأمر مثل <em>«لخص هذا النص في 3 نقاط»</em> يُعد أمراً ممتازاً بلا دور ولا أمثلة. <br>
         <strong>القاعدة:</strong> أضف مكوّناً فقط عندما يكون غيابه هو سبب النتيجة غير المرضية. أما المكوّنان الأكثر إهمالاً وأعلاهما مردوداً — فهما <strong>الصيغة (الشكل)</strong> و<strong>الأمثلة</strong>: تحديد الشكل بسطر واحد وإرفاق عيّنة واحدة، يرفعان جودة المخرج فوراً وبشكل حاسم.
       </p>
@@ -688,10 +752,373 @@
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 03 - الدرس 02: عناصر وهياكل بناء الأوامر الفعالة (إطار CREATE)",
+    backToLessons: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 03 • الدرس 02",
+    headerTitle: "عناصر وهياكل بناء الأوامر الفعّالة",
+    headerSubtitle: "دليل منهجي شامل: من الطبقات الخمس المحكمة، إلى نماذج الأوامر التطبيقية، وأشهر الأطر العالمية (RICE, COSTAR, CRISPE, CREATE).",
+    
+    sec1Title: "الطبقات الخمس لأمر مُحكم البناء",
+    sec1Lead: "كما يُبنى المخطط الهندسي من طبقات متراكبة؛ يُبنى الأمر الفعّال من <strong>خمسة عناصر أساسية</strong>. غياب طبقة واحدة يجعل النتيجة أقل دقة وملاءمة للهدف.",
+    
+    layer1Title: "الدور",
+    layer1Desc: "حدد الهوية التي تريد من النظام أن يتبناها؛ هذا يوجه أسلوبه، لغته ومستوى خطابه.",
+    layer1Sample: "\"تصرف كمرشد تربوي متخصص في صعوبات التعلم\"",
+    
+    layer2Title: "السياق",
+    layer2Desc: "زوّده بالمعطيات الضرورية: المستوى الدراسي، الوقت المتاح، المعارف السابقة، والظروف الخاصة بالفئة.",
+    layer2Sample: "\"القسم يضم 30 تلميذاً في السنة الثالثة ابتدائي، منهم أربعة يواجهون صعوبة في القراءة\"",
+    
+    layer3Title: "المهمة",
+    layer3Desc: "اذكر الفعل المطلوب بدقة: (صمّم، لخّص، قارن، صحّح، اقترح) — فعل واحد واضح أفضل من طلب مبهم.",
+    layer3Sample: "\"اقترح ثلاثة أنشطة علاجية قصيرة لتقوية الطلاقة القرائية\"",
+    
+    layer4Title: "الشكل",
+    layer4Desc: "صف الشكل النهائي المطلوب: جدول، نقاط، خطة مرحلية، حوار، أو تحديد عدد الكلمات بدقة.",
+    layer4Sample: "\"قدّم النتيجة في جدول من ثلاثة أعمدة: النشاط، الهدف، المدة\"",
+    
+    layer5Title: "القيود والضوابط",
+    layer5Desc: "حدد ما يجب تجنبه أو الالتزام به بدقة: اللغة، النبرة، الطول، أو شروط بيئية خاصة بسياقك.",
+    layer5Sample: "\"بالفصحى المبسطة، دون استعمال مصطلحات نفسية-تربوية معقدة\"",
+    
+    sec2Title: "أوامر جاهزة لمهام تربوية شائعة (مبنية بالمكونات الخمسة)",
+    p1Title: "1. إعداد خطة درس",
+    p1Box: "\"تصرف كأستاذ <span class=\"tag\">[المادة]</span> في <span class=\"tag\">[المستوى]</span>. صمم خطة درس مدتها <span class=\"tag\">[المدة]</span> حول <span class=\"tag\">[الموضوع]</span>. التلاميذ سبق أن درسوا <span class=\"tag\">[المكتسبات القبلية]</span>. قدّم النتيجة كمراحل مرقمة مع هدف لكل مرحلة. استعمل أمثلة محلية وتجنب اللغة الأكاديمية الثقيلة.\"",
+    
+    p2Title: "2. تصميم أسئلة تقييم",
+    p2Box: "\"تصرف كخبير في القياس والتقويم التربوي. الهدف تقييم فهم التلاميذ لـ<span class=\"tag\">[المفهوم]</span> في <span class=\"tag\">[المستوى]</span>. اقترح 6 أسئلة بمستويات صعوبة متدرجة (سهل، متوسط، صعب). قدّمها في جدول: السؤال، المستوى، المهارة المستهدفة. تجنب الأسئلة التي تعتمد على الحفظ فقط.\"",
+    
+    p3Title: "3. تبسيط مفهوم معقد",
+    p3Box: "\"تصرف كمعلم يشرح لتلاميذ لم يسمعوا بالمفهوم من قبل. اشرح <span class=\"tag\">[المفهوم]</span> لتلاميذ <span class=\"tag\">[المستوى]</span> في فقرة واحدة. استعمل تشبيهاً واحداً من حياتهم اليومية. تجنب أي مصطلح تقني دون تعريفه فوراً.\"",
+    
+    p4Title: "4. تغذية راجعة على إجابة تلميذ",
+    p4Box: "\"تصرف كأستاذ يقدم تغذية راجعة بنّاءة. إليك إجابة التلميذ: <span class=\"tag\">[الإجابة]</span>. حدد نقطة قوة واحدة ونقطة تحتاج تحسيناً. اقترح خطوة عملية واحدة لتطوير الإجابة، بأسلوب مشجع لا يتجاوز أربعة أسطر.\"",
+    
+    sec3Title: "أطر بناء الأوامر (Frameworks) — قوالب لتنظيم التفكير",
+    thElement: "العنصر",
+    thDesc: "الوصف والتوجيه",
+    thSample: "مثال تطبيقي",
+    thFunction: "المعنى والوظيفة",
+    thDescription: "الوصف",
+    thPedagogicalEx: "تطبيق تربوي توضيحي",
+    
+    riceTitle: "إطار RICE",
+    riceBadge: "يشمل 4 عناصر أساسية",
+    riceR: "Role (الدور)",
+    riceRDesc: "من يجب أن يكون النموذج؟",
+    riceREx: "\"أنت خبير تغذية\"",
+    riceI: "Instructions (التعليمات)",
+    riceIDesc: "ماذا يجب أن يفعل بالتحديد؟",
+    riceIEx: "\"أنشئ خطة وجبات أسبوعية\"",
+    riceC: "Context (السياق)",
+    riceCDesc: "ما هي الخلفية والظروف المحيطة؟",
+    riceCEx: "\"لشخص نباتي يمارس الرياضة\"",
+    riceE: "Examples (الأمثلة)",
+    riceEDesc: "ما هو النمط والشكل المطلوب محاكاته؟",
+    riceEEx: "\"مثال: الإفطار: شوفان بالحليب..\"",
+    
+    costarTitle: "إطار COSTAR",
+    costarBadge: "يشمل 6 عناصر قياسية",
+    costarC: "سياق الطلب والخلفية الضرورية للبدء.",
+    costarO: "الهدف المطلوب تحقيقه من المهمة بوضوح.",
+    costarS: "أسلوب وطريقة صياغة المحتوى المكتوب.",
+    costarT: "النبرة المستخدمة في الرد (رسمية، ودية، أكاديمية، تشجيعية...).",
+    costarA: "الجمهور والمستفيد النهائي المستهدف بالرسالة.",
+    costarR: "شكل وبنية المخرجات النهائية (جدول، نقاط، كود...).",
+    
+    crispeTitle: "إطار CRISPE",
+    crispeBadge: "يشمل 5 عناصر",
+    crispeC: "القدرة وتحديد الدور المطلوب من النموذج تبنيه بدقة.",
+    crispeR: "الرؤية المتعمقة أو الخلفية التأسيسية التي يحتاجها النموذج.",
+    crispeI: "بيان وتحديد المهمة الأساسية المراد إنجازها.",
+    crispeS: "الشخصية، النبرة، والأسلوب المتبع في كتابة المخرج.",
+    crispePE: "التجربة، توجيه الاختبار، أو تقديم أمثلة معيارية للاقتداء.",
+    
+    createTitle: "إطار CREATE الشامل",
+    createBadge: "النموذج المتكامل (6 أركان)",
+    createSub: "إطار عملي متكامل يجمع بين تمثيل الشخصية وتحديد الطلب والأمثلة والضوابط ونوع المخرج والإضافات:",
+    createCDesc: "الشخصية والدور المهني المطلوب تبنيه",
+    createCEx: "\"أنت مصمم مناهج تعليمية وخبير في البيداغوجيا النشطة.\"",
+    createRDesc: "الطلب والمهمة الأساسية المراد إنجازها",
+    createREx: "\"صمم سيناريو نشاط صفي تفاعلي مدته 20 دقيقة لدرس الاحتمالات.\"",
+    createEDesc: "أمثلة ونماذج محاكاة لتوجيه الأسلوب",
+    createEEx: "\"مثل: وضعية رمي قطعتي نقد لملاحظة الفضاء العيني بصرياً.\"",
+    createADesc: "القيود والتعديلات والضوابط الواجب مراعاتها",
+    createAEx: "\"بسيط، لا يتطلب أجهزة إلكترونية، وبلغة عربية فصيحة تناسب تلاميذ المتوسط.\"",
+    createTDesc: "نوع وهيئة المخرج النهائي",
+    createTEx: "\"على شكل جدول يتضمن: مرحلة النشاط، تعليمات الأستاذ، دور المتعلم، والوقت.\"",
+    createExDesc: "إضافات وملاحظات مساعدة وتكميلية",
+    createExEx: "\"أضف في النهاية سؤالاً تقويمياً سريعاً وملاحظة لتسيير الفروق الفردية.\"",
+    
+    goldenTitle: "ليس كل أمر يحتاج المكونات الستة جميعاً!",
+    goldenText: "<strong>المهمة والوضوح هما الجوهر؛</strong> فأمر مثل <em>«لخص هذا النص في 3 نقاط»</em> يُعد أمراً ممتازاً بلا دور ولا أمثلة. <br><strong>القاعدة:</strong> أضف مكوّناً فقط عندما يكون غيابه هو سبب النتيجة غير المرضية. أما المكوّنان الأكثر إهمالاً وأعلاهما مردوداً — فهما <strong>الصيغة (الشكل)</strong> و<strong>الأمثلة</strong>: تحديد الشكل بسطر واحد وإرفاق عيّنة واحدة، يرفعان جودة المخرج فوراً وبشكل حاسم.",
+    
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 03 - Leçon 02 : Éléments et Structures d'un Prompt Efficace (Le Cadre CREATE)",
+    backToLessons: "Retour à la liste des leçons",
+    headerBadge: "Chapitre 03 • Leçon 02",
+    headerTitle: "Structure et Éléments d'un Prompt Efficace",
+    headerSubtitle: "Guide méthodologique complet : des 5 couches fondamentales aux prompts pédagogiques clés et aux frameworks mondiaux (RICE, COSTAR, CRISPE, CREATE).",
+    
+    sec1Title: "Les Cinq Couches Fondamentales d'un Prompt Robuste",
+    sec1Lead: "Tout comme un plan d'ingénierie repose sur des strates interdépendantes, un prompt percutant est structuré autour de <strong>cinq piliers essentiels</strong>. L'omission d'une couche altère directement la précision et la pertinence du livrable.",
+    
+    layer1Title: "Rôle (Persona)",
+    layer1Desc: "Assignez l'identité d'expert que le modèle doit incarner pour calibrer son niveau de discours, son vocabulaire et sa perspective.",
+    layer1Sample: "« Agis en tant que conseiller pédagogique spécialisé dans les troubles d'apprentissage »",
+    
+    layer2Title: "Contexte",
+    layer2Desc: "Fournissez les paramètres situationnels clés : niveau scolaire, contraintes temporelles, prérequis et profil du public.",
+    layer2Sample: "« Une classe de 30 élèves en 3e primaire, dont quatre éprouvent des difficultés persistantes en lecture »",
+    
+    layer3Title: "Tâche (Consigne)",
+    layer3Desc: "Exprimez l'action par un verbe opératoire précis (concevoir, résumer, comparer, corriger). Une action claire prime sur une requête floue.",
+    layer3Sample: "« Propose trois activités courtes de remédiation pour renforcer la fluidité de lecture »",
+    
+    layer4Title: "Format de Sortie",
+    layer4Desc: "Spécifiez le gabarit attendu : tableau comparatif, liste à puces, fiche par étapes, script ou quota précis de mots.",
+    layer4Sample: "« Présente le résultat sous forme d'un tableau à trois colonnes : Activité, Objectif visé, Durée estimée »",
+    
+    layer5Title: "Contraintes & Règles",
+    layer5Desc: "Délimitez ce qui doit être respecté ou proscrit : registre de langue, tonalité, longueur ou contraintes matérielles réelles.",
+    layer5Sample: "« En français accessible, sans jargon psychopédagogique excessif »",
+    
+    sec2Title: "Prompts Clés en Main pour Tâches Pédagogiques Courantes",
+    p1Title: "1. Conception d'une Fiche de Cours",
+    p1Box: "« Agis comme un enseignant de <span class=\"tag\">[Discipline]</span> au niveau <span class=\"tag\">[Niveau]</span>. Conçois un plan de cours de <span class=\"tag\">[Durée]</span> portant sur <span class=\"tag\">[Thème]</span>. Les apprenants ont déjà assimilé <span class=\"tag\">[Prérequis]</span>. Structure la réponse en étapes numérotées avec l'objectif de chacune. Mobilise des exemples concrets et évite le jargon abstrait. »",
+    
+    p2Title: "2. Élaboration de Questions d'Évaluation",
+    p2Box: "« Agis en expert de l'évaluation docimologique. L'objectif est d'évaluer la compréhension de <span class=\"tag\">[Concept]</span> pour des apprenants de <span class=\"tag\">[Niveau]</span>. Propose 6 questions à difficulté graduée (facile, moyenne, avancée). Restitue-les dans un tableau : Question, Niveau taxonomique, Compétence ciblée. Proscris les questions de pure mémorisation passive. »",
+    
+    p3Title: "3. Vulgarisation d'un Concept Complexe",
+    p3Box: "« Agis comme un pédagogue expliquant une notion à un public novice. Vulgarise <span class=\"tag\">[Concept]</span> pour des élèves de <span class=\"tag\">[Niveau]</span> en un paragraphe synthétique. Utilise une analogie tirée de leur quotidien. Définis immédiatement tout terme technique employé. »",
+    
+    p4Title: "4. Feedback Constructif sur une Copie",
+    p4Box: "« Agis en tuteur bienveillant offrant une rétroaction constructive. Voici la réponse de l'élève : <span class=\"tag\">[Réponse]</span>. Identifie un point fort majeur et un point perfectible. Formule une piste concrète d'amélioration dans un ton stimulant, en 4 lignes maximum. »",
+    
+    sec3Title: "Frameworks de Prompting — Gabarits d'Ingénierie Cognitive",
+    thElement: "Composante",
+    thDesc: "Description & Fonction",
+    thSample: "Exemple d'Application",
+    thFunction: "Fonction & Rôle",
+    thDescription: "Description",
+    thPedagogicalEx: "Exemple Pédagogique Concret",
+    
+    riceTitle: "Framework RICE",
+    riceBadge: "4 Composantes Clés",
+    riceR: "Role (Rôle)",
+    riceRDesc: "Quelle identité adopter ?",
+    riceREx: "« Tu es un nutritionniste expert »",
+    riceI: "Instructions (Consignes)",
+    riceIDesc: "Quelle action réaliser précisément ?",
+    riceIEx: "« Élabore un plan de repas hebdomadaire »",
+    riceC: "Context (Contexte)",
+    riceCDesc: "Quel cadre situationnel appliquer ?",
+    riceCEx: "« Pour un athlète végétarien »",
+    riceE: "Examples (Exemples)",
+    riceEDesc: "Quel modèle de référence imiter ?",
+    riceEEx: "« Ex : Déjeuner : Flocons d'avoine au lait... »",
+    
+    costarTitle: "Framework COSTAR",
+    costarBadge: "6 Piliers Standards",
+    costarC: "Contexte de la requête et données préalables indispensables.",
+    costarO: "Objectif opérationnel clair et précis à accomplir.",
+    costarS: "Style et registre rédactionnel souhaités.",
+    costarT: "Tonalité éditoriale (formelle, encourageante, académique...).",
+    costarA: "Audience et profil des destinataires finaux du document.",
+    costarR: "Réponse attendue : format structurel (tableau, JSON, liste...).",
+    
+    crispeTitle: "Framework CRISPE",
+    crispeBadge: "5 Paliers Logiques",
+    crispeC: "Capacité et rôle précis à endosser par le système.",
+    crispeR: "Connaissances préalables et perspectives contextuelles requises.",
+    crispeI: "Énoncé explicite de la tâche principale à accomplir.",
+    crispeS: "Personnalité, ton et posture de communication.",
+    crispePE: "Expérimentation, directives de test ou exemples normatifs.",
+    
+    createTitle: "Framework Global CREATE",
+    createBadge: "Modèle Pédagogique Intégré (6 Piliers)",
+    createSub: "Un canevas systématique alliant posture d'expert, formulation de tâche, exemples de référence, contraintes et gabarits :",
+    createCDesc: "Personnage professionnel et posture d'expert requis",
+    createCEx: "« Tu es concepteur de programmes et spécialiste de la pédagogie active. »",
+    createRDesc: "Requête et consigne opérationnelle centrale",
+    createREx: "« Conçois le scénario d'une activité interactive de 20 minutes sur les probabilités. »",
+    createEDesc: "Exemples étalons guidant la production",
+    createEEx: "« Exemple : modéliser le lancer de deux pièces pour visualiser l'univers des possibles. »",
+    createADesc: "Ajustements, contraintes négatives et limites à respecter",
+    createAEx: "« Simple, sans support numérique requis, dans un français clair adapté au collège. »",
+    createTDesc: "Type et mise en page du livrable final",
+    createTEx: "« Sous forme de tableau : Phase, Consignes du professeur, Rôle des élèves, Durée. »",
+    createExDesc: "Extras : compléments et modules d'appoint",
+    createExEx: "« Ajoute une question flash d'auto-évaluation et un conseil de différenciation pédagogique. »",
+    
+    goldenTitle: "Tout prompt n'exige pas systématiquement les six composantes !",
+    goldenText: "<strong>La clarté de la tâche demeure le cœur fondamental :</strong> une requête concise telle que <em>« Résume ce texte en 3 points clés »</em> est irréprochable sans rôle préalable ni exemples.<br><strong>La règle méthodologique :</strong> n'ajoutez une composante que si son absence altère la qualité du résultat. Les deux leviers les plus sous-estimés et les plus rentables sont <strong>le format</strong> et <strong>les exemples (Few-Shot)</strong> : délimiter la structure en une ligne et injecter un échantillon élève instantanément la valeur de la réponse.",
+    
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 03 - Lesson 02: Elements & Architectures of Effective Prompts (The CREATE Framework)",
+    backToLessons: "Back to Lessons List",
+    headerBadge: "Chapter 03 • Lesson 02",
+    headerTitle: "Elements & Frameworks of Effective Prompts",
+    headerSubtitle: "A systematic blueprint: from the five foundational prompt layers to practical classroom templates and globally recognized frameworks (RICE, COSTAR, CRISPE, CREATE).",
+    
+    sec1Title: "The Five Core Layers of a Well-Architected Prompt",
+    sec1Lead: "Much like an architectural blueprint consists of interdependent layers, an effective prompt is constructed upon <strong>five foundational pillars</strong>. Missing any single layer increases the risk of vagueness and drift.",
+    
+    layer1Title: "Role (Persona)",
+    layer1Desc: "Assign the expert persona the model should adopt; this strictly calibrates its register, depth, and domain vocabulary.",
+    layer1Sample: "\"Act as an educational counselor specializing in learning difficulties\"",
+    
+    layer2Title: "Context",
+    layer2Desc: "Supply necessary situational facts: target grade level, time constraints, prior learning, and student cohort background.",
+    layer2Sample: "\"The classroom has 30 grade-3 pupils, four of whom experience noticeable reading fluency hurdles\"",
+    
+    layer3Title: "Task (Instruction)",
+    layer3Desc: "State the target action using an unequivocal action verb (design, summarize, compare, evaluate). A single clear verb beats an ambiguous prompt.",
+    layer3Sample: "\"Propose three brief remedial activities to improve oral reading fluency\"",
+    
+    layer4Title: "Format (Output Schema)",
+    layer4Desc: "Dictate the expected structure: structured table, bulleted points, phased plan, dialogue script, or precise word boundaries.",
+    layer4Sample: "\"Present the output as a 3-column table: Activity Name, Pedagogical Goal, Estimated Time\"",
+    
+    layer5Title: "Constraints (Guardrails)",
+    layer5Desc: "Set boundaries on what to include or avoid: language register, tone, brevity, or environmental resource limits.",
+    layer5Sample: "\"Use plain language; avoid overly academic cognitive-psychology jargon\"",
+    
+    sec2Title: "Turnkey Prompt Templates for Common Pedagogical Tasks",
+    p1Title: "1. Lesson Plan Construction",
+    p1Box: "\"Act as a <span class=\"tag\">[Subject]</span> teacher for <span class=\"tag\">[Grade Level]</span>. Design a lesson plan lasting <span class=\"tag\">[Duration]</span> on <span class=\"tag\">[Topic]</span>. Pupils previously covered <span class=\"tag\">[Prior Knowledge]</span>. Present the output in numbered phases with explicit learning goals for each. Include contextual examples and avoid convoluted academic jargon.\"",
+    
+    p2Title: "2. Assessment Question Design",
+    p2Box: "\"Act as an expert in educational assessment. The goal is to evaluate pupils' mastery of <span class=\"tag\">[Concept]</span> in <span class=\"tag\">[Grade Level]</span>. Formulate 6 questions with graduated difficulty (easy, medium, challenging). Format as a table: Question, Cognitive Level, Assessed Competency. Exclude rote recall questions.\"",
+    
+    p3Title: "3. Simplifying Complex Concepts",
+    p3Box: "\"Act as an instructor explaining a concept to learners encountering it for the first time. Demystify <span class=\"tag\">[Concept]</span> for students in <span class=\"tag\">[Grade Level]</span> in a single coherent paragraph. Use a single everyday analogy. Define any technical term immediately.\"",
+    
+    p4Title: "4. Constructive Feedback on Student Work",
+    p4Box: "\"Act as a supportive educator offering formative feedback. Here is the pupil's submission: <span class=\"tag\">[Response]</span>. Identify one key strength and one specific area for growth. Suggest one actionable next step in an encouraging tone, under 4 lines.\"",
+    
+    sec3Title: "Prompting Frameworks — Mental Models for Prompt Design",
+    thElement: "Element",
+    thDesc: "Description & Directive",
+    thSample: "Applied Example",
+    thFunction: "Function & Meaning",
+    thDescription: "Description",
+    thPedagogicalEx: "Illustrative Teaching Application",
+    
+    riceTitle: "RICE Framework",
+    riceBadge: "4 Core Elements",
+    riceR: "Role",
+    riceRDesc: "Who should the model represent?",
+    riceREx: "\"You are an expert nutritionist\"",
+    riceI: "Instructions",
+    riceIDesc: "What exact task must it execute?",
+    riceIEx: "\"Draft a 7-day balanced meal plan\"",
+    riceC: "Context",
+    riceCDesc: "What background facts are crucial?",
+    riceCEx: "\"For an active vegetarian athlete\"",
+    riceE: "Examples",
+    riceEDesc: "What pattern should it mirror?",
+    riceEEx: "\"e.g., Breakfast: Oatmeal with almond milk...\"",
+    
+    costarTitle: "COSTAR Framework",
+    costarBadge: "6 Standard Pillars",
+    costarC: "Background context and situational baseline.",
+    costarO: "Specific, measurable goal the prompt aims to accomplish.",
+    costarS: "Stylistic characteristics and writing register.",
+    costarT: "Editorial tone (formal, empathetic, scholarly, inspiring).",
+    costarA: "Target audience receiving or reviewing the output.",
+    costarR: "Response format and architectural schema (table, bullets, code).",
+    
+    crispeTitle: "CRISPE Framework",
+    crispeBadge: "5 Logical Steps",
+    crispeC: "Capacity and defined persona to steer the model's stance.",
+    crispeR: "Insightful context and underlying foundational scope.",
+    crispeI: "Explicit task statement and operational directives.",
+    crispeS: "Personality, demeanor, and behavioral tone.",
+    crispePE: "Experimentation prompts, test scenarios, or reference examples.",
+    
+    createTitle: "Comprehensive CREATE Framework",
+    createBadge: "Unified Pedagogical Model (6 Pillars)",
+    createSub: "An actionable model uniting persona, task statement, few-shot examples, constraints, format schemas, and supplementary instructions:",
+    createCDesc: "Character and professional perspective to adopt",
+    createCEx: "\"You are an instructional designer and active learning specialist.\"",
+    createRDesc: "Core pedagogical request and deliverables",
+    createREx: "\"Design a 20-minute interactive classroom activity scenario for probability.\"",
+    createEDesc: "Reference examples and few-shot formatting patterns",
+    createEEx: "\"e.g., A coin-flipping experiment to intuitively map sample spaces.\"",
+    createADesc: "Adjustments, constraints, and negative prompt conditions",
+    createAEx: "\"Low-tech, accessible vocabulary tailored to middle-school learners.\"",
+    createTDesc: "Type and structure of output presentation",
+    createTEx: "\"As a structured table: Activity Phase, Teacher Prompts, Student Role, Duration.\"",
+    createExDesc: "Extras, extension tasks, and supplementary rubrics",
+    createExEx: "\"Append an exit-ticket question and one tip for differentiated instruction.\"",
+    
+    goldenTitle: "Not every prompt requires all six components!",
+    goldenText: "<strong>Clarity of the core task remains fundamental:</strong> A brief command like <em>\"Summarize this article in 3 bullet points\"</em> is exceptional without assigning a persona or providing samples.<br><strong>The Core Principle:</strong> Only introduce an element if its omission compromises output fidelity. The two most neglected yet highest-ROI components are <strong>Format</strong> and <strong>Examples (Few-Shot)</strong>: dictating the layout in one line and providing a single sample immediately elevates output caliber.",
+    
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      // Use innerHTML for keys containing formatting tags (strong, span.tag, em, etc.)
+      if (['sec1Lead', 'goldenText', 'p1Box', 'p2Box', 'p3Box', 'p4Box', 'riceR', 'riceI', 'riceC', 'riceE'].includes(key)) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Update active state on language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Persist language choice
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language or fallback to Arabic
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
 </body>
 </html>

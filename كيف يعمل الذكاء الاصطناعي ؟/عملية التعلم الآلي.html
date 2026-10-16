@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الدرس 02: عملية التعلم الآلي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --danger: #e53e3e;
+    --warning: #dd6b20;
+    --success: #38a169;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
+  }
+  
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.25);
+    position: relative;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-weight: 400;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 35px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .section-title .icon {
+    width: 38px;
+    height: 38px;
+    background: var(--light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--secondary);
+    flex-shrink: 0;
+  }
+
+  /* Grid Layouts */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+  }
+
+  /* Generic Card */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(26, 54, 93, 0.08);
+  }
+
+  /* Steps Component */
+  .step-card {
+    position: relative;
+    border-top: 4px solid var(--secondary);
+  }
+
+  .step-number {
+    position: absolute;
+    top: -15px;
+    inset-inline-end: 20px;
+    background: var(--secondary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(43, 108, 176, 0.3);
+  }
+
+  .step-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+
+  .step-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* Training Cycle Box */
+  .cycle-box {
+    background: linear-gradient(to inline-end, #ffffff, var(--light));
+    border-inline-start: 4px solid var(--primary);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+  }
+
+  .cycle-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .cycle-list li {
+    background: var(--card);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .cycle-list li i {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* Pipeline Workflow */
+  .pipeline-container {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 25px 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+    overflow-x: auto;
+  }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 700px;
+    gap: 10px;
+  }
+
+  .pipeline-node {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.95rem;
+  }
+
+  .pipeline-node i {
+    display: block;
+    font-size: 1.4rem;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+
+  .pipeline-arrow {
+    color: var(--accent);
+    font-size: 1.2rem;
+  }
+
+  /* Examples & Callouts */
+  .example-card {
+    background: #f8fafc;
+    border-inline-start: 4px solid var(--accent);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .example-card h4 {
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Limitations / Warning Cards */
+  .warning-card {
+    border-top: 4px solid var(--danger);
+  }
+
+  .warning-card h3 {
+    color: var(--danger);
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .notice-banner {
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #9b2c2c;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .notice-banner i {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  /* Table Style for Learning Domains */
+  .domain-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+    text-align: start;
+  }
+
+  .domain-table th {
+    background: var(--primary);
+    color: white;
+    padding: 14px 18px;
+    font-weight: 700;
+  }
+
+  .domain-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .domain-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .domain-table tr:hover td {
+    background-color: var(--light);
+  }
+
+  .domain-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    background: var(--light);
+    color: var(--secondary);
+    border-radius: 20px;
+    font-weight: 700;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 20px 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.7rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 15px; }
+    .pipeline { min-width: 100%; flex-direction: column; }
+    .pipeline-arrow { transform: rotate(90deg); margin: 6px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 02.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة لفهرس الفصل</span>
+    </a>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 02 • الدرس 02</span>
+    <h1 data-i18n="headerTitle">كيف تتعلم الآلة؟ (عملية التعلم الآلي)</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">فهم الآلية الإحصائية التي تبني بها النماذج الذكية معرفتها، دورة التدريب، وماذا تتعلم حقاً عبر النصوص والصور والأصوات.</div>
+  </div>
+
+  <!-- Section 1: 4 Steps of Machine Learning -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-list-ol"></i></span>
+    <span data-i18n="sec1Title">خطوات تعلم الآلة (المراحل الأربعة)</span>
+  </div>
+
+  <div class="grid-4">
+    <!-- Step 1 -->
+    <div class="card step-card">
+      <div class="step-number">1</div>
+      <h3 class="step-title" data-i18n="s1Title">جمع البيانات</h3>
+      <p class="step-desc" data-i18n="s1Desc">يتم توفير كمية ضخمة ومتنوعة من البيانات للنموذج لتشكل قاعدة التعلم والتدريب.</p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="card step-card">
+      <div class="step-number">2</div>
+      <h3 class="step-title" data-i18n="s2Title">تحليل البيانات</h3>
+      <p class="step-desc" data-i18n="s2Desc">يبحث النموذج في البيانات عن العلاقات الخفية والروابط والأنماط الإحصائية المتكررة.</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="card step-card">
+      <div class="step-number">3</div>
+      <h3 class="step-title" data-i18n="s3Title">بناء نموذج إحصائي</h3>
+      <p class="step-desc" data-i18n="s3Desc">يتم إنشاء نموذج رياضي رقمي يمثل المعرفة المستخلصة والمستخرجة من البيانات.</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="card step-card">
+      <div class="step-number">4</div>
+      <h3 class="step-title" data-i18n="s4Title">التنبؤ أو التوليد</h3>
+      <p class="step-desc" data-i18n="s4Desc">يستخدم النموذج المعرفة المكتسبة لإنتاج مخرجات وتنبؤات ومحتوى جديد كلياً.</p>
+    </div>
+  </div>
+
+  <!-- Section 2: Statistical Mechanism & Training -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-chart-line"></i></span>
+    <span data-i18n="sec2Title">الآلية الإحصائية ومفهوم التدريب (Training)</span>
+  </div>
+
+  <div class="grid-2">
+    <!-- Statistical Mechanism -->
+    <div class="card">
+      <h3 style="color: var(--primary); margin-bottom: 12px; font-size: 1.2rem;">
+        <i class="fa-solid fa-calculator" style="color: var(--secondary); margin-inline-end: 8px;"></i>
+        <span data-i18n="mathLearnTitle">التعلم كمعادلة احتمالات</span>
+      </h3>
+      <p style="color: var(--text); margin-bottom: 12px;" data-i18n="mathLearnDesc">
+        يعتمد التعلم الآلي بشكل جوهري على <strong>الإحصاء والاحتمالات</strong>. الهدف الأساسي هو <strong>إيجاد الأنماط الأكثر احتمالاً</strong> داخل البيانات المعطاة.
+      </p>
+      <div class="example-card">
+        <h4><i class="fa-solid fa-lightbulb"></i> <span data-i18n="catExTitle">مثال تطبيقي:</span></h4>
+        <p data-i18n="catExDesc">إذا ظهرت كلمة <strong>"قطة"</strong> كثيراً مع صورة حيوان بأذن مدببة وشوارب، يتعلم النموذج أن هذا النمط يمثل غالباً "قطة"، وعند رؤية صورة جديدة مشابهة يستطيع تصنيفها والتعرف عليها بدقة.</p>
+      </div>
+    </div>
+
+    <!-- Training Loop -->
+    <div class="card">
+      <h3 style="color: var(--primary); margin-bottom: 12px; font-size: 1.2rem;">
+        <i class="fa-solid fa-rotate" style="color: var(--accent); margin-inline-end: 8px;"></i>
+        <span data-i18n="trainLoopTitle">ماذا يحدث أثناء مرحلة التدريب؟</span>
+      </h3>
+      <p style="color: var(--text); margin-bottom: 10px;" data-i18n="trainLoopDesc">
+        التدريب هو المرحلة الفعلية التي يمر بها النموذج لبناء قدراته، ويبدأ بتخمين عشوائي ثم يكرر الدورة التالية آلاف أو ملايين المرات:
+      </p>
+      <ul class="cycle-list" style="grid-template-columns: 1fr 1fr;">
+        <li><i class="fa-solid fa-bullseye"></i> <span data-i18n="loop1">إجراء التوقعات</span></li>
+        <li><i class="fa-solid fa-calculator"></i> <span data-i18n="loop2">حساب نسبة الخطأ</span></li>
+        <li><i class="fa-solid fa-sliders"></i> <span data-i18n="loop3">تصحيح الأوزان ذاتياً</span></li>
+        <li><i class="fa-solid fa-arrows-spin"></i> <span data-i18n="loop4">إعادة المحاولة والتحسين</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Spam Example Box -->
+  <div class="cycle-box">
+    <h4 style="color: var(--primary); font-size: 1.1rem; margin-bottom: 8px;">
+      <i class="fa-solid fa-envelope-open-text" style="color: var(--secondary); margin-inline-end: 8px;"></i>
+      <span data-i18n="spamTitle">كيف نكتشف البريد المزعج (Spam)؟</span>
+    </h4>
+    <p style="color: var(--text); font-size: 0.95rem;" data-i18n="spamDesc">
+      بدلاً من أن يكتب المبرمج آلاف القواعد اليدوية الصارمة، نقوم بتغذية النموذج بآلاف الرسائل المزعجة المصنفة مسبقاً، فتكتشف الآلة بمفردها أي الكلمات والتراكيب والأنماط تدل إحصائياً على الاحتيال أو الإزعاج.
+    </p>
+  </div>
+
+  <!-- Section 3: Modalities Learning -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+    <span data-i18n="sec3Title">ماذا يتعلم النموذج في كل مجال؟</span>
+  </div>
+
+  <table class="domain-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;" data-i18n="thDomain">المجال</th>
+        <th data-i18n="thWhatLearned">ما يتعلمه النموذج إحصائياً</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <span class="domain-badge"><i class="fa-solid fa-align-right"></i> <span data-i18n="domText">النصوص</span></span>
+        </td>
+        <td data-i18n="domTextDesc">
+          <strong>العلاقات بين الكلمات والجمل:</strong> إذا تدرب على ملايين النصوص يتعلم ترتيب الكلمات، القواعد اللغوية، والعلاقات الدلالية (مثال: عند كتابة <em>"الذكاء الاصطناعي هو..."</em> يستطيع إكمال العبارة استناداً إلى النمط الأكثر شيوعاً وصحة).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="domain-badge"><i class="fa-solid fa-image"></i> <span data-i18n="domImages">الصور</span></span>
+        </td>
+        <td data-i18n="domImagesDesc">
+          <strong>الأشكال والألوان والأنماط البصرية:</strong> تمييز الحواف، التدرجات اللونية، والتركيبات (مثل: أذن مدببة + شوارب = غالباً قطة).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="domain-badge"><i class="fa-solid fa-volume-high"></i> <span data-i18n="domAudio">الصوت</span></span>
+        </td>
+        <td data-i18n="domAudioDesc">
+          <strong>النغمات والأصوات والترددات:</strong> تفكيك الموجات الصوتية، مخارج الحروف، ونبرة الكلمات لتحويل الكلام المنطوق إلى نصوص أو العكس.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pipeline Flow -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+    <span data-i18n="secPipeTitle">مخطط عملية التعلم الآلي والذكاء التوليدي</span>
+  </div>
+
+  <div class="pipeline-container">
+    <div class="pipeline">
+      <div class="pipeline-node">
+        <i class="fa-solid fa-database"></i>
+        <span data-i18n="pipeStep1">1. البيانات</span>
+      </div>
+      <i class="fa-solid fa-chevron-left pipeline-arrow"></i>
+      
+      <div class="pipeline-node">
+        <i class="fa-solid fa-magnifying-glass-chart"></i>
+        <span data-i18n="pipeStep2">2. استخراج الأنماط</span>
+      </div>
+      <i class="fa-solid fa-chevron-left pipeline-arrow"></i>
+
+      <div class="pipeline-node">
+        <i class="fa-solid fa-square-root-variable"></i>
+        <span data-i18n="pipeStep3">3. بناء نموذج إحصائي</span>
+      </div>
+      <i class="fa-solid fa-chevron-left pipeline-arrow"></i>
+
+      <div class="pipeline-node">
+        <i class="fa-solid fa-brain"></i>
+        <span data-i18n="pipeStep4">4. اكتساب المعرفة</span>
+      </div>
+      <i class="fa-solid fa-chevron-left pipeline-arrow"></i>
+
+      <div class="pipeline-node" style="border-color: var(--accent); background: #fffaf0;">
+        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent);"></i>
+        <span data-i18n="pipeStep5">5. إنتاج المخرجات والتوليد</span>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-bottom: 30px; font-size: 0.95rem; color: var(--muted); background: white; padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border);" data-i18n="pipeNote">
+    <strong style="color: var(--primary);">ملاحظة هامة:</strong> الذكاء الاصطناعي التوليدي (Generative AI) يستثمر هذه المعرفة الإحصائية المكتسبة ليس فقط للتعرف على البيانات وتصنيفها، بل <strong>لإنشاء وتوليد محتوى جديد تماماً</strong> يحاكي النصوص أو الصور أو الأصوات التي تدرب عليها.
+  </p>
+
+  <!-- Section 4: Model Limits & Myths -->
+  <div class="section-title">
+    <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+    <span data-i18n="sec4Title">حقيقة النموذج وحدوده: "النموذج ليس عاقلاً!"</span>
+  </div>
+
+  <div class="notice-banner">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span data-i18n="noticeBanner">النموذج يقلد الأنماط الإحصائية الموجودة في بيانات التدريب فقط، فهو <strong>لا يفهم المعنى الحقيقي</strong> و<strong>لا يملك نية أو إدراكاً</strong>.</span>
+  </div>
+
+  <div class="grid-3">
+    <!-- Hallucination -->
+    <div class="card warning-card">
+      <h3><i class="fa-solid fa-ghost"></i> <span data-i18n="w1Title">الهلوسة (Hallucination)</span></h3>
+      <p style="font-size: 0.95rem; color: var(--text);" data-i18n="w1Desc">
+        ينتج النموذج معلومة تبدو مقنعة ومصاغة بأسلوب احترافي ممتاز لكنها خاطئة تماماً أو مخترعة، لأن النمط <strong>«المقنع لغوياً»</strong> ليس بالضرورة <strong>«صحيحاً واقعياً»</strong>.
+      </p>
+    </div>
+
+    <!-- Bias -->
+    <div class="card warning-card">
+      <h3><i class="fa-solid fa-scale-unbalanced"></i> <span data-i18n="w2Title">التحيز (Bias)</span></h3>
+      <p style="font-size: 0.95rem; color: var(--text);" data-i18n="w2Desc">
+        إن كانت بيانات التدريب تحتوي على أفكار نمطية أو غير متوازنة، فسيتعلم النموذج هذا التحيز البشري ويعيد إنتاجه، بل قد يضخمه بصورة أوسع وأعمق في مخرجاته.
+      </p>
+    </div>
+
+    <!-- Temporal Freeze -->
+    <div class="card warning-card">
+      <h3><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="w3Title">الجمود الزمني</span></h3>
+      <p style="font-size: 0.95rem; color: var(--text);" data-i18n="w3Desc">
+        معرفة النموذج متوقفة بدقة عند تاريخ ووقت آخر حزمة بيانات تم تدريبه عليها؛ ولا يعلم تلقائياً بالأحداث أو التطورات التي جرت بعد تلك اللحظة إلا بتحديثه وتغذيته من جديد.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027  
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس 02: عملية التعلم الآلي",
+    backToSyllabus: "العودة لفهرس الفصل",
+    headerBadge: "الفصل 02 • الدرس 02",
+    headerTitle: "كيف تتعلم الآلة؟ (عملية التعلم الآلي)",
+    headerSubtitle: "فهم الآلية الإحصائية التي تبني بها النماذج الذكية معرفتها، دورة التدريب، وماذا تتعلم حقاً عبر النصوص والصور والأصوات.",
+    sec1Title: "خطوات تعلم الآلة (المراحل الأربعة)",
+    s1Title: "جمع البيانات",
+    s1Desc: "يتم توفير كمية ضخمة ومتنوعة من البيانات للنموذج لتشكل قاعدة التعلم والتدريب.",
+    s2Title: "تحليل البيانات",
+    s2Desc: "يبحث النموذج في البيانات عن العلاقات الخفية والروابط والأنماط الإحصائية المتكررة.",
+    s3Title: "بناء نموذج إحصائي",
+    s3Desc: "يتم إنشاء نموذج رياضي رقمي يمثل المعرفة المستخلصة والمستخرجة من البيانات.",
+    s4Title: "التنبؤ أو التوليد",
+    s4Desc: "يستخدم النموذج المعرفة المكتسبة لإنتاج مخرجات وتنبؤات ومحتوى جديد كلياً.",
+    sec2Title: "الآلية الإحصائية ومفهوم التدريب (Training)",
+    mathLearnTitle: "التعلم كمعادلة احتمالات",
+    mathLearnDesc: "يعتمد التعلم الآلي بشكل جوهري على <strong>الإحصاء والاحتمالات</strong>. الهدف الأساسي هو <strong>إيجاد الأنماط الأكثر احتمالاً</strong> داخل البيانات المعطاة.",
+    catExTitle: "مثال تطبيقي:",
+    catExDesc: "إذا ظهرت كلمة <strong>\"قطة\"</strong> كثيراً مع صورة حيوان بأذن مدببة وشوارب، يتعلم النموذج أن هذا النمط يمثل غالباً \"قطة\"، وعند رؤية صورة جديدة مشابهة يستطيع تصنيفها والتعرف عليها بدقة.",
+    trainLoopTitle: "ماذا يحدث أثناء مرحلة التدريب؟",
+    trainLoopDesc: "التدريب هو المرحلة الفعلية التي يمر بها النموذج لبناء قدراته، ويبدأ بتخمين عشوائي ثم يكرر الدورة التالية آلاف أو ملايين المرات:",
+    loop1: "إجراء التوقعات",
+    loop2: "حساب نسبة الخطأ",
+    loop3: "تصحيح الأوزان ذاتياً",
+    loop4: "إعادة المحاولة والتحسين",
+    spamTitle: "كيف نكتشف البريد المزعج (Spam)؟",
+    spamDesc: "بدلاً من أن يكتب المبرمج آلاف القواعد اليدوية الصارمة، نقوم بتغذية النموذج بآلاف الرسائل المزعجة المصنفة مسبقاً، فتكتشف الآلة بمفردها أي الكلمات والتراكيب والأنماط تدل إحصائياً على الاحتيال أو الإزعاج.",
+    sec3Title: "ماذا يتعلم النموذج في كل مجال؟",
+    thDomain: "المجال",
+    thWhatLearned: "ما يتعلمه النموذج إحصائياً",
+    domText: "النصوص",
+    domTextDesc: "<strong>العلاقات بين الكلمات والجمل:</strong> إذا تدرب على ملايين النصوص يتعلم ترتيب الكلمات، القواعد اللغوية، والعلاقات الدلالية (مثال: عند كتابة <em>\"الذكاء الاصطناعي هو...\"</em> يستطيع إكمال العبارة استناداً إلى النمط الأكثر شيوعاً وصحة).",
+    domImages: "الصور",
+    domImagesDesc: "<strong>الأشكال والألوان والأنماط البصرية:</strong> تمييز الحواف، التدرجات اللونية، والتركيبات (مثل: أذن مدببة + شوارب = غالباً قطة).",
+    domAudio: "الصوت",
+    domAudioDesc: "<strong>النغمات والأصوات والترددات:</strong> تفكيك الموجات الصوتية، مخارج الحروف، ونبرة الكلمات لتحويل الكلام المنطوق إلى نصوص أو العكس.",
+    secPipeTitle: "مخطط عملية التعلم الآلي والذكاء التوليدي",
+    pipeStep1: "1. البيانات",
+    pipeStep2: "2. استخراج الأنماط",
+    pipeStep3: "3. بناء نموذج إحصائي",
+    pipeStep4: "4. اكتساب المعرفة",
+    pipeStep5: "5. إنتاج المخرجات والتوليد",
+    pipeNote: "<strong style=\"color: var(--primary);\">ملاحظة هامة:</strong> الذكاء الاصطناعي التوليدي (Generative AI) يستثمر هذه المعرفة الإحصائية المكتسبة ليس فقط للتعرف على البيانات وتصنيفها، بل <strong>لإنشاء وتوليد محتوى جديد تماماً</strong> يحاكي النصوص أو الصور أو الأصوات التي تدرب عليها.",
+    sec4Title: "حقيقة النموذج وحدوده: \"النموذج ليس عاقلاً!\"",
+    noticeBanner: "النموذج يقلد الأنماط الإحصائية الموجودة في بيانات التدريب فقط، فهو <strong>لا يفهم المعنى الحقيقي</strong> و<strong>لا يملك نية أو إدراكاً</strong>.",
+    w1Title: "الهلوسة (Hallucination)",
+    w1Desc: "ينتج النموذج معلومة تبدو مقنعة ومصاغة بأسلوب احترافي ممتاز لكنها خاطئة تماماً أو مخترعة، لأن النمط <strong>«المقنع لغوياً»</strong> ليس بالضرورة <strong>«صحيحاً واقعياً»</strong>.",
+    w2Title: "التحيز (Bias)",
+    w2Desc: "إن كانت بيانات التدريب تحتوي على أفكار نمطية أو غير متوازنة، فسيتعلم النموذج هذا التحيز البشري ويعيد إنتاجه، بل قد يضخمه بصورة أوسع وأعمق في مخرجاته.",
+    w3Title: "الجمود الزمني",
+    w3Desc: "معرفة النموذج متوقفة بدقة عند تاريخ ووقت آخر حزمة بيانات تم تدريبه عليها؛ ولا يعلم تلقائياً بالأحداث أو التطورات التي جرت بعد تلك اللحظة إلا بتحديثه وتغذيته من جديد.",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Leçon 02 : Le Processus d'Apprentissage Automatique",
+    backToSyllabus: "Retour au programme",
+    headerBadge: "Chapitre 02 • Leçon 02",
+    headerTitle: "Comment apprend la machine ? (Processus de Machine Learning)",
+    headerSubtitle: "Comprendre les mécanismes probabilistes par lesquels les modèles forgent leurs inférences, la boucle d'optimisation et la modélisation multi-modale.",
+    sec1Title: "Les 4 Piliers du Processus d'Apprentissage",
+    s1Title: "Collecte de données",
+    s1Desc: "Constitution d'un corpus massif et diversifié servant de substrat empirique.",
+    s2Title: "Extraction de régularités",
+    s2Desc: "L'algorithme explore les structures latentes et corrélations statistiques récurrentes.",
+    s3Title: "Modélisation probabiliste",
+    s3Desc: "Formulation d'un réseau mathématique formalisant les connaissances extraites.",
+    s4Title: "Inférence & Génération",
+    s4Desc: "Mobilisation des poids synaptiques pour prédire, classer ou générer des contenus inédits.",
+    sec2Title: "Mécanique Statistique et Boucle d'Entraînement",
+    mathLearnTitle: "L'apprentissage comme équation de probabilités",
+    mathLearnDesc: "Le Machine Learning repose intrinsèquement sur la <strong>statistique inférentielle</strong>. Le but majeur est d'<strong>isoler les motifs les plus plausibles</strong> au sein des distributions de données.",
+    catExTitle: "Illustration appliquée :",
+    catExDesc: "Si l'étiquette <strong>« chat »</strong> coïncide fréquemment avec des motifs visuels d'oreilles pointues et de moustaches, le réseau associe cette géométrie au concept, lui permettant d'identifier un nouveau félin inconnu avec fiabilité.",
+    trainLoopTitle: "Que se passe-t-il durant l'entraînement ?",
+    trainLoopDesc: "L'optimisation démarre avec des poids aléatoires, puis itère le cycle d'apprentissage suivant à des milliards de reprises :",
+    loop1: "Émission d'hypothèses",
+    loop2: "Calcul de l'erreur résiduelle",
+    loop3: "Rétropropagation du gradient",
+    loop4: "Ajustement & itération",
+    spamTitle: "Exemple concret : Détection de Spam",
+    spamDesc: "Au lieu d'édicter des milliers de règles heuristiques rigides, on soumet au modèle des corpus de courriels annotés. L'algorithme extrait de lui-même les combinaisons lexicales signalant statistiquement un message malveillant.",
+    sec3Title: "Représentations Acquises selon les Modalités",
+    thDomain: "Modalité",
+    thWhatLearned: "Modélisation statistique extraite",
+    domText: "Données Textuelles",
+    domTextDesc: "<strong>Syntaxe et sémantique distributionnelle :</strong> L'ingestion de milliards de tokens permet d'induire la grammaire et les proximités sémantiques (ex. : face à <em>« L'intelligence artificielle est... »</em>, il anticipe les continuations statistiquement cohérentes).",
+    domImages: "Imagerie Numérique",
+    domImagesDesc: "<strong>Primitives graphiques et géométrie :</strong> Détection de contours, gradients de texture, cartographie spatiale (ex. : oreilles triangulaires + museau = motif félin).",
+    domAudio: "Signal Sonore",
+    domAudioDesc: "<strong>Spectrogrammes et phonèmes :</strong> Décomposition fréquentielle des formants, articulation et prosodie pour convertir la voix en texte ou inversement.",
+    secPipeTitle: "Pipeline de l'Apprentissage Machine à l'IA Générative",
+    pipeStep1: "1. Données brutes",
+    pipeStep2: "2. Détection de patterns",
+    pipeStep3: "3. Modèle statistique",
+    pipeStep4: "4. Capital cognitif",
+    pipeStep5: "5. Génération & Inférence",
+    pipeNote: "<strong style=\"color: var(--primary);\">Remarque fondamentale :</strong> L'IA Générative ne se borne pas à reconnaître et trier des classes ; elle exploite cette cartographie probabiliste pour <strong>synthétiser des contenus totalement nouveaux</strong> (prose, visuels, voix) reproduisant le style appris.",
+    sec4Title: "Démystification : « Le modèle ne possède aucune conscience ! »",
+    noticeBanner: "Le modèle ne fait qu'extrapoler des corrélations probabilistes issues de son corpus. <strong>Il est dénué de compréhension intentionnelle, d'affect et de discernement vécue.</strong>",
+    w1Title: "Hallucinations Factuelles",
+    w1Desc: "L'agent émet des affirmations formulées avec une impeccable autorité stylistique, mais rigoureusement fausses, car la <strong>« cohérence formelle »</strong> ne garantit pas la <strong>« conformité au réel »</strong>.",
+    w2Title: "Biais Algorithmiques",
+    w2Desc: "Si les corpus comportent des stéréotypes sociologiques, le réseau assimilera ces distorsions humaines et les reproduira, risquant d'amplifier les préjugés.",
+    w3Title: "Gel Temporel (Cutoff)",
+    w3Desc: "Les connaissances internes du modèle sont circonscrites à la date butoir de son dernier pré-entraînement ; il ignore spontanément les découvertes survenues après son figeage.",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Lesson 02: Machine Learning Process",
+    backToSyllabus: "Back to Syllabus",
+    headerBadge: "Chapter 02 • Lesson 02",
+    headerTitle: "How Does the Machine Learn? (The ML Process)",
+    headerSubtitle: "Demystifying the probabilistic mechanics of neural learning, the optimization cycle, and feature learning across text, vision, and acoustics.",
+    sec1Title: "The 4 Core Stages of Machine Learning",
+    s1Title: "Data Collection",
+    s1Desc: "Feeding massive, diverse datasets to establish the foundational training corpus.",
+    s2Title: "Pattern Extraction",
+    s2Desc: "The system scans data to unearth latent structures, dependencies, and statistical patterns.",
+    s3Title: "Statistical Modeling",
+    s3Desc: "A computational mathematical representation maps the learned relational dependencies.",
+    s4Title: "Inference & Generation",
+    s4Desc: "The model deploys its internalized weights to calculate predictions or synthesize novel outputs.",
+    sec2Title: "Statistical Foundations & The Training Optimization Loop",
+    mathLearnTitle: "Learning as Probabilistic Inference",
+    mathLearnDesc: "Machine learning is fundamentally grounded in <strong>probability and statistical optimization</strong>. The driving objective is to <strong>identify the highest-likelihood patterns</strong> within the training distribution.",
+    catExTitle: "Concrete Example:",
+    catExDesc: "If the token <strong>'cat'</strong> co-occurs consistently with imagery showing pointed ears and whiskers, the model maps this feature constellation to the label 'cat', classifying unseen feline images accurately.",
+    trainLoopTitle: "What Occurs During Active Training?",
+    trainLoopDesc: "Training is the iterative refinement phase. Starting with randomized synaptic weights, the network runs this optimization loop billions of times:",
+    loop1: "Generate Predictions",
+    loop2: "Compute Loss Function",
+    loop3: "Backpropagate Gradients",
+    loop4: "Update Weights & Iterate",
+    spamTitle: "Applied Case: Spam Email Classification",
+    spamDesc: "Instead of writing thousands of brittle if-then heuristic rules, developers train the model on thousands of labeled spam emails. The algorithm independently discovers the lexical patterns denoting phishing or unsolicited messaging.",
+    sec3Title: "What Foundation Models Learn Across Modalities",
+    thDomain: "Modality",
+    thWhatLearned: "Statistically Extracted Representation",
+    domText: "Text & Language",
+    domTextDesc: "<strong>Syntactic and semantic distributions:</strong> By processing billions of passages, models internalize grammar, token hierarchies, and world concepts (e.g., prompting <em>'Artificial Intelligence is...'</em> triggers the most statistically salient continuation).",
+    domImages: "Computer Vision",
+    domImagesDesc: "<strong>Geometric and visual primitives:</strong> Parsing edges, lighting gradients, textures, and spatial hierarchies (e.g., pointed ears + whiskers = high probability of a cat).",
+    domAudio: "Acoustics & Speech",
+    domAudioDesc: "<strong>Acoustic frequencies and phonetics:</strong> Deconstructing audio spectrograms, vocal timbres, and pitches to transcribe speech into text or synthesize natural voice.",
+    secPipeTitle: "From Raw Data to Generative Synthesis Workflow",
+    pipeStep1: "1. Ingest Data",
+    pipeStep2: "2. Extract Patterns",
+    pipeStep3: "3. Statistical Model",
+    pipeStep4: "4. Knowledge Representation",
+    pipeStep5: "5. Generative Output",
+    pipeNote: "<strong style=\"color: var(--primary);\">Critical Insight:</strong> Generative AI leverages this internalized probabilistic structure not merely to classify static inputs, but to <strong>synthesize brand-new content</strong> (essays, photorealistic art, code) mirroring training distributions.",
+    sec4Title: "Model Truth & Limitations: 'The Model Possesses No Consciousness!'",
+    noticeBanner: "The model exclusively reproduces statistical distributions harvested from its training corpus. <strong>It has no genuine cognitive grasp, lived intent, or conscious reasoning.</strong>",
+    w1Title: "Hallucination",
+    w1Desc: "Generating statements that read with convincing authority but are entirely false, because <strong>'lexical fluency'</strong> does not inherently guarantee <strong>'factual veracity'</strong>.",
+    w2Title: "Algorithmic Bias",
+    w2Desc: "If training datasets encode human stereotypes, the model internalizes these prejudices and reproduces—or amplifies—them within downstream responses.",
+    w3Title: "Knowledge Cutoff",
+    w3Desc: "A model's knowledge ceases at the timestamp of its final training pass; it is unaware of subsequent real-world breakthroughs unless augmented with live retrieval tools.",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update localized text
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Adjust Back button arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Adjust pipeline workflow arrows
+  document.querySelectorAll('.pipeline-arrow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-chevron-left pipeline-arrow' : 'fa-solid fa-chevron-right pipeline-arrow';
+  });
+
+  // Update active state of language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all course pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الدرس الأول: الذكاء الاصطناعي التوليدي</title>
-<!-- استدعاء خط تجوال -->
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<!-- استدعاء مكتبة الأيقونات -->
+<title id="page-title">الدرس الأول: الذكاء الاصطناعي التوليدي</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
@@ -34,11 +34,59 @@
     color: var(--text);
     line-height: 1.8;
     padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin Typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
   
   .container {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
   }
   
   /* Header */
@@ -56,22 +104,24 @@
   .back-link {
     position: absolute;
     top: 20px;
-    right: 20px;
-    color: rgba(255, 255, 255, 0.8);
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: color 0.3s;
-    background: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    background: rgba(255,255,255,0.12);
     padding: 6px 16px;
     border-radius: 8px;
+    backdrop-filter: blur(4px);
   }
 
   .back-link:hover {
     color: white;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-2px);
   }
 
   .header-badge {
@@ -184,7 +234,7 @@
     font-size: 0.95rem;
     color: var(--muted);
     margin-bottom: 24px;
-    flex-grow: 1; /* يدفع الزر للأسفل دائماً */
+    flex-grow: 1;
   }
 
   .btn-open {
@@ -199,12 +249,13 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: background 0.3s;
+    transition: background 0.3s ease, transform 0.2s ease;
     width: 100%;
   }
 
   .btn-open:hover {
     background: var(--secondary);
+    transform: translateY(-2px);
   }
 
   /* Footer */
@@ -219,136 +270,326 @@
   /* Responsive */
   @media (max-width: 600px) {
     .header h1 { font-size: 1.8rem; }
-    .back-link { position: relative; display: inline-flex; top: 0; right: 0; margin-bottom: 20px;}
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 20px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <a href="../outline.html" class="back-link">
-      <i class="fa-solid fa-arrow-right"></i> العودة للبرنامج
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToSyllabus">العودة للبرنامج</span>
     </a>
-    <span class="header-badge">الفصل 01</span>
-    <h1>اكتشاف الذكاء الاصطناعي التوليدي</h1>
-    <div class="subtitle">استكشف أسس ومفاهيم الذكاء الاصطناعي التوليدي، وتعرف على قدراته، حدوده، وطرق استخدامه الأكاديمي المسؤول.</div>
+    <span class="header-badge" data-i18n="chapterBadge">الفصل 01</span>
+    <h1 data-i18n="headerTitle">اكتشاف الذكاء الاصطناعي التوليدي</h1>
+    <div class="subtitle" data-i18n="headerSubtitle">استكشف أسس ومفاهيم الذكاء الاصطناعي التوليدي، وتعرف على قدراته، حدوده، وطرق استخدامه الأكاديمي المسؤول.</div>
   </div>
 
-  <!-- عنوان القسم الأول (الدروس) -->
+  <!-- Section 1: Lessons -->
   <div class="section-title">
     <span class="icon">📖</span>
-    مواضيع ودروس الفصل
+    <span data-i18n="sectionLessons">مواضيع ودروس الفصل</span>
   </div>
 
-  <!-- شبكة الدروس -->
+  <!-- Lessons Grid -->
   <div class="lessons-grid">
-    <!-- الدرس 01 -->
+    <!-- Lesson 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-lightbulb"></i></div>
-      <div class="lesson-badge">الدرس 01</div>
-      <h3 class="lesson-title">مفهوم الذكاء الاصطناعي التوليدي</h3>
-      <p class="lesson-desc">تعرف على الأسس والمفاهيم التي يقوم عليها الذكاء التوليدي وكيف يختلف عن الخوارزميات التقليدية.</p>
+      <div class="lesson-badge" data-i18n="l1Badge">الدرس 01</div>
+      <h3 class="lesson-title" data-i18n="l1Title">مفهوم الذكاء الاصطناعي التوليدي</h3>
+      <p class="lesson-desc" data-i18n="l1Desc">تعرف على الأسس والمفاهيم التي يقوم عليها الذكاء التوليدي وكيف يختلف عن الخوارزميات التقليدية.</p>
       <a href="مفهوم الذكاء الاصطناعي التوليدي.html" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 02 -->
+    <!-- Lesson 02 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-microchip"></i></div>
-      <div class="lesson-badge">الدرس 02</div>
-      <h3 class="lesson-title">النماذج اللغوية الكبيرة (LLMs)</h3>
-      <p class="lesson-desc">اكتشف البنية التحتية للنماذج اللغوية الكبيرة، وكيفية تدريبها لفهم وإنتاج النصوص المعقدة.</p>
+      <div class="lesson-badge" data-i18n="l2Badge">الدرس 02</div>
+      <h3 class="lesson-title" data-i18n="l2Title">النماذج اللغوية الكبيرة (LLMs)</h3>
+      <p class="lesson-desc" data-i18n="l2Desc">اكتشف البنية التحتية للنماذج اللغوية الكبيرة، وكيفية تدريبها لفهم وإنتاج النصوص المعقدة.</p>
       <a href="النماذج اللغوية الكبيرة (LLMs).html" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 03 -->
+    <!-- Lesson 03 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-rocket"></i></div>
-      <div class="lesson-badge">الدرس 03</div>
-      <h3 class="lesson-title">القدرات والإمكانات</h3>
-      <p class="lesson-desc">استكشف ما يمكن لهذه النماذج فعله في مجالات توليد النصوص، التلخيص، والمساعدة في التحليل.</p>
+      <div class="lesson-badge" data-i18n="l3Badge">الدرس 03</div>
+      <h3 class="lesson-title" data-i18n="l3Title">القدرات والإمكانات</h3>
+      <p class="lesson-desc" data-i18n="l3Desc">استكشف ما يمكن لهذه النماذج فعله في مجالات توليد النصوص، التلخيص، والمساعدة في التحليل.</p>
       <a href="قدرات النماذج اللغوية الكبيرة وإمكاناتها التعليمية.html" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 04 -->
+    <!-- Lesson 04 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-ban"></i></div>
-      <div class="lesson-badge">الدرس 04</div>
-      <h3 class="lesson-title">الحدود والقيود</h3>
-      <p class="lesson-desc">تعرف على مكامن الضعف، بما في ذلك الانحياز، ونقص الفهم الحقيقي، والاعتماد على بيانات التدريب.</p>
+      <div class="lesson-badge" data-i18n="l4Badge">الدرس 04</div>
+      <h3 class="lesson-title" data-i18n="l4Title">الحدود والقيود</h3>
+      <p class="lesson-desc" data-i18n="l4Desc">تعرف على مكامن الضعف، بما في ذلك الانحياز، ونقص الفهم الحقيقي، والاعتماد على بيانات التدريب.</p>
       <a href="الحدود والقيود في النماذج اللغوية (LLMs).html" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 05 -->
+    <!-- Lesson 05 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-      <div class="lesson-badge">الدرس 05</div>
-      <h3 class="lesson-title">ظاهرة الهلوسة</h3>
-      <p class="lesson-desc">دراسة ظاهرة توليد معلومات خيالية (الهلوسة)، أسبابها التقنية، وكيفية اكتشافها والتعامل معها.</p>
+      <div class="lesson-badge" data-i18n="l5Badge">الدرس 05</div>
+      <h3 class="lesson-title" data-i18n="l5Title">ظاهرة الهلوسة</h3>
+      <p class="lesson-desc" data-i18n="l5Desc">دراسة ظاهرة توليد معلومات خيالية (الهلوسة)، أسبابها التقنية، وكيفية اكتشافها والتعامل معها.</p>
       <a href="الهلوسة في نماذج الذكاء الاصطناعي.html" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- الدرس 06 -->
+    <!-- Lesson 06 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-      <div class="lesson-badge">الدرس 06</div>
-      <h3 class="lesson-title">الاستخدام الأكاديمي المسؤول</h3>
-      <p class="lesson-desc">دليلك لاستخدام أدوات الذكاء الاصطناعي في الدراسة مع الحفاظ على النزاهة والأمانة العلمية.</p>
+      <div class="lesson-badge" data-i18n="l6Badge">الدرس 06</div>
+      <h3 class="lesson-title" data-i18n="l6Title">الاستخدام الأكاديمي المسؤول</h3>
+      <p class="lesson-desc" data-i18n="l6Desc">دليلك لاستخدام أدوات الذكاء الاصطناعي في الدراسة مع الحفاظ على النزاهة والأمانة العلمية.</p>
       <a href="النزاهة الأكاديمية وأخلاقيات استخدام الذكاء الاصطناعي.html" class="btn-open">
-        فتح الدرس <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenLesson">فتح الدرس</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
   </div>
 
-  <!-- عنوان القسم الثاني (الأعمال التطبيقية) -->
+  <!-- Section 2: Practical Activities -->
   <div class="section-title">
     <span class="icon">💻</span>
-    الأعمال التطبيقية
+    <span data-i18n="sectionLabs">الأعمال التطبيقية</span>
   </div>
 
-  <!-- شبكة الأعمال التطبيقية -->
+  <!-- Activities Grid -->
   <div class="lessons-grid">
-    
-    <!-- النشاط 01 -->
+    <!-- Activity 01 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-laptop-code"></i></div>
-      <div class="lesson-badge">النشاط 01</div>
-      <h3 class="lesson-title">النشاط الأول: الاستكشاف والمقارنة (Prompt)</h3>
-      <p class="lesson-desc">تطبيق عملي لكتابة الأوامر (Prompts) ومقارنة كيفية استجابة النماذج المختلفة لنفس التعليمات والأسئلة.</p>
+      <div class="lesson-badge" data-i18n="act1Badge">النشاط 01</div>
+      <h3 class="lesson-title" data-i18n="act1Title">النشاط الأول: الاستكشاف والمقارنة (Prompt)</h3>
+      <p class="lesson-desc" data-i18n="act1Desc">تطبيق عملي لكتابة الأوامر (Prompts) ومقارنة كيفية استجابة النماذج المختلفة لنفس التعليمات والأسئلة.</p>
       <a href="الاستكشاف والمقارنة (Prompt).html" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
 
-    <!-- النشاط 02 -->
+    <!-- Activity 02 -->
     <div class="lesson-card">
       <div class="lesson-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-      <div class="lesson-badge">النشاط 02</div>
-      <h3 class="lesson-title">النشاط الثاني: محركات بحث الذكاء الاصطناعي والبحث المعمق</h3>
-      <p class="lesson-desc">تطبيق عملي على استخدام محركات البحث المدعومة بالذكاء الاصطناعي، ومقارنة نتائج البحث العادية بالبحث المعمق في جودة التوثيق والتحليل.</p>
+      <div class="lesson-badge" data-i18n="act2Badge">النشاط 02</div>
+      <h3 class="lesson-title" data-i18n="act2Title">النشاط الثاني: محركات بحث الذكاء الاصطناعي والبحث المعمق</h3>
+      <p class="lesson-desc" data-i18n="act2Desc">تطبيق عملي على استخدام محركات البحث المدعومة بالذكاء الاصطناعي، ومقارنة نتائج البحث العادية بالبحث المعمق في جودة التوثيق والتحليل.</p>
       <a href="النشاط التطبيقي محركات بحث الذكاء الاصطناعي والبحث المعمق.html" class="btn-open">
-        فتح النشاط <i class="fa-solid fa-arrow-left"></i>
+        <span data-i18n="btnOpenActivity">فتح النشاط</span> <i class="fa-solid fa-arrow-left action-arrow"></i>
       </a>
     </div>
-
   </div>
 
   <!-- Footer -->
-  <div class="footer">
+  <div class="footer" data-i18n="footerText">
     المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
   </div>
 
 </div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الدرس الأول: الذكاء الاصطناعي التوليدي",
+    backToSyllabus: "العودة للبرنامج",
+    chapterBadge: "الفصل 01",
+    headerTitle: "اكتشاف الذكاء الاصطناعي التوليدي",
+    headerSubtitle: "استكشف أسس ومفاهيم الذكاء الاصطناعي التوليدي، وتعرف على قدراته، حدوده، وطرق استخدامه الأكاديمي المسؤول.",
+    sectionLessons: "مواضيع ودروس الفصل",
+    btnOpenLesson: "فتح الدرس",
+    btnOpenActivity: "فتح النشاط",
+    sectionLabs: "الأعمال التطبيقية",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027",
+
+    l1Badge: "الدرس 01",
+    l1Title: "مفهوم الذكاء الاصطناعي التوليدي",
+    l1Desc: "تعرف على الأسس والمفاهيم التي يقوم عليها الذكاء التوليدي وكيف يختلف عن الخوارزميات التقليدية.",
+
+    l2Badge: "الدرس 02",
+    l2Title: "النماذج اللغوية الكبيرة (LLMs)",
+    l2Desc: "اكتشف البنية التحتية للنماذج اللغوية الكبيرة، وكيفية تدريبها لفهم وإنتاج النصوص المعقدة.",
+
+    l3Badge: "الدرس 03",
+    l3Title: "القدرات والإمكانات",
+    l3Desc: "استكشف ما يمكن لهذه النماذج فعله في مجالات توليد النصوص، التلخيص، والمساعدة في التحليل.",
+
+    l4Badge: "الدرس 04",
+    l4Title: "الحدود والقيود",
+    l4Desc: "تعرف على مكامن الضعف، بما في ذلك الانحياز، ونقص الفهم الحقيقي، والاعتماد على بيانات التدريب.",
+
+    l5Badge: "الدرس 05",
+    l5Title: "ظاهرة الهلوسة",
+    l5Desc: "دراسة ظاهرة توليد معلومات خيالية (الهلوسة)، أسبابها التقنية، وكيفية اكتشافها والتعامل معها.",
+
+    l6Badge: "الدرس 06",
+    l6Title: "الاستخدام الأكاديمي المسؤول",
+    l6Desc: "دليلك لاستخدام أدوات الذكاء الاصطناعي في الدراسة مع الحفاظ على النزاهة والأمانة العلمية.",
+
+    act1Badge: "النشاط 01",
+    act1Title: "النشاط الأول: الاستكشاف والمقارنة (Prompt)",
+    act1Desc: "تطبيق عملي لكتابة الأوامر (Prompts) ومقارنة كيفية استجابة النماذج المختلفة لنفس التعليمات والأسئلة.",
+
+    act2Badge: "النشاط 02",
+    act2Title: "النشاط الثاني: محركات بحث الذكاء الاصطناعي والبحث المعمق",
+    act2Desc: "تطبيق عملي على استخدام محركات البحث المدعومة بالذكاء الاصطناعي، ومقارنة نتائج البحث العادية بالبحث المعمق في جودة التوثيق والتحليل."
+  },
+  fr: {
+    pageTitle: "Chapitre 01 : Découverte de l'IA Générative",
+    backToSyllabus: "Retour au programme",
+    chapterBadge: "Chapitre 01",
+    headerTitle: "Découverte de l'IA Générative",
+    headerSubtitle: "Explorez les fondamentaux de l'IA générative, ses capacités, ses limites et son utilisation académique responsable.",
+    sectionLessons: "Leçons et Cours du Chapitre",
+    btnOpenLesson: "Consulter la leçon",
+    btnOpenActivity: "Consulter l'activité",
+    sectionLabs: "Travaux Pratiques (TP)",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027",
+
+    l1Badge: "Leçon 01",
+    l1Title: "Notion d'IA Générative",
+    l1Desc: "Comprendre les principes fondateurs de l'IA générative et ses distinctions par rapport aux algorithmes classiques.",
+
+    l2Badge: "Leçon 02",
+    l2Title: "Grands Modèles de Langage (LLM)",
+    l2Desc: "Découvrez l'architecture sous-jacente des LLM et leur entraînement pour la compréhension du langage.",
+
+    l3Badge: "Leçon 03",
+    l3Title: "Capacités et Potentiel",
+    l3Desc: "Explorez les champs d'application : génération textuelle, synthèse intelligente et aide analytique avancée.",
+
+    l4Badge: "Leçon 04",
+    l4Title: "Limites et Contraintes",
+    l4Desc: "Identifiez les faiblesses techniques : biais algorithmiques, absence de compréhension réelle et dépendance aux données.",
+
+    l5Badge: "Leçon 05",
+    l5Title: "Le Phénomène d'Hallucination",
+    l5Desc: "Analyse de la génération d'informations erronées, causes structurelles et méthodes de détection.",
+
+    l6Badge: "Leçon 06",
+    l6Title: "Usage Académique Responsable",
+    l6Desc: "Guide des bonnes pratiques pour mobiliser l'IA tout en préservant l'éthique et l'intégrité scientifique.",
+
+    act1Badge: "Activité 01",
+    act1Title: "Activité 1 : Exploration & Comparaison (Prompt)",
+    act1Desc: "Atelier pratique d'ingénierie de prompt et analyse comparative des réponses générées par différents modèles.",
+
+    act2Badge: "Activité 02",
+    act2Title: "Activité 2 : Moteurs de recherche IA & Recherche approfondie",
+    act2Desc: "Mise en pratique des moteurs de recherche propulsés par l'IA et comparaison entre recherche standard et recherche experte."
+  },
+  en: {
+    pageTitle: "Chapter 01: Discovering Generative AI",
+    backToSyllabus: "Back to Syllabus",
+    chapterBadge: "Chapter 01",
+    headerTitle: "Discovering Generative AI",
+    headerSubtitle: "Explore the core fundamentals of generative AI, uncover its capabilities, limits, and responsible academic usage.",
+    sectionLessons: "Chapter Topics & Lessons",
+    btnOpenLesson: "Open Lesson",
+    btnOpenActivity: "Open Activity",
+    sectionLabs: "Practical Labs",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027",
+
+    l1Badge: "Lesson 01",
+    l1Title: "Concept of Generative AI",
+    l1Desc: "Understand the core foundations of generative AI and how it diverges from traditional algorithms.",
+
+    l2Badge: "Lesson 02",
+    l2Title: "Large Language Models (LLMs)",
+    l2Desc: "Discover the neural architecture of LLMs and how they are trained to process and generate complex language.",
+
+    l3Badge: "Lesson 03",
+    l3Title: "Capabilities & Potential",
+    l3Desc: "Explore their power in text generation, creative synthesis, and comprehensive research assistance.",
+
+    l4Badge: "Lesson 04",
+    l4Title: "Limitations & Constraints",
+    l4Desc: "Learn about known weaknesses, including bias, lack of true comprehension, and reliance on training data.",
+
+    l5Badge: "Lesson 05",
+    l5Title: "Hallucination Phenomenon",
+    l5Desc: "Study the causes behind fabricated facts, technical reasons, and best strategies for verification.",
+
+    l6Badge: "Lesson 06",
+    l6Title: "Responsible Academic Use",
+    l6Desc: "Your practical roadmap to adopting AI tools in coursework while ensuring ethical academic integrity.",
+
+    act1Badge: "Activity 01",
+    act1Title: "Activity 1: Prompt Exploration & Comparison",
+    act1Desc: "Hands-on prompt writing and comparative analysis of outputs generated by multiple contemporary LLMs.",
+
+    act2Badge: "Activity 02",
+    act2Title: "Activity 2: AI Search Engines & Deep Research",
+    act2Desc: "Practical exploration of AI-driven research engines, comparing standard searches with deep cited research."
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic texts
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Flip card button arrow icons
+  document.querySelectorAll('.action-arrow').forEach(arrow => {
+    arrow.className = isRtl ? 'fa-solid fa-arrow-left action-arrow' : 'fa-solid fa-arrow-right action-arrow';
+  });
+
+  // Update language buttons active state
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Save selected language to synchronize across all pages
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Load saved language on startup
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
 </body>
 </html>

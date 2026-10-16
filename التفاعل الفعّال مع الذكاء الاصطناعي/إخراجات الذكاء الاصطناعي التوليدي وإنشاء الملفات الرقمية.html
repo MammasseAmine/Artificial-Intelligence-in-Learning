@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الفصل 03 • النشاط 02: إخراجات الذكاء الاصطناعي وإنشاء الملفات الرقمية</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 40px 25px;
+    border-radius: 14px;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.2);
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .header h1 {
+    font-size: 1.65rem;
+    font-weight: 800;
+  }
+
+  /* Question Cards */
+  .question-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    border-inline-start: 5px solid var(--secondary);
+    margin-bottom: 20px;
+  }
+
+  .question-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .question-title .num {
+    background: var(--light);
+    color: var(--secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    font-weight: 800;
+  }
+
+  .task-list {
+    list-style: none;
+  }
+
+  .task-list li {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .task-list li i {
+    color: var(--secondary);
+    font-size: 0.95rem;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .sub-box {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    width: 100%;
+    line-height: 1.8;
+  }
+
+  /* Comparison Sub-sections */
+  .sub-section-title {
+    font-weight: 700;
+    color: var(--secondary);
+    margin: 15px 0 10px 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    margin-top: 25px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.35rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 03.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToLessons">العودة لقائمة الدروس</span>
+    </a>
+    <br>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 03 • النشاط 02</span>
+    <h1 data-i18n="headerTitle">إخراجات الذكاء الاصطناعي التوليدي وإنشاء الملفات الرقمية</h1>
+  </div>
+
+  <!-- السؤال الأول -->
+  <div class="question-card">
+    <div class="question-title">
+      <span class="num">01</span>
+      <span data-i18n="q1Title">إنشاء ملفات أكاديمية متعددة الصيغ</span>
+    </div>
+    <p style="margin-bottom: 12px; color: var(--muted); font-size: 0.95rem;" data-i18n="q1Sub">
+      اختر موضوعاً من تخصصك الدراسي ثم صمم أوامر (Prompts) احترافية لإنشاء:
+    </p>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-file-word"></i>
+        <div class="sub-box" data-i18n="q1Item1">ملف Word (.docx) يحتوي على تقرير أكاديمي منظم.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-powerpoint"></i>
+        <div class="sub-box" data-i18n="q1Item2">عرض تقديمي PowerPoint (.pptx) يتكون من 10 شرائح.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-code"></i>
+        <div class="sub-box" data-i18n="q1Item3">صفحة HTML تعليمية تفاعلية.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-pdf"></i>
+        <div class="sub-box" data-i18n="q1Item4">ملف PDF جاهز للطباعة والتوزيع.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-excel"></i>
+        <div class="sub-box" data-i18n="q1Item5">جدول بيانات Excel (.xlsx) لتنظيم وتحليل البيانات.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-lines"></i>
+        <div class="sub-box" data-i18n="q1Item6">ملف Markdown (.md) لتوثيق مشروع أو بحث.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-square-root-variable"></i>
+        <div class="sub-box" data-i18n="q1Item7">ملف كود LaTeX لتنسيق مقال أو ورقة بحثية رصينة.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- السؤال الثاني -->
+  <div class="question-card">
+    <div class="question-title">
+      <span class="num">02</span>
+      <span data-i18n="q2Title">تصميم قوالب (Templates) احترافية</span>
+    </div>
+    <p style="margin-bottom: 12px; color: var(--muted); font-size: 0.95rem;" data-i18n="q2Sub">
+      صمم قالب Prompt قابل لإعادة الاستخدام (Reusable Template) من أجل:
+    </p>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-file-word"></i>
+        <div class="sub-box" data-i18n="q2Item1">إنشاء تقرير Word أكاديمي بهيكل ثابت.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-powerpoint"></i>
+        <div class="sub-box" data-i18n="q2Item2">إنشاء عرض PowerPoint تعليمي متناسق الشرائح.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-code"></i>
+        <div class="sub-box" data-i18n="q2Item3">إنشاء صفحة HTML تفاعلية مع تنسيقات CSS وسكربتات برمجية.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-excel"></i>
+        <div class="sub-box" data-i18n="q2Item4">إنشاء ملف Excel يتضمن جداول منسقة وصيغاً حسابية تلقائية.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-file-pdf"></i>
+        <div class="sub-box" data-i18n="q2Item5">إنشاء دليل مستخدم PDF منظم وجاهز للمعاينة والتصدير.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- السؤال الثالث -->
+  <div class="question-card">
+    <div class="question-title">
+      <span class="num">03</span>
+      <span data-i18n="q3Title">مقارنة وتحليل المخرجات الرقمية</span>
+    </div>
+    <p style="margin-bottom: 10px; color: var(--text); font-size: 0.95rem;" data-i18n="q3Sub">
+      أنشئ نفس المحتوى باستخدام أكثر من صيغة ملفات، ثم أجرِ مقارنة تحليلية:
+    </p>
+
+    <div class="sub-section-title">
+      <i class="fa-solid fa-code-compare"></i> <span data-i18n="q3CompHeader">المقارنة بين الثنائيات التالية:</span>
+    </div>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-arrow-left pair-arrow"></i>
+        <div class="sub-box" data-i18n="q3Pair1"><strong>Word</strong> في مواجهة <strong>PDF</strong>.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-arrow-left pair-arrow"></i>
+        <div class="sub-box" data-i18n="q3Pair2"><strong>PowerPoint</strong> في مواجهة <strong>HTML</strong>.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-arrow-left pair-arrow"></i>
+        <div class="sub-box" data-i18n="q3Pair3"><strong>Excel</strong> في مواجهة <strong>CSV</strong>.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-arrow-left pair-arrow"></i>
+        <div class="sub-box" data-i18n="q3Pair4"><strong>Markdown</strong> في مواجهة <strong>Word</strong>.</div>
+      </li>
+    </ul>
+
+    <div class="sub-section-title" style="margin-top: 18px;">
+      <i class="fa-solid fa-sliders"></i> <span data-i18n="q3CriteriaHeader">حدد مزايا وعيوب كل صيغة من حيث المعايير التالية:</span>
+    </div>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        <div class="sub-box" data-i18n="q3Crit1"><strong>سهولة التعديل:</strong> المرونة في تحرير النصوص والبيانات بعد التوليد.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        <div class="sub-box" data-i18n="q3Crit2"><strong>سهولة المشاركة:</strong> حجم الملف، التوافق عند الإرسال والوصول السريع.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        <div class="sub-box" data-i18n="q3Crit3"><strong>التنسيق البصري:</strong> الحفاظ على الخطوط، الألوان، والتخطيط العام.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-check"></i>
+        <div class="sub-box" data-i18n="q3Crit4"><strong>التوافق مع البرامج المختلفة:</strong> سهولة الفتح عبر أنظمة التشغيل والتطبيقات المتباينة.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 03 • النشاط 02: إخراجات الذكاء الاصطناعي وإنشاء الملفات الرقمية",
+    backToLessons: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 03 • النشاط 02",
+    headerTitle: "إخراجات الذكاء الاصطناعي التوليدي وإنشاء الملفات الرقمية",
+
+    q1Title: "إنشاء ملفات أكاديمية متعددة الصيغ",
+    q1Sub: "اختر موضوعاً من تخصصك الدراسي ثم صمم أوامر (Prompts) احترافية لإنشاء:",
+    q1Item1: "ملف Word (.docx) يحتوي على تقرير أكاديمي منظم.",
+    q1Item2: "عرض تقديمي PowerPoint (.pptx) يتكون من 10 شرائح.",
+    q1Item3: "صفحة HTML تعليمية تفاعلية.",
+    q1Item4: "ملف PDF جاهز للطباعة والتوزيع.",
+    q1Item5: "جدول بيانات Excel (.xlsx) لتنظيم وتحليل البيانات.",
+    q1Item6: "ملف Markdown (.md) لتوثيق مشروع أو بحث.",
+    q1Item7: "ملف كود LaTeX لتنسيق مقال أو ورقة بحثية رصينة.",
+
+    q2Title: "تصميم قوالب (Templates) احترافية",
+    q2Sub: "صمم قالب Prompt قابل لإعادة الاستخدام (Reusable Template) من أجل:",
+    q2Item1: "إنشاء تقرير Word أكاديمي بهيكل ثابت.",
+    q2Item2: "إنشاء عرض PowerPoint تعليمي متناسق الشرائح.",
+    q2Item3: "إنشاء صفحة HTML تفاعلية مع تنسيقات CSS وسكربتات برمجية.",
+    q2Item4: "إنشاء ملف Excel يتضمن جداول منسقة وصيغاً حسابية تلقائية.",
+    q2Item5: "إنشاء دليل مستخدم PDF منظم وجاهز للمعاينة والتصدير.",
+
+    q3Title: "مقارنة وتحليل المخرجات الرقمية",
+    q3Sub: "أنشئ نفس المحتوى باستخدام أكثر من صيغة ملفات، ثم أجرِ مقارنة تحليلية:",
+    q3CompHeader: "المقارنة بين الثنائيات التالية:",
+    q3Pair1: "<strong>Word</strong> في مواجهة <strong>PDF</strong>.",
+    q3Pair2: "<strong>PowerPoint</strong> في مواجهة <strong>HTML</strong>.",
+    q3Pair3: "<strong>Excel</strong> في مواجهة <strong>CSV</strong>.",
+    q3Pair4: "<strong>Markdown</strong> في مواجهة <strong>Word</strong>.",
+
+    q3CriteriaHeader: "حدد مزايا وعيوب كل صيغة من حيث المعايير التالية:",
+    q3Crit1: "<strong>سهولة التعديل:</strong> المرونة في تحرير النصوص والبيانات بعد التوليد.",
+    q3Crit2: "<strong>سهولة المشاركة:</strong> حجم الملف، التوافق عند الإرسال والوصول السريع.",
+    q3Crit3: "<strong>التنسيق البصري:</strong> الحفاظ على الخطوط، الألوان، والتخطيط العام.",
+    q3Crit4: "<strong>التوافق مع البرامج المختلفة:</strong> سهولة الفتح عبر أنظمة التشغيل والتطبيقات المتباينة.",
+
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 03 • TP 02 : Formats de Sorties de l'IA et Création de Fichiers Numériques",
+    backToLessons: "Retour à la liste des leçons",
+    headerBadge: "Chapitre 03 • Activité 02",
+    headerTitle: "Formats de Sortie de l'IA Générative et Création d'Artéfacts Numériques",
+
+    q1Title: "Production de Fichiers Académiques Multi-Formats",
+    q1Sub: "Choisissez un thème relevant de votre spécialité académique, puis formulez des prompts professionnels pour produire :",
+    q1Item1: "Un document Word (.docx) structuré en rapport académique.",
+    q1Item2: "Une présentation PowerPoint (.pptx) de 10 diapositives didactiques.",
+    q1Item3: "Une page web HTML pédagogique et interactive.",
+    q1Item4: "Un document PDF prêt pour l'impression et la diffusion.",
+    q1Item5: "Une feuille de calcul Excel (.xlsx) pour l'organisation et l'analyse de données.",
+    q1Item6: "Un fichier Markdown (.md) pour la documentation technique ou scientifique.",
+    q1Item7: "Un fichier source LaTeX pour la mise en page rigoureuse d'un article de recherche.",
+
+    q2Title: "Ingénierie de Gabarits Réutilisables (Templates)",
+    q2Sub: "Concevez un gabarit d'invite réutilisable (Reusable Prompt Template) afin de générer :",
+    q2Item1: "Un rapport académique Word standardisé à architecture pérenne.",
+    q2Item2: "Un diaporama PowerPoint cohérent et calibré pour l'enseignement.",
+    q2Item3: "Une page HTML interactive intégrant styles CSS et scripts fonctionnels.",
+    q2Item4: "Un classeur Excel enrichi de tableaux dynamiques et de formules automatisées.",
+    q2Item5: "Un guide utilisateur PDF ergonomique, prêt pour l'export.",
+
+    q3Title: "Analyse Comparative des Livrables Numériques",
+    q3Sub: "Générez le même contenu textuel sous plusieurs formats numériques, puis menez une étude comparative :",
+    q3CompHeader: "Confrontation des formats binômes :",
+    q3Pair1: "<strong>Word</strong> face à <strong>PDF</strong>.",
+    q3Pair2: "<strong>PowerPoint</strong> face à <strong>HTML</strong>.",
+    q3Pair3: "<strong>Excel</strong> face à <strong>CSV</strong>.",
+    q3Pair4: "<strong>Markdown</strong> face à <strong>Word</strong>.",
+
+    q3CriteriaHeader: "Évaluez les forces et faiblesses selon les critères suivants :",
+    q3Crit1: "<strong>Facilité d'édition :</strong> Flexibilité de retouche textuelle et structurelle post-génération.",
+    q3Crit2: "<strong>Facilité de partage :</strong> Légèreté, portabilité et accessibilité immédiate.",
+    q3Crit3: "<strong>Fidélité visuelle :</strong> Préservation rigoureuse des typographies, couleurs et mises en page.",
+    q3Crit4: "<strong>Interopérabilité logicielle :</strong> Ouverture fluide sur divers OS et suites applicatives.",
+
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 03 • Lab 02: Generative AI Outputs & Digital File Creation",
+    backToLessons: "Back to Lessons List",
+    headerBadge: "Chapter 03 • Activity 02",
+    headerTitle: "Generative AI Outputs & Digital Artifact Creation",
+
+    q1Title: "Generating Multi-Format Academic Artifacts",
+    q1Sub: "Choose a core topic from your academic field, then engineer production-ready prompts to generate:",
+    q1Item1: "A structured academic report in Word format (.docx).",
+    q1Item2: "A 10-slide educational slide deck in PowerPoint (.pptx).",
+    q1Item3: "An interactive instructional HTML webpage.",
+    q1Item4: "A print-ready, distributable PDF document.",
+    q1Item5: "An Excel spreadsheet (.xlsx) for dataset organization and analysis.",
+    q1Item6: "A Markdown file (.md) for project or research documentation.",
+    q1Item7: "A LaTeX source file for typesetting a scholarly academic paper.",
+
+    q2Title: "Engineering Reusable Prompt Templates",
+    q2Sub: "Design a reusable prompt template to systematically generate:",
+    q2Item1: "A standardized Word academic report with consistent sectioning.",
+    q2Item2: "A coherent pedagogical PowerPoint presentation schema.",
+    q2Item3: "An interactive HTML artifact with custom CSS styling and embedded scripts.",
+    q2Item4: "An Excel workbook equipped with pre-formatted tables and automated formulas.",
+    q2Item5: "A publication-grade PDF user guide primed for compilation and distribution.",
+
+    q3Title: "Comparative Analysis of Digital Formats",
+    q3Sub: "Produce identical core content across multiple file formats, then conduct an empirical analysis:",
+    q3CompHeader: "Compare the following file pairs:",
+    q3Pair1: "<strong>Word</strong> vs. <strong>PDF</strong>.",
+    q3Pair2: "<strong>PowerPoint</strong> vs. <strong>HTML</strong>.",
+    q3Pair3: "<strong>Excel</strong> vs. <strong>CSV</strong>.",
+    q3Pair4: "<strong>Markdown</strong> vs. <strong>Word</strong>.",
+
+    q3CriteriaHeader: "Appraise trade-offs across the following technical dimensions:",
+    q3Crit1: "<strong>Editability:</strong> Ease of revising, annotating, and refactoring content post-generation.",
+    q3Crit2: "<strong>Shareability:</strong> File size efficiency, delivery ease, and universal accessibility.",
+    q3Crit3: "<strong>Visual Fidelity:</strong> Preservation of typographical scale, palettes, and layout margins.",
+    q3Crit4: "<strong>Interoperability:</strong> Portability and compatibility across diverse operating systems and software ecosystems.",
+
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML root attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic translatable nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      const htmlKeys = ['q3Pair1', 'q3Pair2', 'q3Pair3', 'q3Pair4', 'q3Crit1', 'q3Crit2', 'q3Crit3', 'q3Crit4'];
+      if (htmlKeys.includes(key)) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Flip pair arrow icons in Question 3
+  document.querySelectorAll('.pair-arrow').forEach(icon => {
+    icon.className = isRtl ? 'fa-solid fa-arrow-left pair-arrow' : 'fa-solid fa-arrow-right pair-arrow';
+  });
+
+  // Update active state on language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Persist language selection
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initial load check
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>

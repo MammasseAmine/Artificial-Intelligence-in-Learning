@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">الفصل 03 • النشاط 01: هندسة الأوامر</title>
+<!-- Google Fonts: Tajawal (AR) & Inter (FR/EN) -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #1a365d;
+    --secondary: #2b6cb0;
+    --accent: #ed8936;
+    --light: #ebf8ff;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --text: #2d3748;
+    --muted: #718096;
+    --border: #e2e8f0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+
+  /* Latin typography adjustments */
+  html[lang="fr"] body,
+  html[lang="en"] body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Language Switcher Bar */
+  .lang-switch-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+
+  .lang-switcher {
+    display: inline-flex;
+    background: white;
+    padding: 4px;
+    border-radius: 50px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    gap: 4px;
+  }
+
+  .lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26, 54, 93, 0.3);
+  }
+
+  .lang-btn:hover:not(.active) {
+    background: var(--light);
+    color: var(--primary);
+  }
+  
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 40px 25px;
+    border-radius: 14px;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.2);
+  }
+
+  .back-link {
+    position: absolute;
+    top: 20px;
+    inset-inline-start: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .back-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .header-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .header h1 {
+    font-size: 1.7rem;
+    font-weight: 800;
+  }
+
+  /* Question Cards */
+  .question-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    border-inline-start: 5px solid var(--secondary);
+    margin-bottom: 20px;
+  }
+
+  .question-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .question-title .num {
+    background: var(--light);
+    color: var(--secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    font-weight: 800;
+  }
+
+  .task-list {
+    list-style: none;
+  }
+
+  .task-list li {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .task-list li i {
+    color: var(--secondary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .sub-box {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    width: 100%;
+    line-height: 1.8;
+  }
+
+  /* Final Standalone Card */
+  .final-box {
+    background: linear-gradient(135deg, #fffaf0 0%, #ffffff 100%);
+    border: 2px dashed var(--accent);
+    border-radius: 14px;
+    padding: 25px;
+    text-align: center;
+    margin-top: 30px;
+    box-shadow: 0 4px 12px rgba(237, 137, 54, 0.08);
+  }
+
+  .final-box h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #c05621;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    margin-top: 25px;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.4rem; }
+    .back-link { position: relative; display: inline-flex; inset-inline-start: 0; margin-bottom: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Language Switcher Bar -->
+  <div class="lang-switch-wrapper">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" onclick="setLanguage('ar')">AR</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="الفصل 03.html" class="back-link">
+      <i class="fa-solid fa-arrow-right" id="back-arrow"></i>
+      <span data-i18n="backToLessons">العودة لقائمة الدروس</span>
+    </a>
+    <br>
+    <span class="header-badge" data-i18n="headerBadge">الفصل 03 • النشاط 01</span>
+    <h1 data-i18n="headerTitle">هندسة الأوامر ونماذج الذكاء الاصطناعي التوليدي</h1>
+  </div>
+
+  <!-- السؤال الأول -->
+  <div class="question-card">
+    <div class="question-title">
+      <span class="num">01</span>
+      <span data-i18n="q1Title">اختر موضوعاً من تخصصك الدراسي ثم صمم أفضل Prompt ممكن للحصول على:</span>
+    </div>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-circle-dot"></i>
+        <div class="sub-box" data-i18n="q1Task1">شرح أكاديمي.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-dot"></i>
+        <div class="sub-box" data-i18n="q1Task2">ملخص.</div>
+      </li>
+      <li>
+        <i class="fa-solid fa-circle-dot"></i>
+        <div class="sub-box" data-i18n="q1Task3">أسئلة امتحان.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- السؤال الثاني -->
+  <div class="question-card">
+    <div class="question-title">
+      <span class="num">02</span>
+      <span data-i18n="q2Title">صمم قالباً (Template) لـ:</span>
+    </div>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-circle-dot"></i>
+        <div class="sub-box" data-i18n="q2Task1">تبسيط مفهوم معين.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- السؤال الثالث -->
+  <div class="question-card">
+    <div class="question-title">
+      <span class="num">03</span>
+      <span data-i18n="q3Title">تطبيق أطر هندسة الأوامر المتقدمة:</span>
+    </div>
+    <ul class="task-list">
+      <li>
+        <i class="fa-solid fa-arrow-left task-arrow"></i>
+        <div class="sub-box" data-i18n="q3Task1">
+          <strong>باستخدام إطار CO-STAR:</strong> صمم أمراً لإعداد خطة درس تفاعلية أو نشاط تعليمي موجّه لفئة طلابية محددة.
+        </div>
+      </li>
+      <li>
+        <i class="fa-solid fa-arrow-left task-arrow"></i>
+        <div class="sub-box" data-i18n="q3Task2">
+          <strong>باستخدام إطار CRISPE:</strong> صمم أمراً لتقمص دور خبير استشاري يقوم بتشخيص أخطاء شائعة في مجالك واقتراح حلول وبدائل تجريبية متعددة.
+        </div>
+      </li>
+      <li>
+        <i class="fa-solid fa-arrow-left task-arrow"></i>
+        <div class="sub-box" data-i18n="q3Task3">
+          <strong>باستخدام إطار CREATE الشامل:</strong> صمم أمراً لبناء دليل تدريبي تطبيقي لمشروع عملي متكامل، مع تجريب مختلف الإضافات (Extras) التي تم التطرق إليها في الدروس.
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- في الأخير وحده -->
+  <div class="final-box">
+    <h2>
+      <i class="fa-solid fa-star"></i>
+      <span data-i18n="finalBookTitle">أنشئ «دفتر الأوامر الذهبية الخاص بك»</span>
+      <i class="fa-solid fa-star"></i>
+    </h2>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" data-i18n="footerText">
+    المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027
+  </div>
+
+</div>
+
+<!-- Localization Script -->
+<script>
+const translations = {
+  ar: {
+    pageTitle: "الفصل 03 • النشاط 01: هندسة الأوامر",
+    backToLessons: "العودة لقائمة الدروس",
+    headerBadge: "الفصل 03 • النشاط 01",
+    headerTitle: "هندسة الأوامر ونماذج الذكاء الاصطناعي التوليدي",
+
+    q1Title: "اختر موضوعاً من تخصصك الدراسي ثم صمم أفضل Prompt ممكن للحصول على:",
+    q1Task1: "شرح أكاديمي.",
+    q1Task2: "ملخص.",
+    q1Task3: "أسئلة امتحان.",
+
+    q2Title: "صمم قالباً (Template) لـ:",
+    q2Task1: "تبسيط مفهوم معين.",
+
+    q3Title: "تطبيق أطر هندسة الأوامر المتقدمة:",
+    q3Task1: "<strong>باستخدام إطار CO-STAR:</strong> صمم أمراً لإعداد خطة درس تفاعلية أو نشاط تعليمي موجّه لفئة طلابية محددة.",
+    q3Task2: "<strong>باستخدام إطار CRISPE:</strong> صمم أمراً لتقمص دور خبير استشاري يقوم بتشخيص أخطاء شائعة في مجالك واقتراح حلول وبدائل تجريبية متعددة.",
+    q3Task3: "<strong>باستخدام إطار CREATE الشامل:</strong> صمم أمراً لبناء دليل تدريبي تطبيقي لمشروع عملي متكامل، مع تجريب مختلف الإضافات (Extras) التي تم التطرق إليها في الدروس.",
+
+    finalBookTitle: "أنشئ «دفتر الأوامر الذهبية الخاص بك»",
+    footerText: "المدرسة العليا للأساتذة ملحقة بجاية - 2026 / 2027"
+  },
+  fr: {
+    pageTitle: "Chapitre 03 • TP 01 : Ingénierie de Prompt",
+    backToLessons: "Retour à la liste des leçons",
+    headerBadge: "Chapitre 03 • Activité 01",
+    headerTitle: "Ingénierie de Prompt et Modèles d'IA Générative",
+
+    q1Title: "Choisissez un thème de votre spécialité d'enseignement, puis formulez le prompt le plus rigoureux possible pour obtenir :",
+    q1Task1: "Une explication académique approfondie.",
+    q1Task2: "Une synthèse notionnelle structurée.",
+    q1Task3: "Un ensemble de questions d'examen pertinentes.",
+
+    q2Title: "Concevez un gabarit réutilisable (Template) pour :",
+    q2Task1: "La vulgarisation pédagogique d'un concept complexe.",
+
+    q3Title: "Mise en œuvre des frameworks avancés de prompting :",
+    q3Task1: "<strong>Avec le framework CO-STAR :</strong> Concevez un prompt pour élaborer un plan de cours interactif ou une situation d'apprentissage ciblée sur un profil d'élèves précis.",
+    q3Task2: "<strong>Avec le framework CRISPE :</strong> Concevez un prompt adoptant la posture d'un consultant expert chargé de diagnostiquer des erreurs récurrentes dans votre discipline et de préconiser des pistes alternatives d'expérimentation.",
+    q3Task3: "<strong>Avec le framework global CREATE :</strong> Concevez un prompt pour structurer le guide méthodologique d'un projet pédagogique intégré, en mobilisant les différentes extensions (Extras) abordées en cours.",
+
+    finalBookTitle: "Créez votre propre « Carnet de Prompts d'Or »",
+    footerText: "École Normale Supérieure - Annexe de Béjaïa | 2026 / 2027"
+  },
+  en: {
+    pageTitle: "Chapter 03 • Lab 01: Prompt Engineering",
+    backToLessons: "Back to Lessons List",
+    headerBadge: "Chapter 03 • Activity 01",
+    headerTitle: "Prompt Engineering & Generative AI Models",
+
+    q1Title: "Select a core topic from your teaching discipline, then engineer the highest-fidelity prompt possible to generate:",
+    q1Task1: "An in-depth academic explanation.",
+    q1Task2: "A structured conceptual summary.",
+    q1Task3: "A set of rigorous examination questions.",
+
+    q2Title: "Design a reusable Template for:",
+    q2Task1: "Demystifying and simplifying a challenging concept.",
+
+    q3Title: "Applied Implementation of Advanced Prompting Frameworks:",
+    q3Task1: "<strong>Using the CO-STAR Framework:</strong> Engineer a prompt to design an interactive lesson plan or a classroom learning task tailored to a targeted student cohort.",
+    q3Task2: "<strong>Using the CRISPE Framework:</strong> Engineer a prompt adopting the persona of a senior subject advisor diagnosing widespread student misconceptions and proposing multi-tiered intervention strategies.",
+    q3Task3: "<strong>Using the Comprehensive CREATE Framework:</strong> Engineer a prompt to structure an applied project handbook, incorporating the various supplementary directives (Extras) explored during lessons.",
+
+    finalBookTitle: "Build Your Own \"Golden Prompt Playbook\"",
+    footerText: "Higher Normal School - Bejaia Annex | 2026 / 2027"
+  }
+};
+
+function setLanguage(lang) {
+  const isRtl = (lang === 'ar');
+  
+  // Set HTML root attributes
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+
+  // Update Page Title
+  document.getElementById('page-title').innerText = translations[lang].pageTitle;
+
+  // Update dynamic translatable nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      const htmlKeys = ['q3Task1', 'q3Task2', 'q3Task3'];
+      if (htmlKeys.includes(key)) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Flip Back link arrow icon
+  const backArrow = document.getElementById('back-arrow');
+  if (backArrow) {
+    backArrow.className = isRtl ? 'fa-solid fa-arrow-right' : 'fa-solid fa-arrow-left';
+  }
+
+  // Flip task arrow icons in Question 3
+  document.querySelectorAll('.task-arrow').forEach(icon => {
+    icon.className = isRtl ? 'fa-solid fa-arrow-left task-arrow' : 'fa-solid fa-arrow-right task-arrow';
+  });
+
+  // Update active state on language switcher buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+  });
+
+  // Persist language selection
+  localStorage.setItem('preferred_lang', lang);
+}
+
+// Initial load check
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('preferred_lang') || 'ar';
+  setLanguage(savedLang);
+});
+</script>
+
+</body>
+</html>
